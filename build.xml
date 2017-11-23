@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="opendiabetes" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.zip"/>
+    <include name="*.egg"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.log4j-1.2.16.classpath">
+    <pathelement location="${basedir}/lib/log4j-1.2.16.jar"/>
+  </path>
+  
+  <path id="library.ormlite-jdbc-5.0.classpath">
+    <pathelement location="${basedir}/lib/gson-2.8.0.jar"/>
+    <pathelement location="${basedir}/lib/hsqldb.jar"/>
+    <pathelement location="${basedir}/lib/javacsv.jar"/>
+    <pathelement location="${basedir}/lib/ormlite-core-5.0.jar"/>
+    <pathelement location="${basedir}/lib/ormlite-jdbc-5.0.jar"/>
+    <pathelement location="${basedir}/lib/servlet-2_3-fcs-classfiles.zip"/>
+    <pathelement location="${basedir}/lib/sqltool.jar"/>
+  </path>
+  
+  <path id="library.pf4j-2.0.0.classpath">
+    <pathelement location="${basedir}/lib/pf4j-2.0.0.jar"/>
+  </path>
+  
+  <path id="library.slf4j-api-1.7.5.classpath">
+    <pathelement location="${basedir}/lib/slf4j-api-1.7.5.jar"/>
+  </path>
+  
+  <path id="library.slf4j-log4j12-1.7.5.classpath">
+    <pathelement location="${basedir}/lib/slf4j-log4j12-1.7.5.jar"/>
+  </path>
+  
+  <path id="library.slf4j-simple-1.6.6.classpath">
+    <pathelement location="${basedir}/lib/slf4j-simple-1.6.6.jar"/>
+  </path>
+  
+  
+  <!-- Global Libraries -->
+  
+  <path id="library.groovy-1.8.6.classpath">
+    <pathelement location="/usr/share/groovy/lib/ant-junit.jar"/>
+    <pathelement location="/usr/share/groovy/lib/ant-launcher.jar"/>
+    <pathelement location="/usr/share/groovy/lib/ant.jar"/>
+    <pathelement location="/usr/share/groovy/lib/antlr.jar"/>
+    <pathelement location="/usr/share/groovy/lib/asm3-analysis.jar"/>
+    <pathelement location="/usr/share/groovy/lib/asm3-tree.jar"/>
+    <pathelement location="/usr/share/groovy/lib/asm3-util.jar"/>
+    <pathelement location="/usr/share/groovy/lib/asm3.jar"/>
+    <pathelement location="/usr/share/groovy/lib/bsf.jar"/>
+    <pathelement location="/usr/share/groovy/lib/commons-cli.jar"/>
+    <pathelement location="/usr/share/groovy/lib/commons-logging.jar"/>
+    <pathelement location="/usr/share/groovy/lib/groovy-1.8.6.jar"/>
+    <pathelement location="/usr/share/groovy/lib/ivy.jar"/>
+    <pathelement location="/usr/share/groovy/lib/jansi.jar"/>
+    <pathelement location="/usr/share/groovy/lib/jline.jar"/>
+    <pathelement location="/usr/share/groovy/lib/jsp-api.jar"/>
+    <pathelement location="/usr/share/groovy/lib/junit4.jar"/>
+    <pathelement location="/usr/share/groovy/lib/mockobjects-core.jar"/>
+    <pathelement location="/usr/share/groovy/lib/regexp.jar"/>
+    <pathelement location="/usr/share/groovy/lib/servlet-api.jar"/>
+    <pathelement location="/usr/share/groovy/lib/xstream.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module OpenDiabetes -->
+  
+  <dirname property="module.opendiabetes.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.opendiabetes" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.opendiabetes" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.opendiabetes" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="opendiabetes.output.dir" value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
+  <property name="opendiabetes.testoutput.dir" value="${module.opendiabetes.basedir}/out/test/OpenDiabetes"/>
+  
+  <path id="opendiabetes.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="opendiabetes.module.production.classpath">
+    <path refid="${module.jdk.classpath.opendiabetes}"/>
+    <path refid="library.groovy-1.8.6.classpath"/>
+    <path refid="library.pf4j-2.0.0.classpath"/>
+    <path refid="library.ormlite-jdbc-5.0.classpath"/>
+    <path refid="library.slf4j-simple-1.6.6.classpath"/>
+    <path refid="library.log4j-1.2.16.classpath"/>
+    <path refid="library.slf4j-api-1.7.5.classpath"/>
+    <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+  </path>
+  
+  <path id="opendiabetes.runtime.production.module.classpath">
+    <pathelement location="${opendiabetes.output.dir}"/>
+    <path refid="library.groovy-1.8.6.classpath"/>
+    <path refid="library.pf4j-2.0.0.classpath"/>
+    <path refid="library.ormlite-jdbc-5.0.classpath"/>
+    <path refid="library.slf4j-simple-1.6.6.classpath"/>
+    <path refid="library.log4j-1.2.16.classpath"/>
+    <path refid="library.slf4j-api-1.7.5.classpath"/>
+    <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+  </path>
+  
+  <path id="opendiabetes.module.classpath">
+    <path refid="${module.jdk.classpath.opendiabetes}"/>
+    <pathelement location="${opendiabetes.output.dir}"/>
+    <path refid="library.groovy-1.8.6.classpath"/>
+    <path refid="library.pf4j-2.0.0.classpath"/>
+    <path refid="library.ormlite-jdbc-5.0.classpath"/>
+    <path refid="library.slf4j-simple-1.6.6.classpath"/>
+    <path refid="library.log4j-1.2.16.classpath"/>
+    <path refid="library.slf4j-api-1.7.5.classpath"/>
+    <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+  </path>
+  
+  <path id="opendiabetes.runtime.module.classpath">
+    <pathelement location="${opendiabetes.testoutput.dir}"/>
+    <pathelement location="${opendiabetes.output.dir}"/>
+    <path refid="library.groovy-1.8.6.classpath"/>
+    <path refid="library.pf4j-2.0.0.classpath"/>
+    <path refid="library.ormlite-jdbc-5.0.classpath"/>
+    <path refid="library.slf4j-simple-1.6.6.classpath"/>
+    <path refid="library.log4j-1.2.16.classpath"/>
+    <path refid="library.slf4j-api-1.7.5.classpath"/>
+    <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.opendiabetes">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.opendiabetes">
+    <patternset refid="excluded.from.module.opendiabetes"/>
+  </patternset>
+  
+  <path id="opendiabetes.module.sourcepath">
+    <dirset dir="${module.opendiabetes.basedir}">
+      <include name="src"/>
+      <include name="lib"/>
+      <include name="plugins"/>
+    </dirset>
+  </path>
+  
+  <path id="opendiabetes.module.test.sourcepath">
+    <dirset dir="${module.opendiabetes.basedir}">
+      <include name="test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.opendiabetes" depends="compile.module.opendiabetes.production,compile.module.opendiabetes.tests" description="Compile module OpenDiabetes"/>
+  
+  <target name="compile.module.opendiabetes.production" depends="register.custom.compilers" description="Compile module OpenDiabetes; production classes">
+    <mkdir dir="${opendiabetes.output.dir}"/>
+    <javac2 destdir="${opendiabetes.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.opendiabetes}/javac">
+      <compilerarg line="${compiler.args.opendiabetes}"/>
+      <bootclasspath refid="opendiabetes.module.bootclasspath"/>
+      <classpath refid="opendiabetes.module.production.classpath"/>
+      <src refid="opendiabetes.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.opendiabetes"/>
+    </javac2>
+    
+    <copy todir="${opendiabetes.output.dir}">
+      <fileset dir="${module.opendiabetes.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.opendiabetes.basedir}/lib">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.opendiabetes.basedir}/plugins">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.opendiabetes.tests" depends="register.custom.compilers,compile.module.opendiabetes.production" description="compile module OpenDiabetes; test classes" unless="skip.tests">
+    <mkdir dir="${opendiabetes.testoutput.dir}"/>
+    <javac2 destdir="${opendiabetes.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.opendiabetes}/javac">
+      <compilerarg line="${compiler.args.opendiabetes}"/>
+      <bootclasspath refid="opendiabetes.module.bootclasspath"/>
+      <classpath refid="opendiabetes.module.classpath"/>
+      <src refid="opendiabetes.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.opendiabetes"/>
+    </javac2>
+    
+    <copy todir="${opendiabetes.testoutput.dir}">
+      <fileset dir="${module.opendiabetes.basedir}/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.opendiabetes" description="cleanup module">
+    <delete dir="${opendiabetes.output.dir}"/>
+    <delete dir="${opendiabetes.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.opendiabetes" description="cleanup all"/>
+
+  <target name="build.modules" depends="init, clean, compile.module.opendiabetes" description="build all modules">
+    <!-- Generate the plugin jar file stamped with the appropriate manifest atributes -->
+    <javac2 includeResources="true" packageSources="true">
+      <manifest>
+        <attribute name="plugin-id" value ="${project.artifactId}" />
+        <attribute name="plugin-version" value="${project.version}" />
+        <attribute name="plugin-requires" value="${gitblit.version}" />
+        <attribute name="plugin-description" value ="${project.description}" />
+        <attribute name="plugin-provider" value="${project.organization}" />
+        <attribute name="plugin-class" value="${project.mainclass}" />
+        <attribute name="plugin-dependencies" value="" />
+      </manifest>
+    </javac2>
+
+    <!-- Unpack the built jar to a temporary folder -->
+    <property name="plugin.classes" value="${project.targetDirectory}/exploded" />
+    <unzip dest="${plugin.classes}" src="${project.targetDirectory}/${project.artifactId}-${project.version}.jar" />
+
+    <!-- Assemble the plugin zip file: classes in classes/ and dependencies in lib/ -->
+    <mx:zip>
+      <zipfileset prefix="classes/" dir="${plugin.classes}" />
+      <!--<zipgroupfileset prefix="classes/" file="${project.targetDirectory}/plugin.jar" /> -->
+      <dependencies prefix="lib/" />
+    </mx:zip>
+  </target>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
