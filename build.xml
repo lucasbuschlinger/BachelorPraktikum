@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="opendiabetes" default="all">
-  
-  
+<project name="bp" default="all" xmlns:mx="antlib:org.moxie">
+
+
   <property file="build.properties"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
-  <!-- 
+  <!--
   <property name="skip.tests" value="true"/>
    -->
-  
+
   <!-- Compiler options -->
-  
+
   <property name="compiler.debug" value="on"/>
   <property name="compiler.generate.no.warnings" value="off"/>
   <property name="compiler.args" value=""/>
@@ -156,28 +156,28 @@
     <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
     <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
   </target>
-  
+
   <!-- Modules -->
-  
-  
+
+
   <!-- Module OpenDiabetes -->
-  
+
   <dirname property="module.opendiabetes.basedir" file="${ant.file}"/>
-  
-  
+
+
   <property name="module.jdk.home.opendiabetes" value="${project.jdk.home}"/>
   <property name="module.jdk.bin.opendiabetes" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.opendiabetes" value="${project.jdk.classpath}"/>
-  
-  <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
-  
+
+  <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+
   <property name="opendiabetes.output.dir" value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
   <property name="opendiabetes.testoutput.dir" value="${module.opendiabetes.basedir}/out/test/OpenDiabetes"/>
-  
+
   <path id="opendiabetes.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
-  
+
   <path id="opendiabetes.module.production.classpath">
     <path refid="${module.jdk.classpath.opendiabetes}"/>
     <path refid="library.groovy-1.8.6.classpath"/>
@@ -293,43 +293,27 @@
       </fileset>
     </copy>
   </target>
-  
+
   <target name="clean.module.opendiabetes" description="cleanup module">
     <delete dir="${opendiabetes.output.dir}"/>
     <delete dir="${opendiabetes.testoutput.dir}"/>
   </target>
-  
+
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
   </target>
-  
+
   <target name="clean" depends="clean.module.opendiabetes" description="cleanup all"/>
 
+  <path id="libs-classpath">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
   <target name="build.modules" depends="init, clean, compile.module.opendiabetes" description="build all modules">
-    <!-- Generate the plugin jar file stamped with the appropriate manifest atributes -->
-    <javac2 includeResources="true" packageSources="true">
-      <manifest>
-        <attribute name="plugin-id" value ="${project.artifactId}" />
-        <attribute name="plugin-version" value="${project.version}" />
-        <attribute name="plugin-requires" value="${gitblit.version}" />
-        <attribute name="plugin-description" value ="${project.description}" />
-        <attribute name="plugin-provider" value="${project.organization}" />
-        <attribute name="plugin-class" value="${project.mainclass}" />
-        <attribute name="plugin-dependencies" value="" />
-      </manifest>
-    </javac2>
-
-    <!-- Unpack the built jar to a temporary folder -->
-    <property name="plugin.classes" value="${project.targetDirectory}/exploded" />
-    <unzip dest="${plugin.classes}" src="${project.targetDirectory}/${project.artifactId}-${project.version}.jar" />
-
-    <!-- Assemble the plugin zip file: classes in classes/ and dependencies in lib/ -->
-    <mx:zip>
-      <zipfileset prefix="classes/" dir="${plugin.classes}" />
-      <!--<zipgroupfileset prefix="classes/" file="${project.targetDirectory}/plugin.jar" /> -->
-      <dependencies prefix="lib/" />
-    </mx:zip>
+    <javac srcdir="plugins" destdir="out" classpathref="libs-classpath"/>
+    <zip destfile="test/test-test.zip" basedir="out/class"/>
   </target>
-  
+
   <target name="all" depends="build.modules" description="build all"/>
 </project>
