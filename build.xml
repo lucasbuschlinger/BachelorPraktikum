@@ -334,7 +334,7 @@
         <mkdir dir="PLUGINS/META-INF"/>
         <mkdir dir="PLUGINS/lib"/>
         <copydir src="lib" dest="PLUGINS/lib"/>
-        <copyfile src="Plugin.properties" dest="PLUGINS/plugin.properties"></copyfile>
+        <copyfile src="plugins/de/opendiabetes/vault/plugin/importer/FileImporter/plugin.properties" dest="PLUGINS/plugin.properties"></copyfile>
     </target>
 
     <target name="plugin.compile" depends="plugin.prebuild, compile.module.opendiabetes">

@@ -5,6 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7d77208-4856-4643-8ff0-3fa48fb8b502" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/plugin.properties" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Plugin.properties" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1.zip" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/classes/META-INF/extensions.idx" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/classes/de/opendiabetes/vault/plugin/importer/FileImporter/FileImporter$FileImporterImplementation.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/classes/de/opendiabetes/vault/plugin/importer/FileImporter/FileImporter.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/gson-2.8.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/hsqldb.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/javacsv.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/log4j-1.2.16.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/ormlite-core-5.0-javadoc.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/ormlite-core-5.0-sources.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/ormlite-core-5.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/ormlite-jdbc-5.0-javadoc.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/ormlite-jdbc-5.0-sources.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/ormlite-jdbc-5.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/pf4j-2.0.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/servlet-2_3-fcs-classfiles.zip" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/slf4j-api-1.7.5.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/slf4j-log4j12-1.7.5.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/lib/sqltool.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/export/FileImporter-0.0.1/plugin.properties" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.xml" afterPath="$PROJECT_DIR$/build.xml" />
     </list>
@@ -18,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="build.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="build.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="328" column="0" lean-forward="false" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
+            <state relative-caret-position="554">
+              <caret line="346" column="0" lean-forward="false" selection-start-line="346" selection-start-column="0" selection-end-line="346" selection-end-column="0" />
               <folding>
                 <element signature="e#321#381#0" expanded="false" />
                 <element signature="n#patternset#0;n#project#0;n#!!top" expanded="false" />
@@ -70,11 +92,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="plugin.properties" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/plugin.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="FileImporter.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/FileImporter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-188">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+            <state relative-caret-position="216">
+              <caret line="12" column="1" lean-forward="false" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -82,10 +114,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FileImportTest.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FileImportTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/de/opendiabetes/vault/plugin/importer/FileImportTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
+            <state relative-caret-position="216">
               <caret line="12" column="2" lean-forward="false" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -190,6 +222,7 @@
         <option value="$PROJECT_DIR$/log4j.properties" />
         <option value="$PROJECT_DIR$/test/de/opendiabetes/vault/plugin/resources/log4j.properties" />
         <option value="$PROJECT_DIR$/test/de/opendiabetes/vault/plugin/importer/FileImportTest.java" />
+        <option value="$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/plugin.properties" />
         <option value="$PROJECT_DIR$/build.xml" />
       </list>
     </option>
@@ -515,8 +548,8 @@
     <history-entry file="FileImportTest - 2017.11.25 at 14h 18m 14s.xml">
       <configuration name="FileImportTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="FileImportTest_pluginStart - 2017.11.25 at 14h 03m 24s.xml">
-      <configuration name="FileImportTest.pluginStart" configurationId="JUnit" />
+    <history-entry file="FileImportTest - 2017.11.25 at 14h 22m 59s.xml">
+      <configuration name="FileImportTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="FileImportTest_pluginStart - 2017.11.25 at 14h 04m 58s.xml">
       <configuration name="FileImportTest.pluginStart" configurationId="JUnit" />
@@ -550,7 +583,7 @@
       <window_info id="Hibernate Tools" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38691795" sideWeight="0.2886873" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38691795" sideWeight="0.2913554" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -564,8 +597,8 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38691795" sideWeight="0.7113127" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.49786553" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38691795" sideWeight="0.7086446" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.49573106" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.49786553" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.49359658" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21611527" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -616,8 +649,14 @@
           <properties />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/FileImporter.java</url>
+          <line>12</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="6" />
+      <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -629,13 +668,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///usr/lib/jvm/java-8-oracle/jre/lib/rt.jar!/sun/misc/Launcher.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="254" column="0" lean-forward="false" selection-start-line="254" selection-start-column="0" selection-end-line="254" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-oracle/src.zip!/java/lang/ClassLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5274">
@@ -953,14 +985,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Plugin.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/lib/pf4j-2.0.0.jar!/org/pf4j/DefaultPluginStatusProvider.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -1015,30 +1039,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/de/opendiabetes/vault/plugin/importer/resources/log4j.properties" />
-    <entry file="file://$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/FileImporter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-188">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/de/opendiabetes/vault/plugin/importer/FileImportTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="12" column="2" lean-forward="false" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="328" column="0" lean-forward="false" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
+        <state relative-caret-position="554">
+          <caret line="346" column="0" lean-forward="false" selection-start-line="346" selection-start-column="0" selection-end-line="346" selection-end-column="0" />
           <folding>
             <element signature="e#321#381#0" expanded="false" />
             <element signature="n#patternset#0;n#project#0;n#!!top" expanded="false" />
@@ -1081,6 +1085,42 @@
             <element signature="n#target#5;n#project#0;n#!!top" expanded="false" />
             <element signature="n#path#16;n#project#0;n#!!top" expanded="false" />
             <element signature="n#fileset#0;n#path#16;n#project#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plugin.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/plugin.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugins/de/opendiabetes/vault/plugin/importer/FileImporter/FileImporter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="1" lean-forward="false" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/de/opendiabetes/vault/plugin/importer/FileImportTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="2" lean-forward="false" selection-start-line="12" selection-start-column="2" selection-end-line="12" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
