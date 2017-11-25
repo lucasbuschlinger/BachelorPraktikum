@@ -11,18 +11,17 @@ import java.nio.file.Paths;
 public class FileImportTest {
     @Test
     public void pluginLoad() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("manualPlugins"));
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         Assert.assertEquals(1, manager.getPlugins().size());
     }
 
     @Test
     public void pluginStart() throws PluginException {
-        PluginManager manager = new DefaultPluginManager(Paths.get("manualPlugins"));
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.enablePlugin("FileImporter");
         manager.startPlugins();
-        System.out.println(manager.getPlugins().get(0).getPlugin());
         Assert.assertTrue(manager.enablePlugin("FileImporter"));
 
     }
@@ -31,9 +30,8 @@ public class FileImportTest {
     public void callPlugin() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        System.out.println(manager.getExtensions(Importer.class));
-        //System.out.println(manager.getExtensions(FileImporter.class));
-
+        manager.startPlugins();
+        Assert.assertTrue(manager.getExtensions(Importer.class).get(0).importData("path/to/data"));
     }
 
 }
