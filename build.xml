@@ -4,9 +4,8 @@
 
     <property file="build.properties"/>
 
-    <property file="Plugin.properties"/>
-
     <property name="plugin.path" value="export"/>
+
 
     <!-- Uncomment the following property if no tests compilation is needed -->
     <!--
@@ -327,23 +326,36 @@
         </fileset>
     </path>
 
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="lib/ant-contrib-1.0b3.jar"/>
+        </classpath>
+    </taskdef>
 
-    <target name="plugin.prebuild">
+    <target name="plugin" depends="compile.module.opendiabetes">
+        <foreach target="plugin.compile" param="att1">
+            <fileset dir="plugins" casesensitive="yes">
+                <include name="**/plugin.properties"/>
+            </fileset>
+        </foreach>
+
+        <property name="plugin.src.base" value="plugins/de/opendiabetes/vault/plugin"/>
+    </target>
+
+    <target name="plugin.compile">
+        <dirname file="${att1}" property="plugin.src.path"/>
+
+        <property file="${plugin.src.path}/plugin.properties"/>
         <delete dir="PLUGINS"/>
         <mkdir dir="PLUGINS/classes"/>
-        <mkdir dir="PLUGINS/META-INF"/>
         <mkdir dir="PLUGINS/lib"/>
+        <mkdir dir="export"/>
         <copydir src="lib" dest="PLUGINS/lib"/>
-        <copyfile src="plugins/de/opendiabetes/vault/plugin/importer/FileImporter/plugin.properties" dest="PLUGINS/plugin.properties"></copyfile>
-    </target>
-
-    <target name="plugin.compile" depends="plugin.prebuild, compile.module.opendiabetes">
-        <javac srcdir="plugins" destdir="PLUGINS/classes" classpathref="opendiabetes.module.classpath"/>
-    </target>
-
-    <target name="plugin" depends="plugin.compile">
+        <copyfile src="${plugin.src.path}/plugin.properties" dest="PLUGINS/plugin.properties"/>
+        <javac srcdir="${plugin.src.path}" destdir="PLUGINS/classes" classpathref="opendiabetes.module.classpath"/>
         <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip" basedir="PLUGINS"/>
     </target>
+
 
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>

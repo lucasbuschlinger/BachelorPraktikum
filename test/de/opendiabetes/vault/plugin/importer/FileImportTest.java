@@ -13,7 +13,7 @@ public class FileImportTest {
     public void pluginLoad() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        Assert.assertEquals(1, manager.getPlugins().size());
+        Assert.assertTrue(0 != manager.getPlugins().size());
     }
 
     @Test
@@ -31,7 +31,7 @@ public class FileImportTest {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugins();
-        Assert.assertTrue(manager.getExtensions(Importer.class).get(0).importData("path/to/data"));
+        manager.getExtensions(Importer.class).forEach(importer->importer.importData("path/to/data"));
     }
 
 }
