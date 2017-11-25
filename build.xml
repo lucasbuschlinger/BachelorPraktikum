@@ -327,27 +327,17 @@
         </fileset>
     </path>
 
-    <target name="plugin.manifest">
-        <manifest file="META-INF/MANIFEST.MF">
-            <attribute name="Plugin-Id" value="${plugin.id}"/>
-            <attribute name="Plugin-Class" value="${plugin.class}"/>
-            <attribute name="Plugin-Version" value="${plugin.version}"/>
-            <attribute name="Plugin-Provider" value="${plugin.provider}"/>
-            <attribute name="Plugin-Dependencies" value="${plugin.dependencies}"/>
-        </manifest>
-    </target>
 
-    <target name="plugin.prebuild" depends="plugin.manifest">
+    <target name="plugin.prebuild">
         <delete dir="PLUGINS"/>
         <mkdir dir="PLUGINS/classes"/>
         <mkdir dir="PLUGINS/META-INF"/>
-        <!-- copydir src="META-INF" dest="PLUGINS/META-INF"/-->
         <mkdir dir="PLUGINS/lib"/>
         <copydir src="lib" dest="PLUGINS/lib"/>
         <copyfile src="Plugin.properties" dest="PLUGINS/plugin.properties"></copyfile>
     </target>
 
-    <target name="plugin.compile" depends="plugin.prebuild">
+    <target name="plugin.compile" depends="plugin.prebuild, compile.module.opendiabetes">
         <javac srcdir="plugins" destdir="PLUGINS/classes" classpathref="opendiabetes.module.classpath"/>
     </target>
 
