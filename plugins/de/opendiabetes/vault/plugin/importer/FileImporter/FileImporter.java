@@ -1,7 +1,8 @@
-package de.opendiabetes.vault.plugin.importer;
+package de.opendiabetes.vault.plugin.importer.FileImporter;
 
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.importer.Importer;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
