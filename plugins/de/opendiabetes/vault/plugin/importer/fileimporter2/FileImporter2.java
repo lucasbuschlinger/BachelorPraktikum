@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.importer.FileImporter2;
+package de.opendiabetes.vault.plugin.importer.fileimporter2;
 
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
@@ -23,7 +23,7 @@ public class FileImporter2 extends Plugin {
 
         @Override
         public boolean importData(String path) {
-            System.out.println("FileImporter2: importing data from: " + path);
+            System.out.println("fileimporter2: importing data from: " + path);
             return true;
         }
 

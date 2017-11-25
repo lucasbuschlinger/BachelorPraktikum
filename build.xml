@@ -174,7 +174,7 @@
     <property name="module.jdk.bin.opendiabetes" value="${project.jdk.bin}"/>
     <property name="module.jdk.classpath.opendiabetes" value="${project.jdk.classpath}"/>
 
-    <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 7 -target 7 ${compiler.args}"/>
+    <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
 
     <property name="opendiabetes.output.dir" value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
     <property name="opendiabetes.testoutput.dir" value="${module.opendiabetes.basedir}/out/test/OpenDiabetes"/>

@@ -86,5 +86,5 @@ public enum VaultEntryType {
     // Date Mining
     DM_INSULIN_SENSITIVTY,
     // More unspecific input
-    OTHER_ANNOTATION;
+    OTHER_ANNOTATION
 }

@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  */
 public class VaultEntryAnnotation implements Serializable {
 
-    public static enum TYPE {
+    public enum TYPE {
         GLUCOSE_RISE_LAST,
         GLUCOSE_RISE_20_MIN,
         GLUCOSE_BG_METER_SERIAL,
@@ -48,7 +48,7 @@ public class VaultEntryAnnotation implements Serializable {
         //
         ML_PREDICTION_TIME_BUCKET_SIZE,
         //
-        USER_TEXT;
+        USER_TEXT
     }
 
     private final Pattern valuePattern;
@@ -136,10 +136,7 @@ public class VaultEntryAnnotation implements Serializable {
         if (!Objects.equals(this.value, other.value)) {
             return false;
         }
-        if (this.type != other.type) {
-            return false;
-        }
-        return true;
+        return this.type == other.type;
     }
 
 }

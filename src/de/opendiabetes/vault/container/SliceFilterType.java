@@ -48,5 +48,5 @@ public enum SliceFilterType {
     //
     RISE_THRESHOLD,
     //
-    ALCOHOL_CONSUM;
+    ALCOHOL_CONSUM
 }

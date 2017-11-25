@@ -24,5 +24,5 @@ public enum SliceType {
 
     SLICE_TINY,
     SLICE_STANDARD,
-    SLICE_BIG;
+    SLICE_BIG
 }

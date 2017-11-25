@@ -213,10 +213,7 @@ public class VaultEntry implements Serializable {
         if (!Objects.equals(this.value2, other.value2)) {
             return false;
         }
-        if (!Objects.equals(this.annotations, other.annotations)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.annotations, other.annotations);
     }
 
     @Override

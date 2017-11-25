@@ -9,8 +9,8 @@ import org.pf4j.PluginManager;
 import java.nio.file.Paths;
 
 /**
- * Unit test for the FileImporter Plugin
- * @see de.opendiabetes.vault.plugin.importer.FileImporter
+ * Unit test for the fileimporter Plugin
+ * @see de.opendiabetes.vault.plugin.importer.fileimporter
  */
 public class FileImportTest {
 
@@ -45,8 +45,9 @@ public class FileImportTest {
     public void callPlugin() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.startPlugins();
-        manager.getExtensions(Importer.class).forEach(importer->importer.importData("path/to/data"));
+        manager.startPlugin("FileImporter2");
+        Importer importer = manager.getExtensions(Importer.class).get(0);
+        importer.importData("path/to/data");
     }
 
 }

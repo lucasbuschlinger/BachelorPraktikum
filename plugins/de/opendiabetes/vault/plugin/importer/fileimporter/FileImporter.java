@@ -1,48 +1,66 @@
-package de.opendiabetes.vault.plugin.importer.FileImporter;
+/*
+ * Copyright (C) 2017 OpenDiabetes
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package de.opendiabetes.vault.plugin.importer.fileimporter;
 
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.importer.ImportProcessor.ImportProcessor;
 import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.importer.preprocessor.Preprocessor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.logging.Level;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.logging.Level;
 
 /**
- * The FileImporter Plugin
+ * The fileimporter Plugin.
  * @author Lucas Buschlinger
  * @author Magnus Gärtner
  */
 public class FileImporter extends Plugin {
 
     /**
-     * The constructor for the FileImporter Plugin
+     * The constructor for the fileimporter Plugin
      * @param wrapper the plugin wrapper
      */
-    public FileImporter(PluginWrapper wrapper) {
+    public FileImporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
     /**
-     * The actual implementation of the FileImporter plugin
-     * Implements the Importer interface
+     * The actual implementation of the fileimporter plugin.
+     * Implements the Importer interface.
      * @see de.opendiabetes.vault.plugin.importer.Importer
      */
     @Extension
-    public abstract class FileImporterImplementation implements Importer {
+    public static class FileImporterImplementation
+            implements Importer {
 
         /**
-         * The path to the import file
+         * The path to the import file.
          */
-        protected  String importFilePath;
+        private String importFilePath;
 
         /**
-         * The imported data in a list of VaultEntry
+         * The imported data in a list of VaultEntry.
          * @see de.opendiabetes.vault.container.VaultEntry
          */
         protected List<VaultEntry> importedData;
@@ -76,12 +94,12 @@ public class FileImporter extends Plugin {
          */
         @Override
         public boolean importData(String path) {
-            preprocessingIfNeeded(importFilePath);
+            preprocessor.preprocess(importFilePath);
 
             FileInputStream fileInputStream = null;
             try {
                 fileInputStream = new FileInputStream(importFilePath);
-                return processImport(fileInputStream, importFilePath);
+                return importProcessor.processImport(fileInputStream, importFilePath);
             }
             catch (FileNotFoundException exception) {
                 LOG.log(Level.SEVERE, "Error opening a FileInputStream for File " + importFilePath, exception);
@@ -110,48 +128,14 @@ public class FileImporter extends Plugin {
         }
 
         /**
-         * Method to do preprocessing on the imported data, if necessary
-         * @param filePath path to the import file
+         * Preprocessor used to preprocess the data before the actual import
+         * @see Preprocessor
          */
-        protected  abstract void preprocessingIfNeeded(String filePath);
+        protected Preprocessor preprocessor;
 
         /**
-         * Method to process the imported data
-         * @param fileImportStream the import data
-         * @param logFile the logfile
-         * @return true if import data can be processed, false otherwise
+         * actual processing unit that imports data
          */
-        protected abstract boolean processImport(InputStream fileImportStream, String logFile);
+        protected ImportProcessor importProcessor;
     }
 }
-
-/*
-public class FileImporter extends Plugin {
-
-    public FileImporter(PluginWrapper wrapper) {
-        super(wrapper);
-
-    }
-
-    @Extension
-    public static class FileImporterImplementation implements Importer {
-
-
-        @Override
-        public boolean importData(String path) {
-            System.out.println("importing data from: " + path);
-            return true;
-        }
-
-        @Override
-        public List<VaultEntry> getImportedData() {
-            return null;
-        }
-
-        @Override
-        public List<RawEntry> getImportedRawData() {
-            return null;
-        }
-    }
-
-}*/
