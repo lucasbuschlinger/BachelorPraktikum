@@ -22,6 +22,16 @@ public class FileImporter2 extends Plugin {
 
 
         @Override
+        public void setImportFilePath(String importFilePath) {
+
+        }
+
+        @Override
+        public String getImportFilePath() {
+            return null;
+        }
+
+        @Override
         public boolean importData(String path) {
             System.out.println("fileimporter2: importing data from: " + path);
             return true;

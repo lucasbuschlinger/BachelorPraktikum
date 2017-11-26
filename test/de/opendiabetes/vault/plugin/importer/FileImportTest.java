@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
+
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
@@ -50,4 +52,29 @@ public class FileImportTest {
         importer.importData("path/to/data");
     }
 
+    /**
+     * Test for the path setter and getter
+     */
+    @Test
+    public void setGetPath(){
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin("FileImporter");
+        Importer fileImporter = manager.getExtensions(Importer.class).get(0);
+        fileImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", fileImporter.getImportFilePath());
+    }
+
+    /**
+     * Test for invalid path
+     */
+    @Test
+    public void invalidPath(){
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin("FileImporter");
+        Importer fileImporter = manager.getExtensions(Importer.class).get(0);
+        Assert.assertFalse(fileImporter.importData("no/valid/path/here"));
+
+    }
 }
