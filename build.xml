@@ -365,7 +365,7 @@
     <target name="checkstyle">
         <checkstyle config="reports/resources/checkstyle/sun_checks.xml" failonviolation="false">
             <fileset dir="src/" includes="**/*.java"/>
-            <fileset dir="PLUGINS/de"  includes="**/*.java"/>
+            <fileset dir="plugins/de"  includes="**/*.java"/>
             <formatter type="xml" tofile="reports/resources/checkstyle/checkstyle_errors.xml"/>
         </checkstyle>
 
