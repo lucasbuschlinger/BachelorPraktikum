@@ -356,6 +356,19 @@
         <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip" basedir="PLUGINS"/>
     </target>
 
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${basedir}/testlib/checkstyle-8.5-all.jar"/>
+
+    <checkstyle config="reports/res/sun_checks.xml" failonviolation="false">
+        <fileset dir="src/" includes="**/*.java"/>
+        <fileset dir="PLUGINS/de" includes="**/*.java"/>
+        <formatter type="xml" tofile="reports/checkstyle_errors.xml"/>
+    </checkstyle>
+
+    <target name="report.checkstyle">
+        <xslt in="reports/checkstyle_errors.xml"
+              out="reports/html/checkstyle_errors.html"
+              style="reports/res/checkstyle.xsl"/>
+    </target>
 
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>
