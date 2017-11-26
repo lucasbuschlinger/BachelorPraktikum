@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="bp" default="all" xmlns:mx="antlib:org.moxie">
+<project name="bp" default="plugin" xmlns:mx="antlib:org.moxie">
 
 
     <property file="build.properties"/>
@@ -156,12 +156,13 @@
         <pathelement location="${javac2.home}/asm-all.jar"/>
         <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
     </path>
+    <!--
     <target name="register.custom.compilers">
         <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
         <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions"
                  classpathref="javac2.classpath"/>
     </target>
-
+    -->
     <!-- Modules -->
 
 
@@ -257,10 +258,10 @@
             depends="compile.module.opendiabetes.production,compile.module.opendiabetes.tests"
             description="Compile module OpenDiabetes"/>
 
-    <target name="compile.module.opendiabetes.production" depends="register.custom.compilers"
+    <target name="compile.module.opendiabetes.production"
             description="Compile module OpenDiabetes; production classes">
         <mkdir dir="${opendiabetes.output.dir}"/>
-        <javac2 destdir="${opendiabetes.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+        <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
                 memorymaximumsize="${compiler.max.memory}" fork="true"
                 executable="${module.jdk.bin.opendiabetes}/javac">
             <compilerarg line="${compiler.args.opendiabetes}"/>
@@ -268,7 +269,7 @@
             <classpath refid="opendiabetes.module.production.classpath"/>
             <src refid="opendiabetes.module.sourcepath"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
-        </javac2>
+        </javac>
 
         <copy todir="${opendiabetes.output.dir}">
             <fileset dir="${module.opendiabetes.basedir}/src">
@@ -287,10 +288,10 @@
     </target>
 
     <target name="compile.module.opendiabetes.tests"
-            depends="register.custom.compilers,compile.module.opendiabetes.production"
+            depends="compile.module.opendiabetes.production"
             description="compile module OpenDiabetes; test classes" unless="skip.tests">
         <mkdir dir="${opendiabetes.testoutput.dir}"/>
-        <javac2 destdir="${opendiabetes.testoutput.dir}" debug="${compiler.debug}"
+        <javac destdir="${opendiabetes.testoutput.dir}" debug="${compiler.debug}"
                 nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true"
                 executable="${module.jdk.bin.opendiabetes}/javac">
             <compilerarg line="${compiler.args.opendiabetes}"/>
@@ -298,7 +299,7 @@
             <classpath refid="opendiabetes.module.classpath"/>
             <src refid="opendiabetes.module.test.sourcepath"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
-        </javac2>
+        </javac>
 
         <copy todir="${opendiabetes.testoutput.dir}">
             <fileset dir="${module.opendiabetes.basedir}/test">
@@ -346,9 +347,9 @@
         <dirname file="${att1}" property="plugin.src.path"/>
 
         <property file="${plugin.src.path}/plugin.properties"/>
-        <delete dir="PLUGINS"/>
-        <mkdir dir="PLUGINS/classes"/>
-        <mkdir dir="PLUGINS/lib"/>
+        <delete dir="plugins_out"/>
+        <mkdir dir="plugins_out/classes"/>
+        <mkdir dir="plugins_out/lib"/>
         <mkdir dir="export"/>
         <copydir src="lib" dest="PLUGINS/lib"/>
         <copyfile src="${plugin.src.path}/plugin.properties" dest="PLUGINS/plugin.properties"/>
