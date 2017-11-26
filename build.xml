@@ -356,23 +356,35 @@
         <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip" basedir="PLUGINS"/>
     </target>
 
+    <tstamp>
+        <format property="timestamp" pattern="yyyyMMdd-HHmmss"  locale="de,GERMANY" />
+    </tstamp>
+
+    <!-- Working checkstyle task! -->
     <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${basedir}/testlib/checkstyle-8.5-all.jar"/>
-
-
     <target name="checkstyle">
-        <checkstyle config="reports/res/sun_checks.xml" failonviolation="false">
+        <checkstyle config="reports/resources/checkstyle/sun_checks.xml" failonviolation="false">
             <fileset dir="src/" includes="**/*.java"/>
-            <fileset dir="plugins/de"  includes="**/*.java"/>
-            <formatter type="xml" tofile="reports/checkstyle_errors.xml"/>
+            <fileset dir="PLUGINS/de"  includes="**/*.java"/>
+            <formatter type="xml" tofile="reports/resources/checkstyle/checkstyle_errors.xml"/>
         </checkstyle>
 
-        <tstamp>
-            <format property="timestamp" pattern="yyyyMMdd-HHmmss"  locale="en,UK" />
-        </tstamp>
-        <xslt in="reports/checkstyle_errors.xml"
-              out="reports/html/checkstyle_errors${timestamp}.html"
-              style="reports/res/checkstyle.xsl"/>
+        <xslt in="reports/resources/checkstyle/checkstyle_errors.xml"
+              out="reports/checkstyle_errors${timestamp}.html"
+              style="reports/resources/checkstyle/checkstyle.xsl"/>
     </target>
 
+    <!-- Working findbugs task!-->
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${basedir}/testlib/findbugs-ant.jar"/>
+    <property name="findbugs.home" value="reports/resources/findbugs" />
+    <target name="findbugs" ><!--depends="all">-->
+        <findbugs home="${findbugs.home}"
+                  output="html"
+                  outputFile="reports/findbugs_report${timestamp}.html" >
+            <!--<auxClasspath path="${basedir}/lib/Regex.jar" />-->
+            <!--<sourcePath path="${basedir}/src/" />-->
+            <class location="${basedir}/out/production/OpenDiabetes/de" />
+        </findbugs>
+    </target>
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>
