@@ -386,5 +386,38 @@
             <class location="${basedir}/out/production/OpenDiabetes/de" />
         </findbugs>
     </target>
+
+
+    <!-- Working JUnit task!-->
+    <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" classpath="${basedir}/testlib/junit.jar"/>
+    <target name="test"><!--depends="plugin">-->
+        <mkdir dir="reports/resources/junit"/>
+        <junit>
+            <classpath>
+                <pathelement location="out/production/OpenDiabetes"/>
+                <pathelement location="out/test"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>
+
+            <formatter type="xml"/>
+
+            <batchtest todir="reports/resources/junit">
+                <fileset dir="test">
+                    <include name="**/*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <junitreport todir="reports/resources/junit" tofile="aggreageted-junitreport.xml">
+            <fileset dir="reports/resources/junit">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="noframes" todir="reports/tests"/>
+        </junitreport>
+        <move file="reports/tests/junit-noframes.html" tofile="reports/tests/junit-tests-${timestamp}.html"/>
+        <delete dir="reports/resources/junit"/>
+    </target>
+
+
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>
