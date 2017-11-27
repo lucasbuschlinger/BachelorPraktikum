@@ -94,7 +94,10 @@ public class FileImporter extends Plugin {
          */
         @Override
         public boolean importData(String path) {
-            preprocessor.preprocess(importFilePath);
+            setImportFilePath(path);
+            if(null != preprocessor){
+                preprocessor.preprocess(path);
+            }
 
             FileInputStream fileInputStream = null;
             try {
