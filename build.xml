@@ -262,8 +262,8 @@
             description="Compile module OpenDiabetes; production classes">
         <mkdir dir="${opendiabetes.output.dir}"/>
         <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
-                memorymaximumsize="${compiler.max.memory}" fork="true"
-                executable="${module.jdk.bin.opendiabetes}/javac">
+                memorymaximumsize="${compiler.max.memory}" fork="true">
+                <!--executable="${java.home}/lib">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
             <classpath refid="opendiabetes.module.production.classpath"/>
@@ -292,8 +292,8 @@
             description="compile module OpenDiabetes; test classes" unless="skip.tests">
         <mkdir dir="${opendiabetes.testoutput.dir}"/>
         <javac destdir="${opendiabetes.testoutput.dir}" debug="${compiler.debug}"
-                nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true"
-                executable="${module.jdk.bin.opendiabetes}/javac">
+                nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}"><!-- fork="true">-->
+                <!--executable="${module.jdk.bin.opendiabetes}/javac">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
             <classpath refid="opendiabetes.module.classpath"/>
@@ -378,7 +378,7 @@
     <!-- Working findbugs task!-->
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${basedir}/testlib/findbugs-ant.jar"/>
     <property name="findbugs.home" value="reports/resources/findbugs" />
-    <target name="findbugs" ><!--depends="all">-->
+    <target name="findbugs" depends="plugin">
         <findbugs home="${findbugs.home}"
                   output="html"
                   outputFile="reports/findbugs_report${timestamp}.html" >
@@ -391,13 +391,14 @@
 
     <!-- Working JUnit task!-->
     <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" classpath="${basedir}/testlib/junit.jar"/>
-    <target name="test"><!--depends="plugin">-->
+    <target name="test" depends="plugin">
         <mkdir dir="reports/resources/junit"/>
         <junit>
             <classpath>
                 <pathelement location="out/production/OpenDiabetes"/>
                 <pathelement location="out/test"/>
                 <pathelement path="${java.class.path}"/>
+                <pathelement path="testlib/junit.jar"/>
             </classpath>
 
             <formatter type="xml"/>
@@ -419,6 +420,7 @@
         <delete dir="reports/resources/junit"/>
     </target>
 
+    <target name="reports" depends="checkstyle,findbugs,test"/>
 
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>
