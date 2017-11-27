@@ -12,25 +12,25 @@ import java.nio.file.Paths;
 
 /**
  * Unit test for the fileimporter Plugin
- * @see de.opendiabetes.vault.plugin.importer.fileimporter
+ * @see de.opendiabetes.vault.plugin.importer.medtronic
  */
 public class FileImportTest {
 
     /**
      * Test to see whether the plugin can be loaded
      */
-    @Test
+/*    @Test
     public void pluginLoad() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         Assert.assertTrue(0 != manager.getPlugins().size());
     }
-
+*/
     /**
      * Test to see whether the plugin can be started
      * @throws PluginException If the plugin can not be started
      */
-    @Test
+ /*   @Test
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
@@ -39,11 +39,11 @@ public class FileImportTest {
         Assert.assertTrue(manager.enablePlugin("FileImporter"));
 
     }
-
+*/
     /**
      * Test to see whether the plugin can be called and accessed
      */
-    @Test
+  /*  @Test
     public void callPlugin() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
@@ -51,11 +51,11 @@ public class FileImportTest {
         Importer importer = manager.getExtensions(Importer.class).get(0);
         importer.importData("path/to/data");
     }
-
+*/
     /**
      * Test for the path setter and getter
      */
-    @Test
+ /*   @Test
     public void setGetPath(){
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
@@ -64,17 +64,17 @@ public class FileImportTest {
         fileImporter.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", fileImporter.getImportFilePath());
     }
-
+*/
     /**
      * Test for invalid path
      */
-    @Test
+  /*  @Test
     public void invalidPath(){
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("FileImporter");
         Importer fileImporter = manager.getExtensions(Importer.class).get(0);
         Assert.assertFalse(fileImporter.importData("no/valid/path/here"));
-
     }
+    */
 }

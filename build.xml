@@ -369,7 +369,7 @@
         <mkdir dir="export"/>
         <copydir src="lib" dest="plugins_out/lib"/>
         <copyfile src="${plugin.src.path}/plugin.properties" dest="plugins_out/plugin.properties"/>
-        <javac srcdir="${plugin.src.path}" destdir="plugins_out/classes" classpathref="opendiabetes.module.classpath"/>
+        <javac srcdir="${plugin.src.base}" destdir="plugins_out/classes" classpathref="opendiabetes.module.classpath"/>
         <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip" basedir="plugins_out"/>
     </target>
 
