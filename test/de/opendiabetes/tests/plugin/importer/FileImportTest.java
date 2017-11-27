@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.importer;
+package de.opendiabetes.tests.plugin.importer;
 
 
 import org.junit.Assert;

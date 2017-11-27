@@ -17,7 +17,7 @@
 package de.opendiabetes.vault.plugin.importer.validator;
 
 import com.csvreader.CsvReader;
-import de.jhit.opendiabetes.vault.util.TimestampUtils;
+import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.File;
 import java.io.IOException;

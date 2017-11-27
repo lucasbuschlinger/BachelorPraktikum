@@ -15,15 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package de.opendiabetes.vault.container;
-/*
-import de.opendiabetes.vault.importer.validator.MedtronicCsvValidator;
-*/
+
+import de.opendiabetes.vault.plugin.importer.validator.MedtronicCsvValidator;
+;
+
 /**
  *
  * @author mswin
  */
 public class MedtronicAnnotatedVaultEntry extends VaultEntry {
-/*
+
     private final MedtronicCsvValidator.TYPE rawType;
 
     public MedtronicAnnotatedVaultEntry(VaultEntry copy,
@@ -44,6 +45,5 @@ public class MedtronicAnnotatedVaultEntry extends VaultEntry {
     public String toString() {
         return super.toString()+" MedtronicAnnotatedVaultEntry{" + "rawType=" + rawType + '}';
     }
-*/
-    
+
 }

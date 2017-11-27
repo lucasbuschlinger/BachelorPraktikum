@@ -259,7 +259,7 @@
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="src"/>
             <include name="lib"/>
-            <!--include name="plugins"/ -->
+            <include name="plugins"/>
         </dirset>
     </path>
 
@@ -328,7 +328,8 @@
     <target name="clean.module.opendiabetes" description="cleanup module">
         <delete dir="${opendiabetes.output.dir}"/>
         <delete dir="${opendiabetes.testoutput.dir}"/>
-        <delete dir="plugins_out"></delete>
+        <delete dir="plugins_out"/>
+        <delete dir="export"/>
     </target>
 
     <target name="init" description="Build initialization">
@@ -369,7 +370,7 @@
         <mkdir dir="export"/>
         <copydir src="lib" dest="plugins_out/lib"/>
         <copyfile src="${plugin.src.path}/plugin.properties" dest="plugins_out/plugin.properties"/>
-        <javac srcdir="${plugin.src.base}" destdir="plugins_out/classes" classpathref="opendiabetes.module.classpath"/>
+        <javac srcdir="${plugin.src.path}" destdir="plugins_out/classes" classpathref="opendiabetes.module.classpath"/>
         <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip" basedir="plugins_out"/>
     </target>
 

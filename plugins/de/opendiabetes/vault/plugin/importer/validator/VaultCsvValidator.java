@@ -16,7 +16,7 @@
  */
 package de.opendiabetes.vault.plugin.importer.validator;
 
-import de.jhit.opendiabetes.vault.container.csv.VaultCsvEntry;
+import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 
 /**
  *

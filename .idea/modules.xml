@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OpenDiabetes.iml" filepath="$PROJECT_DIR$/OpenDiabetes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Code.iml" filepath="$PROJECT_DIR$/Code.iml" />
     </modules>
   </component>
 </project>

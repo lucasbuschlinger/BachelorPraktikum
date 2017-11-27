@@ -1,7 +1,5 @@
 package de.opendiabetes.vault.plugin.importer;
 
-import de.opendiabetes.vault.plugin.importer.AbstractImporter;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -11,6 +9,10 @@ public abstract class FileImporter extends AbstractImporter {
 
     protected String importFilePath;
 
+    public FileImporter(){
+
+    }
+
     public FileImporter(String importFilePath) {
         this.importFilePath = importFilePath;
     }
@@ -19,12 +21,14 @@ public abstract class FileImporter extends AbstractImporter {
         return importFilePath;
     }
 
-    public void setImportFilePath(String importFilePath) {
+    public void setPath(String importFilePath) {
         this.importFilePath = importFilePath;
     }
 
     public boolean importData() {
-        preprocessingIfNeeded(importFilePath);
+        if(null != importFilePath){
+            preprocessingIfNeeded(importFilePath);
+        }
 
         FileInputStream fis = null;
         try {
@@ -39,7 +43,7 @@ public abstract class FileImporter extends AbstractImporter {
                 try {
                     fis.close();
                 } catch (Exception ex) {
-                    // not interesting :D
+                    LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + importFilePath, ex);
                 }
             }
         }

@@ -1,11 +1,9 @@
 package de.opendiabetes.vault.plugin.importer.medtronic;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.container.*;
-import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.Importer;
-import de.opendiabetes.vault.plugin.importer.validator.CsvValidator;
 import de.opendiabetes.vault.plugin.importer.validator.MedtronicCsvValidator;
+import de.opendiabetes.vault.plugin.importer.CSVImporter;
+import de.opendiabetes.vault.container.*;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -30,6 +28,34 @@ public class MedtronicImporter extends Plugin {
 
     @Extension
     public static class MedtronicImporterImplementation extends CSVImporter {
+       /* public void setPath(String path){
+            System.out.println("Setting path");
+        }
+
+        public boolean importData(){
+            System.out.println("Importing data");
+            return true;
+        }
+
+        @Override
+        public List<VaultEntry> getImportedData() {
+            return null;
+        }
+
+        @Override
+        public List<RawEntry> getImportedRawData() {
+            return null;
+        }
+
+        @Override
+        public boolean loadConfiguration(String path) {
+            return false;
+        }
+
+        @Override
+        public void registerStatusCallback(StatusListener listener) {
+
+        }*/
 
         private static final Pattern AMOUNT_PATTERN = Pattern.compile("(.*\\s)?AMOUNT=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
         private static final Pattern ISIG_PATTERN = Pattern.compile("(.*\\s)?ISIG=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
@@ -51,6 +77,10 @@ public class MedtronicImporter extends Plugin {
 
         public MedtronicImporterImplementation(String importFilePath, char delimiter) {
             super(importFilePath, new MedtronicCsvValidator(), delimiter);
+        }
+
+        public MedtronicImporterImplementation() {
+
         }
 
         @Override

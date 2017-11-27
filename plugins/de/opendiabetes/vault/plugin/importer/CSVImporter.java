@@ -1,9 +1,9 @@
 package de.opendiabetes.vault.plugin.importer;
 
 import com.csvreader.CsvReader;
+import de.opendiabetes.vault.plugin.importer.validator.CsvValidator;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.importer.validator.CsvValidator;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -14,6 +14,10 @@ import java.util.logging.Level;
 public abstract class CSVImporter extends FileImporter {
     protected final CsvValidator validator;
     protected char delimiter;
+
+    public CSVImporter(){
+        this.validator = null;
+    }
 
     public CSVImporter(String importFilePath, CsvValidator validator, char delimiter) {
         super(importFilePath);
