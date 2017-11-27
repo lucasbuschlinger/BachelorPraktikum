@@ -17,7 +17,7 @@
 package de.opendiabetes.vault.container;
 
 /**
- *
+ * This enum defines different vault entry types
  * @author mswin
  */
 public enum VaultEntryType {

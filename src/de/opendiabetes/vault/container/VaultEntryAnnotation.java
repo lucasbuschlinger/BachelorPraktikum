@@ -21,11 +21,14 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
- *
+ * This class models annotations of vault entries
  * @author juehv
  */
 public class VaultEntryAnnotation implements Serializable {
 
+	/**
+	 * This enum defines different types of vault entry annotations
+	 */
     public enum TYPE {
         GLUCOSE_RISE_LAST,
         GLUCOSE_RISE_20_MIN,
@@ -51,34 +54,68 @@ public class VaultEntryAnnotation implements Serializable {
         USER_TEXT
     }
 
+    /**
+     * The pattern of the VaultEntryAnnotation's value
+     */
     private final Pattern valuePattern;
 
+    /**
+     * The type of the VaultEntryAnnotation
+     */
     private TYPE type;
 
+    /**
+     * The value of the VaultEntryAnnotation
+     */
     private String value = "";
 
+    /**
+     * The no-argument constructor of VaultEntryAnnotation, setting a default annotation type
+     */
     public VaultEntryAnnotation() {
         this("", TYPE.EXERCISE_AUTOMATIC_OTHER);
     }
 
+    /**
+     * A constructor of VaultEntryAnnotation, setting the annotation type
+     * @param type The parameter that type will be set to
+     */
     public VaultEntryAnnotation(TYPE type) {
         this("", type);
     }
 
+    /**
+     * A constructor of VaultEntryAnnotation, setting the annotation type and value
+     * @param value The parameter that value will be set to
+     * @param type The parameter that type will be set to
+     */
     public VaultEntryAnnotation(String value, TYPE type) {
         this.value = value;
         this.type = type;
         valuePattern = Pattern.compile(".*" + type.toString() + "(=([\\w\\.]+))?.");
     }
 
+    /**
+     * Getter for type
+     * @return The type of the VaultEntryAnnotation
+     */
     public TYPE getType() {
         return type;
     }
 
+    /**
+     * Getter for value
+     * @return The value of the VaultEntryAnnotation
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Sets the VaultEntryAnnotation's value 
+     * @param value The parameter that value will be set to
+     * @return The same VaultEntryAnnotation with the modified value
+     */
     public VaultEntryAnnotation setValue(String value) {
         this.value = value;
         return this;
@@ -106,6 +143,8 @@ public class VaultEntryAnnotation implements Serializable {
 //        }
 //        return returnValue;
 //    }
+    
+    // TODO JavaDoc for methods below ?
     @Override
     public String toString() {
         return type.toString();

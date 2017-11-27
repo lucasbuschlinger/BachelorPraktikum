@@ -17,9 +17,11 @@
 package de.opendiabetes.vault.container;
 
 /**
- *
+ * This enum defines Medtronic alerts
  * @author juehv
  */
+
+// fix typo?
 public enum MedtronicAltertCodes {
     UNKNOWN_ALERT(0),
     NO_DELIVERY(4),
@@ -50,16 +52,32 @@ public enum MedtronicAltertCodes {
     APPROACHING_HIGH(817),
     REMINDER_ON_SENSOR_CALIBRATION(869);
 
+	/**
+	 * The numeric code for the alert
+	 */
     private final int code;
 
+    /**
+     * Sets the numeric code
+     * @param code The value that code will be set to
+     */
     MedtronicAltertCodes(int code) {
         this.code = code;
     }
 
+    /**
+     * Getter for code
+     * @return The numeric code of the alert
+     */
     public int getCode() {
         return code;
     }
 
+    /**
+     * Finds the correct alert
+     * @param code Code that specifies which alert to return
+     * @return Alert that corresponds to code (or UNKNOWN_ALERT)
+     */
     public static MedtronicAltertCodes fromCode(int code) {
         for (MedtronicAltertCodes codeObj : MedtronicAltertCodes.values()) {
             if (codeObj.getCode() == code) {

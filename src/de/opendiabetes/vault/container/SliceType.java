@@ -17,7 +17,7 @@
 package de.opendiabetes.vault.container;
 
 /**
- *
+ * This enum lists different slice types
  * @author juehv
  */
 public enum SliceType {

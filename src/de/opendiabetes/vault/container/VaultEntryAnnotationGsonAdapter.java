@@ -31,6 +31,7 @@ import java.lang.reflect.Type;
  */
 public class VaultEntryAnnotationGsonAdapter implements JsonSerializer<VaultEntryAnnotation>, JsonDeserializer<VaultEntryAnnotation> {
 
+	// TODO JavaDoc for methods below?
     @Override
     public JsonElement serialize(VaultEntryAnnotation t, Type type, JsonSerializationContext jsc) {
         JsonObject obj = new JsonObject();

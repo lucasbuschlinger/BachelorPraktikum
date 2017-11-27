@@ -38,45 +38,86 @@ public class SliceEntry {
     public static final String TYPE_FIELD_NAME = "type";
     public static final String SLICE_FILTER_FIELD_NAME = "sliceFilterType";
 
+    /**
+     * The id of the SliceEntry
+     */
     @DatabaseField(generatedId = true)
     private long id;
 
+    /**
+     * The timestamp of the SliceEntry
+     */
     @DatabaseField(columnName = START_TIMESTAMP_FIELD_NAME, canBeNull = false)
     private Date timestamp;
 
+    /**
+     * The duration of the SliceEntry
+     */
     @DatabaseField(columnName = DURATION_FIELD_NAME, canBeNull = false)
     private long duration;
 
 //    @DatabaseField(columnName = TYPE_FIELD_NAME, canBeNull = false)
 //    private SliceType type;
+    
+    /**
+     * An ArrayList of SliceFilterType
+     */
     @DatabaseField(dataType = DataType.SERIALIZABLE)
     private ArrayList<SliceFilterType> filterTypes = new ArrayList<>();
 
+    /**
+     * The constructor for SliceEntry, setting the timestamp and the duration
+     * @param timestamp The value that timestamp will be set to
+     * @param duration The value that duration will be set to
+     */
     public SliceEntry(Date timestamp, long duration) {
         this.timestamp = timestamp;
         this.duration = duration;
 //        this.type = type;
     }
 
+    /**
+     * Empty constructor for SliceEntry
+     */
     public SliceEntry() {
     }
 
+    /**
+     * Getter for id
+     * @return The id of the SliceEntry
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Getter for timestamp
+     * @return The timestamp of the SliceEntry
+     */
     public Date getTimestamp() {
         return timestamp;
     }
 
+    /**
+     * Setter for timestamp
+     * @param timestamp The value that timestamp will be set to
+     */
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
     }
 
+    /**
+     * Getter for duration
+     * @return the duration of the SliceEntry
+     */
     public long getDuration() {
         return duration;
     }
 
+    /**
+     * Setter for duration
+     * @param duration The value that duration will be set to
+     */
     public void setDuration(long duration) {
         this.duration = duration;
     }
@@ -88,14 +129,27 @@ public class SliceEntry {
 //    public void setType(SliceType type) {
 //        this.type = type;
 //    }
+    
+    /**
+     * Getter for filterType
+     * @return The SliceEntry's List of SliceFilterType
+     */
     public List<SliceFilterType> getFilterTypes() {
         return filterTypes;
     }
 
+    /**
+     * Setter for filterType
+     * @param filterTypes The value that filterTypes will be set to
+     */
     public void setFilterType(ArrayList<SliceFilterType> filterTypes) {
         this.filterTypes = filterTypes;
     }
 
+    /**
+     * Adds a new SliceFilterType to filterTypes
+     * @param filterType The SliceFilterType that will be added to the ArrayList of SliceFilterType
+     */
     public void addFilterType(SliceFilterType filterType) {
         this.filterTypes.add(filterType);
     }

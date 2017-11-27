@@ -32,6 +32,7 @@ import java.util.Date;
  */
 public class VaultEntryGsonAdapter implements JsonSerializer<VaultEntry>, JsonDeserializer<VaultEntry> {
 
+	// TODO JavaDoc for methods below?
     @Override
     public JsonElement serialize(VaultEntry t, Type type, JsonSerializationContext jsc) {
         JsonObject obj = new JsonObject();
