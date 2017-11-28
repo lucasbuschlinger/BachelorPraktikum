@@ -12,7 +12,7 @@ commit_website_files() {
 }
 
 upload_files() {
-  git remote add BP https://${test}@github.com:lucasbuschlinger/BachelorPraktikum.git > /dev/null 2>&1
+  git remote add BP https://${PUSH_BACK}@github.com:lucasbuschlinger/BachelorPraktikum.git
   git push --quiet --set-upstream BP feature/tool
 }
 
