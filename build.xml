@@ -422,7 +422,6 @@
     <target name="test" depends="plugin, compile.module.opendiabetes.tests">
         <mkdir dir="reports/resources/junit"/>
         <property name="junit.path" refid="junit.class.path"/>
-        <echo message="JUnit ClassPath is: ${junit.path}"/>
         <junit>
             <classpath refid="junit.class.path"/>
             <formatter type="xml"/>
