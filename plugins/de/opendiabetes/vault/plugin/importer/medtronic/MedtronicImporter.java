@@ -28,34 +28,6 @@ public class MedtronicImporter extends Plugin {
 
     @Extension
     public static class MedtronicImporterImplementation extends CSVImporter {
-       /* public void setPath(String path){
-            System.out.println("Setting path");
-        }
-
-        public boolean importData(){
-            System.out.println("Importing data");
-            return true;
-        }
-
-        @Override
-        public List<VaultEntry> getImportedData() {
-            return null;
-        }
-
-        @Override
-        public List<RawEntry> getImportedRawData() {
-            return null;
-        }
-
-        @Override
-        public boolean loadConfiguration(String path) {
-            return false;
-        }
-
-        @Override
-        public void registerStatusCallback(StatusListener listener) {
-
-        }*/
 
         private static final Pattern AMOUNT_PATTERN = Pattern.compile("(.*\\s)?AMOUNT=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
         private static final Pattern ISIG_PATTERN = Pattern.compile("(.*\\s)?ISIG=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);

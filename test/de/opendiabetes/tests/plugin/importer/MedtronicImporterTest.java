@@ -1,6 +1,7 @@
 package de.opendiabetes.tests.plugin.importer;
 
 import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
@@ -47,35 +48,36 @@ public class MedtronicImporterTest {
         manager.loadPlugins();
         manager.enablePlugin("MedtronicImporter");
         manager.startPlugin("MedtronicImporter");
-        Importer importer = manager.getExtensions(Importer.class).get(0);
-        importer.setPath("path/to/data");
-        Assert.assertFalse(importer.importData());
+        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
+        medtronicImporter.setImportFilePath("path/to/data");
+        Assert.assertFalse(medtronicImporter.importData());
     }
 
     /**
      * Test for the path setter and getter
      */
- /*   @Test
+    @Test
     public void setGetPath(){
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("MedtronicImporter");
-        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
-        MedtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
+        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
+        medtronicImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", medtronicImporter.getImportFilePath());
     }
-*/
+
     /**
      * Test for invalid path
-     */
-  /*  @Test
+     *
+    @Test
     public void invalidPath(){
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("MedtronicImporter");
-        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
-        Assert.assertFalse(MedtronicImporter.importData("no/valid/path/here"));
-    }
-    */
+        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
+        medtronicImporter.setImportFilePath("not/a/valid/path");
+        Assert.assertFalse(medtronicImporter.importData());
+    }*/
+
 
 }

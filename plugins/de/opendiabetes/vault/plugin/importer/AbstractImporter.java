@@ -20,12 +20,10 @@ public abstract class AbstractImporter implements Importer{
     public AbstractImporter() {
     }
 
-    public abstract boolean importData();
-
-    @Override
-    public void setPath(String path) {
+    public abstract boolean importData();/*//@Override
+    public void setImportFilePath(String path) {
         this.path = Paths.get(path);
-    }
+    }*/
 
     public List<VaultEntry> getImportedData() {
         return importedData;

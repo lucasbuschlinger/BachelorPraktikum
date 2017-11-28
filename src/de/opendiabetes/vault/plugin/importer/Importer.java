@@ -21,7 +21,9 @@ public interface Importer extends ExtensionPoint{
      */
     Logger LOG = Logger.getLogger(Importer.class.getName());
 
-    void setPath(String path);
+    void setImportFilePath(String path);
+
+    String getImportFilePath();
 
     /**
      * Imports the data from the file

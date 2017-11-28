@@ -21,7 +21,7 @@ public abstract class FileImporter extends AbstractImporter {
         return importFilePath;
     }
 
-    public void setPath(String importFilePath) {
+    public void setImportFilePath(String importFilePath) {
         this.importFilePath = importFilePath;
     }
 

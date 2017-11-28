@@ -107,7 +107,7 @@
     </path>
 
     <path id="library.junit.classpath">
-        <pathelement location="${basedir}/testlib/junit.jar"/>
+        <pathelement location="${basedir}/testlib/junit-4.12.jar"/>
     </path>
 
     <path id="library.ant-junit.classpath">
@@ -186,7 +186,7 @@
     <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
 
     <property name="opendiabetes.output.dir" value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
-    <property name="opendiabetes.testoutput.dir" value="${module.opendiabetes.basedir}/out/test/OpenDiabetes"/>
+    <property name="opendiabetes.testoutput.dir" value="${module.opendiabetes.basedir}/out/test"/>
 
     <path id="opendiabetes.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
@@ -405,19 +405,23 @@
         </findbugs>
     </target>
 
+    <!-- Classpath for JUnit runner, links JARs and class files-->
+    <path id="junit.class.path">
+        <fileset dir="lib" includes="*.jar"/>
+        <fileset dir="testlib" includes="*.jar"/>
+        <pathelement path="out/production/OpenDiabetes"/>
+        <pathelement path="out/test"/>
+    </path>
+
 
     <!-- Working JUnit task!-->
     <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" classpath="${basedir}/testlib/junit.jar"/>
-    <target name="test" depends="plugin">
+    <target name="test" depends="clean, plugin, compile.module.opendiabetes.tests">
         <mkdir dir="reports/resources/junit"/>
+        <property name="junit.path" refid="junit.class.path"/>
+        <echo message="JUnit ClassPath is: ${junit.path}"/>
         <junit>
-            <classpath>
-                <pathelement location="out/production/OpenDiabetes"/>
-                <pathelement location="out/test"/>
-                <pathelement path="${java.class.path}"/>
-                <pathelement path="testlib/junit.jar"/>
-            </classpath>
-
+            <classpath refid="junit.class.path"/>
             <formatter type="xml"/>
 
             <batchtest todir="reports/resources/junit">

@@ -16,6 +16,11 @@ import java.nio.file.Paths;
  */
 public class FileImportTest {
 
+    @Test
+    public void stupidTest(){
+        Assert.assertTrue(true);
+    }
+
     /**
      * Test to see whether the plugin can be loaded
      */
