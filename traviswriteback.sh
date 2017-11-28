@@ -12,8 +12,8 @@ commit_website_files() {
 }
 
 upload_files() {
-  git remote add origin-pages https://${token}@github.com:lucasbuschlinger/BachelorPraktikum.git > /dev/null 2>&1
-  git push --quiet -u origin/feature tool
+  git remote add BP https://${token}@github.com:lucasbuschlinger/BachelorPraktikum.git > /dev/null 2>&1
+  git push --quiet --set-upstream BP feature/tool
 }
 
 setup_git
