@@ -12,7 +12,7 @@ commit_website_files() {
 }
 
 upload_files() {
-  git remote add origin-pages https://${PUSH_BACK}@github.com:lucasbuschlinger/BachelorPraktikum.git > /dev/null 2>&1
+  git remote add origin-pages https://${token}@github.com:lucasbuschlinger/BachelorPraktikum.git > /dev/null 2>&1
   git push --quiet -u origin/feature tool
 }
 
