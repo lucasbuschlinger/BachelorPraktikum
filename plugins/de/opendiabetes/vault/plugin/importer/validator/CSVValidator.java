@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 Jens Heuschkel
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,15 +24,15 @@ import java.util.logging.Logger;
 /**
  * @author mswin
  */
-public abstract class CsvValidator {
+public abstract class CSVValidator {
 
-    protected static final Logger LOG = Logger.getLogger(CsvValidator.class.getName());
+    protected static final Logger LOG = Logger.getLogger(CSVValidator.class.getName());
     private final String[] HEADER_DE;
 
     ;
     private final String[] HEADER_EN;
     protected Language languageSelection;
-    protected CsvValidator(String[] HEADER_DE, String[] HEADER_EN) {
+    protected CSVValidator(String[] HEADER_DE, String[] HEADER_EN) {
         this.HEADER_DE = HEADER_DE;
         this.HEADER_EN = HEADER_EN;
     }

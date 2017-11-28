@@ -27,7 +27,7 @@ import java.util.Date;
 /**
  * @author mswin
  */
-public class GoogleFitCsvValidator extends CsvValidator {
+public class GoogleFitCSVValidator extends CSVValidator {
 
     public static final String HEADER_START_TIME_DE = "Beginn";
     public static final String HEADER_END_TIME_DE = "Ende";
@@ -55,7 +55,7 @@ public class GoogleFitCsvValidator extends CsvValidator {
             HEADER_MAX_SPEED_VALUE_DE
     };
 
-    public GoogleFitCsvValidator() {
+    public GoogleFitCSVValidator() {
         super(HEADER_DE, HEADER_EN);
     }
 

@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 /**
  * @author juehv
  */
-public class MedtronicCsvValidator extends CsvValidator {
+public class MedtronicCSVValidator extends CSVValidator {
 
     public static final String CARELINK_HEADER_DE_DATE = "Datum";
     public static final String CARELINK_HEADER_DE_TIME = "Zeit";
@@ -43,7 +43,7 @@ public class MedtronicCsvValidator extends CsvValidator {
             CARELINK_HEADER_DE_VALUE
     };
 
-    public MedtronicCsvValidator() {
+    public MedtronicCSVValidator() {
         //TODO add english header
         super(CARELINK_HEADER_DE, CARELINK_HEADER_DE);
     }

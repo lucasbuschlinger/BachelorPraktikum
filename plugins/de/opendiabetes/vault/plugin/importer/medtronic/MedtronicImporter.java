@@ -1,9 +1,25 @@
+/**
+ * Copyright (C) 2017 OpenDiabetes
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.opendiabetes.vault.plugin.importer.medtronic;
 
 import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.*;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.validator.MedtronicCsvValidator;
+import de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -20,15 +36,28 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Wrapper class for the MedtronicImporter plugin.
+ */
 public class MedtronicImporter extends Plugin {
 
-    public MedtronicImporter(PluginWrapper wrapper) {
+    /**
+     * Constructor for the PluginManager.
+     * @param wrapper The PluginWrapper.
+     */
+    public MedtronicImporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
+    /**
+     * Actual implementation of the Medtronic importer plugin.
+     */
     @Extension
     public static class MedtronicImporterImplementation extends CSVImporter {
 
+        /**
+         * Pattern to indicate amount of TODO.
+         */
         private static final Pattern AMOUNT_PATTERN = Pattern.compile("(.*\\s)?AMOUNT=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
         private static final Pattern ISIG_PATTERN = Pattern.compile("(.*\\s)?ISIG=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
         private static final Pattern RATE_PATTERN = Pattern.compile("(.*\\s)?RATE=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
@@ -43,20 +72,42 @@ public class MedtronicImporter extends Plugin {
         private static final Pattern CALIBRATION_BG_PATTERN = Pattern.compile("(.*\\s)?LAST_CAL_BG=(\\w*).*", Pattern.CASE_INSENSITIVE);
         private static final Pattern PREDICTION_PATTERN = Pattern.compile("(.*\\s)?PREDICTED_SENSOR_GLUCOSE_AMOUNT=(\\w*).*", Pattern.CASE_INSENSITIVE);
 
-        public MedtronicImporterImplementation(String importFilePath) {
+        /**
+         * Constructor.
+         * TODO: Deprecated?
+         * @param importFilePath Path to the import file.
+         */
+        public MedtronicImporterImplementation(final String importFilePath) {
             this(importFilePath, ',');
         }
 
-        public MedtronicImporterImplementation(String importFilePath, char delimiter) {
-            super(importFilePath, new MedtronicCsvValidator(), delimiter);
+        /**
+         * Constructor.
+         * TODO: deprecated?
+         * @param importFilePath Path to the import file.
+         * @param delimiter Delimiter used in the import file.
+         */
+        public MedtronicImporterImplementation(final String importFilePath, final char delimiter) {
+            super(importFilePath, new MedtronicCSVValidator(), delimiter);
         }
 
-        public MedtronicImporterImplementation() {
+        /**
+         * Default constructor used by PluginManagers.
+         */
+        public MedtronicImporterImplementation() { }
 
-        }
-
-        private static VaultEntry extractDoubleEntry(Date timestamp, VaultEntryType type,
-                                                     String rawValues, Pattern pattern, String[] fullEntry) {
+        /**
+         * Method to extract double entries from the import file.
+         * @param timestamp The timestamp when the entry was generated.
+         * @param type The of the entry.
+         * @param rawValues Raw values of the entry.
+         * @param pattern The pattern of the entry.
+         * @param fullEntry The full entry.
+         * @return VaultEntry holding all information of the input entry.
+         */
+        private static VaultEntry extractDoubleEntry(final Date timestamp, final VaultEntryType type,
+                                                     final String rawValues, final Pattern pattern,
+                                                     final String[] fullEntry) {
             if (rawValues != null && !rawValues.isEmpty()) {
                 Matcher m = pattern.matcher(rawValues);
                 if (m.matches()) {
@@ -75,8 +126,16 @@ public class MedtronicImporter extends Plugin {
             return null;
         }
 
-        public static VaultEntry extractSecondValue(VaultEntry entry,
-                                                    String rawValues, Pattern pattern, String[] fullEntry) {
+        /**
+         * Method to extract only the second entry from a VaultEntry.
+         * @param entry The VaultEntry to extract from-
+         * @param rawValues The raw values of the entry.
+         * @param pattern The pattern of the entry
+         * @param fullEntry The full entry.
+         * @return VaultEntry holding only the second entry.
+         */
+        public static VaultEntry extractSecondValue(VaultEntry entry, final String rawValues,
+                                                    final Pattern pattern, final String[] fullEntry) {
             if (rawValues != null && !rawValues.isEmpty() && entry != null) {
                 Matcher m = pattern.matcher(rawValues);
                 if (m.matches()) {
@@ -94,8 +153,16 @@ public class MedtronicImporter extends Plugin {
             return null;
         }
 
+        /**
+         * Method to annotated basal entries.
+         * @param oldEntry The old, to be annotated VaultEntry.
+         * @param rawValues The raw values of the entry.
+         * @param rawType The raw type of the entry.
+         * @param fullEntry The full entry.
+         * @return The annotated entry.
+         */
         private static MedtronicAnnotatedVaultEntry annotateBasalEntry(
-                VaultEntry oldEntry, String rawValues, MedtronicCsvValidator.TYPE rawType,
+                VaultEntry oldEntry, String rawValues, MedtronicCSVValidator.TYPE rawType,
                 String[] fullEntry) {
             if (rawValues != null && !rawValues.isEmpty() && oldEntry != null) {
                 Matcher m = DURATION_PATTERN.matcher(rawValues);
@@ -115,11 +182,20 @@ public class MedtronicImporter extends Plugin {
             return null;
         }
 
+        /**
+         * Method to load configuration file for the MedtronicImporter plugin.
+         * @param path Path to the configuration file.
+         * @return True when configuration can be loaded, false otherwise.
+         */
         @Override
         public boolean loadConfiguration(String path) {
             return false;
         }
 
+        /**
+         * Preprocessing for medtronic data.
+         * @param filePath Path to the import file.
+         */
         @Override
         protected void preprocessingIfNeeded(String filePath) {
             // test for delimiter
@@ -153,12 +229,18 @@ public class MedtronicImporter extends Plugin {
             }
         }
 
+        /**
+         * Parser for medtronic CSV Data
+         * @param creader The CSV reader.
+         * @return List of VaultEntry holding the parsed data.
+         * @throws Exception If medtronic CSV file can not be parsed.
+         */
         @Override
         protected List<VaultEntry> parseEntry(CsvReader creader) throws Exception {
             List<VaultEntry> retVal = new ArrayList<>();
-            MedtronicCsvValidator parseValidator = (MedtronicCsvValidator) validator;
+            MedtronicCSVValidator parseValidator = (MedtronicCSVValidator) validator;
 
-            MedtronicCsvValidator.TYPE type = parseValidator.getCarelinkType(creader);
+            MedtronicCSVValidator.TYPE type = parseValidator.getCarelinkType(creader);
             if (type == null) {
                 LOG.log(Level.FINER, "Ignore Type: {0}",
                         parseValidator.getCarelinkTypeString(creader));

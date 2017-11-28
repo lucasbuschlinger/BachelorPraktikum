@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Jens Heuschkel
+ * Copyright (C) 2017 juehv
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,25 +16,16 @@
  */
 package de.opendiabetes.vault.plugin.importer.validator;
 
+import de.opendiabetes.vault.container.csv.VaultCsvEntry;
+
 /**
  * @author juehv
  */
-public class MySugrCsvValidator extends CsvValidator {
+public class VaultCSVValidator extends CSVValidator {
 
-
-    public static final String[] HEADER_DE = {
-            // put header fields here
-    };
-
-    public static final String[] HEADER_EN = {
-            // put header fields here
-    };
-
-    public MySugrCsvValidator() {
-        super(HEADER_DE, HEADER_EN);
+    public VaultCSVValidator() {
+        super(new VaultCsvEntry().getCsvHeaderRecord(),
+                new VaultCsvEntry().getCsvHeaderRecord());
     }
-
-
-    // add functions for field access here
 
 }

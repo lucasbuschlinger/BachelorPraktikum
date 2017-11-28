@@ -16,17 +16,17 @@
  */
 package de.opendiabetes.vault.container;
 
-import de.opendiabetes.vault.plugin.importer.validator.MedtronicCsvValidator;
+import de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator;
 
 /**
  * @author mswin
  */
 public class MedtronicAnnotatedVaultEntry extends VaultEntry {
 
-    private final MedtronicCsvValidator.TYPE rawType;
+    private final MedtronicCSVValidator.TYPE rawType;
 
     public MedtronicAnnotatedVaultEntry(VaultEntry copy,
-                                        MedtronicCsvValidator.TYPE rawType) {
+                                        MedtronicCSVValidator.TYPE rawType) {
         super(copy);
         this.rawType = rawType;
     }
@@ -35,7 +35,7 @@ public class MedtronicAnnotatedVaultEntry extends VaultEntry {
         return super.getValue2();
     }
 
-    public MedtronicCsvValidator.TYPE getRawType() {
+    public MedtronicCSVValidator.TYPE getRawType() {
         return rawType;
     }
 

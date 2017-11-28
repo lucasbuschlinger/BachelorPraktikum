@@ -26,7 +26,7 @@ import java.util.Date;
 /**
  * @author juehv
  */
-public class SonySWR12Validator extends CsvValidator {
+public class SonySWR12Validator extends CSVValidator {
 
     public static final String HEADER_TYPE = "activity_type";
     public static final String HEADER_VALUE = "activity_data";
