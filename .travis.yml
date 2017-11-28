@@ -1,7 +1,7 @@
 language: java
 script:
-  - ant reports
-  - sh traviswriteback.sh
+- ant reports
+- sh traviswriteback.sh
 env:
   global:
-    - secure: token=PUSH_BACK
+    secure: SnmYTr3S+IeUOIuLj8i5Lmq9a+evoUMphyAmLbWt2DFXYT0U7q0huBic7+a5PMjq6GwvJUll80AjTawtbPWBDUukYkULggxutG2d+lbuG/LsUPzRuH7E6lI37gYq3VTOZbeH1wUQQnETd76VOj1eDpi7Nl+CCKRz7HtJk4zAEaO7BCWhy1Pz8dZBKjuCKnx9RDUaV5uxOk1VX2biWuKeToVBWRJtN47yB5xJnIPJRs4MXRj2jgj1Ct3V4XkvyGso/auJ3H/qDdIzh6znHSkcWKB2YBZb2Gyb8y20oNB8vGdtymDJlHZkBgm+nkHMr0V8B3eJws2KWBdjEqRYAOovxp0LiqqNluVQSTiqlcYl48Ab1WHlvikXgcUeYBz4k+SxjreFIG1w7pKOXu+nZhHF9Gdos6Q1o47t6zQ9uo5vILExyGHLx/w8javJWfl7UJJMEj8OTXAzVKqql4PPzgNcXDE+FOeIhhbnPrQUgfE37fxtImFRivTEN5QguqUMkQ56p34cT6TzixVqJCAl9hMDCQVXf4jS5+plcCKOpmHa45rEk13vo4QK2g+1+zmELU7hV2tz4v5XTNpJWIGtqLLqIpLLTiEZk4tH3VmTHtmOZ3h42/yWRK88UuJHwFRdhN9DafmBCsnjzJXww7cH6kZj3477dWcLpEEM4FgL3xgp4MM=

@@ -6,13 +6,13 @@ setup_git() {
 }
 
 commit_website_files() {
-  git checkout -b tool
+  git checkout -b feature/tool
   git add . *.html
   git commit --message "Added reports from Travis build: $TRAVIS_BUILD_NUMBER"
 }
 
 upload_files() {
-  git remote add BP https://${token}@github.com:lucasbuschlinger/BachelorPraktikum.git > /dev/null 2>&1
+  git remote add BP https://${TOKEN}@github.com:lucasbuschlinger/BachelorPraktikum.git > /dev/null 2>&1
   git push --quiet --set-upstream BP feature/tool
 }
 
