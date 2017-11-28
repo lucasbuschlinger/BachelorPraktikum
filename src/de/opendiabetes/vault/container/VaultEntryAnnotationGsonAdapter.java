@@ -16,22 +16,16 @@
  */
 package de.opendiabetes.vault.container;
 
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
+
 import java.lang.reflect.Type;
 
 /**
- *
  * @author juehv
  */
 public class VaultEntryAnnotationGsonAdapter implements JsonSerializer<VaultEntryAnnotation>, JsonDeserializer<VaultEntryAnnotation> {
 
-	// TODO JavaDoc for methods below?
+    // TODO JavaDoc for methods below?
     @Override
     public JsonElement serialize(VaultEntryAnnotation t, Type type, JsonSerializationContext jsc) {
         JsonObject obj = new JsonObject();

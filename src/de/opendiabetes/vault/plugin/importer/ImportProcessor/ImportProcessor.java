@@ -10,13 +10,14 @@ import java.io.FileInputStream;
  * ImportProcessor is a module that is normally used to process data during import
  * @see FileImporter usage example
  */
-public interface ImportProcessor extends ExtensionPoint{
+public interface ImportProcessor extends ExtensionPoint {
 
 
     /**
      * Method to process the imported data
+     *
      * @param fileImportStream the import data
-     * @param logFile the logfile
+     * @param logFile          the logfile
      * @return true if import data can be processed, false otherwise
      */
     boolean processImport(FileInputStream fileImportStream, String logFile);

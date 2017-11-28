@@ -18,12 +18,12 @@ package de.opendiabetes.vault.container.csv;
 
 import de.opendiabetes.vault.container.SliceEntry;
 import de.opendiabetes.vault.container.SliceFilterType;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- *
  * @author juehv
  */
 public class SliceCsVEntry extends CsvEntry {
@@ -70,10 +70,10 @@ public class SliceCsVEntry extends CsvEntry {
     @Override
     public String[] getCsvHeaderRecord() {
         return new String[]{
-            "date",
-            "time",
-            "duration",
-            "filter"
+                "date",
+                "time",
+                "duration",
+                "filter"
         };
     }
 

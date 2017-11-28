@@ -23,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author juehv
  */
 public abstract class CsvEntry implements ExportEntry {

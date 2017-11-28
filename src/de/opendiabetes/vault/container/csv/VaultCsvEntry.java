@@ -17,6 +17,7 @@
 package de.opendiabetes.vault.container.csv;
 
 import de.opendiabetes.vault.container.VaultEntry;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +25,6 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- *
  * @author mswin
  */
 public class VaultCsvEntry extends CsvEntry {
@@ -292,12 +292,12 @@ public class VaultCsvEntry extends CsvEntry {
         return mlAnnotation;
     }
 
-    public void addMlAnnotation(String mlAnnotation) {
-        this.mlAnnotation.add(mlAnnotation);
-    }
-
     public void setMlAnnotation(List<String> mlAnnotation) {
         this.mlAnnotation = mlAnnotation;
+    }
+
+    public void addMlAnnotation(String mlAnnotation) {
+        this.mlAnnotation.add(mlAnnotation);
     }
 
     public List<String> getOtherAnnotation() {
@@ -574,34 +574,34 @@ public class VaultCsvEntry extends CsvEntry {
     @Override
     public String[] getCsvHeaderRecord() {
         return new String[]{
-            "date",
-            "time",
-            "bgValue",
-            "cgmValue",
-            "cgmRawValue",
-            "cgmAlertValue",
-            "pumpCgmPredictionValue",
-            "glucoseAnnotation",
-            "basalValue",
-            "basalAnnotation",
-            "bolusValue",
-            "bolusAnnotation",
-            "bolusCalculationValue",
-            "mealValue",
-            "pumpAnnotation",
-            "exerciseTimeValue",
-            "exerciseAnnotation",
-            "heartRateValue",
-            "heartRateVariabilityValue",
-            "stressBalanceValue",
-            "stressValue",
-            "sleepValue",
-            "sleepAnnotation",
-            "locationAnnotation",
-            "mlCgmValue",
-            "mlAnnotation",
-            "insulinSensitivityFactor",
-            "otherAnnotation"
+                "date",
+                "time",
+                "bgValue",
+                "cgmValue",
+                "cgmRawValue",
+                "cgmAlertValue",
+                "pumpCgmPredictionValue",
+                "glucoseAnnotation",
+                "basalValue",
+                "basalAnnotation",
+                "bolusValue",
+                "bolusAnnotation",
+                "bolusCalculationValue",
+                "mealValue",
+                "pumpAnnotation",
+                "exerciseTimeValue",
+                "exerciseAnnotation",
+                "heartRateValue",
+                "heartRateVariabilityValue",
+                "stressBalanceValue",
+                "stressValue",
+                "sleepValue",
+                "sleepAnnotation",
+                "locationAnnotation",
+                "mlCgmValue",
+                "mlAnnotation",
+                "insulinSensitivityFactor",
+                "otherAnnotation"
         };
     }
 

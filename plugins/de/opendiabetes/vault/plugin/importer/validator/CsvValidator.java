@@ -22,21 +22,16 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
- *
  * @author mswin
  */
 public abstract class CsvValidator {
 
     protected static final Logger LOG = Logger.getLogger(CsvValidator.class.getName());
-
-    public static enum Language {
-        DE, EN;
-    };
-
-    protected Language languageSelection;
     private final String[] HEADER_DE;
-    private final String[] HEADER_EN;
 
+    ;
+    private final String[] HEADER_EN;
+    protected Language languageSelection;
     protected CsvValidator(String[] HEADER_DE, String[] HEADER_EN) {
         this.HEADER_DE = HEADER_DE;
         this.HEADER_EN = HEADER_EN;
@@ -71,5 +66,9 @@ public abstract class CsvValidator {
         }
 
         return result;
+    }
+
+    public static enum Language {
+        DE, EN;
     }
 }

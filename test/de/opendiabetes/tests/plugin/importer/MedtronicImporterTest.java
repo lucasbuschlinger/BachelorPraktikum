@@ -1,7 +1,6 @@
 package de.opendiabetes.tests.plugin.importer;
 
 import de.opendiabetes.vault.plugin.importer.Importer;
-import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
@@ -24,6 +23,7 @@ public class MedtronicImporterTest {
 
     /**
      * Test to see whether the plugin can be started
+     *
      * @throws PluginException If the plugin can not be started
      */
     @Test
@@ -57,7 +57,7 @@ public class MedtronicImporterTest {
      * Test for the path setter and getter
      */
     @Test
-    public void setGetPath(){
+    public void setGetPath() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("MedtronicImporter");
@@ -69,15 +69,14 @@ public class MedtronicImporterTest {
     /**
      * Test for invalid path
      *
-    @Test
-    public void invalidPath(){
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.startPlugin("MedtronicImporter");
-        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-        medtronicImporter.setImportFilePath("not/a/valid/path");
-        Assert.assertFalse(medtronicImporter.importData());
-    }*/
+     @Test public void invalidPath(){
+     PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+     manager.loadPlugins();
+     manager.startPlugin("MedtronicImporter");
+     Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
+     medtronicImporter.setImportFilePath("not/a/valid/path");
+     Assert.assertFalse(medtronicImporter.importData());
+     }*/
 
 
 }

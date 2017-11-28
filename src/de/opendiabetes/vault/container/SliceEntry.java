@@ -19,12 +19,12 @@ package de.opendiabetes.vault.container;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- *
  * @author juehv
  */
 @DatabaseTable(tableName = "SliceEntries")
@@ -58,7 +58,7 @@ public class SliceEntry {
 
 //    @DatabaseField(columnName = TYPE_FIELD_NAME, canBeNull = false)
 //    private SliceType type;
-    
+
     /**
      * An ArrayList of SliceFilterType
      */
@@ -67,8 +67,9 @@ public class SliceEntry {
 
     /**
      * The constructor for SliceEntry, setting the timestamp and the duration
+     *
      * @param timestamp The value that timestamp will be set to
-     * @param duration The value that duration will be set to
+     * @param duration  The value that duration will be set to
      */
     public SliceEntry(Date timestamp, long duration) {
         this.timestamp = timestamp;
@@ -84,6 +85,7 @@ public class SliceEntry {
 
     /**
      * Getter for id
+     *
      * @return The id of the SliceEntry
      */
     public long getId() {
@@ -92,6 +94,7 @@ public class SliceEntry {
 
     /**
      * Getter for timestamp
+     *
      * @return The timestamp of the SliceEntry
      */
     public Date getTimestamp() {
@@ -100,6 +103,7 @@ public class SliceEntry {
 
     /**
      * Setter for timestamp
+     *
      * @param timestamp The value that timestamp will be set to
      */
     public void setTimestamp(Date timestamp) {
@@ -108,6 +112,7 @@ public class SliceEntry {
 
     /**
      * Getter for duration
+     *
      * @return the duration of the SliceEntry
      */
     public long getDuration() {
@@ -116,6 +121,7 @@ public class SliceEntry {
 
     /**
      * Setter for duration
+     *
      * @param duration The value that duration will be set to
      */
     public void setDuration(long duration) {
@@ -129,9 +135,10 @@ public class SliceEntry {
 //    public void setType(SliceType type) {
 //        this.type = type;
 //    }
-    
+
     /**
      * Getter for filterType
+     *
      * @return The SliceEntry's List of SliceFilterType
      */
     public List<SliceFilterType> getFilterTypes() {
@@ -140,6 +147,7 @@ public class SliceEntry {
 
     /**
      * Setter for filterType
+     *
      * @param filterTypes The value that filterTypes will be set to
      */
     public void setFilterType(ArrayList<SliceFilterType> filterTypes) {
@@ -148,6 +156,7 @@ public class SliceEntry {
 
     /**
      * Adds a new SliceFilterType to filterTypes
+     *
      * @param filterType The SliceFilterType that will be added to the ArrayList of SliceFilterType
      */
     public void addFilterType(SliceFilterType filterType) {

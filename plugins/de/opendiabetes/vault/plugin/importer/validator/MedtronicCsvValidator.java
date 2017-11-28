@@ -17,15 +17,14 @@
 package de.opendiabetes.vault.plugin.importer.validator;
 
 import com.csvreader.CsvReader;
+import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.logging.Logger;
-import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 /**
- *
  * @author juehv
  */
 public class MedtronicCsvValidator extends CsvValidator {
@@ -39,41 +38,10 @@ public class MedtronicCsvValidator extends CsvValidator {
     public static final String TIME_FORMAT_DE = "dd.MM.yy HH:mm:ss";
 
     public static final String[] CARELINK_HEADER_DE = {
-        CARELINK_HEADER_DE_DATE, CARELINK_HEADER_DE_TIME,
-        CARELINK_HEADER_DE_TIMESTAMP, CARELINK_HEADER_DE_TYPE,
-        CARELINK_HEADER_DE_VALUE
+            CARELINK_HEADER_DE_DATE, CARELINK_HEADER_DE_TIME,
+            CARELINK_HEADER_DE_TIMESTAMP, CARELINK_HEADER_DE_TYPE,
+            CARELINK_HEADER_DE_VALUE
     };
-
-    public static enum TYPE {
-        REWIND("Rewind"), PRIME("Prime"),
-        EXERCICE("JournalEntryExerciseMarker"),
-        BG_CAPTURED_ON_PUMP("BGCapturedOnPump"), BG_RECEIVED("BGReceived"),
-        SENSOR_CAL_BG("SensorCalBG"), SENSOR_CAL_FACTOR("SensorCalFactor"),
-        SENSOR_VALUE("GlucoseSensorData"), SENSOR_ALERT("AlarmSensor"),
-        BOLUS_WIZARD("BolusWizardBolusEstimate"), BOLUS_NORMAL("BolusNormal"),
-        BOLUS_SQUARE("BolusSquare"),
-        BASAL("BasalProfileStart"), BASAL_TMP_PERCENT("ChangeTempBasalPercent"),
-        BASAL_TMP_RATE("ChangeTempBasal"),
-        PUMP_ALERT("AlarmPump"), PUMP_SUSPEND_CHANGED("ChangeSuspendState"),
-        PUMP_ALERT_NGP("AlarmPumpNGP"), PUMP_TYME_SYNC("ChangeTime");
-
-        final String name;
-
-        TYPE(String name) {
-            this.name = name;
-        }
-
-        static TYPE fromString(String typeString) {
-            if (typeString != null && !typeString.isEmpty()) {
-                for (TYPE item : TYPE.values()) {
-                    if (item.name.equalsIgnoreCase(typeString)) {
-                        return item;
-                    }
-                }
-            }
-            return null;
-        }
-    }
 
     public MedtronicCsvValidator() {
         //TODO add english header
@@ -145,6 +113,37 @@ public class MedtronicCsvValidator extends CsvValidator {
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
+        }
+    }
+
+    public static enum TYPE {
+        REWIND("Rewind"), PRIME("Prime"),
+        EXERCICE("JournalEntryExerciseMarker"),
+        BG_CAPTURED_ON_PUMP("BGCapturedOnPump"), BG_RECEIVED("BGReceived"),
+        SENSOR_CAL_BG("SensorCalBG"), SENSOR_CAL_FACTOR("SensorCalFactor"),
+        SENSOR_VALUE("GlucoseSensorData"), SENSOR_ALERT("AlarmSensor"),
+        BOLUS_WIZARD("BolusWizardBolusEstimate"), BOLUS_NORMAL("BolusNormal"),
+        BOLUS_SQUARE("BolusSquare"),
+        BASAL("BasalProfileStart"), BASAL_TMP_PERCENT("ChangeTempBasalPercent"),
+        BASAL_TMP_RATE("ChangeTempBasal"),
+        PUMP_ALERT("AlarmPump"), PUMP_SUSPEND_CHANGED("ChangeSuspendState"),
+        PUMP_ALERT_NGP("AlarmPumpNGP"), PUMP_TYME_SYNC("ChangeTime");
+
+        final String name;
+
+        TYPE(String name) {
+            this.name = name;
+        }
+
+        static TYPE fromString(String typeString) {
+            if (typeString != null && !typeString.isEmpty()) {
+                for (TYPE item : TYPE.values()) {
+                    if (item.name.equalsIgnoreCase(typeString)) {
+                        return item;
+                    }
+                }
+            }
+            return null;
         }
     }
 

@@ -21,7 +21,6 @@ import de.opendiabetes.vault.container.VaultEntry;
 import java.util.Comparator;
 
 /**
- *
  * @author Jens
  */
 public class SortVaultEntryByDate implements Comparator<VaultEntry> {
@@ -31,5 +30,5 @@ public class SortVaultEntryByDate implements Comparator<VaultEntry> {
         return o1.getTimestamp().compareTo(o2.getTimestamp());
     }
 
-    
+
 }

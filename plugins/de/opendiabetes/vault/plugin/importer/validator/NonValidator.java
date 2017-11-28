@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.importer.validator;
 
 /**
- *
  * @author juehv
  */
 public class NonValidator extends CsvValidator {

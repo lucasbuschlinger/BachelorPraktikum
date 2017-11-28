@@ -22,6 +22,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * This class defines a raw data entry
+ *
  * @author mswin
  */
 @DatabaseTable(tableName = "RawValues")
@@ -56,7 +57,8 @@ public class RawEntry {
 
     /**
      * Constructor for RawEntry, setting the value and whether the RawEntry is interpreted
-     * @param value The value that value will be set to
+     *
+     * @param value       The value that value will be set to
      * @param interpreted The value that interpreted will be set to
      */
     public RawEntry(String value, boolean interpreted) {
@@ -65,15 +67,8 @@ public class RawEntry {
     }
 
     /**
-     * Setter for id
-     * @param id The value that id will be set to
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
      * Getter for id
+     *
      * @return The id of the RawEntry
      */
     public long getId() {
@@ -81,7 +76,17 @@ public class RawEntry {
     }
 
     /**
+     * Setter for id
+     *
+     * @param id The value that id will be set to
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
      * Returns whether the RawEntry is interpreted
+     *
      * @return true if RawEntry is interpreted, false otherwise
      */
     public boolean isInterpreted() {

@@ -19,7 +19,6 @@ package de.opendiabetes.vault.plugin.util;
 import java.io.*;
 
 /**
- *
  * @author mswin
  */
 public class FileCopyUtil {

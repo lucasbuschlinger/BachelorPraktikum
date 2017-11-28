@@ -23,15 +23,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- *
  * @author mswin
  */
 public class SlidingWindow {
 
-    private ArrayList<VaultEntry> buffer = new ArrayList<>();
     private final long windowSizeInMinutes;
     private final VaultEntryType typeToReactOn;
     private final double outputFilterSize;
+    private ArrayList<VaultEntry> buffer = new ArrayList<>();
 
     public SlidingWindow(long windowSizeInMinutes, VaultEntryType typeToReactOn, double outputFilterSize) {
         this.windowSizeInMinutes = windowSizeInMinutes;

@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- *
  * @author juehv
  */
 public class TimestampUtils {
@@ -94,16 +93,15 @@ public class TimestampUtils {
     }
 
     /**
-     *
-     * @param startTime Start of the time span
-     * @param endTime end of the time span
-     * @param timePoint checks if this time point is within timespan
+     * @param startTime     Start of the time span
+     * @param endTime       end of the time span
+     * @param timePoint     checks if this time point is within timespan
      * @param respectToDate if false, date will be ignored and just hour and
-     * minutes are checked
+     *                      minutes are checked
      * @return
      */
     public static boolean withinDateTimeSpan(Date startTime, Date endTime,
-            Date timePoint) {
+                                             Date timePoint) {
         return startTime.before(timePoint) && endTime.after(timePoint)
                 || startTime.equals(timePoint) || endTime.equals(timePoint);
 

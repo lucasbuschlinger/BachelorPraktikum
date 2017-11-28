@@ -14,25 +14,27 @@ import java.util.logging.Logger;
  * This interface specifies the methods shared by all importers
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up
  */
-public interface Importer extends ExtensionPoint{
+public interface Importer extends ExtensionPoint {
 
     /**
      * The logger which all importers must have
      */
     Logger LOG = Logger.getLogger(Importer.class.getName());
 
-    void setImportFilePath(String path);
-
     String getImportFilePath();
+
+    void setImportFilePath(String path);
 
     /**
      * Imports the data from the file
+     *
      * @return boolean true if data was imported, false otherwise
      */
     boolean importData();
 
     /**
      * Getter for the imported data
+     *
      * @return List of VaultEntry consisting of the imported data
      * @see de.opendiabetes.vault.container.VaultEntry
      */
@@ -40,6 +42,7 @@ public interface Importer extends ExtensionPoint{
 
     /**
      * Getter for the raw imported data
+     *
      * @return List of RawEntry consisting of the raw imported data
      * @see de.opendiabetes.vault.container.RawEntry
      */

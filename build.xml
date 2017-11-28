@@ -278,8 +278,8 @@
             description="Compile module OpenDiabetes; production classes">
         <mkdir dir="${opendiabetes.output.dir}"/>
         <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
-                memorymaximumsize="${compiler.max.memory}" fork="true">
-                <!--executable="${java.home}/lib">-->
+               memorymaximumsize="${compiler.max.memory}" fork="true">
+            <!--executable="${java.home}/lib">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
             <classpath refid="opendiabetes.module.production.classpath"/>
@@ -308,8 +308,8 @@
             description="compile module OpenDiabetes; test classes" unless="skip.tests">
         <mkdir dir="${opendiabetes.testoutput.dir}"/>
         <javac destdir="${opendiabetes.testoutput.dir}" debug="${compiler.debug}"
-                nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
-                <!--executable="${module.jdk.bin.opendiabetes}/javac">-->
+               nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+            <!--executable="${module.jdk.bin.opendiabetes}/javac">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
             <classpath refid="opendiabetes.module.classpath"/>
@@ -375,15 +375,16 @@
     </target>
 
     <tstamp>
-        <format property="timestamp" pattern="yyyyMMdd-HHmmss"  locale="de,GERMANY" />
+        <format property="timestamp" pattern="yyyyMMdd-HHmmss" locale="de,GERMANY"/>
     </tstamp>
 
     <!-- Working checkstyle task! -->
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${basedir}/testlib/checkstyle-8.5-all.jar"/>
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+             classpath="${basedir}/testlib/checkstyle-8.5-all.jar"/>
     <target name="checkstyle">
         <checkstyle config="reports/resources/checkstyle/sun_checks.xml" failonviolation="false">
             <fileset dir="src/" includes="**/*.java"/>
-            <fileset dir="plugins/de"  includes="**/*.java"/>
+            <fileset dir="plugins/de" includes="**/*.java"/>
             <formatter type="xml" tofile="reports/resources/checkstyle/checkstyle_errors.xml"/>
         </checkstyle>
 
@@ -393,15 +394,16 @@
     </target>
 
     <!-- Working findbugs task!-->
-    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpath="${basedir}/testlib/findbugs-ant.jar"/>
-    <property name="findbugs.home" value="reports/resources/findbugs" />
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+             classpath="${basedir}/testlib/findbugs-ant.jar"/>
+    <property name="findbugs.home" value="reports/resources/findbugs"/>
     <target name="findbugs" depends="plugin">
         <findbugs home="${findbugs.home}"
                   output="html"
-                  outputFile="reports/findbugs_report${timestamp}.html" >
+                  outputFile="reports/findbugs_report${timestamp}.html">
             <!--<auxClasspath path="${basedir}/lib/Regex.jar" />-->
             <!--<sourcePath path="${basedir}/src/" />-->
-            <class location="${basedir}/out/production/OpenDiabetes/de" />
+            <class location="${basedir}/out/production/OpenDiabetes/de"/>
         </findbugs>
     </target>
 
@@ -415,8 +417,9 @@
 
 
     <!-- Working JUnit task!-->
-    <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" classpath="${basedir}/testlib/junit.jar"/>
-    <target name="test" depends="clean, plugin, compile.module.opendiabetes.tests">
+    <taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
+             classpath="${basedir}/testlib/junit.jar"/>
+    <target name="test" depends="plugin, compile.module.opendiabetes.tests">
         <mkdir dir="reports/resources/junit"/>
         <property name="junit.path" refid="junit.class.path"/>
         <echo message="JUnit ClassPath is: ${junit.path}"/>
@@ -441,7 +444,7 @@
         <delete dir="reports/resources/junit"/>
     </target>
 
-    <target name="reports" depends="checkstyle,findbugs,test"/>
+    <target name="reports" depends="test, checkstyle,findbugs"/>
 
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>

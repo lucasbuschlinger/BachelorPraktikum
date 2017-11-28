@@ -19,7 +19,6 @@ package de.opendiabetes.vault.plugin.util;
 import java.util.Locale;
 
 /**
- *
  * @author mswin
  */
 public class EasyFormatter {

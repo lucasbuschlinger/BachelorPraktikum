@@ -19,7 +19,6 @@ package de.opendiabetes.vault.container.csv;
 import java.io.IOException;
 
 /**
- *
  * @author juehv
  */
 public interface ExportEntry {

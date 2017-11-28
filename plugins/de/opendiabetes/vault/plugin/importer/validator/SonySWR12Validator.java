@@ -24,7 +24,6 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- *
  * @author juehv
  */
 public class SonySWR12Validator extends CsvValidator {
@@ -36,36 +35,15 @@ public class SonySWR12Validator extends CsvValidator {
     public static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static final String[] HEADER = {
-        HEADER_START_TIME, HEADER_END_TIME,
-        HEADER_TYPE,
-        HEADER_VALUE
+            HEADER_START_TIME, HEADER_END_TIME,
+            HEADER_TYPE,
+            HEADER_VALUE
     };
-
-    public static enum TYPE {
-        SLEEP_LIGHT(5), SLEEP_DEEP(6),
-        HEART_RATE_VARIABILITY(9), HEART_RATE(8),
-        WALK(0), RUN(1);
-
-        final int typeInt;
-
-        TYPE(int typeInt) {
-            this.typeInt = typeInt;
-        }
-
-        static TYPE fromInt(int typeInt) {
-            for (TYPE item : TYPE.values()) {
-                if (item.typeInt == typeInt) {
-                    return item;
-                }
-            }
-            return null;
-        }
-    }
 
     public SonySWR12Validator() {
         //universal header
         super(HEADER, HEADER);
-    }    
+    }
 
     public TYPE getSmartbandType(CsvReader creader) throws IOException {
         int typeInt = Integer.parseInt(creader.get(HEADER_TYPE).trim());
@@ -89,5 +67,26 @@ public class SonySWR12Validator extends CsvValidator {
 
     public long getEndTime(CsvReader creader) throws IOException {
         return Long.parseLong(creader.get(HEADER_END_TIME));
+    }
+
+    public static enum TYPE {
+        SLEEP_LIGHT(5), SLEEP_DEEP(6),
+        HEART_RATE_VARIABILITY(9), HEART_RATE(8),
+        WALK(0), RUN(1);
+
+        final int typeInt;
+
+        TYPE(int typeInt) {
+            this.typeInt = typeInt;
+        }
+
+        static TYPE fromInt(int typeInt) {
+            for (TYPE item : TYPE.values()) {
+                if (item.typeInt == typeInt) {
+                    return item;
+                }
+            }
+            return null;
+        }
     }
 }

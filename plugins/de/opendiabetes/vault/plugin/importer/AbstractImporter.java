@@ -4,12 +4,11 @@ import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public abstract class AbstractImporter implements Importer{
+public abstract class AbstractImporter implements Importer {
 
     protected final static Logger LOG = Logger.getLogger(Importer.class.getName());
     protected List<VaultEntry> importedData;
@@ -34,12 +33,12 @@ public abstract class AbstractImporter implements Importer{
     }
 
     @Override
-    public void registerStatusCallback(StatusListener listener){
+    public void registerStatusCallback(StatusListener listener) {
         this.listeners.add(listener);
     }
 
     protected void notifyStaus(int progress, String status) {
-        listeners.forEach(listener->listener.onStatusCallback(progress, status));
+        listeners.forEach(listener -> listener.onStatusCallback(progress, status));
     }
 
 }

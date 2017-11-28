@@ -22,48 +22,19 @@ import java.util.regex.Pattern;
 
 /**
  * This class models annotations of vault entries
+ *
  * @author juehv
  */
 public class VaultEntryAnnotation implements Serializable {
-
-	/**
-	 * This enum defines different types of vault entry annotations
-	 */
-    public enum TYPE {
-        GLUCOSE_RISE_LAST,
-        GLUCOSE_RISE_20_MIN,
-        GLUCOSE_BG_METER_SERIAL,
-        //
-        EXERCISE_TrackerWalk,
-        EXERCISE_TrackerBicycle,
-        EXERCISE_TrackerRun,
-        EXERCISE_GoogleWalk,
-        EXERCISE_GoogleBicycle,
-        EXERCISE_GoogleRun,
-        EXERCISE_AUTOMATIC_OTHER,
-        //
-        PUMP_ERROR_CODE,
-        PUMP_INFORMATION_CODE,
-        //
-        CGM_VENDOR_MEDTRONIC,
-        CGM_VENDOR_LIBRE,
-        CGM_VENDOR_DEXCOM,
-        //
-        ML_PREDICTION_TIME_BUCKET_SIZE,
-        //
-        USER_TEXT
-    }
 
     /**
      * The pattern of the VaultEntryAnnotation's value
      */
     private final Pattern valuePattern;
-
     /**
      * The type of the VaultEntryAnnotation
      */
     private TYPE type;
-
     /**
      * The value of the VaultEntryAnnotation
      */
@@ -78,6 +49,7 @@ public class VaultEntryAnnotation implements Serializable {
 
     /**
      * A constructor of VaultEntryAnnotation, setting the annotation type
+     *
      * @param type The parameter that type will be set to
      */
     public VaultEntryAnnotation(TYPE type) {
@@ -86,8 +58,9 @@ public class VaultEntryAnnotation implements Serializable {
 
     /**
      * A constructor of VaultEntryAnnotation, setting the annotation type and value
+     *
      * @param value The parameter that value will be set to
-     * @param type The parameter that type will be set to
+     * @param type  The parameter that type will be set to
      */
     public VaultEntryAnnotation(String value, TYPE type) {
         this.value = value;
@@ -97,6 +70,7 @@ public class VaultEntryAnnotation implements Serializable {
 
     /**
      * Getter for type
+     *
      * @return The type of the VaultEntryAnnotation
      */
     public TYPE getType() {
@@ -105,6 +79,7 @@ public class VaultEntryAnnotation implements Serializable {
 
     /**
      * Getter for value
+     *
      * @return The value of the VaultEntryAnnotation
      */
     public String getValue() {
@@ -112,13 +87,20 @@ public class VaultEntryAnnotation implements Serializable {
     }
 
     /**
-     * Sets the VaultEntryAnnotation's value 
+     * Sets the VaultEntryAnnotation's value
+     *
      * @param value The parameter that value will be set to
      * @return The same VaultEntryAnnotation with the modified value
      */
     public VaultEntryAnnotation setValue(String value) {
         this.value = value;
         return this;
+    }
+
+    // TODO JavaDoc for methods below ?
+    @Override
+    public String toString() {
+        return type.toString();
     }
 
     // TODO reimplement with pattern matching
@@ -143,12 +125,6 @@ public class VaultEntryAnnotation implements Serializable {
 //        }
 //        return returnValue;
 //    }
-    
-    // TODO JavaDoc for methods below ?
-    @Override
-    public String toString() {
-        return type.toString();
-    }
 
     public String toStringWithValue() {
         return value.isEmpty() ? this.toString() : this.toString() + "=" + value;
@@ -176,6 +152,34 @@ public class VaultEntryAnnotation implements Serializable {
             return false;
         }
         return this.type == other.type;
+    }
+
+    /**
+     * This enum defines different types of vault entry annotations
+     */
+    public enum TYPE {
+        GLUCOSE_RISE_LAST,
+        GLUCOSE_RISE_20_MIN,
+        GLUCOSE_BG_METER_SERIAL,
+        //
+        EXERCISE_TrackerWalk,
+        EXERCISE_TrackerBicycle,
+        EXERCISE_TrackerRun,
+        EXERCISE_GoogleWalk,
+        EXERCISE_GoogleBicycle,
+        EXERCISE_GoogleRun,
+        EXERCISE_AUTOMATIC_OTHER,
+        //
+        PUMP_ERROR_CODE,
+        PUMP_INFORMATION_CODE,
+        //
+        CGM_VENDOR_MEDTRONIC,
+        CGM_VENDOR_LIBRE,
+        CGM_VENDOR_DEXCOM,
+        //
+        ML_PREDICTION_TIME_BUCKET_SIZE,
+        //
+        USER_TEXT
     }
 
 }

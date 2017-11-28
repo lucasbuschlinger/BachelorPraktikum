@@ -17,25 +17,24 @@
 package de.opendiabetes.vault.plugin.importer.validator;
 
 /**
- *
  * @author juehv
  */
 public class MySugrCsvValidator extends CsvValidator {
 
-    
+
     public static final String[] HEADER_DE = {
-        // put header fields here
+            // put header fields here
     };
-    
+
     public static final String[] HEADER_EN = {
-        // put header fields here
+            // put header fields here
     };
 
     public MySugrCsvValidator() {
         super(HEADER_DE, HEADER_EN);
     }
-    
-    
+
+
     // add functions for field access here
-    
+
 }

@@ -19,7 +19,6 @@ package de.opendiabetes.vault.plugin.importer.validator;
 import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 
 /**
- *
  * @author juehv
  */
 public class VaultCsvValidator extends CsvValidator {

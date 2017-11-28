@@ -17,10 +17,8 @@
 package de.opendiabetes.vault.container;
 
 import de.opendiabetes.vault.plugin.importer.validator.MedtronicCsvValidator;
-;
 
 /**
- *
  * @author mswin
  */
 public class MedtronicAnnotatedVaultEntry extends VaultEntry {
@@ -28,7 +26,7 @@ public class MedtronicAnnotatedVaultEntry extends VaultEntry {
     private final MedtronicCsvValidator.TYPE rawType;
 
     public MedtronicAnnotatedVaultEntry(VaultEntry copy,
-            MedtronicCsvValidator.TYPE rawType) {
+                                        MedtronicCsvValidator.TYPE rawType) {
         super(copy);
         this.rawType = rawType;
     }
@@ -43,7 +41,7 @@ public class MedtronicAnnotatedVaultEntry extends VaultEntry {
 
     @Override
     public String toString() {
-        return super.toString()+" MedtronicAnnotatedVaultEntry{" + "rawType=" + rawType + '}';
+        return super.toString() + " MedtronicAnnotatedVaultEntry{" + "rawType=" + rawType + '}';
     }
 
 }

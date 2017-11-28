@@ -1,9 +1,9 @@
 package de.opendiabetes.vault.plugin.importer.medtronic;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.plugin.importer.validator.MedtronicCsvValidator;
-import de.opendiabetes.vault.plugin.importer.CSVImporter;
 import de.opendiabetes.vault.container.*;
+import de.opendiabetes.vault.plugin.importer.CSVImporter;
+import de.opendiabetes.vault.plugin.importer.validator.MedtronicCsvValidator;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -53,11 +53,6 @@ public class MedtronicImporter extends Plugin {
 
         public MedtronicImporterImplementation() {
 
-        }
-
-        @Override
-        public boolean loadConfiguration(String path) {
-            return false;
         }
 
         private static VaultEntry extractDoubleEntry(Date timestamp, VaultEntryType type,
@@ -118,6 +113,11 @@ public class MedtronicImporter extends Plugin {
                 }
             }
             return null;
+        }
+
+        @Override
+        public boolean loadConfiguration(String path) {
+            return false;
         }
 
         @Override

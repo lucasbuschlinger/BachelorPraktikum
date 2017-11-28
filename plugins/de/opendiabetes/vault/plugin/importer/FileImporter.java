@@ -9,7 +9,7 @@ public abstract class FileImporter extends AbstractImporter {
 
     protected String importFilePath;
 
-    public FileImporter(){
+    public FileImporter() {
 
     }
 
@@ -26,7 +26,7 @@ public abstract class FileImporter extends AbstractImporter {
     }
 
     public boolean importData() {
-        if(null != importFilePath){
+        if (null != importFilePath) {
             preprocessingIfNeeded(importFilePath);
         }
 

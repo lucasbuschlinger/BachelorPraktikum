@@ -3,21 +3,17 @@ package de.opendiabetes.tests.plugin.importer;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
-import org.pf4j.PluginManager;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * Unit test for the fileimporter Plugin
+ *
  * @see de.opendiabetes.vault.plugin.importer.medtronic
  */
 public class FileImportTest {
 
     @Test
-    public void stupidTest(){
+    public void stupidTest() {
         Assert.assertTrue(true);
     }
 
