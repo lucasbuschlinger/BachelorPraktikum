@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 Jens Heuschkel
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,11 +17,10 @@
 package de.opendiabetes.vault.container;
 
 /**
- * This enum defines different vault entry types
- *
- * @author mswin
+ * This enum defines different vault entry types.
  */
 public enum VaultEntryType {
+    //TODO.
     // Bolus
 // Bolus
     BOLUS_NORMAL,

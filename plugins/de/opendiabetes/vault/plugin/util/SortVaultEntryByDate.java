@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 Jens Heuschkel
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,19 @@ import de.opendiabetes.vault.container.VaultEntry;
 import java.util.Comparator;
 
 /**
- * @author Jens
+ * This class implements a comparator for VaultEntry timestamp.
  */
 public class SortVaultEntryByDate implements Comparator<VaultEntry> {
 
+    /**
+     * Method to compare two VaultEntries by their timestamps.
+     * @param entry1 First VaultEntry.
+     * @param entry2 Second VaultEntry.
+     * @return -1 when the second VaultEntry is larger, 0 if they are equal, 1 if the first VaultEntry is larger.
+     * */
     @Override
-    public int compare(VaultEntry o1, VaultEntry o2) {
-        return o1.getTimestamp().compareTo(o2.getTimestamp());
+    public int compare(VaultEntry entry1, VaultEntry entry2) {
+        return entry1.getTimestamp().compareTo(entry2.getTimestamp());
     }
 
 

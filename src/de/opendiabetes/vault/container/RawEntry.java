@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 Jens Heuschkel
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,73 +21,83 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 /**
- * This class defines a raw data entry
- *
- * @author mswin
+ * This class defines a raw data entry.
  */
 @DatabaseTable(tableName = "RawValues")
 public class RawEntry {
 
-    // for QueryBuilder to be able to find the fields
+    // For the QueryBuilder to be able to find the fields.
+    /**
+     * Name of the field holding the timestamp.
+     */
     public static final String TIMESTAMP_FIELD_NAME = "timestamp";
+    /**
+     * Name of the field holding the value.
+     */
     public static final String VALUE_FIELD_NAME = "value";
+    /**
+     * Name of the field holding a flag whether the data is interpreted.
+     */
     public static final String IS_INTERPRETED_FIELD_NAME = "isInterpreted";
 
     /**
-     * The id of the RawEntry
+     * The ID of the RawEntry.
      */
     @DatabaseField(generatedId = true)
     private long id;
 
     /**
-     * The value of the RawEntry
+     * The value of the RawEntry.
      */
     @DatabaseField(columnName = VALUE_FIELD_NAME, canBeNull = false, dataType = DataType.LONG_STRING)
     private String value;
 
     /**
-     * Indicates whether the RawEntry is interpreted or not
+     * Indicates whether the RawEntry is interpreted or not.
      */
     @DatabaseField(columnName = IS_INTERPRETED_FIELD_NAME, canBeNull = false)
     private boolean interpreted;
 
+    /**
+     * Default constructor.
+     */
     public RawEntry() {
         // all persisted classes must define a no-arg constructor with at least package visibility
     }
 
     /**
-     * Constructor for RawEntry, setting the value and whether the RawEntry is interpreted
+     * Constructor for RawEntry, setting the value and whether the RawEntry is interpreted.
      *
-     * @param value       The value that value will be set to
-     * @param interpreted The value that interpreted will be set to
+     * @param value       The value that value will be set to.
+     * @param interpreted The value that interpreted will be set to.
      */
-    public RawEntry(String value, boolean interpreted) {
+    public RawEntry(final String value, final boolean interpreted) {
         this.value = value.trim();
         this.interpreted = interpreted;
     }
 
     /**
-     * Getter for id
+     * Getter for ID.
      *
-     * @return The id of the RawEntry
+     * @return The ID of the RawEntry.
      */
     public long getId() {
         return id;
     }
 
     /**
-     * Setter for id
+     * Setter for ID.
      *
-     * @param id The value that id will be set to
+     * @param id The value that ID will be set to.
      */
-    public void setId(long id) {
+    public void setId(final long id) {
         this.id = id;
     }
 
     /**
-     * Returns whether the RawEntry is interpreted
+     * Returns whether the RawEntry is interpreted.
      *
-     * @return true if RawEntry is interpreted, false otherwise
+     * @return True if RawEntry is interpreted, false otherwise.
      */
     public boolean isInterpreted() {
         return interpreted;

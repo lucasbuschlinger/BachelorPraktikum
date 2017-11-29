@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 Jens Heuschkel
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,13 +16,20 @@
  */
 package de.opendiabetes.vault.plugin.util;
 
+
 import java.io.*;
 
 /**
- * @author mswin
+ * This class implements a utility to copy files.
  */
 public class FileCopyUtil {
 
+    /**
+     * Method to copy a file or directory.
+     * @param sourceLocation The source file or directory to copy.
+     * @param targetLocation The target file or directory to be copied to.
+     * @throws IOException Thrown if an invalid file location is given or no matching file types given.
+     */
     public static void copy(File sourceLocation, File targetLocation) throws IOException {
         if (sourceLocation.isDirectory()) {
             copyDirectory(sourceLocation, targetLocation);
@@ -31,6 +38,12 @@ public class FileCopyUtil {
         }
     }
 
+    /**
+     * Method to copy a directory.
+     * @param source The source directory to copy.
+     * @param target The target directory to be copied to.
+     * @throws IOException Thrown if an invalid directory location is given.
+     */
     public static void copyDirectory(File source, File target) throws IOException {
         if (!target.exists()) {
             target.mkdir();
@@ -41,6 +54,12 @@ public class FileCopyUtil {
         }
     }
 
+    /**
+     * Method to copy a file.
+     * @param source The source file to copy.
+     * @param target The target file to be copied to.
+     * @throws IOException Thrown if an invalid file location is given.
+     */
     public static void copyFile(File source, File target) throws IOException {
         try (
                 InputStream in = new FileInputStream(source);

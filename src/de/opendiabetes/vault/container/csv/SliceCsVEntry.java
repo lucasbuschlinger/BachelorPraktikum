@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 juehv
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,19 +24,36 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * @author juehv
+ * The class implements a slicer for CSV based entries.
  */
 public class SliceCsVEntry extends CsvEntry {
 
-    public final static String VERSION_STRING = "v1";
-    public final static double UNINITIALIZED_DOUBLE = SliceEntry.UNINITIALIZED_DOUBLE;
+    /**
+     * The version.
+     */
+    public static final String VERSION_STRING = "v1";
+    /**
+     * Default value for uninitialized doubles.
+     */
+    public static final double UNINITIALIZED_DOUBLE = SliceEntry.UNINITIALIZED_DOUBLE;
 
+    /**
+     * The sliced entry.
+     */
     private final SliceEntry data;
 
-    public SliceCsVEntry(SliceEntry data) {
+    /**
+     * Constructor for a sliced CSV entry.
+     * @param data The data to be sliced TODO.
+     */
+    public SliceCsVEntry(final SliceEntry data) {
         this.data = data;
     }
 
+    /**
+     * Method to transform the data to a CSV record.
+     * @return The transformed data as CSV records.
+     */
     @Override
     public String[] toCsvRecord() {
         ArrayList<String> csvRecord = new ArrayList<>();
@@ -67,6 +84,10 @@ public class SliceCsVEntry extends CsvEntry {
         return csvRecord.toArray(new String[]{});
     }
 
+    /**
+     * Getter for a CSV records header.
+     * @return The CSV records header.
+     */
     @Override
     public String[] getCsvHeaderRecord() {
         return new String[]{

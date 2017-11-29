@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 juehv
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,20 +26,35 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
- * @author juehv
+ * This class implements the pseudo ODV DB Json entry data structure.
  */
 public class OdvDbJsonPseudoEntry implements ExportEntry {
 
+    /**
+     * The data.
+     */
     private final List<VaultEntry> data;
 
-    private OdvDbJsonPseudoEntry(List<VaultEntry> data) {
+    /**
+     * Constructor for ODVDBJsonPseudo entries.
+     * @param data The data to be converted to ODVDBJsonPseudo entries.
+     */
+    private OdvDbJsonPseudoEntry(final List<VaultEntry> data) {
         this.data = data;
     }
 
-    public static OdvDbJsonPseudoEntry fromVaultEntryList(List<VaultEntry> data) {
+    /**
+     * Method to hand the VaultEntries over.
+     * @param data The VaultEntries.
+     * @return The ODVDBJsonPseudoEntry with the data.
+     */
+    public static OdvDbJsonPseudoEntry fromVaultEntryList(final List<VaultEntry> data) {
         return new OdvDbJsonPseudoEntry(data);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public byte[] toByteEntryLine() throws IOException {
         GsonBuilder gb = new GsonBuilder();

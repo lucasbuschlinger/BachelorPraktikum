@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 juehv
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,14 +19,15 @@ package de.opendiabetes.vault.container.csv;
 import java.io.IOException;
 
 /**
- * @author juehv
+ * Interface for export entries.
  */
 public interface ExportEntry {
 
     /**
      * Converts entry to a entry in the export file.
      *
-     * @return byte array representing the enty
+     * @return byte array representing the entry.
+     * @throws IOException Thrown if something went wrong TODO.
      */
     byte[] toByteEntryLine() throws IOException;
 }

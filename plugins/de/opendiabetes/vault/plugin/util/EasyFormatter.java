@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 mswin
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,12 +19,20 @@ package de.opendiabetes.vault.plugin.util;
 import java.util.Locale;
 
 /**
- * @author mswin
+ * This class implements an easy formatter for TODO.
  */
 public class EasyFormatter {
 
+    /**
+     * Format of the output.
+     */
     public static final String DOUBLE_FORMAT = "%1$.2f";
 
+    /**
+     * TODO.
+     * @param input The double to be formatted.
+     * @return The formatted double as a string.
+     */
     public static String formatDouble(double input) {
         return String.format(Locale.ENGLISH, DOUBLE_FORMAT, input).replace(",", "");
     }

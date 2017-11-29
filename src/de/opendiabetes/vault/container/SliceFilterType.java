@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 juehv
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,37 +17,83 @@
 package de.opendiabetes.vault.container;
 
 /**
- * This enum lists different slice filter types
- *
- * @author juehv
+ * This enum lists different slice filter types.
  */
 public enum SliceFilterType {
-    //
+    /**
+     * Unknown filter type.
+     */
     UNKNOWN,
-    //
+    /**
+     * Bolus type.
+     */
     BOLUS,
+    /**
+     * Indicates no bolus influence.
+     */
     NO_BOLUS_INFLUENCE,
-    //
+    /**
+     * Carbohydrates type.
+     */
     CARB,
+    /**
+     * Indicates no carbohydrates influence.
+     */
     NO_CARB_INFLUENCE,
-    //
+    /**
+     * Sports type.
+     */
     SPORTS,
+    /**
+     * Indicates no sport influence.
+     */
     NO_SPORT_INFLUENCE,
-    //
+    /**
+     * Indicates low after bolus.
+     */
     HYPO_AFTER_BOLUS,
+    /**
+     * Indicates low after sports.
+     */
     HYPO_AFTER_SPORTS,
+    /**
+     * Indicates low without influence.
+     */
     HYPO_WITHOUT_INFLUENCE,
-    //
+    /**
+     * Indicates high after carbohydrates intake.
+     */
     HYPER_AFTER_CARB,
+    /**
+     * Indicates high after bolus.
+     */
     HYPER_AFTER_BOLUS,
+    /**
+     * Indicates high after sports.
+     */
     HYPER_AFTER_SPORTS,
+    /**
+     * Indicates high without influence.
+     */
     HYPER_WITHOUT_INFLUENCE,
-    //
+    /**
+     * Indicates sleep.
+     */
     SLEEP,
+    /**
+     * Indicates waking up.
+     */
     WAKEUP,
+    /**
+     * Indicates event before bedtime.
+     */
     BEFORE_BEDTIME,
-    //
+    /**
+     * Indicates threshold for a rise.
+     */
     RISE_THRESHOLD,
-    //
-    ALCOHOL_CONSUM
+    /**
+     * Indicates alcoholic consume.
+     */
+    ALCOHOL_CONSUME
 }

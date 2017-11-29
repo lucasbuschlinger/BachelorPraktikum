@@ -384,9 +384,9 @@ public class MedtronicImporter extends Plugin {
                             RAW_TYPE_PATTERN, creader.getValues());
 
                     if (tmpEntry != null) {
-                        MedtronicAltertCodes codeObj = MedtronicAltertCodes.fromCode(
+                        MedtronicAlertCodes codeObj = MedtronicAlertCodes.fromCode(
                                 (int) Math.round(tmpEntry.getValue()));
-                        String codeString = codeObj == MedtronicAltertCodes.UNKNOWN_ALERT
+                        String codeString = codeObj == MedtronicAlertCodes.UNKNOWN_ALERT
                                 ? String.valueOf(Math.round(tmpEntry.getValue()))
                                 : codeObj.toString();
 
@@ -395,7 +395,7 @@ public class MedtronicImporter extends Plugin {
                                 // already done
                                 break;
                             case SUSPEND_ON_LOW:
-                            case SUSPEND_BEVORE_LOW:
+                            case SUSPEND_BEFORE_LOW:
                                 VaultEntry extraTmpEntry = new VaultEntry(VaultEntryType.PUMP_AUTONOMOUS_SUSPEND, timestamp);
                                 retVal.add(extraTmpEntry);
                             case LOW_WHEN_SUSPENDED:
@@ -433,7 +433,7 @@ public class MedtronicImporter extends Plugin {
                                 tmpEntry.setType(VaultEntryType.CGM_SENSOR_FINISHED);
                                 tmpEntry.setValue(VaultEntry.VALUE_UNUSED);
                                 break;
-                            case SENSOR_INITIALIZATIN_STARTED:
+                            case SENSOR_INITIALIZATION_STARTED:
                                 tmpEntry.setType(VaultEntryType.CGM_SENSOR_START);
                                 tmpEntry.setValue(VaultEntry.VALUE_UNUSED);
                                 break;

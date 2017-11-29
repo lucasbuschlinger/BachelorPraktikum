@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 juehv
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,23 +21,38 @@ import com.google.gson.*;
 import java.lang.reflect.Type;
 
 /**
- * @author juehv
+ * Implements a Json serializer for Gson based annotated VaultEntries.
  */
 public class VaultEntryAnnotationGsonAdapter implements JsonSerializer<VaultEntryAnnotation>, JsonDeserializer<VaultEntryAnnotation> {
 
-    // TODO JavaDoc for methods below?
+    /**
+     * Serializer for VaultEntries.
+     * @param entry VaultEntry to be serialized.
+     * @param type Type of the entry.
+     * @param jsc Context for the serializer.
+     * @return Serialized VaultEntry as Json element.
+     */
     @Override
-    public JsonElement serialize(VaultEntryAnnotation t, Type type, JsonSerializationContext jsc) {
+    public JsonElement serialize(final VaultEntryAnnotation entry, final Type type, final JsonSerializationContext jsc) {
         JsonObject obj = new JsonObject();
-        obj.addProperty("t", t.getType().ordinal());
-        obj.addProperty("v", t.getValue());
+        obj.addProperty("t", entry.getType().ordinal());
+        obj.addProperty("v", entry.getValue());
         return obj;
     }
 
+    /**
+     * Deserializer for Json data.
+     * @param element The Json element to deserialize.
+     * @param type The type of the element.
+     * @param jdc Context for the deserializer.
+     * @return Deserialized Json element.
+     * @throws JsonParseException Thrown if Json element is faulty.
+     */
     @Override
-    public VaultEntryAnnotation deserialize(JsonElement je, Type type, JsonDeserializationContext jdc) throws JsonParseException {
-        VaultEntryAnnotation.TYPE veType = VaultEntryAnnotation.TYPE.values()[je.getAsJsonObject().get("t").getAsInt()];
-        String weValue = je.getAsJsonObject().get("v").getAsString();
+    public VaultEntryAnnotation deserialize(final JsonElement element, final Type type, final JsonDeserializationContext jdc)
+            throws JsonParseException {
+        VaultEntryAnnotation.TYPE veType = VaultEntryAnnotation.TYPE.values()[element.getAsJsonObject().get("t").getAsInt()];
+        String weValue = element.getAsJsonObject().get("v").getAsString();
         return new VaultEntryAnnotation(weValue, veType);
     }
 

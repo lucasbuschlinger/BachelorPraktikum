@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2017 juehv
+/**
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,13 +17,20 @@
 package de.opendiabetes.vault.container;
 
 /**
- * This enum lists different slice types
- *
- * @author juehv
+ * This enum lists different slice types.
  */
 public enum SliceType {
 
+    /**
+     * Indicates a tiny slice.
+     */
     SLICE_TINY,
+    /**
+     * Indicates a standard sized slice.
+     */
     SLICE_STANDARD,
+    /**
+     * Indicates a large slice.
+     */
     SLICE_BIG
 }
