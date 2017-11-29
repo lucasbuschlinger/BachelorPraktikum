@@ -173,25 +173,18 @@
     -->
     <!-- Modules -->
 
-
     <!-- Module OpenDiabetes -->
-
     <dirname property="module.opendiabetes.basedir" file="${ant.file}"/>
-
-
     <property name="module.jdk.home.opendiabetes" value="${project.jdk.home}"/>
     <property name="module.jdk.bin.opendiabetes" value="${project.jdk.bin}"/>
     <property name="module.jdk.classpath.opendiabetes" value="${project.jdk.classpath}"/>
-
     <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
-
     <property name="opendiabetes.output.dir" value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
     <property name="opendiabetes.testoutput.dir" value="${module.opendiabetes.basedir}/out/test"/>
 
     <path id="opendiabetes.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
     </path>
-
     <path id="opendiabetes.module.production.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <path refid="library.groovy-1.8.6.classpath"/>
@@ -204,7 +197,6 @@
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
     </path>
-
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
         <path refid="library.groovy-1.8.6.classpath"/>
@@ -217,7 +209,6 @@
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
     </path>
-
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -231,7 +222,6 @@
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
     </path>
-
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -245,16 +235,12 @@
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
     </path>
-
-
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
     </patternset>
-
     <patternset id="excluded.from.compilation.opendiabetes">
         <patternset refid="excluded.from.module.opendiabetes"/>
     </patternset>
-
     <path id="opendiabetes.module.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="src"/>
@@ -262,18 +248,14 @@
             <include name="plugins"/>
         </dirset>
     </path>
-
     <path id="opendiabetes.module.test.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="test"/>
         </dirset>
     </path>
-
-
     <target name="compile.module.opendiabetes"
             depends="compile.module.opendiabetes.production"
             description="Compile module OpenDiabetes"/>
-
     <target name="compile.module.opendiabetes.production"
             description="Compile module OpenDiabetes; production classes">
         <mkdir dir="${opendiabetes.output.dir}"/>
@@ -324,7 +306,6 @@
             </fileset>
         </copy>
     </target>
-
     <target name="clean.module.opendiabetes" description="cleanup module">
         <delete dir="${opendiabetes.output.dir}"/>
         <delete dir="${opendiabetes.testoutput.dir}"/>

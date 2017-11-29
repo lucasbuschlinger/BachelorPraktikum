@@ -52,7 +52,6 @@ public class MedtronicImporterTest {
         manager.enablePlugin("MedtronicImporter");
         manager.startPlugins();
         Assert.assertTrue(manager.enablePlugin("MedtronicImporter"));
-
     }
 
     /**
@@ -60,10 +59,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void callPlugin() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));//{
-        //    @Override
-        //    public RuntimeMode getRuntimeMode(){return RuntimeMode.byName("development");}
-        //};
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.enablePlugin("MedtronicImporter");
         manager.startPlugin("MedtronicImporter");
@@ -76,13 +72,13 @@ public class MedtronicImporterTest {
      * Test for the path setter and getter
      */
     @Test
-    public void setGetPath() {
+    public void setGetPath(){
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("MedtronicImporter");
-        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-        medtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", medtronicImporter.getImportFilePath());
+        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
+        MedtronicImporter.setPath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", MedtronicImporter.getPath());
     }
 
     /**
