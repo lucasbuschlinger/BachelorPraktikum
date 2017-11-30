@@ -22,7 +22,7 @@ package de.opendiabetes.vault.plugin.importer.validator;
 public class NonValidator extends CSVValidator {
 
     public NonValidator() {
-        super(new String[]{}, new String[]{});
+        super(new String[] {}, new String[] {});
     }
 
 }

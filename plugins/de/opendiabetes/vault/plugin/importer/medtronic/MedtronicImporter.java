@@ -1,23 +1,27 @@
 /**
  * Copyright (C) 2017 OpenDiabetes
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package de.opendiabetes.vault.plugin.importer.medtronic;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.container.*;
+import de.opendiabetes.vault.container.MedtronicAlertCodes;
+import de.opendiabetes.vault.container.MedtronicAnnotatedVaultEntry;
+import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.container.VaultEntryAnnotation;
+import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
 import de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator;
 import org.pf4j.Extension;
@@ -55,6 +59,7 @@ public class MedtronicImporter extends Plugin {
     @Extension
     public static class MedtronicImporterImplementation extends CSVImporter {
 
+        //TODO javadoc for all Patterns
         /**
          * Pattern to indicate amount of TODO.
          */
@@ -74,30 +79,15 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Constructor.
-         * TODO: Deprecated?
-         * @param importFilePath Path to the import file.
          */
-        public MedtronicImporterImplementation(final String importFilePath) {
-            this(importFilePath, ',');
+        public MedtronicImporterImplementation() {
+            super(new MedtronicCSVValidator(), ',');
         }
 
-        /**
-         * Constructor.
-         * TODO: deprecated?
-         * @param importFilePath Path to the import file.
-         * @param delimiter Delimiter used in the import file.
-         */
-        public MedtronicImporterImplementation(final String importFilePath, final char delimiter) {
-            super(importFilePath, new MedtronicCSVValidator(), delimiter);
-        }
-
-        /**
-         * Default constructor used by PluginManagers.
-         */
-        public MedtronicImporterImplementation() { }
 
         /**
          * Method to extract double entries from the import file.
+         * //TODO add an example
          * @param timestamp The timestamp when the entry was generated.
          * @param type The of the entry.
          * @param rawValues Raw values of the entry.
@@ -119,7 +109,7 @@ public class MedtronicImporter extends Plugin {
                                 value);
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -146,7 +136,7 @@ public class MedtronicImporter extends Plugin {
                         return entry;
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -175,7 +165,7 @@ public class MedtronicImporter extends Plugin {
                                 oldEntry, rawType);
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -189,6 +179,7 @@ public class MedtronicImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(String path) {
+            LOG.log(Level.WARNING, "MedtronicImporter does not support configuration");
             return false;
         }
 
@@ -198,16 +189,16 @@ public class MedtronicImporter extends Plugin {
          */
         @Override
         protected void preprocessingIfNeeded(String filePath) {
-            // test for delimiter
+            //TODO test for delimiter
             CsvReader creader = null;
             try {
                 // test for , delimiter
                 creader = new CsvReader(filePath, ',', Charset.forName("UTF-8"));
                 for (int i = 0; i < 15; i++) { // just scan the first 15 lines for a valid header
                     if (creader.readHeaders()) {
-                        if (validator.validateHeader(creader.getHeaders())) {
+                        if (getValidator().validateHeader(creader.getHeaders())) {
                             // found valid header --> finish
-                            delimiter = ',';
+                            setDelimiter(',');
                             creader.close();
                             LOG.log(Level.FINE, "Use ',' as delimiter for Carelink CSV: {0}", filePath);
                             return;
@@ -216,7 +207,7 @@ public class MedtronicImporter extends Plugin {
                 }
                 // if you end up here there was no valid header within the range
                 // try the other delimiter in normal operation
-                delimiter = ';';
+                setDelimiter(';');//TODO why is this enough to proceed processing?
                 LOG.log(Level.FINE, "Use ';' as delimiter for Carelink CSV: {0}", filePath);
 
             } catch (IOException ex) {
@@ -238,7 +229,7 @@ public class MedtronicImporter extends Plugin {
         @Override
         protected List<VaultEntry> parseEntry(CsvReader creader) throws Exception {
             List<VaultEntry> retVal = new ArrayList<>();
-            MedtronicCSVValidator parseValidator = (MedtronicCSVValidator) validator;
+            MedtronicCSVValidator parseValidator = (MedtronicCSVValidator) getValidator();
 
             MedtronicCSVValidator.TYPE type = parseValidator.getCarelinkType(creader);
             if (type == null) {
@@ -254,7 +245,8 @@ public class MedtronicImporter extends Plugin {
                 // try again with seperated fields
                 timestamp = parseValidator.getManualTimestamp(creader);
             }
-            if (timestamp == null) {
+            if (timestamp == null) {//decided not to remove this code as suggested by FindBugs
+                LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
                 return null;
             }
             String rawValues = parseValidator.getRawValues(creader);

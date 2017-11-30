@@ -47,9 +47,10 @@ public class SlidingWindow {
 
     /**
      * Constructor for a sliding window.
+     *
      * @param windowSizeInMinutes The window size.
-     * @param typeToReactOn Type to filter for.
-     * @param outputFilterSize Size of the output filter.
+     * @param typeToReactOn       Type to filter for.
+     * @param outputFilterSize    Size of the output filter.
      */
     public SlidingWindow(long windowSizeInMinutes, VaultEntryType typeToReactOn, double outputFilterSize) {
         this.windowSizeInMinutes = windowSizeInMinutes;

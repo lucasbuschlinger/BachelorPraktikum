@@ -1,16 +1,16 @@
 /**
  * Copyright (C) 2017 OpenDiabetes
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -24,6 +24,8 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Tests for the MedtronicImporter plugin.
@@ -72,14 +74,48 @@ public class MedtronicImporterTest {
      * Test for the path setter and getter
      */
     @Test
-    public void setGetPath(){
+    public void setGetPath() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("MedtronicImporter");
         Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
-        MedtronicImporter.setPath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", MedtronicImporter.getPath());
+        MedtronicImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
     }
+
+    @Test
+    public void printLogOnLoadConfiguration() {
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin("MedtronicImporter");
+        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
+        Handler h;
+
+        MedtronicImporter.LOG.addHandler(new Handler() {
+            String logOut = "";
+            int msgs_recieved = 0;
+
+            @Override
+            public void publish(LogRecord record) {
+                logOut += record.getLevel().getName() + ": " + record.getMessage();
+                Assert.assertEquals("WARNING: MedtronicImporter does not support configuration", logOut);
+                msgs_recieved++;
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                Assert.assertEquals(1, msgs_recieved);
+            }
+        });
+        Assert.assertFalse(MedtronicImporter.loadConfiguration("path/to/configuration"));
+        MedtronicImporter.LOG.getHandlers()[0].close();
+    }
+
+    //TODO add test for notifyMechanism
 
     /**
      * Test for invalid path
