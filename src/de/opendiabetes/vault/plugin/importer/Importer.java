@@ -1,3 +1,19 @@
+/**
+ * Copyright (C) 2017 OpenDiabetes
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package de.opendiabetes.vault.plugin.importer;
 
 import de.opendiabetes.vault.container.RawEntry;
@@ -11,49 +27,90 @@ import java.util.logging.Logger;
 /**
  * @author Magnus Gärtner
  * @author Lucas Buschlinger
- * This interface specifies the methods shared by all importers
- * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up
+ * This interface specifies the methods shared by all importers.
+ * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
+ * Therefore all importer plugins must implement this interface to get recognized as importer
  */
-public interface Importer extends ExtensionPoint{
+public interface Importer extends ExtensionPoint {
 
     /**
-     * The logger which all importers must have
+     * Logger object of all Importers. Loggs all messages of the importers to a human readable file//TODO which file?
      */
-    Logger LOG = Logger.getLogger(Importer.class.getName());
+    public static final Logger LOG = Logger.getLogger(Importer.class.getName());
+
 
     /**
-     * Setter for the import path
-     * @param importFilePath path to the import file
-     */
-    void setImportFilePath(String importFilePath);
-
-    /**
-     * Getter for the import path
-     * @return importFilePath, path to the import file
+     * Getter for the importFilePath.
+     *
+     * @return The path to the import file.
      */
     String getImportFilePath();
 
     /**
-     * Imports the data from the file
-     * @param path Path to the file to be imported
-     * @return boolean true if data was imported, false otherwise
+     * Setter for the importFilePath.
+     *
+     * @param path The path to the import file.
      */
-    boolean importData(String path);
+    void setImportFilePath(String path);
 
     /**
-     * Getter for the imported data
-     * @return List of VaultEntry consisting of the imported data
+     * Imports the data from the file specified by @see Importer.setImportFilePath()
+     *
+     * @return boolean true if data was imported, false otherwise
+     */
+    boolean importData();
+
+    /**
+     * Getter for the imported data.
+     *
+     * @return List of VaultEntry consisting of the imported data.
      * @see de.opendiabetes.vault.container.VaultEntry
      */
     List<VaultEntry> getImportedData();
 
     /**
-     * Getter for the raw imported data
-     * @return List of RawEntry consisting of the raw imported data
+     * Getter for the raw imported data.
+     *
+     * @return List of RawEntry consisting of the raw imported data.
      * @see de.opendiabetes.vault.container.RawEntry
      */
     List<RawEntry> getImportedRawData();
 
-    //Logger getLogger();
+    /**
+     * clears all Imported(Raw)Data.
+     * {@link Importer#getImportedData()},
+     * {@link Importer#getImportedRawData()}
+     * will return empty lists afterwards
+     */
+    void clearData();
 
+    /**
+     * Method to load the plugin's configuration file.
+     *
+     * @param path Path to the configuration file.
+     * @return True if configuration can be loaded, false otherwise.
+     */
+    boolean loadConfiguration(String path);
+
+    /**
+     * Method to register listeners to the Plugins.
+     * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update
+     *
+     * @param listener A listener.
+     */
+    void registerStatusCallback(StatusListener listener);
+
+    /**
+     * Interface which defines the methods called on a status update
+     * must be implemented by any listener of this plugin to handle the status update
+     */
+    interface StatusListener {
+        /**
+         * is called multiple times on all listeners during the import process to notify them about the import progress
+         *
+         * @param progress Percentage of completion.
+         * @param status   Current Status.
+         */
+        void onStatusCallback(int progress, String status);
+    }
 }

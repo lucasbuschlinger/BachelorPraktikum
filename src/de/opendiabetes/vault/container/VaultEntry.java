@@ -31,6 +31,7 @@ import java.util.Objects;
 
 /**
  * This class defines a vault entry
+ *
  * @author mswin
  */
 @DatabaseTable(tableName = "VaultEntries")
@@ -38,8 +39,6 @@ public class VaultEntry implements Serializable {
 
     public static final double VALUE_UNUSED = -5.0;
     public static final long ID_UNUSED = -5L;
-    private final Gson gson;
-
     // for QueryBuilder to be able to find the fields
     public static final String ID_FIELD_NAME = "id";
     public static final String TYPE_FIELD_NAME = "type";
@@ -48,7 +47,7 @@ public class VaultEntry implements Serializable {
     public static final String VALUE2_FIELD_NAME = "value2";
     public static final String RAW_ID_FIELD_NAME = "rawId";
     public static final String ANNOTATION_FIELD_NAME = "annotation";
-
+    private final Gson gson;
     /**
      * The id of the VaultEntry
      */
@@ -108,9 +107,10 @@ public class VaultEntry implements Serializable {
 
     /**
      * A constructor of VaultEntry, setting the type, timestamp and value of the VaultEntry
-     * @param type The parameter that type will be set to
+     *
+     * @param type      The parameter that type will be set to
      * @param timestamp The parameter that timestamp will be set to
-     * @param value The parameter that value will be set to
+     * @param value     The parameter that value will be set to
      */
     public VaultEntry(VaultEntryType type, Date timestamp, double value) {
         this();
@@ -121,7 +121,8 @@ public class VaultEntry implements Serializable {
 
     /**
      * A constructor of VaultEntry, setting the type and timestamp of the VaultEntry as well as the default for value
-     * @param type The parameter that type will be set to
+     *
+     * @param type      The parameter that type will be set to
      * @param timestamp The parameter that timestamp will be set to
      */
     public VaultEntry(VaultEntryType type, Date timestamp) {
@@ -133,10 +134,11 @@ public class VaultEntry implements Serializable {
 
     /**
      * A constructor of VaultEntry, setting the type, timestamp, value and value2 of the VaultEntry
-     * @param type The parameter that type will be set to
+     *
+     * @param type      The parameter that type will be set to
      * @param timestamp The parameter that timestamp will be set to
-     * @param value The parameter that value will be set to
-     * @param value2 The parameter that value2 will be set to
+     * @param value     The parameter that value will be set to
+     * @param value2    The parameter that value2 will be set to
      */
     public VaultEntry(VaultEntryType type, Date timestamp, double value, double value2) {
         this(type, timestamp, value);
@@ -145,9 +147,10 @@ public class VaultEntry implements Serializable {
 
     /**
      * A constructor of VaultEntry, setting the type, timestamp, value and annotations of the VaultEntry
-     * @param type The parameter that type will be set to
-     * @param timestamp The parameter that timestamp will be set to
-     * @param value The parameter that value will be set to
+     *
+     * @param type        The parameter that type will be set to
+     * @param timestamp   The parameter that timestamp will be set to
+     * @param value       The parameter that value will be set to
      * @param annotations The parameter that annotations will be set to
      */
     public VaultEntry(VaultEntryType type, Date timestamp, double value, List<VaultEntryAnnotation> annotations) {
@@ -157,10 +160,11 @@ public class VaultEntry implements Serializable {
 
     /**
      * A constructor of VaultEntry, setting the type, timestamp, value, value2 and annotations of the VaultEntry
-     * @param type The parameter that type will be set to
-     * @param timestamp The parameter that timestamp will be set to
-     * @param value The parameter that value will be set to
-     * @param value2 The parameter that value2 will be set to
+     *
+     * @param type        The parameter that type will be set to
+     * @param timestamp   The parameter that timestamp will be set to
+     * @param value       The parameter that value will be set to
+     * @param value2      The parameter that value2 will be set to
      * @param annotations The parameter that annotations will be set to
      */
     public VaultEntry(VaultEntryType type, Date timestamp, double value, double value2, List<VaultEntryAnnotation> annotations) {
@@ -171,6 +175,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * A constructor of VaultEntry, copying all values of the VaultEntry passed as argument
+     *
      * @param copy The VaultEntry whose fields will be copied
      */
     public VaultEntry(VaultEntry copy) {
@@ -184,6 +189,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for id
+     *
      * @return the id of the VaultEntry
      */
     public long getId() {
@@ -192,14 +198,16 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for type
+     *
      * @return The type of the VaultEntry
      */
     public VaultEntryType getType() {
         return type;
     }
-    
+
     /**
      * Setter for type
+     *
      * @param type The value that type will be set to
      */
     public void setType(VaultEntryType type) {
@@ -208,6 +216,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for timestamp
+     *
      * @return The timestamp of the VaultEntry
      */
     public Date getTimestamp() {
@@ -216,15 +225,17 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for value
+     *
      * @return The value of the VaultEntry
      */
     public double getValue() {
         return value;
     }
 
-    
+
     /**
      * Setter for value
+     *
      * @param value The parameter that value will be set to
      */
     public void setValue(double value) {
@@ -233,6 +244,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for rawId
+     *
      * @return The rawId of the VaultEntry
      */
     public long getRawId() {
@@ -241,6 +253,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * Setter for rawId
+     *
      * @param rawId The value that rawId will be set to
      */
     public void setRawId(long rawId) {
@@ -249,6 +262,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for value2
+     *
      * @return value2 of the VaultEntry
      */
     public double getValue2() {
@@ -257,6 +271,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * Setter for value2
+     *
      * @param value2 The parameter that value2 will be set to
      */
     public void setValue2(double value2) {
@@ -265,15 +280,17 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for annotations
+     *
      * @return annotations of the VaultEntry
      */
     public List<VaultEntryAnnotation> getAnnotations() {
         annotationsFromJason();
         return annotations;
     }
-    
+
     /**
      * Adds an annotation to the current list of annotations
+     *
      * @param annotation The annotation to be added
      */
     public void addAnnotation(VaultEntryAnnotation annotation) {
@@ -283,6 +300,7 @@ public class VaultEntry implements Serializable {
 
     /**
      * Sets the VaultEntry's list of annotations
+     *
      * @param annotations The list of annotations to be used
      */
     public void setAnnotation(ArrayList<VaultEntryAnnotation> annotations) {
@@ -292,13 +310,14 @@ public class VaultEntry implements Serializable {
 
     /**
      * Getter for annotationsAsJson
+     *
      * @return The VaultEntry's annotationsAsJson
      */
     public String getAnnotationsAsJson() {
         return annotationsAsJson;
     }
 
-    // TODO JavaDoc for methods below?
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -357,18 +376,17 @@ public class VaultEntry implements Serializable {
         if (!annotationsAsJson.isEmpty()) {
             annotations = gson.fromJson(annotationsAsJson,
                     new TypeToken<List<VaultEntryAnnotation>>() {
-            }.getType());
+                    }.getType());
         }
         annotationsAsJson = "";
     }
 
     /**
      * Sets annotationsAsJson and converts the annotations from json to List of VaultEntryAnnotation
+     *
      * @param asString
      */
-    
-    // fix typo?
-    public void setAnnotaionFromJson(String asString) {
+    public void setAnnotationFromJson(String asString) {
         if (asString != null && !asString.isEmpty()) {
             this.annotationsAsJson = asString;
             annotationsFromJason();

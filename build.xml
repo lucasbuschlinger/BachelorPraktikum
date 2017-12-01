@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="bp" default="all" xmlns:mx="antlib:org.moxie">
+<project name="bp" default="plugin">
 
 
     <property file="build.properties"/>
@@ -106,6 +106,14 @@
         <pathelement location="${basedir}/lib/sqltool.jar"/>
     </path>
 
+    <path id="library.junit.classpath">
+        <pathelement location="${basedir}/testlib/junit-4.12.jar"/>
+    </path>
+
+    <path id="library.ant-junit.classpath">
+        <pathelement location="${basedir}/testlib/ant-junit.jar"/>
+    </path>
+
     <path id="library.pf4j-2.0.0.classpath">
         <pathelement location="${basedir}/lib/pf4j-2.0.0.jar"/>
     </path>
@@ -156,33 +164,31 @@
         <pathelement location="${javac2.home}/asm-all.jar"/>
         <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
     </path>
+    <!--
     <target name="register.custom.compilers">
         <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
         <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions"
                  classpathref="javac2.classpath"/>
     </target>
-
+    -->
     <!-- Modules -->
 
-
     <!-- Module OpenDiabetes -->
-
     <dirname property="module.opendiabetes.basedir" file="${ant.file}"/>
-
-
     <property name="module.jdk.home.opendiabetes" value="${project.jdk.home}"/>
     <property name="module.jdk.bin.opendiabetes" value="${project.jdk.bin}"/>
-    <property name="module.jdk.classpath.opendiabetes" value="${project.jdk.classpath}"/>
-
-    <property name="compiler.args.opendiabetes" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
-
-    <property name="opendiabetes.output.dir" value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
-    <property name="opendiabetes.testoutput.dir" value="${module.opendiabetes.basedir}/out/test/OpenDiabetes"/>
+    <property name="module.jdk.classpath.opendiabetes"
+              value="${project.jdk.classpath}"/>
+    <property name="compiler.args.opendiabetes"
+              value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+    <property name="opendiabetes.output.dir"
+              value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
+    <property name="opendiabetes.testoutput.dir"
+              value="${module.opendiabetes.basedir}/out/test"/>
 
     <path id="opendiabetes.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
     </path>
-
     <path id="opendiabetes.module.production.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <path refid="library.groovy-1.8.6.classpath"/>
@@ -192,8 +198,9 @@
         <path refid="library.log4j-1.2.16.classpath"/>
         <path refid="library.slf4j-api-1.7.5.classpath"/>
         <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.junit.classpath"/>
+        <path refid="library.ant-junit.classpath"/>
     </path>
-
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
         <path refid="library.groovy-1.8.6.classpath"/>
@@ -203,8 +210,9 @@
         <path refid="library.log4j-1.2.16.classpath"/>
         <path refid="library.slf4j-api-1.7.5.classpath"/>
         <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.junit.classpath"/>
+        <path refid="library.ant-junit.classpath"/>
     </path>
-
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -215,8 +223,9 @@
         <path refid="library.log4j-1.2.16.classpath"/>
         <path refid="library.slf4j-api-1.7.5.classpath"/>
         <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.junit.classpath"/>
+        <path refid="library.ant-junit.classpath"/>
     </path>
-
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -227,48 +236,43 @@
         <path refid="library.log4j-1.2.16.classpath"/>
         <path refid="library.slf4j-api-1.7.5.classpath"/>
         <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.junit.classpath"/>
+        <path refid="library.ant-junit.classpath"/>
     </path>
-
-
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
     </patternset>
-
     <patternset id="excluded.from.compilation.opendiabetes">
         <patternset refid="excluded.from.module.opendiabetes"/>
     </patternset>
-
     <path id="opendiabetes.module.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="src"/>
             <include name="lib"/>
-            <!--include name="plugins"/ -->
+            <include name="plugins"/>
         </dirset>
     </path>
-
     <path id="opendiabetes.module.test.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="test"/>
         </dirset>
     </path>
-
-
     <target name="compile.module.opendiabetes"
-            depends="compile.module.opendiabetes.production,compile.module.opendiabetes.tests"
+            depends="compile.module.opendiabetes.production"
             description="Compile module OpenDiabetes"/>
-
-    <target name="compile.module.opendiabetes.production" depends="register.custom.compilers"
+    <target name="compile.module.opendiabetes.production"
             description="Compile module OpenDiabetes; production classes">
         <mkdir dir="${opendiabetes.output.dir}"/>
-        <javac2 destdir="${opendiabetes.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
-                memorymaximumsize="${compiler.max.memory}" fork="true"
-                executable="${module.jdk.bin.opendiabetes}/javac">
+        <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}"
+               nowarn="${compiler.generate.no.warnings}"
+               memorymaximumsize="${compiler.max.memory}" fork="true">
+            <!--executable="${java.home}/lib">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
             <classpath refid="opendiabetes.module.production.classpath"/>
             <src refid="opendiabetes.module.sourcepath"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
-        </javac2>
+        </javac>
 
         <copy todir="${opendiabetes.output.dir}">
             <fileset dir="${module.opendiabetes.basedir}/src">
@@ -287,18 +291,21 @@
     </target>
 
     <target name="compile.module.opendiabetes.tests"
-            depends="register.custom.compilers,compile.module.opendiabetes.production"
-            description="compile module OpenDiabetes; test classes" unless="skip.tests">
+            depends="compile.module.opendiabetes.production"
+            description="compile module OpenDiabetes; test classes"
+            unless="skip.tests">
         <mkdir dir="${opendiabetes.testoutput.dir}"/>
-        <javac2 destdir="${opendiabetes.testoutput.dir}" debug="${compiler.debug}"
-                nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true"
-                executable="${module.jdk.bin.opendiabetes}/javac">
+        <javac destdir="${opendiabetes.testoutput.dir}"
+               debug="${compiler.debug}"
+               nowarn="${compiler.generate.no.warnings}"
+               memorymaximumsize="${compiler.max.memory}" fork="true">
+            <!--executable="${module.jdk.bin.opendiabetes}/javac">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
             <classpath refid="opendiabetes.module.classpath"/>
             <src refid="opendiabetes.module.test.sourcepath"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
-        </javac2>
+        </javac>
 
         <copy todir="${opendiabetes.testoutput.dir}">
             <fileset dir="${module.opendiabetes.basedir}/test">
@@ -307,18 +314,19 @@
             </fileset>
         </copy>
     </target>
-
     <target name="clean.module.opendiabetes" description="cleanup module">
         <delete dir="${opendiabetes.output.dir}"/>
         <delete dir="${opendiabetes.testoutput.dir}"/>
-        <delete dir="PLUGINS"></delete>
+        <delete dir="plugins_out"/>
+        <delete dir="export"/>
     </target>
 
     <target name="init" description="Build initialization">
         <!-- Perform any build initialization in this target -->
     </target>
 
-    <target name="clean" depends="clean.module.opendiabetes" description="cleanup all"/>
+    <target name="clean" depends="clean.module.opendiabetes"
+            description="cleanup all"/>
 
     <path id="libs-classpath">
         <fileset dir="lib">
@@ -339,23 +347,105 @@
             </fileset>
         </foreach>
 
-        <property name="plugin.src.base" value="plugins/de/opendiabetes/vault/plugin"/>
+        <property name="plugin.src.base"
+                  value="plugins/de/opendiabetes/vault/plugin"/>
     </target>
 
     <target name="plugin.compile">
         <dirname file="${att1}" property="plugin.src.path"/>
 
         <property file="${plugin.src.path}/plugin.properties"/>
-        <delete dir="PLUGINS"/>
-        <mkdir dir="PLUGINS/classes"/>
-        <mkdir dir="PLUGINS/lib"/>
+        <delete dir="plugins_out"/>
+        <mkdir dir="plugins_out/classes"/>
+        <mkdir dir="plugins_out/lib"/>
         <mkdir dir="export"/>
-        <copydir src="lib" dest="PLUGINS/lib"/>
-        <copyfile src="${plugin.src.path}/plugin.properties" dest="PLUGINS/plugin.properties"/>
-        <javac srcdir="${plugin.src.path}" destdir="PLUGINS/classes" classpathref="opendiabetes.module.classpath"/>
-        <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip" basedir="PLUGINS"/>
+        <copydir src="lib" dest="plugins_out/lib"/>
+        <copyfile src="${plugin.src.path}/plugin.properties"
+                  dest="plugins_out/plugin.properties"/>
+        <javac srcdir="${plugin.src.path}" destdir="plugins_out/classes"
+               classpathref="opendiabetes.module.classpath"/>
+        <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip"
+             basedir="plugins_out"/>
     </target>
 
+    <tstamp>
+        <format property="timestamp" pattern="yyyyMMdd-HHmmss"
+                locale="de,GERMANY"/>
+    </tstamp>
+
+    <!-- Working checkstyle task! -->
+    <taskdef
+            resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+            classpath="${basedir}/testlib/checkstyle-8.5-all.jar"/>
+    <target name="checkstyle">
+        <checkstyle config="reports/resources/checkstyle/sun_checks.xml"
+                    failonviolation="false">
+            <fileset dir="src/" includes="**/*.java"/>
+            <fileset dir="plugins/de" includes="**/*.java"/>
+            <formatter type="xml"
+                       tofile="reports/resources/checkstyle/checkstyle_errors.xml"/>
+        </checkstyle>
+
+        <xslt in="reports/resources/checkstyle/checkstyle_errors.xml"
+              out="reports/checkstyle_errors${timestamp}.html"
+              style="reports/resources/checkstyle/checkstyle.xsl"/>
+    </target>
+
+    <!-- Working findbugs task!-->
+    <taskdef name="findbugs"
+             classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+             classpath="${basedir}/testlib/findbugs-ant.jar"/>
+    <property name="findbugs.home" value="reports/resources/findbugs"/>
+    <target name="findbugs" depends="plugin">
+        <findbugs home="${findbugs.home}"
+                  output="html"
+                  outputFile="reports/findbugs_report${timestamp}.html">
+            <!--<auxClasspath path="${basedir}/lib/Regex.jar" />-->
+            <!--<sourcePath path="${basedir}/src/" />-->
+            <class location="${basedir}/out/production/OpenDiabetes/de"/>
+        </findbugs>
+    </target>
+
+    <!-- Classpath for JUnit runner, links JARs and class files-->
+    <path id="junit.class.path">
+        <fileset dir="lib" includes="*.jar"/>
+        <fileset dir="testlib" includes="*.jar"/>
+        <pathelement path="out/production/OpenDiabetes"/>
+        <pathelement path="out/test"/>
+    </path>
+
+
+    <!-- Working JUnit task!-->
+    <taskdef name="junit"
+             classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
+             classpath="${basedir}/testlib/junit.jar"/>
+    <target name="test" depends="plugin, compile.module.opendiabetes.tests">
+        <mkdir dir="reports/resources/junit"/>
+        <property name="junit.path" refid="junit.class.path"/>
+        <junit>
+            <classpath refid="junit.class.path"/>
+            <formatter type="xml"/>
+
+            <batchtest todir="reports/resources/junit">
+                <fileset dir="test">
+                    <include name="**/*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <junitreport todir="reports/resources/junit"
+                     tofile="aggreageted-junitreport.xml">
+            <fileset dir="reports/resources/junit">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="noframes" todir="reports/tests"/>
+        </junitreport>
+        <move file="reports/tests/junit-noframes.html"
+              tofile="reports/tests/junit-tests-${timestamp}.html"/>
+        <delete dir="reports/resources/junit"/>
+    </target>
+
+    <target name="reports" depends="test, checkstyle,findbugs"/>
 
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>

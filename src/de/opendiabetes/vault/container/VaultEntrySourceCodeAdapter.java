@@ -18,8 +18,8 @@ package de.opendiabetes.vault.container;
 /*
 import de.opendiabetes.vault.util.TimestampUtils;
 */
+
 /**
- *
  * @author juehv
  */
 public class VaultEntrySourceCodeAdapter {
