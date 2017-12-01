@@ -1,0 +1,182 @@
+/*
+ * Copyright (C) 2017 OpenDiabetes
+ * <p>
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package de.opendiabetes.vault.plugin.importer.sony;
+
+import com.csvreader.CsvReader;
+import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.container.VaultEntryAnnotation;
+import de.opendiabetes.vault.container.VaultEntryType;
+import de.opendiabetes.vault.plugin.importer.CSVImporter;
+import de.opendiabetes.vault.plugin.importer.validator.SonySWR12Validator;
+import de.opendiabetes.vault.plugin.util.EasyFormatter;
+import org.pf4j.Extension;
+import org.pf4j.Plugin;
+import org.pf4j.PluginWrapper;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Wrapper class for the SonySWR21Importer plugin.
+ * @author Lucas Buschlinger
+ */
+public class SonySWR21Importer extends Plugin {
+
+    /**
+     * Constructor for the PluginManager.
+     * @param wrapper The PluginManager.
+     */
+    public SonySWR21Importer(final PluginWrapper wrapper) {
+        super(wrapper);
+    }
+
+    /**
+     * Actual implementation of the Sony SWR21 importer plugin.
+     */
+    @Extension
+    public static class SonySWR21ImporterImplementation extends CSVImporter {
+
+        /**
+         * Constructor.
+         */
+        public SonySWR21ImporterImplementation() {
+            super(new SonySWR12Validator(), ',');
+        }
+
+        /**
+         * Parser for Sony SWR21 CSV data.
+         * @param creader The CSV reader.
+         * @return List of VaultEntry holding the parsed data.
+         * @throws Exception If Sony SWR21 CSV file can not be parsed.
+         */
+        @Override
+        protected List<VaultEntry> parseEntry(CsvReader creader) throws Exception {
+            List<VaultEntry> retVal = new ArrayList<>();
+            SonySWR12Validator parseValidator = (SonySWR12Validator) getValidator();
+
+            SonySWR12Validator.TYPE type = parseValidator.getSmartbandType(creader);
+            if (type == null) {
+                return null;
+            }
+
+            Date timestamp = parseValidator.getTimestamp(creader);
+            if (timestamp == null) {
+                return null;
+            }
+
+            int rawValue = parseValidator.getValue(creader);
+            long startTime = parseValidator.getStartTime(creader);
+            long endTime = parseValidator.getEndTime(creader);
+            double durationInMinutes = (endTime - startTime) / 60000;
+            VaultEntry tmpEntry = null;
+
+            switch (type) {
+                case SLEEP_LIGHT:
+                    tmpEntry = new VaultEntry(
+                            VaultEntryType.SLEEP_LIGHT,
+                            timestamp,
+                            durationInMinutes);
+                    break;
+                case SLEEP_DEEP:
+                    tmpEntry = new VaultEntry(
+                            VaultEntryType.SLEEP_DEEP,
+                            timestamp,
+                            durationInMinutes);
+                    break;
+                case HEART_RATE:
+                    tmpEntry = new VaultEntry(
+                            VaultEntryType.HEART_RATE,
+                            timestamp,
+                            rawValue);
+                    break;
+                case HEART_RATE_VARIABILITY:
+                    // Algorithm see decompiled SWR12 app --> RelaxStressIntensity Class
+                    int value1 = (int) ((rawValue >>> 8) & 255);
+                    int value2 = (int) (255 & rawValue);
+
+                    if (value1 > 0 && value1 < 100
+                            && value2 > 0 && value2 < 200) {
+                        tmpEntry = new VaultEntry(
+                                VaultEntryType.HEART_RATE_VARIABILITY,
+                                timestamp,
+                                value1);
+                        tmpEntry.setValue2(value2);
+                        retVal.add(tmpEntry);
+
+                        // calculate stress value
+                        value2 -= 100;
+                        double weight = value2 < 0 ? 0.75 : 0.25;
+
+                        double stressValue = 25 - value2 * weight;
+                        tmpEntry = new VaultEntry(
+                                VaultEntryType.STRESS,
+                                timestamp,
+                                stressValue);
+                    }
+
+                    break;
+                case RUN:
+                    tmpEntry = new VaultEntry(
+                            VaultEntryType.EXERCISE_RUN,
+                            timestamp,
+                            durationInMinutes);
+                    tmpEntry.addAnnotation(new VaultEntryAnnotation(
+                            VaultEntryAnnotation.TYPE.EXERCISE_TrackerRun)
+                            .setValue(EasyFormatter.formatDouble(durationInMinutes)));
+                    break;
+                case WALK:
+                    tmpEntry = new VaultEntry(
+                            VaultEntryType.EXERCISE_WALK,
+                            timestamp,
+                            durationInMinutes);
+                    tmpEntry.addAnnotation(new VaultEntryAnnotation(
+                            VaultEntryAnnotation.TYPE.EXERCISE_TrackerWalk)
+                            .setValue(EasyFormatter.formatDouble(durationInMinutes)));
+                    break;
+                default:
+                    Logger.getLogger(this.getClass().getName()).fine("AssertionError");
+                    throw new AssertionError();
+            }
+
+            if (tmpEntry != null) {
+                retVal.add(tmpEntry);
+            }
+            return retVal;
+        }
+
+        /**
+         * Empty preprocessing for Sony data, as it is not necessary for this type of data.
+         * @param filePath Path to the import file.
+         */
+        @Override
+        protected void preprocessingIfNeeded(String filePath) { }
+
+        /**
+         * Method to load configuration file for the SonySWR21Importer plugin.
+         * @param path Path to the configuration file.
+         * @return True when configuration can be loaded, false otherwise.
+         */
+        @Override
+        public boolean loadConfiguration(String path) {
+            LOG.log(Level.WARNING, "SonySWR21Importer does not support configuration.");
+            return false;
+        }
+    }
+}

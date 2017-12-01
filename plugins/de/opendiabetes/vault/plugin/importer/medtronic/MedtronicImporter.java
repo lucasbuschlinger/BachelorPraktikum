@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
 
 /**
  * Wrapper class for the MedtronicImporter plugin.
+ * @author Magnus Gärtner
  */
 public class MedtronicImporter extends Plugin {
 
@@ -118,9 +119,9 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Method to extract only the second entry from a VaultEntry.
-         * @param entry The VaultEntry to extract from-
+         * @param entry The VaultEntry to extract from.
          * @param rawValues The raw values of the entry.
-         * @param pattern The pattern of the entry
+         * @param pattern The pattern of the entry.
          * @param fullEntry The full entry.
          * @return VaultEntry holding only the second entry.
          */
@@ -179,7 +180,7 @@ public class MedtronicImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(String path) {
-            LOG.log(Level.WARNING, "MedtronicImporter does not support configuration");
+            LOG.log(Level.WARNING, "MedtronicImporter does not support configuration.");
             return false;
         }
 
