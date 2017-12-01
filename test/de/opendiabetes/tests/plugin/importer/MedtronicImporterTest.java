@@ -98,7 +98,7 @@ public class MedtronicImporterTest {
             @Override
             public void publish(LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertEquals("WARNING: MedtronicImporter does not support configuration", logOut);
+                Assert.assertTrue(logOut.contains("WARNING: MedtronicImporter does not support configuration"));
                 msgs_recieved++;
             }
 
@@ -108,7 +108,7 @@ public class MedtronicImporterTest {
 
             @Override
             public void close() throws SecurityException {
-                Assert.assertEquals(1, msgs_recieved);
+                Assert.assertTrue(msgs_recieved>0);
             }
         });
         Assert.assertFalse(MedtronicImporter.loadConfiguration("path/to/configuration"));
