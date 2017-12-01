@@ -67,7 +67,7 @@ public class SonySWR21Importer extends Plugin {
          * @throws Exception If Sony SWR21 CSV file can not be parsed.
          */
         @Override
-        protected List<VaultEntry> parseEntry(CsvReader creader) throws Exception {
+        protected List<VaultEntry> parseEntry(final CsvReader creader) throws Exception {
             List<VaultEntry> retVal = new ArrayList<>();
             SonySWR12Validator parseValidator = (SonySWR12Validator) getValidator();
 
@@ -81,10 +81,11 @@ public class SonySWR21Importer extends Plugin {
                 return null;
             }
 
+            final int millisecondsPerHour = 60000;
             int rawValue = parseValidator.getValue(creader);
             long startTime = parseValidator.getStartTime(creader);
             long endTime = parseValidator.getEndTime(creader);
-            double durationInMinutes = (endTime - startTime) / 60000;
+            double durationInMinutes = (endTime - startTime) / (double) millisecondsPerHour;
             VaultEntry tmpEntry = null;
 
             switch (type) {
@@ -108,11 +109,23 @@ public class SonySWR21Importer extends Plugin {
                     break;
                 case HEART_RATE_VARIABILITY:
                     // Algorithm see decompiled SWR12 app --> RelaxStressIntensity Class
-                    int value1 = (int) ((rawValue >>> 8) & 255);
-                    int value2 = (int) (255 & rawValue);
+                    /*
+                     * Constants.
+                     */
+                    final int maxValue8Bits = 255;
+                    final int shift = 8;
+                    final int heartRateLowerBound = 100;
+                    final int heartRateUpperBound = 200;
+                    final int uninitializedStressValue = -100;
+                    final int baseStressValue = 25;
+                    final double highWeight = 0.75;
+                    final double lowWeight = 0.25;
 
-                    if (value1 > 0 && value1 < 100
-                            && value2 > 0 && value2 < 200) {
+                    int value1 = (rawValue >>> shift) & maxValue8Bits;
+                    int value2 = maxValue8Bits & rawValue;
+
+                    if (value1 > 0 && value1 < heartRateLowerBound
+                            && value2 > 0 && value2 < heartRateUpperBound) {
                         tmpEntry = new VaultEntry(
                                 VaultEntryType.HEART_RATE_VARIABILITY,
                                 timestamp,
@@ -121,10 +134,10 @@ public class SonySWR21Importer extends Plugin {
                         retVal.add(tmpEntry);
 
                         // calculate stress value
-                        value2 -= 100;
-                        double weight = value2 < 0 ? 0.75 : 0.25;
+                        value2 -= uninitializedStressValue;
+                        double weight = value2 < 0 ? highWeight : lowWeight;
 
-                        double stressValue = 25 - value2 * weight;
+                        double stressValue = baseStressValue - value2 * weight;
                         tmpEntry = new VaultEntry(
                                 VaultEntryType.STRESS,
                                 timestamp,
@@ -166,15 +179,15 @@ public class SonySWR21Importer extends Plugin {
          * @param filePath Path to the import file.
          */
         @Override
-        protected void preprocessingIfNeeded(String filePath) { }
+        protected void preprocessingIfNeeded(final String filePath) { }
 
         /**
          * Method to load configuration file for the SonySWR21Importer plugin.
-         * @param path Path to the configuration file.
+         * @param filePath Path to the configuration file.
          * @return True when configuration can be loaded, false otherwise.
          */
         @Override
-        public boolean loadConfiguration(String path) {
+        public boolean loadConfiguration(final String filePath) {
             LOG.log(Level.WARNING, "SonySWR21Importer does not support configuration.");
             return false;
         }

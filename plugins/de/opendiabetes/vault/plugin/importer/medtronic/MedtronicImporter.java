@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -62,21 +62,61 @@ public class MedtronicImporter extends Plugin {
 
         //TODO javadoc for all Patterns
         /**
-         * Pattern to indicate amount of TODO.
+         * Pattern to indicate amount.
          */
         private static final Pattern AMOUNT_PATTERN = Pattern.compile("(.*\\s)?AMOUNT=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate ISIG.
+         */
         private static final Pattern ISIG_PATTERN = Pattern.compile("(.*\\s)?ISIG=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate rate.
+         */
         private static final Pattern RATE_PATTERN = Pattern.compile("(.*\\s)?RATE=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
-        private static final Pattern CARB_INPUT_PATTERN = Pattern.compile("(.*\\s)?CARB_INPUT=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate carbohydrate input.
+         */
+        private static final Pattern CARB_INPUT_PATTERN = Pattern.compile("(.*\\s)?CARB_INPUT=(\\d+([\\.,]\\d+)?).*",
+                Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate BG input.
+         */
         private static final Pattern BG_INPUT_PATTERN = Pattern.compile("(.*\\s)?BG_INPUT=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate duration.
+         */
         private static final Pattern DURATION_PATTERN = Pattern.compile("(.*\\s)?DURATION=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to raw type.
+         */
         private static final Pattern RAW_TYPE_PATTERN = Pattern.compile("(.*\\s)?RAW_TYPE=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
-        private static final Pattern ALARM_TYPE_PATTERN = Pattern.compile("(.*\\s)?ALARM_TYPE=(\\d+([\\.,]\\d+)?).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate alarm type.
+         */
+        private static final Pattern ALARM_TYPE_PATTERN = Pattern.compile("(.*\\s)?ALARM_TYPE=(\\d+([\\.,]\\d+)?).*",
+                Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate state.
+         */
         private static final Pattern STATE_PATTERN = Pattern.compile("(.*\\s)?STATE=(\\w*).*", Pattern.CASE_INSENSITIVE);
-        private static final Pattern PERCENT_OF_RATE_PATTERN = Pattern.compile("(.*\\s)?PERCENT_OF_RATE=(\\w*).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate rate percentage.
+         */
+        private static final Pattern PERCENT_OF_RATE_PATTERN = Pattern.compile("(.*\\s)?PERCENT_OF_RATE=(\\w*).*",
+                Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate meter.
+         */
         private static final Pattern METER_PATTERN = Pattern.compile("(.*\\s)?METER_SERIAL_NUMBER=(\\w*).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate calibration.
+         */
         private static final Pattern CALIBRATION_BG_PATTERN = Pattern.compile("(.*\\s)?LAST_CAL_BG=(\\w*).*", Pattern.CASE_INSENSITIVE);
-        private static final Pattern PREDICTION_PATTERN = Pattern.compile("(.*\\s)?PREDICTED_SENSOR_GLUCOSE_AMOUNT=(\\w*).*", Pattern.CASE_INSENSITIVE);
+        /**
+         * Pattern to indicate prediction.
+         */
+        private static final Pattern PREDICTION_PATTERN = Pattern.compile("(.*\\s)?PREDICTED_SENSOR_GLUCOSE_AMOUNT=(\\w*).*",
+                Pattern.CASE_INSENSITIVE);
 
         /**
          * Constructor.
@@ -100,9 +140,9 @@ public class MedtronicImporter extends Plugin {
                                                      final String rawValues, final Pattern pattern,
                                                      final String[] fullEntry) {
             if (rawValues != null && !rawValues.isEmpty()) {
-                Matcher m = pattern.matcher(rawValues);
-                if (m.matches()) {
-                    String matchedString = m.group(2).replace(",", ".");
+                Matcher matcher = pattern.matcher(rawValues);
+                if (matcher.matches()) {
+                    String matchedString = matcher.group(2).replace(",", ".");
                     try {
                         double value = Double.parseDouble(matchedString);
                         return new VaultEntry(type,
@@ -125,16 +165,17 @@ public class MedtronicImporter extends Plugin {
          * @param fullEntry The full entry.
          * @return VaultEntry holding only the second entry.
          */
-        public static VaultEntry extractSecondValue(VaultEntry entry, final String rawValues,
+        public static VaultEntry extractSecondValue(final VaultEntry entry, final String rawValues,
                                                     final Pattern pattern, final String[] fullEntry) {
-            if (rawValues != null && !rawValues.isEmpty() && entry != null) {
-                Matcher m = pattern.matcher(rawValues);
-                if (m.matches()) {
-                    String matchedString = m.group(2).replace(",", ".");
+            VaultEntry vaultEntry = entry;
+            if (rawValues != null && !rawValues.isEmpty() && vaultEntry != null) {
+                Matcher matcher = pattern.matcher(rawValues);
+                if (matcher.matches()) {
+                    String matchedString = matcher.group(2).replace(",", ".");
                     try {
                         double value = Double.parseDouble(matchedString);
-                        entry.setValue2(value);
-                        return entry;
+                        vaultEntry.setValue2(value);
+                        return vaultEntry;
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
                                 new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
@@ -153,17 +194,18 @@ public class MedtronicImporter extends Plugin {
          * @return The annotated entry.
          */
         private static MedtronicAnnotatedVaultEntry annotateBasalEntry(
-                VaultEntry oldEntry, String rawValues, MedtronicCSVValidator.TYPE rawType,
-                String[] fullEntry) {
-            if (rawValues != null && !rawValues.isEmpty() && oldEntry != null) {
-                Matcher m = DURATION_PATTERN.matcher(rawValues);
-                if (m.matches()) {
-                    String matchedString = m.group(2).replace(",", ".");
+                final VaultEntry oldEntry, final String rawValues, final MedtronicCSVValidator.TYPE rawType,
+                final String[] fullEntry) {
+            VaultEntry oldVaultEntry = oldEntry;
+            if (rawValues != null && !rawValues.isEmpty() && oldVaultEntry != null) {
+                 Matcher matcher = DURATION_PATTERN.matcher(rawValues);
+                if (matcher.matches()) {
+                    String matchedString = matcher.group(2).replace(",", ".");
                     try {
                         double value = Double.parseDouble(matchedString);
-                        oldEntry.setValue2(value);
+                        oldVaultEntry.setValue2(value);
                         return new MedtronicAnnotatedVaultEntry(
-                                oldEntry, rawType);
+                                oldVaultEntry, rawType);
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
                                 new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
@@ -175,11 +217,11 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Method to load configuration file for the MedtronicImporter plugin.
-         * @param path Path to the configuration file.
+         * @param filePath Path to the configuration file.
          * @return True when configuration can be loaded, false otherwise.
          */
         @Override
-        public boolean loadConfiguration(String path) {
+        public boolean loadConfiguration(final String filePath) {
             LOG.log(Level.WARNING, "MedtronicImporter does not support configuration.");
             return false;
         }
@@ -189,13 +231,14 @@ public class MedtronicImporter extends Plugin {
          * @param filePath Path to the import file.
          */
         @Override
-        protected void preprocessingIfNeeded(String filePath) {
+        protected void preprocessingIfNeeded(final String filePath) {
             //TODO test for delimiter
             CsvReader creader = null;
             try {
                 // test for , delimiter
                 creader = new CsvReader(filePath, ',', Charset.forName("UTF-8"));
-                for (int i = 0; i < 15; i++) { // just scan the first 15 lines for a valid header
+                final int linesToSkip = 15;
+                for (int i = 0; i < linesToSkip; i++) { // just scan the first 15 lines for a valid header
                     if (creader.readHeaders()) {
                         if (getValidator().validateHeader(creader.getHeaders())) {
                             // found valid header --> finish
@@ -208,7 +251,7 @@ public class MedtronicImporter extends Plugin {
                 }
                 // if you end up here there was no valid header within the range
                 // try the other delimiter in normal operation
-                setDelimiter(';');//TODO why is this enough to proceed processing?
+                setDelimiter(';'); //TODO why is this enough to proceed processing?
                 LOG.log(Level.FINE, "Use ';' as delimiter for Carelink CSV: {0}", filePath);
 
             } catch (IOException ex) {
@@ -222,17 +265,19 @@ public class MedtronicImporter extends Plugin {
         }
 
         /**
-         * Parser for medtronic CSV Data
+         * Parser for medtronic CSV Data.
          * @param creader The CSV reader.
          * @return List of VaultEntry holding the parsed data.
          * @throws Exception If medtronic CSV file can not be parsed.
          */
         @Override
-        protected List<VaultEntry> parseEntry(CsvReader creader) throws Exception {
+        protected List<VaultEntry> parseEntry(final CsvReader creader) throws Exception {
             List<VaultEntry> retVal = new ArrayList<>();
             MedtronicCSVValidator parseValidator = (MedtronicCSVValidator) getValidator();
 
             MedtronicCSVValidator.TYPE type = parseValidator.getCarelinkType(creader);
+
+            final int thousand = 1000;
             if (type == null) {
                 LOG.log(Level.FINER, "Ignore Type: {0}",
                         parseValidator.getCarelinkTypeString(creader));
@@ -243,10 +288,10 @@ public class MedtronicImporter extends Plugin {
                 timestamp = parseValidator.getTimestamp(creader);
             } catch (ParseException ex) {
                 // maybe old format without good timestamp
-                // try again with seperated fields
+                // try again with separated fields
                 timestamp = parseValidator.getManualTimestamp(creader);
             }
-            if (timestamp == null) {//decided not to remove this code as suggested by FindBugs
+            if (timestamp == null) { //decided not to remove this code as suggested by FindBugs
                 LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
                 return null;
             }
@@ -288,9 +333,9 @@ public class MedtronicImporter extends Plugin {
                             AMOUNT_PATTERN, creader.getValues());
                     if (tmpEntry != null) {
                         // check if it was received by a meter (new format doesn't use BG_RECEIVED)
-                        Matcher m = METER_PATTERN.matcher(rawValues);
-                        if (m.matches()) {
-                            String meterSerial = m.group(2);
+                        Matcher matcher = METER_PATTERN.matcher(rawValues);
+                        if (matcher.matches()) {
+                            String meterSerial = matcher.group(2);
                             if (!meterSerial.isEmpty()) {
                                 VaultEntryAnnotation annotation
                                         = new VaultEntryAnnotation(
@@ -343,7 +388,7 @@ public class MedtronicImporter extends Plugin {
                         tmpEntry = extractSecondValue(tmpEntry, rawValues,
                                 DURATION_PATTERN, creader.getValues());
                         if (tmpEntry != null) {
-                            tmpEntry.setValue2(tmpEntry.getValue2() / 1000);
+                            tmpEntry.setValue2(tmpEntry.getValue2() / thousand);
                             retVal.add(tmpEntry);
                         }
                     }
@@ -444,9 +489,9 @@ public class MedtronicImporter extends Plugin {
                     break;
                 case PUMP_SUSPEND_CHANGED:
                     if (rawValues != null && !rawValues.isEmpty()) {
-                        Matcher m = STATE_PATTERN.matcher(rawValues);
-                        if (m.matches()) {
-                            String matchedString = m.group(2);
+                        Matcher matcher = STATE_PATTERN.matcher(rawValues);
+                        if (matcher.matches()) {
+                            String matchedString = matcher.group(2);
                             VaultEntryType entryType;
                             if (matchedString.contains("suspend")
                                     || matchedString.contains("predicted_low_sg")
@@ -480,10 +525,10 @@ public class MedtronicImporter extends Plugin {
                             AMOUNT_PATTERN, creader.getValues());
                     if (tmpEntry != null) {
                         // check if it is really a cgm-bg-alert
-                        Matcher m = ALARM_TYPE_PATTERN.matcher(rawValues);
-                        if (m.matches()) {
-                            if (m.group(2).equalsIgnoreCase("102")
-                                    || m.group(2).equalsIgnoreCase("101")) {
+                        Matcher matcher = ALARM_TYPE_PATTERN.matcher(rawValues);
+                        if (matcher.matches()) {
+                            if (matcher.group(2).equalsIgnoreCase("102")
+                                    || matcher.group(2).equalsIgnoreCase("101")) {
                                 retVal.add(tmpEntry);
                             }
                         }
@@ -528,10 +573,11 @@ public class MedtronicImporter extends Plugin {
                     }
 
                     // sensor value prediction
+                    final double valueLowerBound = 20.0;
                     tmpEntry = extractDoubleEntry(timestamp,
                             VaultEntryType.PUMP_CGM_PREDICTION, rawValues,
                             PREDICTION_PATTERN, creader.getValues());
-                    if (tmpEntry != null && tmpEntry.getValue() > 20.0) {
+                    if (tmpEntry != null && tmpEntry.getValue() > valueLowerBound) {
                         retVal.add(tmpEntry);
                     }
 

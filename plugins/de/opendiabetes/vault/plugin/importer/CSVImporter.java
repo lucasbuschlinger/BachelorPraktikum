@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -42,12 +42,12 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * Constructor for a CSV validator.
-     * @param validator The validator to use.
-     * @param delimiter The delimiter used in the CSV file.
+     * @param csvValidator The validator to use.
+     * @param csvDelimiter The delimiter used in the CSV file.
      */
-    public CSVImporter(final CSVValidator validator, final char delimiter) {
-        this.validator = validator;
-        this.setDelimiter(delimiter);
+    public CSVImporter(final CSVValidator csvValidator, final char csvDelimiter) {
+        this.validator = csvValidator;
+        this.setDelimiter(csvDelimiter);
     }
 
     /**
@@ -56,14 +56,14 @@ public abstract class CSVImporter extends FileImporter {
     protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
         importedData = new ArrayList<>();
         importedRawData = new ArrayList<>();
+        final int maxProgress = 100;
         //TODO what is this list for if it gets deleted
         List<String[]> metaEntries = new ArrayList<>();
 
-        this.notifyStaus(0, "Reading Headder");
-        CsvReader creader = null;
+        this.notifyStatus(0, "Reading Header");
         try {
             // open file
-            creader = new CsvReader(fileInputStream, delimiter, Charset.forName("UTF-8"));
+            CsvReader creader = new CsvReader(fileInputStream, delimiter, Charset.forName("UTF-8"));
 
             //validate header
             do {
@@ -74,7 +74,8 @@ public abstract class CSVImporter extends FileImporter {
                 }
                 metaEntries.add(creader.getHeaders());
             } while (!validator.validateHeader(creader.getHeaders()));
-            metaEntries.remove(metaEntries.size() - 1); //remove valid header//TODO this removes only the last entry in meta entries... meta entries is never used further on
+            metaEntries.remove(metaEntries.size() - 1); //remove valid header
+                // TODO this removes only the last entry in meta entries... meta entries is never used further on
             // read entries
             while (creader.readRecord()) {
                 /*here the method template is used to process all records */
@@ -92,7 +93,7 @@ public abstract class CSVImporter extends FileImporter {
                 importedRawData.add(new RawEntry(creader.getRawRecord(), entryIsInterpreted));
                 LOG.log(Level.FINER, "Put Raw: {0}", creader.getRawRecord());
             }
-            this.notifyStaus(100, "done importing all entries");
+            this.notifyStatus(maxProgress, "Done importing all entries");
 
         } catch (Exception ex) {
             LOG.log(Level.WARNING, "Error while parsing CSV: "
@@ -116,22 +117,34 @@ public abstract class CSVImporter extends FileImporter {
     protected abstract void preprocessingIfNeeded(String filePath);
 
     /**
-     *
-     * @return
+     * Getter for the validator.
+     * @return The validator.
      */
     protected CSVValidator getValidator() {
         return validator;
     }
 
-    private void setValidator(CSVValidator validator) {
-        this.validator = validator;
+    /**
+     * Setter for the validator.
+     * @param csvValidator The validator to set.
+     */
+    private void setValidator(final CSVValidator csvValidator) {
+        this.validator = csvValidator;
     }
 
+    /**
+     * Getter for the delimiter.
+     * @return The delimiter.
+     */
     protected char getDelimiter() {
         return delimiter;
     }
 
-    protected void setDelimiter(char delimiter) {
-        this.delimiter = delimiter;
+    /**
+     * Setter for the delimiter.
+     * @param csvDelimiter The delimiter to set.
+     */
+    protected void setDelimiter(final char csvDelimiter) {
+        this.delimiter = csvDelimiter;
     }
 }
