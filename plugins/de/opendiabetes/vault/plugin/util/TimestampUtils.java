@@ -37,8 +37,9 @@ public class TimestampUtils {
 
     /**
      * Constructor for a clean timestamp.
+     *
      * @param dateTime The data and time for the timestamp.
-     * @param format The format of the dateTime string.
+     * @param format   The format of the dateTime string.
      * @return The Date
      * @throws ParseException Gets thrown if the dateTime can not be parsed.
      */
@@ -51,8 +52,9 @@ public class TimestampUtils {
     /**
      * Utility to convert a timestamp from Date to String.
      * TODO: deprecated?
+     *
      * @param timestamp The timestamp to be converted.
-     * @param format The format of the timestamp.
+     * @param format    The format of the timestamp.
      * @return The timestamp as a string.
      */
     public static String timestampToString(Date timestamp, String format) {
@@ -61,6 +63,7 @@ public class TimestampUtils {
 
     /**
      * Method to create a clean timestamp from a date object.
+     *
      * @param rawDate The date to create a timestamp of.
      * @return The cleaned timestamp.
      */
@@ -79,8 +82,9 @@ public class TimestampUtils {
 
     /**
      * Method to add minutes to a Date timestamp.
+     *
      * @param timestamp The timestamp to add the minutes to.
-     * @param minutes The minuted to be added.
+     * @param minutes   The minuted to be added.
      * @return The timestamp with minutes.
      */
     public static Date addMinutesToTimestamp(Date timestamp, long minutes) {
@@ -89,8 +93,9 @@ public class TimestampUtils {
 
     /**
      * Method to add minuted to a Long timestamp.
+     *
      * @param timestamp The timestamp to add the minutes to.
-     * @param minutes The minutes to be added.
+     * @param minutes   The minutes to be added.
      * @return The timestamp with minutes.
      */
     public static long addMinutesToTimestamp(long timestamp, long minutes) {
@@ -100,6 +105,7 @@ public class TimestampUtils {
 
     /**
      * TODO.
+     *
      * @param inputDate
      * @return
      */
@@ -109,6 +115,7 @@ public class TimestampUtils {
 
     /**
      * Method to convert a date to local time.
+     *
      * @param inputDate The date to be converted.
      * @return The local time.
      * @link https://blog.progs.be/542/date-to-java-time
@@ -119,6 +126,7 @@ public class TimestampUtils {
 
     /**
      * TODO.
+     *
      * @param inputDate
      * @param offsetInMilliseconds
      * @return
@@ -134,6 +142,7 @@ public class TimestampUtils {
 
     /**
      * TODO.
+     *
      * @param timestamp
      * @return
      */
@@ -145,6 +154,7 @@ public class TimestampUtils {
 
     /**
      * TODO.
+     *
      * @param timestamp
      * @return
      */
@@ -156,9 +166,10 @@ public class TimestampUtils {
 
     /**
      * Method to check whether a give point in time is within a span of time.
-     * @param startTime     Start of the time span.
-     * @param endTime       end of the time span.
-     * @param timePoint     checks if this time point is within timespan.
+     *
+     * @param startTime Start of the time span.
+     * @param endTime   end of the time span.
+     * @param timePoint checks if this time point is within timespan.
      * @return True if the time is within the borders.
      */
     public static boolean withinDateTimeSpan(Date startTime, Date endTime,
@@ -170,9 +181,10 @@ public class TimestampUtils {
 
     /**
      * Method to check whether a give point in time is within a span of time.
-     * @param startTime     Start of the time span.
-     * @param endTime       end of the time span.
-     * @param timePoint     checks if this time point is within timespan.
+     *
+     * @param startTime Start of the time span.
+     * @param endTime   end of the time span.
+     * @param timePoint checks if this time point is within timespan.
      * @return True if the time is within the borders.
      */
     public static boolean withinTimeSpan(LocalTime startTime, LocalTime endTime, LocalTime timePoint) {
@@ -189,9 +201,10 @@ public class TimestampUtils {
 
     /**
      * Method to check whether a give point in time is within a span of time.
-     * @param startTime     Start of the time span.
-     * @param endTime       end of the time span.
-     * @param timePoint     checks if this time point is within timespan.
+     *
+     * @param startTime Start of the time span.
+     * @param endTime   end of the time span.
+     * @param timePoint checks if this time point is within timespan.
      * @return True if the time is within the borders.
      */
     public static boolean withinTimeSpan(LocalTime startTime, LocalTime endTime, Date timePoint) {

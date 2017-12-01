@@ -35,12 +35,14 @@ import java.util.logging.Logger;
 
 /**
  * Wrapper class for the SonySWR21Importer plugin.
+ *
  * @author Lucas Buschlinger
  */
 public class SonySWR21Importer extends Plugin {
 
     /**
      * Constructor for the PluginManager.
+     *
      * @param wrapper The PluginManager.
      */
     public SonySWR21Importer(final PluginWrapper wrapper) {
@@ -62,6 +64,7 @@ public class SonySWR21Importer extends Plugin {
 
         /**
          * Parser for Sony SWR21 CSV data.
+         *
          * @param creader The CSV reader.
          * @return List of VaultEntry holding the parsed data.
          * @throws Exception If Sony SWR21 CSV file can not be parsed.
@@ -176,13 +179,16 @@ public class SonySWR21Importer extends Plugin {
 
         /**
          * Empty preprocessing for Sony data, as it is not necessary for this type of data.
+         *
          * @param filePath Path to the import file.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
+        protected void preprocessingIfNeeded(final String filePath) {
+        }
 
         /**
          * Method to load configuration file for the SonySWR21Importer plugin.
+         *
          * @param filePath Path to the configuration file.
          * @return True when configuration can be loaded, false otherwise.
          */

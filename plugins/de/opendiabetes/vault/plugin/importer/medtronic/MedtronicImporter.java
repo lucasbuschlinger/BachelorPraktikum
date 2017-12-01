@@ -42,12 +42,14 @@ import java.util.regex.Pattern;
 
 /**
  * Wrapper class for the MedtronicImporter plugin.
+ *
  * @author Magnus Gärtner
  */
 public class MedtronicImporter extends Plugin {
 
     /**
      * Constructor for the PluginManager.
+     *
      * @param wrapper The PluginWrapper.
      */
     public MedtronicImporter(final PluginWrapper wrapper) {
@@ -129,10 +131,11 @@ public class MedtronicImporter extends Plugin {
         /**
          * Method to extract double entries from the import file.
          * //TODO add an example
+         *
          * @param timestamp The timestamp when the entry was generated.
-         * @param type The of the entry.
+         * @param type      The of the entry.
          * @param rawValues Raw values of the entry.
-         * @param pattern The pattern of the entry.
+         * @param pattern   The pattern of the entry.
          * @param fullEntry The full entry.
          * @return VaultEntry holding all information of the input entry.
          */
@@ -150,7 +153,7 @@ public class MedtronicImporter extends Plugin {
                                 value);
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -159,9 +162,10 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Method to extract only the second entry from a VaultEntry.
-         * @param entry The VaultEntry to extract from.
+         *
+         * @param entry     The VaultEntry to extract from.
          * @param rawValues The raw values of the entry.
-         * @param pattern The pattern of the entry.
+         * @param pattern   The pattern of the entry.
          * @param fullEntry The full entry.
          * @return VaultEntry holding only the second entry.
          */
@@ -178,7 +182,7 @@ public class MedtronicImporter extends Plugin {
                         return vaultEntry;
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -187,9 +191,10 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Method to annotated basal entries.
-         * @param oldEntry The old, to be annotated VaultEntry.
+         *
+         * @param oldEntry  The old, to be annotated VaultEntry.
          * @param rawValues The raw values of the entry.
-         * @param rawType The raw type of the entry.
+         * @param rawType   The raw type of the entry.
          * @param fullEntry The full entry.
          * @return The annotated entry.
          */
@@ -198,7 +203,7 @@ public class MedtronicImporter extends Plugin {
                 final String[] fullEntry) {
             VaultEntry oldVaultEntry = oldEntry;
             if (rawValues != null && !rawValues.isEmpty() && oldVaultEntry != null) {
-                 Matcher matcher = DURATION_PATTERN.matcher(rawValues);
+                Matcher matcher = DURATION_PATTERN.matcher(rawValues);
                 if (matcher.matches()) {
                     String matchedString = matcher.group(2).replace(",", ".");
                     try {
@@ -208,7 +213,7 @@ public class MedtronicImporter extends Plugin {
                                 oldVaultEntry, rawType);
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -217,6 +222,7 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Method to load configuration file for the MedtronicImporter plugin.
+         *
          * @param filePath Path to the configuration file.
          * @return True when configuration can be loaded, false otherwise.
          */
@@ -228,6 +234,7 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Preprocessing for medtronic data.
+         *
          * @param filePath Path to the import file.
          */
         @Override
@@ -266,6 +273,7 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Parser for medtronic CSV Data.
+         *
          * @param creader The CSV reader.
          * @return List of VaultEntry holding the parsed data.
          * @throws Exception If medtronic CSV file can not be parsed.

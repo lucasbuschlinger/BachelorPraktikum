@@ -18,6 +18,7 @@ package de.opendiabetes.vault.plugin.importer.validator;
 
 /**
  * Class for the NonValidator for importers who don't need to validate the data.
+ *
  * @author Jens Heuschkel
  */
 public class NonValidator extends CSVValidator {
@@ -26,7 +27,7 @@ public class NonValidator extends CSVValidator {
      * Constructor.
      */
     public NonValidator() {
-        super(new String[] {}, new String[] {});
+        super(new String[]{}, new String[]{});
     }
 
 }

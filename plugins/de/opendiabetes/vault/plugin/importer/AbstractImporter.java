@@ -27,6 +27,7 @@ import java.util.List;
  * All actual importer plugins are descendants of this class.
  * Supplies a Logger {@link Importer#LOG }.
  * Handles status listeners {@link AbstractImporter#listeners}.
+ *
  * @author Magnus Gärtner
  * @author Lucas Buschlinger
  */
@@ -72,6 +73,7 @@ public abstract class AbstractImporter implements Importer {
 
     /**
      * {@inheritDoc}
+     *
      * @param listener to be notified on a status update of the plugin.
      */
     @Override
@@ -82,8 +84,9 @@ public abstract class AbstractImporter implements Importer {
     /**
      * Method to notify the registered listeners about progress.
      * See {@link de.opendiabetes.vault.plugin.importer.Importer.StatusListener#onStatusCallback} to register a listener.
+     *
      * @param progress Percentage of completion.
-     * @param status Current status.
+     * @param status   Current status.
      */
     protected void notifyStatus(final int progress, final String status) {
         listeners.forEach(listener -> listener.onStatusCallback(progress, status));

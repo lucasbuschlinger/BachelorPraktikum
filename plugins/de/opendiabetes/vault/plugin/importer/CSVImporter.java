@@ -42,6 +42,7 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * Constructor for a CSV validator.
+     *
      * @param csvValidator The validator to use.
      * @param csvDelimiter The delimiter used in the CSV file.
      */
@@ -75,7 +76,7 @@ public abstract class CSVImporter extends FileImporter {
                 metaEntries.add(creader.getHeaders());
             } while (!validator.validateHeader(creader.getHeaders()));
             metaEntries.remove(metaEntries.size() - 1); //remove valid header
-                // TODO this removes only the last entry in meta entries... meta entries is never used further on
+            // TODO this removes only the last entry in meta entries... meta entries is never used further on
             // read entries
             while (creader.readRecord()) {
                 /*here the method template is used to process all records */
@@ -104,6 +105,7 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * Method to parse entries in a file.
+     *
      * @param csvReader Reader for CSV files.
      * @return List of VaultEntry holding the imported data.
      * @throws Exception If a entry could not be parsed.
@@ -118,6 +120,7 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * Getter for the validator.
+     *
      * @return The validator.
      */
     protected CSVValidator getValidator() {
@@ -126,6 +129,7 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * Setter for the validator.
+     *
      * @param csvValidator The validator to set.
      */
     private void setValidator(final CSVValidator csvValidator) {
@@ -134,6 +138,7 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * Getter for the delimiter.
+     *
      * @return The delimiter.
      */
     protected char getDelimiter() {
@@ -142,6 +147,7 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * Setter for the delimiter.
+     *
      * @param csvDelimiter The delimiter to set.
      */
     protected void setDelimiter(final char csvDelimiter) {

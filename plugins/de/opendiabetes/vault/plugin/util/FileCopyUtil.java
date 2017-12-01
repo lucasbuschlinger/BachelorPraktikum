@@ -31,6 +31,7 @@ public class FileCopyUtil {
 
     /**
      * Method to copy a file or directory.
+     *
      * @param sourceLocation The source file or directory to copy.
      * @param targetLocation The target file or directory to be copied to.
      * @throws IOException Thrown if an invalid file location is given or no matching file types given.
@@ -45,6 +46,7 @@ public class FileCopyUtil {
 
     /**
      * Method to copy a directory.
+     *
      * @param source The source directory to copy.
      * @param target The target directory to be copied to.
      * @throws IOException Thrown if an invalid directory location is given.
@@ -61,6 +63,7 @@ public class FileCopyUtil {
 
     /**
      * Method to copy a file.
+     *
      * @param source The source file to copy.
      * @param target The target file to be copied to.
      * @throws IOException Thrown if an invalid file location is given.
