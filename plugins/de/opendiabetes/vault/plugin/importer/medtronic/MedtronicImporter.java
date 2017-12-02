@@ -62,7 +62,6 @@ public class MedtronicImporter extends Plugin {
     @Extension
     public static class MedtronicImporterImplementation extends CSVImporter {
 
-        //TODO javadoc for all Patterns
         /**
          * Pattern to indicate amount.
          */
