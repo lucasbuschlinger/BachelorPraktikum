@@ -69,7 +69,14 @@ public abstract class CSVValidator {
         return result;
     }
 
-    public static enum Language {
-        DE, EN;
+    public enum Language {
+        /**
+         * German.
+         */
+        DE,
+        /**
+         * English.
+         */
+        EN;
     }
 }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -34,9 +34,9 @@ import java.util.logging.Logger;
 public interface Importer extends ExtensionPoint {
 
     /**
-     * Logger object of all Importers. Loggs all messages of the importers to a human readable file//TODO which file?
+     * Logger object of all Importers. Logs all messages of the importers to a human readable file.//TODO which file?
      */
-    public static final Logger LOG = Logger.getLogger(Importer.class.getName());
+    Logger LOG = Logger.getLogger(Importer.class.getName());
 
 
     /**
@@ -49,14 +49,14 @@ public interface Importer extends ExtensionPoint {
     /**
      * Setter for the importFilePath.
      *
-     * @param path The path to the import file.
+     * @param filePath The path to the import file.
      */
-    void setImportFilePath(String path);
+    void setImportFilePath(String filePath);
 
     /**
-     * Imports the data from the file specified by @see Importer.setImportFilePath()
+     * Imports the data from the file specified by @see Importer.setImportFilePath().
      *
-     * @return boolean true if data was imported, false otherwise
+     * @return boolean true if data was imported, false otherwise.
      */
     boolean importData();
 
@@ -77,36 +77,36 @@ public interface Importer extends ExtensionPoint {
     List<RawEntry> getImportedRawData();
 
     /**
-     * clears all Imported(Raw)Data.
+     * Clears all Imported(Raw)Data.
      * {@link Importer#getImportedData()},
      * {@link Importer#getImportedRawData()}
-     * will return empty lists afterwards
+     * will return empty lists afterwards.
      */
     void clearData();
 
     /**
      * Method to load the plugin's configuration file.
      *
-     * @param path Path to the configuration file.
+     * @param filePath Path to the configuration file.
      * @return True if configuration can be loaded, false otherwise.
      */
-    boolean loadConfiguration(String path);
+    boolean loadConfiguration(String filePath);
 
     /**
      * Method to register listeners to the Plugins.
-     * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update
+     * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update.
      *
      * @param listener A listener.
      */
     void registerStatusCallback(StatusListener listener);
 
     /**
-     * Interface which defines the methods called on a status update
-     * must be implemented by any listener of this plugin to handle the status update
+     * Interface which defines the methods called on a status update.
+     * Must be implemented by any listener of this plugin to handle the status update.
      */
     interface StatusListener {
         /**
-         * is called multiple times on all listeners during the import process to notify them about the import progress
+         * Is called multiple times on all listeners during the import process to notify them about the import progress.
          *
          * @param progress Percentage of completion.
          * @param status   Current Status.

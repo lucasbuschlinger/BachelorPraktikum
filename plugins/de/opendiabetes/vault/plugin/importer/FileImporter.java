@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -24,10 +24,10 @@ import java.util.logging.Level;
 /**
  * This class defines the default structure how data gets imported from a file.
  * It implements file handling of the data source
- * specified by {@link FileImporter#setImportFilePath(String)}
- * all descendants must implement the template methods
- * {@link FileImporter#preprocessingIfNeeded(String)}
- * {@link FileImporter#processImport(InputStream, String)}
+ * specified by {@link FileImporter#setImportFilePath(String)}.
+ * All descendants must implement the template methods.
+ * {@link FileImporter#preprocessingIfNeeded(String)}.
+ * {@link FileImporter#processImport(InputStream, String)}.
  */
 public abstract class FileImporter extends AbstractImporter {
 
@@ -48,8 +48,8 @@ public abstract class FileImporter extends AbstractImporter {
      * {@inheritDoc}
      */
     @Override
-    public void setImportFilePath(final String path) {
-        this.importFilePath = path;
+    public void setImportFilePath(final String filePath) {
+        this.importFilePath = filePath;
     }
 
     /**
@@ -64,7 +64,7 @@ public abstract class FileImporter extends AbstractImporter {
             return false;
         }
         preprocessingIfNeeded(importFilePath);
-        this.notifyStaus(0, "preprocessing done.");
+        this.notifyStatus(0, "preprocessing done.");
 
         FileInputStream fis = null;
         try {
@@ -87,7 +87,7 @@ public abstract class FileImporter extends AbstractImporter {
     }
 
     /**
-     * Method for preprocessing the data.//TODO more specific
+     * Method for preprocessing the data.//TODO more specific.
      *
      * @param filePath Path to the import file.
      */
