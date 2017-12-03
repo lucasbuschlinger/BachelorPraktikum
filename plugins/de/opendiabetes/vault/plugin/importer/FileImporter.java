@@ -60,11 +60,11 @@ public abstract class FileImporter extends AbstractImporter {
      */
     public boolean importData() {
         if (null == importFilePath) {
-            LOG.log(Level.WARNING, "no path specified from where to import data");
+            LOG.log(Level.WARNING, "No path specified from where to import data.");
             return false;
         }
         preprocessingIfNeeded(importFilePath);
-        this.notifyStatus(0, "preprocessing done.");
+        this.notifyStatus(0, "Preprocessing done.");
 
         FileInputStream fis = null;
         try {
