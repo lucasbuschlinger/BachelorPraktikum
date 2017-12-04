@@ -62,11 +62,12 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void callPlugin() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
+        PluginManager manager = new DefaultPluginManager();
+        manager.loadPlugin(Paths.get("export/ODVDBJsonImporter-0.0.1"));
         manager.enablePlugin("ODVDBJsonImporter");
         manager.startPlugin("ODVDBJsonImporter");
         Importer odvImporter = manager.getExtensions(Importer.class).get(0);
+        System.out.println("TEST"+odvImporter.getClass());
         odvImporter.setImportFilePath("path/to/data");
         Assert.assertFalse(odvImporter.importData());
     }
@@ -79,9 +80,9 @@ public class ODVDBJsonImporterTest {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("ODVDBJsonImporter");
-        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
-        MedtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
+        Importer odvImporter = manager.getExtensions(Importer.class).get(0);
+        odvImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", odvImporter.getImportFilePath());
     }
 
     /**
@@ -89,21 +90,20 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
+        PluginManager manager = new DefaultPluginManager();
+        manager.loadPlugin(Paths.get("export/ODVDBJsonImporter-0.0.1"));
+        manager.enablePlugin("ODVDBJsonImporter");
         manager.startPlugin("ODVDBJsonImporter");
         Importer odvImporter = manager.getExtensions(Importer.class).get(0);
-        Handler handler;
-
-        odvImporter.LOG.addHandler(new Handler() {
+        Handler handler = new Handler() {
             String logOut = "";
             int msgs_recieved = 0;
 
             @Override
             public void publish(LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: ODVDBJsonImporter does not support configuration."));
                 msgs_recieved++;
+                Assert.assertTrue(logOut.contains("WARNING: ODVDBJsonImporter does not support configuration."));
             }
 
             @Override
@@ -113,9 +113,13 @@ public class ODVDBJsonImporterTest {
             @Override
             public void close() throws SecurityException {
                 Assert.assertTrue(msgs_recieved>0);
+
             }
-        });
-        Assert.assertFalse(odvImporter.loadConfiguration("path/to/configuration"));
+        };
+        odvImporter.LOG.addHandler(handler);
+
+        odvImporter.loadConfiguration("path/to/configuration");
+
         odvImporter.LOG.getHandlers()[0].close();
     }
 }
