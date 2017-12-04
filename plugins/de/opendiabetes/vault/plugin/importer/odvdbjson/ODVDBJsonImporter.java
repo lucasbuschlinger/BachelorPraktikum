@@ -29,6 +29,7 @@ import org.pf4j.PluginWrapper;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,8 +80,13 @@ public class ODVDBJsonImporter extends Plugin {
             Gson gson = builder.create();
 
             // open stream
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream));
-
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
+            } catch (UnsupportedEncodingException ex) {
+                LOG.log(Level.SEVERE, "Can not handel fileInputStream, wrong encoding!");
+                return false;
+            }
             // import
             Type listType = new TypeToken<ArrayList<VaultEntry>>() {
             }.getType();
