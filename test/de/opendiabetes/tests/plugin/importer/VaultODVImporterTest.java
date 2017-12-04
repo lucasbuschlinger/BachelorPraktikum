@@ -28,7 +28,7 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * Tests for the de.opendiabetes.vault.plugin.importer.vaultodv.VaultODVImporter plugin.
+ * Tests for the VaultODVImporter plugin.
  */
 public class VaultODVImporterTest {
 

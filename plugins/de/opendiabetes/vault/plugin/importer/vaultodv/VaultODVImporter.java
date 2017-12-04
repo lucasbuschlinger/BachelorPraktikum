@@ -78,7 +78,7 @@ public class VaultODVImporter extends Plugin {
         @Override
         public boolean importData() {
             String importPath = getImportFilePath();
-                    preprocessingIfNeeded(importPath);
+            preprocessingIfNeeded(importPath);
 
             try {
                 // open zip package
@@ -105,8 +105,9 @@ public class VaultODVImporter extends Plugin {
                             break;
                         case VaultODVExporter.SIGNATURE_ZIP_ENTRY:
                             // read signature as string
-                            signature = new BufferedReader(new InputStreamReader(zipInputStream))
-                                    .lines().collect(Collectors.joining("\n"));
+                            BufferedReader bufReader = new BufferedReader(new InputStreamReader(zipInputStream, "UTF-8"));
+                            signature = bufReader.lines().collect(Collectors.joining("\n"));
+                            bufReader.close();
                             break;
                         default:
                             LOG.warning("Found unexpected entry: " + tmpEntry.getName());
@@ -148,7 +149,11 @@ public class VaultODVImporter extends Plugin {
         }
 
         /**
-         * {@inheritDoc}
+         * Parser for VaultODV Data which throws an UnsupportedOperationException, because not needed.
+         *
+         * @param csvReader Reader for CSV files.
+         * @return Nothing.
+         * @throws UnsupportedOperationException ParseEntry is not implemented for VaultODVImporter.
          */
         @Override
         protected List<VaultEntry> parseEntry(final CsvReader csvReader) throws UnsupportedOperationException {

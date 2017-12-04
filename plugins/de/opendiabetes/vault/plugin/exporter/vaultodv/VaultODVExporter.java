@@ -1,8 +1,8 @@
 package de.opendiabetes.vault.plugin.exporter.vaultodv;
 
 /**
- * not implemented yet
- * only a dummy class for the importer
+ * Not implemented yet.
+ * Only a dummy class for the importer.
  */
 public class VaultODVExporter {
 

@@ -1,0 +1,618 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>FindBugs Report</title>
+<style type="text/css">
+		.tablerow0 {
+			background: #EEEEEE;
+		}
+
+		.tablerow1 {
+			background: white;
+		}
+
+		.detailrow0 {
+			background: #EEEEEE;
+		}
+
+		.detailrow1 {
+			background: white;
+		}
+
+		.tableheader {
+			background: #b9b9fe;
+			font-size: larger;
+		}
+
+		.tablerow0:hover, .tablerow1:hover {
+			background: #aaffaa;
+		}
+
+		.priority-1 {
+		    color: red;
+		    font-weight: bold;
+		}
+		.priority-2 {
+		    color: orange;
+		    font-weight: bold;
+		}
+		.priority-3 {
+		    color: green;
+		    font-weight: bold;
+		}
+		.priority-4 {
+		    color: blue;
+		    font-weight: bold;
+		}
+		</style>
+<script type="text/javascript">
+			function toggleRow(elid) {
+				if (document.getElementById) {
+					element = document.getElementById(elid);
+					if (element) {
+						if (element.style.display == 'none') {
+							element.style.display = 'block';
+							//window.status = 'Toggle on!';
+						} else {
+							element.style.display = 'none';
+							//window.status = 'Toggle off!';
+						}
+					}
+				}
+			}
+		</script>
+</head>
+<body>
+<h1>
+<a href="http://findbugs.sourceforge.net">FindBugs</a> Report</h1>
+<h2>Project Information</h2>
+<p>Project: 
+		</p>
+<p>FindBugs version: 3.0.1</p>
+<p>Code analyzed:</p>
+<ul>
+<li>C:\Users\Tina\Documents\BachelorPraktikum\out\production\OpenDiabetes\de</li>
+</ul>
+<p>
+<br/>
+<br/>
+</p>
+<h2>Metrics</h2>
+<p>1973 lines of code analyzed,
+	in 59 classes, 
+	in 11 packages.</p>
+<table width="500" cellpadding="5" cellspacing="2">
+<tr class="tableheader">
+<th align="left">Metric</th>
+<th align="right">Total</th>
+<th align="right">Density*</th>
+</tr>
+<tr class="tablerow0">
+<td>High Priority Warnings</td>
+<td align="right">1</td>
+<td align="right">0.51</td>
+</tr>
+<tr class="tablerow1">
+<td>Medium Priority Warnings</td>
+<td align="right">19</td>
+<td align="right">9.63</td>
+</tr>
+<tr class="$totalClass">
+<td>
+<b>Total Warnings</b>
+</td>
+<td align="right">
+<b>20</b>
+</td>
+<td align="right">
+<b>10.14</b>
+</td>
+</tr>
+</table>
+<p>
+<i>(* Defects per Thousand lines of non-commenting source statements)</i>
+</p>
+<p>
+<br/>
+<br/>
+</p>
+<h2>Contents</h2>
+<ul>
+<li>
+<a href="#Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+</li>
+<li>
+<a href="#Warnings_I18N">Internationalization Warnings</a>
+</li>
+<li>
+<a href="#Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
+</li>
+<li>
+<a href="#Warnings_PERFORMANCE">Performance Warnings</a>
+</li>
+<li>
+<a href="#Warnings_STYLE">Dodgy code Warnings</a>
+</li>
+<li>
+<a href="#Details">Details</a>
+</li>
+</ul>
+<h1>Summary</h1>
+<table width="500" cellpadding="5" cellspacing="2">
+<tr class="tableheader">
+<th align="left">Warning Type</th>
+<th align="right">Number</th>
+</tr>
+<tr class="tablerow0">
+<td>
+<a href="#Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+</td>
+<td align="right">1</td>
+</tr>
+<tr class="tablerow1">
+<td>
+<a href="#Warnings_I18N">Internationalization Warnings</a>
+</td>
+<td align="right">1</td>
+</tr>
+<tr class="tablerow0">
+<td>
+<a href="#Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
+</td>
+<td align="right">12</td>
+</tr>
+<tr class="tablerow1">
+<td>
+<a href="#Warnings_PERFORMANCE">Performance Warnings</a>
+</td>
+<td align="right">1</td>
+</tr>
+<tr class="tablerow0">
+<td>
+<a href="#Warnings_STYLE">Dodgy code Warnings</a>
+</td>
+<td align="right">5</td>
+</tr>
+<tr class="tablerow1">
+<td>
+<b>Total</b>
+</td>
+<td align="right">
+<b>20</b>
+</td>
+</tr>
+</table>
+<h1>Warnings</h1>
+<p>Click on a warning row to see full context information.</p>
+<h2>
+<a name="Warnings_BAD_PRACTICE">Bad practice Warnings</a>
+</h2>
+<table class="warningtable" width="100%" cellspacing="0">
+<tr class="tableheader">
+<th align="left">Code</th>
+<th align="left">Warning</th>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66791');">
+<td>
+<span class="priority-2">RV</span>
+</td>
+<td>Exceptional return value of java.io.File.mkdir() ignored in de.opendiabetes.vault.plugin.util.FileCopyUtil.copyDirectory(File, File)</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66791" style="display: none;">
+<a href="#RV_RETURN_VALUE_IGNORED_BAD_PRACTICE">Bug type RV_RETURN_VALUE_IGNORED_BAD_PRACTICE (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.util.FileCopyUtil<br/>In method de.opendiabetes.vault.plugin.util.FileCopyUtil.copyDirectory(File, File)<br/>Called method java.io.File.mkdir()<br/>At FileCopyUtil.java:[line 56]</p>
+</td>
+</tr>
+</table>
+<h2>
+<a name="Warnings_I18N">Internationalization Warnings</a>
+</h2>
+<table class="warningtable" width="100%" cellspacing="0">
+<tr class="tableheader">
+<th align="left">Code</th>
+<th align="left">Warning</th>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66649');">
+<td>
+<span class="priority-1">Dm</span>
+</td>
+<td>Found reliance on default encoding in de.opendiabetes.vault.plugin.importer.vaultodv.VaultODVImporter$VaultODVImporterImplementation.importData(): new java.io.InputStreamReader(InputStream)</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66649" style="display: none;">
+<a href="#DM_DEFAULT_ENCODING">Bug type DM_DEFAULT_ENCODING (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.vaultodv.VaultODVImporter$VaultODVImporterImplementation<br/>In method de.opendiabetes.vault.plugin.importer.vaultodv.VaultODVImporter$VaultODVImporterImplementation.importData()<br/>Called method new java.io.InputStreamReader(InputStream)<br/>At VaultODVImporter.java:[line 108]</p>
+</td>
+</tr>
+</table>
+<h2>
+<a name="Warnings_MALICIOUS_CODE">Malicious code vulnerability Warnings</a>
+</h2>
+<table class="warningtable" width="100%" cellspacing="0">
+<tr class="tableheader">
+<th align="left">Code</th>
+<th align="left">Warning</th>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66035');">
+<td>
+<span class="priority-2">EI</span>
+</td>
+<td>de.opendiabetes.vault.container.csv.VaultCsvEntry.getTimestamp() may expose internal representation by returning VaultCsvEntry.timestamp</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66035" style="display: none;">
+<a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.csv.VaultCsvEntry<br/>In method de.opendiabetes.vault.container.csv.VaultCsvEntry.getTimestamp()<br/>Field de.opendiabetes.vault.container.csv.VaultCsvEntry.timestamp<br/>At VaultCsvEntry.java:[line 64]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N65599');">
+<td>
+<span class="priority-2">EI</span>
+</td>
+<td>de.opendiabetes.vault.container.SliceEntry.getTimestamp() may expose internal representation by returning SliceEntry.timestamp</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N65599" style="display: none;">
+<a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.SliceEntry<br/>In method de.opendiabetes.vault.container.SliceEntry.getTimestamp()<br/>Field de.opendiabetes.vault.container.SliceEntry.timestamp<br/>At SliceEntry.java:[line 116]</p>
+</td>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N65817');">
+<td>
+<span class="priority-2">EI</span>
+</td>
+<td>de.opendiabetes.vault.container.VaultEntry.getTimestamp() may expose internal representation by returning VaultEntry.timestamp</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N65817" style="display: none;">
+<a href="#EI_EXPOSE_REP">Bug type EI_EXPOSE_REP (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.VaultEntry<br/>In method de.opendiabetes.vault.container.VaultEntry.getTimestamp()<br/>Field de.opendiabetes.vault.container.VaultEntry.timestamp<br/>At VaultEntry.java:[line 223]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N66103');">
+<td>
+<span class="priority-2">EI2</span>
+</td>
+<td>de.opendiabetes.vault.container.csv.VaultCsvEntry.setTimestamp(Date) may expose internal representation by storing an externally mutable object into VaultCsvEntry.timestamp</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N66103" style="display: none;">
+<a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.csv.VaultCsvEntry<br/>In method de.opendiabetes.vault.container.csv.VaultCsvEntry.setTimestamp(Date)<br/>Field de.opendiabetes.vault.container.csv.VaultCsvEntry.timestamp<br/>Local variable named timestamp<br/>At VaultCsvEntry.java:[line 68]</p>
+</td>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N65667');">
+<td>
+<span class="priority-2">EI2</span>
+</td>
+<td>new de.opendiabetes.vault.container.SliceEntry(Date, long) may expose internal representation by storing an externally mutable object into SliceEntry.timestamp</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N65667" style="display: none;">
+<a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.SliceEntry<br/>In method new de.opendiabetes.vault.container.SliceEntry(Date, long)<br/>Field de.opendiabetes.vault.container.SliceEntry.timestamp<br/>Local variable named timestamp<br/>At SliceEntry.java:[line 90]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N65742');">
+<td>
+<span class="priority-2">EI2</span>
+</td>
+<td>de.opendiabetes.vault.container.SliceEntry.setTimestamp(Date) may expose internal representation by storing an externally mutable object into SliceEntry.timestamp</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N65742" style="display: none;">
+<a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.SliceEntry<br/>In method de.opendiabetes.vault.container.SliceEntry.setTimestamp(Date)<br/>Field de.opendiabetes.vault.container.SliceEntry.timestamp<br/>Local variable named timestamp<br/>At SliceEntry.java:[line 125]</p>
+</td>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N65885');">
+<td>
+<span class="priority-2">EI2</span>
+</td>
+<td>new de.opendiabetes.vault.container.VaultEntry(VaultEntryType, Date) may expose internal representation by storing an externally mutable object into VaultEntry.timestamp</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N65885" style="display: none;">
+<a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.VaultEntry<br/>In method new de.opendiabetes.vault.container.VaultEntry(VaultEntryType, Date)<br/>Field de.opendiabetes.vault.container.VaultEntry.timestamp<br/>Local variable named timestamp<br/>At VaultEntry.java:[line 131]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N65960');">
+<td>
+<span class="priority-2">EI2</span>
+</td>
+<td>new de.opendiabetes.vault.container.VaultEntry(VaultEntryType, Date, double) may expose internal representation by storing an externally mutable object into VaultEntry.timestamp</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N65960" style="display: none;">
+<a href="#EI_EXPOSE_REP2">Bug type EI_EXPOSE_REP2 (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.VaultEntry<br/>In method new de.opendiabetes.vault.container.VaultEntry(VaultEntryType, Date, double)<br/>Field de.opendiabetes.vault.container.VaultEntry.timestamp<br/>Local variable named timestamp<br/>At VaultEntry.java:[line 118]</p>
+</td>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66441');">
+<td>
+<span class="priority-2">MS</span>
+</td>
+<td>de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator.HEADER_DE should be package protected</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66441" style="display: none;">
+<a href="#MS_PKGPROTECT">Bug type MS_PKGPROTECT (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator<br/>Field de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator.HEADER_DE<br/>At GoogleFitCSVValidator.java:[line 40]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N66493');">
+<td>
+<span class="priority-2">MS</span>
+</td>
+<td>de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator.HEADER_EN should be package protected</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N66493" style="display: none;">
+<a href="#MS_PKGPROTECT">Bug type MS_PKGPROTECT (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator<br/>Field de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator.HEADER_EN<br/>At GoogleFitCSVValidator.java:[line 50]</p>
+</td>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66545');">
+<td>
+<span class="priority-2">MS</span>
+</td>
+<td>de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator.CARELINK_HEADER_DE should be package protected</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66545" style="display: none;">
+<a href="#MS_PKGPROTECT">Bug type MS_PKGPROTECT (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator<br/>Field de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator.CARELINK_HEADER_DE<br/>At MedtronicCSVValidator.java:[line 40]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N66597');">
+<td>
+<span class="priority-2">MS</span>
+</td>
+<td>de.opendiabetes.vault.plugin.importer.validator.SonySWR12Validator.HEADER should be package protected</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N66597" style="display: none;">
+<a href="#MS_PKGPROTECT">Bug type MS_PKGPROTECT (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.validator.SonySWR12Validator<br/>Field de.opendiabetes.vault.plugin.importer.validator.SonySWR12Validator.HEADER<br/>At SonySWR12Validator.java:[line 37]</p>
+</td>
+</tr>
+</table>
+<h2>
+<a name="Warnings_PERFORMANCE">Performance Warnings</a>
+</h2>
+<table class="warningtable" width="100%" cellspacing="0">
+<tr class="tableheader">
+<th align="left">Code</th>
+<th align="left">Warning</th>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N65548');">
+<td>
+<span class="priority-2">UrF</span>
+</td>
+<td>Unread field: de.opendiabetes.vault.container.RawEntry.value</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N65548" style="display: none;">
+<a href="#URF_UNREAD_FIELD">Bug type URF_UNREAD_FIELD (click for details)</a>
+<br/>In class de.opendiabetes.vault.container.RawEntry<br/>Field de.opendiabetes.vault.container.RawEntry.value<br/>At RawEntry.java:[line 75]</p>
+</td>
+</tr>
+</table>
+<h2>
+<a name="Warnings_STYLE">Dodgy code Warnings</a>
+</h2>
+<table class="warningtable" width="100%" cellspacing="0">
+<tr class="tableheader">
+<th align="left">Code</th>
+<th align="left">Warning</th>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66718');">
+<td>
+<span class="priority-2">NP</span>
+</td>
+<td>Possible null pointer dereference in de.opendiabetes.vault.plugin.util.FileCopyUtil.copyDirectory(File, File) due to return value of called method</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66718" style="display: none;">
+<a href="#NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE">Bug type NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.util.FileCopyUtil<br/>In method de.opendiabetes.vault.plugin.util.FileCopyUtil.copyDirectory(File, File)<br/>Value loaded from ?<br/>Dereferenced at FileCopyUtil.java:[line 59]<br/>Known null at FileCopyUtil.java:[line 59]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N66247');">
+<td>
+<span class="priority-2">RCN</span>
+</td>
+<td>Redundant nullcheck of timestamp, which is known to be non-null in de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter$MedtronicImporterImplementation.parseEntry(CsvReader)</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N66247" style="display: none;">
+<a href="#RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE">Bug type RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter$MedtronicImporterImplementation<br/>In method de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter$MedtronicImporterImplementation.parseEntry(CsvReader)<br/>Value loaded from timestamp<br/>Redundant null check at MedtronicImporter.java:[line 301]</p>
+</td>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66363');">
+<td>
+<span class="priority-2">RCN</span>
+</td>
+<td>Redundant nullcheck of timestamp, which is known to be non-null in de.opendiabetes.vault.plugin.importer.sony.SonySWR21Importer$SonySWR21ImporterImplementation.parseEntry(CsvReader)</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66363" style="display: none;">
+<a href="#RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE">Bug type RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.sony.SonySWR21Importer$SonySWR21ImporterImplementation<br/>In method de.opendiabetes.vault.plugin.importer.sony.SonySWR21Importer$SonySWR21ImporterImplementation.parseEntry(CsvReader)<br/>Value loaded from timestamp<br/>Return value of de.opendiabetes.vault.plugin.importer.validator.SonySWR12Validator.getTimestamp(CsvReader) of type java.util.Date<br/>Redundant null check at SonySWR21Importer.java:[line 83]</p>
+</td>
+</tr>
+<tr class="tablerow0" onclick="toggleRow('N66309');">
+<td>
+<span class="priority-2">SF</span>
+</td>
+<td>Switch statement found in de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter$MedtronicImporterImplementation.parseEntry(CsvReader) where one case falls through to the next case</td>
+</tr>
+<tr class="detailrow0">
+<td/>
+<td>
+<p id="N66309" style="display: none;">
+<a href="#SF_SWITCH_FALLTHROUGH">Bug type SF_SWITCH_FALLTHROUGH (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter$MedtronicImporterImplementation<br/>In method de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter$MedtronicImporterImplementation.parseEntry(CsvReader)<br/>At MedtronicImporter.java:[lines 445-453]</p>
+</td>
+</tr>
+<tr class="tablerow1" onclick="toggleRow('N66178');">
+<td>
+<span class="priority-2">UC</span>
+</td>
+<td>Useless object stored in variable metaEntries of method de.opendiabetes.vault.plugin.importer.CSVImporter.processImport(InputStream, String)</td>
+</tr>
+<tr class="detailrow1">
+<td/>
+<td>
+<p id="N66178" style="display: none;">
+<a href="#UC_USELESS_OBJECT">Bug type UC_USELESS_OBJECT (click for details)</a>
+<br/>In class de.opendiabetes.vault.plugin.importer.CSVImporter<br/>In method de.opendiabetes.vault.plugin.importer.CSVImporter.processImport(InputStream, String)<br/>Value metaEntries<br/>Type java.util.ArrayList<br/>At CSVImporter.java:[line 62]</p>
+</td>
+</tr>
+</table>
+<h1>
+<a name="Details">Details</a>
+</h1>
+<h2>
+<a name="DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING: Reliance on default encoding</a>
+</h2>
+
+<p> Found a call to a method which will perform a byte to String (or String to byte) conversion, and will assume that the default platform encoding is suitable. This will cause the application behaviour to vary between platforms. Use an alternative API and specify a charset name or Charset object explicitly.  </p>
+
+      
+<h2>
+<a name="EI_EXPOSE_REP">EI_EXPOSE_REP: May expose internal representation by returning reference to mutable object</a>
+</h2>
+
+  <p> Returning a reference to a mutable object value stored in one of the object's fields
+  exposes the internal representation of the object.&nbsp;
+   If instances
+   are accessed by untrusted code, and unchecked changes to
+   the mutable object would compromise security or other
+   important properties, you will need to do something different.
+  Returning a new copy of the object is better approach in many situations.</p>
+
+    
+<h2>
+<a name="EI_EXPOSE_REP2">EI_EXPOSE_REP2: May expose internal representation by incorporating reference to mutable object</a>
+</h2>
+
+  <p> This code stores a reference to an externally mutable object into the
+  internal representation of the object.&nbsp;
+   If instances
+   are accessed by untrusted code, and unchecked changes to
+   the mutable object would compromise security or other
+   important properties, you will need to do something different.
+  Storing a copy of the object is better approach in many situations.</p>
+
+    
+<h2>
+<a name="MS_PKGPROTECT">MS_PKGPROTECT: Field should be package protected</a>
+</h2>
+
+  <p> A mutable static field could be changed by malicious code or
+   by accident.
+   The field could be made package protected to avoid
+   this vulnerability.</p>
+
+    
+<h2>
+<a name="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE">NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE: Possible null pointer dereference due to return value of called method</a>
+</h2>
+      
+<p> The return value from a method is dereferenced without a null check,
+and the return value of that method is one that should generally be checked
+for null.  This may lead to a <code>NullPointerException</code> when the code is executed.
+</p>
+      
+   
+<h2>
+<a name="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE">RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE: Redundant nullcheck of value known to be non-null</a>
+</h2>
+
+<p> This method contains a redundant check of a known non-null value against
+the constant null.</p>
+
+    
+<h2>
+<a name="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE">RV_RETURN_VALUE_IGNORED_BAD_PRACTICE: Method ignores exceptional return value</a>
+</h2>
+
+   <p> This method returns a value that is not checked. The return value should be checked
+since it can indicate an unusual or unexpected function execution. For
+example, the <code>File.delete()</code> method returns false
+if the file could not be successfully deleted (rather than
+throwing an Exception).
+If you don't check the result, you won't notice if the method invocation
+signals unexpected behavior by returning an atypical return value.
+</p>
+
+    
+<h2>
+<a name="SF_SWITCH_FALLTHROUGH">SF_SWITCH_FALLTHROUGH: Switch statement found where one case falls through to the next case</a>
+</h2>
+
+  <p> This method contains a switch statement where one case branch will fall through to the next case.
+  Usually you need to end this case with a break or return.</p>
+
+    
+<h2>
+<a name="UC_USELESS_OBJECT">UC_USELESS_OBJECT: Useless object created</a>
+</h2>
+
+<p>Our analysis shows that this object is useless. 
+It's created and modified, but its value never go outside of the method or produce any side-effect.
+Either there is a mistake and object was intended to be used or it can be removed.</p>
+<p>This analysis rarely produces false-positives. Common false-positive cases include:</p>
+<p>- This object used to implicitly throw some obscure exception.</p>
+<p>- This object used as a stub to generalize the code.</p>
+<p>- This object used to hold strong references to weak/soft-referenced objects.</p>
+
+    
+<h2>
+<a name="URF_UNREAD_FIELD">URF_UNREAD_FIELD: Unread field</a>
+</h2>
+
+  <p> This field is never read.&nbsp; Consider removing it from the class.</p>
+
+    </body>
+</html>
