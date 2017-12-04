@@ -75,10 +75,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void setGetPath() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.startPlugin("MedtronicImporter");
-        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
+        Importer MedtronicImporter = TestImporterUtil.getImporterFromPath("export/MedtronicImporter-0.0.1");
         MedtronicImporter.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
     }
@@ -88,11 +85,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.startPlugin("MedtronicImporter");
-        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
-        Handler handler;
+        Importer MedtronicImporter = TestImporterUtil.getImporterFromPath("export/MedtronicImporter-0.0.1");
 
         MedtronicImporter.LOG.addHandler(new Handler() {
             String logOut = "";
