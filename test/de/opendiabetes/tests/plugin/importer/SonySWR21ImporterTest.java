@@ -61,13 +61,9 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void callPlugin() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.enablePlugin("SonySWR21Importer");
-        manager.startPlugin("SonySWR21Importer");
-        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-        medtronicImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(medtronicImporter.importData());
+        Importer SonySWR21Importer = TestImporterUtil.getImporterFromPath("export/SonySWR21Importer-0.0.1");
+        SonySWR21Importer.setImportFilePath("path/to/data");
+        Assert.assertFalse(SonySWR21Importer.importData());
     }
 
     /**
@@ -75,12 +71,9 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void setGetPath() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.startPlugin("SonySWR21Importer");
-        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
-        MedtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
+        Importer SonySWR21Importer = TestImporterUtil.getImporterFromPath("export/SonySWR21Importer-0.0.1");
+        SonySWR21Importer.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", SonySWR21Importer.getImportFilePath());
     }
 
     /**
@@ -88,13 +81,10 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.startPlugin("SonySWR21Importer");
-        Importer MedtronicImporter = manager.getExtensions(Importer.class).get(0);
+        Importer SonySWR21Importer = TestImporterUtil.getImporterFromPath("export/SonySWR21Importer-0.0.1");
         Handler handler;
 
-        MedtronicImporter.LOG.addHandler(new Handler() {
+        SonySWR21Importer.LOG.addHandler(new Handler() {
             String logOut = "";
             int msgs_recieved = 0;
 
@@ -114,7 +104,7 @@ public class SonySWR21ImporterTest {
                 Assert.assertTrue(msgs_recieved>0);
             }
         });
-        Assert.assertFalse(MedtronicImporter.loadConfiguration("path/to/configuration"));
-        MedtronicImporter.LOG.getHandlers()[0].close();
+        Assert.assertFalse(SonySWR21Importer.loadConfiguration("path/to/configuration"));
+        SonySWR21Importer.LOG.getHandlers()[0].close();
     }
 }

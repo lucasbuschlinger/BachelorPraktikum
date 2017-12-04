@@ -43,7 +43,7 @@ public class SonySWR21Importer extends Plugin {
     /**
      * Constructor for the PluginManager.
      *
-     * @param wrapper The PluginManager.
+     * @param wrapper The PluginWrapper.
      */
     public SonySWR21Importer(final PluginWrapper wrapper) {
         super(wrapper);
