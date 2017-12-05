@@ -1,0 +1,10 @@
+- [ ] Werden korrekte Typen benutzt?
+- [ ] Methoden haben korrekte Sichtbarkeit
+- [ ] Variablen haben korrekte Sichtbarkeit
+- [ ] Keine Rechtschreibfehler (Schrift/Grammatik)
+- [ ] Code gut verständlich
+- [ ] Eindeutige Variablennamen
+- [ ] Dokumentation in Form von JavaDoc vorhanden
+- [ ] Keine logischen Fehler
+- [ ] Checkstyle keine (drastischen) Fehler
+- [ ] FindBugs keine (drastischen) Fehler

@@ -556,7 +556,7 @@ public class VaultCsvEntry extends CsvEntry {
             csvRecord.add("");
         }
 
-        return csvRecord.toArray(new String[]{});
+        return csvRecord.toArray(new String[] {});
     }
 
     public String getCsvHeaderString() {
@@ -573,7 +573,7 @@ public class VaultCsvEntry extends CsvEntry {
 
     @Override
     public String[] getCsvHeaderRecord() {
-        return new String[]{
+        return new String[] {
                 "date",
                 "time",
                 "bgValue",

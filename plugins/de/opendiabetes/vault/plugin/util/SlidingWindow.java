@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package de.opendiabetes.vault.plugin.util;
 
 import de.opendiabetes.vault.container.VaultEntry;
@@ -23,15 +24,34 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * @author mswin
+ * This class implement a sliding windows to filter VaultEntries from a time period.
  */
 public class SlidingWindow {
 
+    /**
+     * The window size.
+     */
     private final long windowSizeInMinutes;
+    /**
+     * Type to filter for.
+     */
     private final VaultEntryType typeToReactOn;
+    /**
+     * Size of the output filter.
+     */
     private final double outputFilterSize;
+    /**
+     * Buffer for VaultEntries.
+     */
     private ArrayList<VaultEntry> buffer = new ArrayList<>();
 
+    /**
+     * Constructor for a sliding window.
+     *
+     * @param windowSizeInMinutes The window size.
+     * @param typeToReactOn       Type to filter for.
+     * @param outputFilterSize    Size of the output filter.
+     */
     public SlidingWindow(long windowSizeInMinutes, VaultEntryType typeToReactOn, double outputFilterSize) {
         this.windowSizeInMinutes = windowSizeInMinutes;
         this.typeToReactOn = typeToReactOn;
@@ -39,12 +59,11 @@ public class SlidingWindow {
     }
 
     /**
-     * Updates the internal buffer and calculates the value 1 elevation
-     * (absolut)
+     * Updates the internal buffer and calculates the value 1 elevation (absolute).
      *
-     * @param entry
-     * @return absolut elevation within the window or 0 if wrong type or buffer
-     * not statuated
+     * @param entry The VaultEntry to update.
+     * @return Absolute elevation within the window or 0 if wrong type or buffer
+     * not statuated. TODO
      */
     public double updateValue1WindowElevation(VaultEntry entry) {
         if (entry.getType() != typeToReactOn) {
@@ -53,40 +72,40 @@ public class SlidingWindow {
 
         buffer.add(entry);
 
-        // clean buffer accourding to window size
+        // Clean buffer according to window size
         Date bufferStartTime = TimestampUtils.addMinutesToTimestamp(entry.getTimestamp(), -windowSizeInMinutes);
         ArrayList<VaultEntry> itemsToKill = new ArrayList<>();
         for (VaultEntry item : buffer) {
             if (item.getTimestamp().before(bufferStartTime)) {
-                // remove items which are to old for the window
+                // Remove items which are to old for the window
                 itemsToKill.add(item);
             } else {
                 if (itemsToKill.isEmpty()) {
-                    // buffer is not satuated --> no calculation
+                    // Buffer is not saturated --> no calculation
                     return 0.0;
                 } else {
-                    // reached values in window
+                    // Reached values in window
                     break;
                 }
             }
         }
         buffer.removeAll(itemsToKill);
 
-        // calculate elevation
+        // Calculate elevation
         double elevation = 0.0;
         double lastValue = 0.0;
         for (VaultEntry item : buffer) {
             if (lastValue == 0.0) {
-                // warmup
+                // Warm up
                 lastValue = item.getValue();
             } else {
-                // calculate elevation
+                // Calculate elevation
                 elevation += item.getValue() - lastValue;
                 lastValue = item.getValue();
             }
         }
 
-        // return with small filtering
+        // Return with small filtering
         if (Math.abs(elevation) > outputFilterSize) {
             return elevation;
         } else {

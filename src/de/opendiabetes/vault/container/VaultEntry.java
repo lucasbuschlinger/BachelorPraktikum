@@ -317,7 +317,7 @@ public class VaultEntry implements Serializable {
         return annotationsAsJson;
     }
 
-    // TODO JavaDoc for methods below?
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -386,9 +386,7 @@ public class VaultEntry implements Serializable {
      *
      * @param asString
      */
-
-    // fix typo?
-    public void setAnnotaionFromJson(String asString) {
+    public void setAnnotationFromJson(String asString) {
         if (asString != null && !asString.isEmpty()) {
             this.annotationsAsJson = asString;
             annotationsFromJason();
