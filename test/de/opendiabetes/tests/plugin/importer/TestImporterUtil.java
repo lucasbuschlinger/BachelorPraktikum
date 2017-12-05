@@ -9,10 +9,10 @@ import java.nio.file.Paths;
 
 @Ignore
 public class TestImporterUtil {
-    public static Importer getImporterFromPath(String path){
-        PluginManager manager = new DefaultPluginManager();
-        manager.loadPlugin(Paths.get(path));
-        manager.startPlugins();
+    public static Importer getImporter(String importer){
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin(importer);
         return manager.getExtensions(Importer.class).get(0);
     }
 }
