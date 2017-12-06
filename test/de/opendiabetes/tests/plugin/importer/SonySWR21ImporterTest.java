@@ -61,7 +61,7 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporterFromPath("export/SonySWR21Importer-0.0.1");
+        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
         SonySWR21Importer.setImportFilePath("path/to/data");
         Assert.assertFalse(SonySWR21Importer.importData());
     }
@@ -71,7 +71,7 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporterFromPath("export/SonySWR21Importer-0.0.1");
+        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
         SonySWR21Importer.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", SonySWR21Importer.getImportFilePath());
     }
@@ -81,7 +81,7 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporterFromPath("export/SonySWR21Importer-0.0.1");
+        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
         Handler handler;
 
         SonySWR21Importer.LOG.addHandler(new Handler() {

@@ -75,7 +75,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer MedtronicImporter = TestImporterUtil.getImporterFromPath("export/MedtronicImporter-0.0.1");
+        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
         MedtronicImporter.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
     }
@@ -85,7 +85,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer MedtronicImporter = TestImporterUtil.getImporterFromPath("export/MedtronicImporter-0.0.1");
+        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
 
         MedtronicImporter.LOG.addHandler(new Handler() {
             String logOut = "";

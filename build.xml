@@ -184,7 +184,7 @@
     <property name="opendiabetes.output.dir"
               value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
     <property name="opendiabetes.testoutput.dir"
-              value="${module.opendiabetes.basedir}/out/test"/>
+              value="${module.opendiabetes.basedir}/out/test/OpenDiabetes"/>
 
     <path id="opendiabetes.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
@@ -319,6 +319,7 @@
         <delete dir="${opendiabetes.testoutput.dir}"/>
         <delete dir="plugins_out"/>
         <delete dir="export"/>
+        <delete dir="out"/>
     </target>
 
     <target name="init" description="Build initialization">
@@ -411,15 +412,28 @@
         <fileset dir="lib" includes="*.jar"/>
         <fileset dir="testlib" includes="*.jar"/>
         <pathelement path="out/production/OpenDiabetes"/>
-        <pathelement path="out/test"/>
+        <pathelement path="out/test/OpenDiabetes"/>
     </path>
+
+    <property name="plugins_out" value="out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer"/>
+
+    <target name="clean_for_tests">
+        <delete includeemptydirs="true">
+            <fileset dir="${plugins_out}">
+                <exclude name="*.class"/>
+                <exclude name="ImportProcessor/**"/>
+                <exclude name="preprocessor/**"/>
+                <exclude name="validator/**"/>
+            </fileset>
+        </delete>
+    </target>
 
 
     <!-- Working JUnit task!-->
     <taskdef name="junit"
              classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
-             classpath="${basedir}/testlib/junit.jar"/>
-    <target name="test" depends="plugin, compile.module.opendiabetes.tests">
+             classpath="${basedir}/testlib/ant-junit.jar"/>
+    <target name="test" depends="plugin, compile.module.opendiabetes.tests, clean_for_tests">
         <mkdir dir="reports/resources/junit"/>
         <property name="junit.path" refid="junit.class.path"/>
         <junit>
