@@ -184,7 +184,7 @@
     <property name="opendiabetes.output.dir"
               value="${module.opendiabetes.basedir}/out/production/OpenDiabetes"/>
     <property name="opendiabetes.testoutput.dir"
-              value="${module.opendiabetes.basedir}/out/test/OpenDiabetes"/>
+              value="${module.opendiabetes.basedir}/out/test"/>
 
     <path id="opendiabetes.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
@@ -315,8 +315,6 @@
         </copy>
     </target>
     <target name="clean.module.opendiabetes" description="cleanup module">
-        <delete dir="${opendiabetes.output.dir}"/>
-        <delete dir="${opendiabetes.testoutput.dir}"/>
         <delete dir="plugins_out"/>
         <delete dir="export"/>
         <delete dir="out"/>
@@ -412,7 +410,7 @@
         <fileset dir="lib" includes="*.jar"/>
         <fileset dir="testlib" includes="*.jar"/>
         <pathelement path="out/production/OpenDiabetes"/>
-        <pathelement path="out/test/OpenDiabetes"/>
+        <pathelement path="out/test"/>
     </path>
 
     <property name="plugins_out" value="out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer"/>
