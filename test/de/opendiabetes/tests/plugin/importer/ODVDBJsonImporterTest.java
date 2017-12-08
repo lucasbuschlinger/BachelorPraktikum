@@ -17,6 +17,7 @@
 package de.opendiabetes.tests.plugin.importer;
 
 import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
@@ -30,7 +31,7 @@ import java.util.logging.LogRecord;
 /**
  * Tests for the SonySWR21Importer plugin.
  */
-public class SonySWR21ImporterTest {
+public class ODVDBJsonImporterTest {
 
     /**
      * Test to see whether the plugin can be loaded.
@@ -51,9 +52,9 @@ public class SonySWR21ImporterTest {
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("SonySWR21Importer");
+        manager.enablePlugin("ODVDBJsonImporter");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("SonySWR21Importer"));
+        Assert.assertTrue(manager.enablePlugin("ODVDBJsonImporter"));
     }
 
     /**
@@ -61,9 +62,10 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        SonySWR21Importer.setImportFilePath("path/to/data");
-        Assert.assertFalse(SonySWR21Importer.importData());
+        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        System.out.println("TEST"+odvImporter.getClass());
+        odvImporter.setImportFilePath("path/to/data");
+        Assert.assertFalse(odvImporter.importData());
     }
 
     /**
@@ -71,9 +73,9 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        SonySWR21Importer.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", SonySWR21Importer.getImportFilePath());
+        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        odvImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", odvImporter.getImportFilePath());
     }
 
     /**
@@ -81,18 +83,16 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        Handler handler;
-
-        SonySWR21Importer.LOG.addHandler(new Handler() {
+        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        Handler handler = new Handler() {
             String logOut = "";
             int msgs_recieved = 0;
 
             @Override
             public void publish(LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: SonySWR21Importer does not support configuration."));
                 msgs_recieved++;
+                Assert.assertTrue(logOut.contains("WARNING: ODVDBJsonImporter does not support configuration."));
             }
 
             @Override
@@ -102,9 +102,13 @@ public class SonySWR21ImporterTest {
             @Override
             public void close() throws SecurityException {
                 Assert.assertTrue(msgs_recieved>0);
+
             }
-        });
-        Assert.assertFalse(SonySWR21Importer.loadConfiguration("path/to/configuration"));
-        SonySWR21Importer.LOG.getHandlers()[0].close();
+        };
+        odvImporter.LOG.addHandler(handler);
+
+        odvImporter.loadConfiguration("path/to/configuration");
+
+        odvImporter.LOG.getHandlers()[0].close();
     }
 }

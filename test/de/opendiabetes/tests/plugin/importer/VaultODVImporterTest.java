@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -28,9 +28,9 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * Tests for the SonySWR21Importer plugin.
+ * Tests for the VaultODVImporter plugin.
  */
-public class SonySWR21ImporterTest {
+public class VaultODVImporterTest {
 
     /**
      * Test to see whether the plugin can be loaded.
@@ -51,9 +51,9 @@ public class SonySWR21ImporterTest {
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("SonySWR21Importer");
+        manager.enablePlugin("VaultODVImporter");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("SonySWR21Importer"));
+        Assert.assertTrue(manager.enablePlugin("VaultODVImporter"));
     }
 
     /**
@@ -61,9 +61,13 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        SonySWR21Importer.setImportFilePath("path/to/data");
-        Assert.assertFalse(SonySWR21Importer.importData());
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.enablePlugin("VaultODVImporter");
+        manager.startPlugin("VaultODVImporter");
+        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        VaultODVImporter.setImportFilePath("path/to/data");
+        Assert.assertFalse(VaultODVImporter.importData());
     }
 
     /**
@@ -71,9 +75,12 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        SonySWR21Importer.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", SonySWR21Importer.getImportFilePath());
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin("VaultODVImporter");
+        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        VaultODVImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", VaultODVImporter.getImportFilePath());
     }
 
     /**
@@ -81,17 +88,20 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin("VaultODVImporter");
+        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
         Handler handler;
 
-        SonySWR21Importer.LOG.addHandler(new Handler() {
+        VaultODVImporter.LOG.addHandler(new Handler() {
             String logOut = "";
             int msgs_recieved = 0;
 
             @Override
             public void publish(LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: SonySWR21Importer does not support configuration."));
+                Assert.assertTrue(logOut.contains("WARNING: VaultODVImporter does not support configuration."));
                 msgs_recieved++;
             }
 
@@ -104,7 +114,10 @@ public class SonySWR21ImporterTest {
                 Assert.assertTrue(msgs_recieved>0);
             }
         });
-        Assert.assertFalse(SonySWR21Importer.loadConfiguration("path/to/configuration"));
-        SonySWR21Importer.LOG.getHandlers()[0].close();
+        Assert.assertFalse(VaultODVImporter.loadConfiguration("path/to/configuration"));
+        VaultODVImporter.LOG.getHandlers()[0].close();
     }
+
+    //TODO add test for notifyMechanism
+
 }

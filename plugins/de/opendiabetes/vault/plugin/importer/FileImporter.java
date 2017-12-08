@@ -60,24 +60,24 @@ public abstract class FileImporter extends AbstractImporter {
      */
     public boolean importData() {
         if (null == importFilePath) {
-            LOG.log(Level.WARNING, "no path specified from where to import data");
+            LOG.log(Level.WARNING, "No path specified from where to import data.");
             return false;
         }
         preprocessingIfNeeded(importFilePath);
-        this.notifyStatus(0, "preprocessing done.");
+        this.notifyStatus(0, "Preprocessing done.");
 
-        FileInputStream fis = null;
+        FileInputStream inputStream = null;
         try {
-            fis = new FileInputStream(importFilePath);
-            return processImport(fis, importFilePath);
+            inputStream = new FileInputStream(importFilePath);
+            return processImport(inputStream, importFilePath);
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
                     + importFilePath, ex);
             return false;
         } finally {
-            if (fis != null) {
+            if (inputStream != null) {
                 try {
-                    fis.close();
+                    inputStream.close();
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + importFilePath, ex);
                 }
