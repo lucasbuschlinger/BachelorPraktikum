@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -17,6 +17,7 @@
 package de.opendiabetes.tests.plugin.importer;
 
 import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
@@ -28,9 +29,9 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * Tests for the MedtronicImporter plugin.
+ * Tests for the SonySWR21Importer plugin.
  */
-public class MedtronicImporterTest {
+public class ODVDBJsonImporterTest {
 
     /**
      * Test to see whether the plugin can be loaded.
@@ -51,9 +52,9 @@ public class MedtronicImporterTest {
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("MedtronicImporter");
+        manager.enablePlugin("ODVDBJsonImporter");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("MedtronicImporter"));
+        Assert.assertTrue(manager.enablePlugin("ODVDBJsonImporter"));
     }
 
     /**
@@ -61,13 +62,10 @@ public class MedtronicImporterTest {
      */
     @Test
     public void callPlugin() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.enablePlugin("MedtronicImporter");
-        manager.startPlugin("MedtronicImporter");
-        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-        medtronicImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(medtronicImporter.importData());
+        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        System.out.println("TEST"+odvImporter.getClass());
+        odvImporter.setImportFilePath("path/to/data");
+        Assert.assertFalse(odvImporter.importData());
     }
 
     /**
@@ -75,9 +73,9 @@ public class MedtronicImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-        MedtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
+        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        odvImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", odvImporter.getImportFilePath());
     }
 
     /**
@@ -85,17 +83,16 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-
-        MedtronicImporter.LOG.addHandler(new Handler() {
+        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        Handler handler = new Handler() {
             String logOut = "";
             int msgs_recieved = 0;
 
             @Override
             public void publish(LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: MedtronicImporter does not support configuration."));
                 msgs_recieved++;
+                Assert.assertTrue(logOut.contains("WARNING: ODVDBJsonImporter does not support configuration."));
             }
 
             @Override
@@ -105,12 +102,13 @@ public class MedtronicImporterTest {
             @Override
             public void close() throws SecurityException {
                 Assert.assertTrue(msgs_recieved>0);
+
             }
-        });
-        Assert.assertFalse(MedtronicImporter.loadConfiguration("path/to/configuration"));
-        MedtronicImporter.LOG.getHandlers()[0].close();
+        };
+        odvImporter.LOG.addHandler(handler);
+
+        odvImporter.loadConfiguration("path/to/configuration");
+
+        odvImporter.LOG.getHandlers()[0].close();
     }
-
-    //TODO add test for notifyMechanism
-
 }

@@ -28,10 +28,11 @@ public class SortVaultEntryByDate implements Comparator<VaultEntry>, Serializabl
 
     /**
      * Method to compare two VaultEntries by their timestamps.
+     *
      * @param entry1 First VaultEntry.
      * @param entry2 Second VaultEntry.
      * @return -1 when the second VaultEntry is larger, 0 if they are equal, 1 if the first VaultEntry is larger.
-     * */
+     */
     @Override
     public int compare(VaultEntry entry1, VaultEntry entry2) {
         return entry1.getTimestamp().compareTo(entry2.getTimestamp());

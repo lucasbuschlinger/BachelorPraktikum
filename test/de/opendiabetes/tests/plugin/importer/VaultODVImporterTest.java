@@ -28,9 +28,9 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
- * Tests for the MedtronicImporter plugin.
+ * Tests for the VaultODVImporter plugin.
  */
-public class MedtronicImporterTest {
+public class VaultODVImporterTest {
 
     /**
      * Test to see whether the plugin can be loaded.
@@ -51,9 +51,9 @@ public class MedtronicImporterTest {
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("MedtronicImporter");
+        manager.enablePlugin("VaultODVImporter");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("MedtronicImporter"));
+        Assert.assertTrue(manager.enablePlugin("VaultODVImporter"));
     }
 
     /**
@@ -63,11 +63,11 @@ public class MedtronicImporterTest {
     public void callPlugin() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("MedtronicImporter");
-        manager.startPlugin("MedtronicImporter");
-        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-        medtronicImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(medtronicImporter.importData());
+        manager.enablePlugin("VaultODVImporter");
+        manager.startPlugin("VaultODVImporter");
+        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        VaultODVImporter.setImportFilePath("path/to/data");
+        Assert.assertFalse(VaultODVImporter.importData());
     }
 
     /**
@@ -75,9 +75,12 @@ public class MedtronicImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-        MedtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin("VaultODVImporter");
+        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        VaultODVImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", VaultODVImporter.getImportFilePath());
     }
 
     /**
@@ -85,16 +88,20 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
+        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+        manager.loadPlugins();
+        manager.startPlugin("VaultODVImporter");
+        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        Handler handler;
 
-        MedtronicImporter.LOG.addHandler(new Handler() {
+        VaultODVImporter.LOG.addHandler(new Handler() {
             String logOut = "";
             int msgs_recieved = 0;
 
             @Override
             public void publish(LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: MedtronicImporter does not support configuration."));
+                Assert.assertTrue(logOut.contains("WARNING: VaultODVImporter does not support configuration."));
                 msgs_recieved++;
             }
 
@@ -107,8 +114,8 @@ public class MedtronicImporterTest {
                 Assert.assertTrue(msgs_recieved>0);
             }
         });
-        Assert.assertFalse(MedtronicImporter.loadConfiguration("path/to/configuration"));
-        MedtronicImporter.LOG.getHandlers()[0].close();
+        Assert.assertFalse(VaultODVImporter.loadConfiguration("path/to/configuration"));
+        VaultODVImporter.LOG.getHandlers()[0].close();
     }
 
     //TODO add test for notifyMechanism

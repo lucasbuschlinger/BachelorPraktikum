@@ -30,6 +30,7 @@ public class EasyFormatter {
 
     /**
      * TODO.
+     *
      * @param input The double to be formatted.
      * @return The formatted double as a string.
      */

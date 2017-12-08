@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -24,10 +24,10 @@ import java.util.logging.Level;
 /**
  * This class defines the default structure how data gets imported from a file.
  * It implements file handling of the data source
- * specified by {@link FileImporter#setImportFilePath(String)}
- * all descendants must implement the template methods
- * {@link FileImporter#preprocessingIfNeeded(String)}
- * {@link FileImporter#processImport(InputStream, String)}
+ * specified by {@link FileImporter#setImportFilePath(String)}.
+ * All descendants must implement the template methods.
+ * {@link FileImporter#preprocessingIfNeeded(String)}.
+ * {@link FileImporter#processImport(InputStream, String)}.
  */
 public abstract class FileImporter extends AbstractImporter {
 
@@ -48,8 +48,8 @@ public abstract class FileImporter extends AbstractImporter {
      * {@inheritDoc}
      */
     @Override
-    public void setImportFilePath(final String path) {
-        this.importFilePath = path;
+    public void setImportFilePath(final String filePath) {
+        this.importFilePath = filePath;
     }
 
     /**
@@ -60,24 +60,24 @@ public abstract class FileImporter extends AbstractImporter {
      */
     public boolean importData() {
         if (null == importFilePath) {
-            LOG.log(Level.WARNING, "no path specified from where to import data");
+            LOG.log(Level.WARNING, "No path specified from where to import data.");
             return false;
         }
         preprocessingIfNeeded(importFilePath);
-        this.notifyStaus(0, "preprocessing done.");
+        this.notifyStatus(0, "Preprocessing done.");
 
-        FileInputStream fis = null;
+        FileInputStream inputStream = null;
         try {
-            fis = new FileInputStream(importFilePath);
-            return processImport(fis, importFilePath);
+            inputStream = new FileInputStream(importFilePath);
+            return processImport(inputStream, importFilePath);
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
                     + importFilePath, ex);
             return false;
         } finally {
-            if (fis != null) {
+            if (inputStream != null) {
                 try {
-                    fis.close();
+                    inputStream.close();
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + importFilePath, ex);
                 }
@@ -87,7 +87,7 @@ public abstract class FileImporter extends AbstractImporter {
     }
 
     /**
-     * Method for preprocessing the data.//TODO more specific
+     * Method for preprocessing the data.//TODO more specific.
      *
      * @param filePath Path to the import file.
      */
