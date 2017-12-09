@@ -53,6 +53,7 @@ public enum VaultEntryType {
     // Meal
     MEAL_BOLUS_CALCULATOR,
     MEAL_MANUAL,
+    MEAL_DESCRIPTION,
     // Pump Events
     PUMP_REWIND,
     PUMP_PRIME,
@@ -74,6 +75,10 @@ public enum VaultEntryType {
     HEART_RATE,
     HEART_RATE_VARIABILITY,
     STRESS,
+    // Ketones
+    KETONES_BLOOD,
+    KETONES_URINE,
+    KETONES_MANUAL,
     // Location (Geocoding)
     LOC_TRANSISTION,
     LOC_HOME,
@@ -81,10 +86,14 @@ public enum VaultEntryType {
     LOC_FOOD,
     LOC_SPORTS,
     LOC_OTHER,
+    //Blood Pressure
+    BLOOD_PRESSURE,
     // Machine Learning
     ML_CGM_PREDICTION,
     // Date Mining
     DM_INSULIN_SENSITIVTY,
     // More unspecific input
-    OTHER_ANNOTATION
+    OTHER_ANNOTATION,
+    //Tags
+    Tag
 }

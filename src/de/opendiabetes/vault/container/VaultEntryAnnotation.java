@@ -238,7 +238,68 @@ public class VaultEntryAnnotation implements Serializable {
         /**
          * User text.
          */
-        USER_TEXT
+        USER_TEXT,
+
+        BOLUS_CORRECTION,
+
+        BOLUS_MEAL,
+
+        BLOOD_PRESSURE_Systolic,
+
+        BLOOD_PRESSURE_Diastolic,
+
+        EXERCISE_cosy,
+
+        EXERCISE_ordinary,
+
+        EXERCISE_demanding,
+
+        MEAL_Information,
+
+        TAG_BeforeTheMeal,
+
+        TAG_Breakfast,
+
+        TAG_Correction,
+
+        TAG_Sports,
+
+        TAG_Snack,
+
+        TAG_Dinner,
+
+        TAG_OfficeWork,
+
+        TAG_Lunch,
+
+        TAG_Bedtime,
+
+        TAG_HypoFeeling,
+
+        TAG_Sad,
+
+        TAG_Sick,
+
+        TAG_AfterTheMeal,
+
+        TAG_HyperFeeling,
+
+        TAG_Party,
+
+        TAG_Bingeing,
+
+        TAG_Alcohol,
+
+        TAG_Nervous,
+
+        TAG_Stress,
+
+        TAG_Note,
+
+        /**
+         * Unhandled Tags get this value
+         */
+        TAG_Unknown
     }
 
 }
