@@ -29,6 +29,7 @@ import java.util.Date;
  */
 public class GoogleFitCSVValidator extends CSVValidator {
 
+
     public static final String HEADER_START_TIME_DE = "Beginn";
     public static final String HEADER_END_TIME_DE = "Ende";
     public static final String HEADER_BIKE_VALUE_DE = "Radfahren – Dauer (ms)";
