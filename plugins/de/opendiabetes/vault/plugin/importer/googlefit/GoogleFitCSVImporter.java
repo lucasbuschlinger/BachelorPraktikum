@@ -66,6 +66,9 @@ public class GoogleFitCSVImporter extends Plugin {
         @Override
         protected void preprocessingIfNeeded(final String filePath) { /*not needed yet*/ }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         protected List<VaultEntry> parseEntry(final CsvReader creader) throws Exception {
             List<VaultEntry> retVal = new ArrayList<>();
@@ -75,15 +78,18 @@ public class GoogleFitCSVImporter extends Plugin {
             long runTime = parseValidator.getRunValue(creader);
             long bikeTime = parseValidator.getBikeValue(creader);
 
+            final int mmPerMeter = 1000;
+            final int msPerMin = 60000;
+
             // basic filtering of idle entries
             // --> relevant activity has to be more than 1m
-            if ((runTime + bikeTime + walkTime) < 1000) {
+            if ((runTime + bikeTime + walkTime) < mmPerMeter) {
                 return retVal;
             }
 
             VaultEntry newVaultEntry;
             Date timestamp = new Date(parseValidator.getStartTime(creader, getImportFilePath()));
-            double durationInMinutes = Math.round((runTime + bikeTime + walkTime) / 1000 / 60);
+            double durationInMinutes = Math.round((runTime + bikeTime + walkTime) / msPerMin);
             double maxSpeed = parseValidator.getMaxSpeedValue(creader);
 
             // estimate the activity within this slot
@@ -113,6 +119,9 @@ public class GoogleFitCSVImporter extends Plugin {
             return retVal;
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public boolean loadConfiguration(final String filePath) {
             LOG.log(Level.WARNING, "GoogleFitCSVImporter does not support configuration.");
