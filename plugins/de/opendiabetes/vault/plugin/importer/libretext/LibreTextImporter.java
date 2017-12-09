@@ -17,11 +17,14 @@
 package de.opendiabetes.vault.plugin.importer.libretext;
 
 import com.csvreader.CsvReader;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
+import de.opendiabetes.vault.plugin.importer.CSVImporter;
+import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -35,6 +38,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+
+import static de.opendiabetes.vault.plugin.importer.libretext.LibreTextImporter.LibreTextImporterImplementation.LIBRE_TYPE.HISTORIC_GLUCOSE;
+import static de.opendiabetes.vault.plugin.importer.libretext.LibreTextImporter.LibreTextImporterImplementation.LIBRE_TYPE.SCAN_GLUCOSE;
+import static de.opendiabetes.vault.plugin.importer.libretext.LibreTextImporter.LibreTextImporterImplementation.LIBRE_TYPE.TIME_CHANGED;
 
 /**
  * Wrapper class for the LibreTextImporter plugin.
@@ -53,45 +60,59 @@ public class LibreTextImporter extends Plugin {
      * Actual implementation of the LibreText importer plugin.
      */
     @Extension
-    public static class LibreTextImporterImplementation extends AbstractImporter {
+    public static class LibreTextImporterImplementation extends CSVImporter {
 
-        /**
-         * The path to the import file.
-         */
-        private String importFilePath;
-
-        /**
-         * German header for libre csv data.
-         */
-        private static final String[][] LIBRE_CSV_HEADER = {{"Uhrzeit", "Art des Eintrags",
-                "Historische Glukose (mg/dL)", "Gescannte Glukose (mg/dL)", "Teststreifen-Blutzucker (mg/dL)"}};
-        /**
-         * Types used in LibreText data.
-         */
-        private static final String[] LIBRE_TYPE = {"ScanGlucose", "HistoricGlucose", "BloodGlucose", "TimeChanged"};
-        /**
-         * Integers used in LibreText data.
-         */
-        private static final int[] LIBRE_TYPE_INTEGER = {1, 0, 2, 6};
         /**
          * Time format used in LibreText data.
          */
         private static final String TIME_FORMAT_LIBRE_DE = "yyyy.MM.dd HH:mm";
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getImportFilePath() {
-            return importFilePath;
+        private enum LIBRE_TYPE {
+            SCAN_GLUCOSE (1, "ScanGlucose", "Gescannte Glukose (mg/dL)"),
+            HISTORIC_GLUCOSE (0, "HistoricGlucose", "Historische Glukose (mg/dL)"),
+            BLOOD_GLUCOSE (2, "BloodGlucose", "Teststreifen-Blutzucker (mg/dL)"),
+            TIME_CHANGED (6, "TimeChanged", "Uhrzeit");
+            final int index;
+            final String name;
+            final String header;
+            LIBRE_TYPE(int index, String name, String header) {
+                this.index = index;
+                this.name = name;
+                this.header = header;
+            }
+            final int getIndex(){
+                return index;
+            }
+            final String getName(){
+                return name;
+            }
+            final String getHeader(){
+                return header;
+            }
+            final static LIBRE_TYPE getFromType(int type){
+                switch (type) {
+                    case 1:
+                        return SCAN_GLUCOSE;
+                    case 0:
+                        return HISTORIC_GLUCOSE;
+                    case 2:
+                        return BLOOD_GLUCOSE;
+                    case 6:
+                        return TIME_CHANGED;
+                    default:
+                        throw new IllegalArgumentException("No such type for LibreText data.");
+                }
+            }
         }
 
         /**
-         * {@inheritDoc}
+         * Constructor for a CSV validator.
+         *
+         * @param csvValidator The validator to use.
+         * @param csvDelimiter The delimiter used in the CSV file.
          */
-        @Override
-        public void setImportFilePath(final String filePath) {
-            this.importFilePath = filePath;
+        public LibreTextImporterImplementation() {
+            super(new csvLibreValidator(), '\t');
         }
 
         /**
@@ -99,10 +120,10 @@ public class LibreTextImporter extends Plugin {
          * @return Nothing, throws {@link UnsupportedOperationException}
          * @throws UnsupportedOperationException This method is not implemented, as it is not needed.
          */
-        @Override
+       /*
         public boolean importData() throws UnsupportedOperationException {
             throw new UnsupportedOperationException("Method importData is not supported by the LibreText importer!");
-        }
+        }*/
 
         /**
          * Method to load configuration file for the LibreTextImporter plugin.
@@ -179,10 +200,11 @@ public class LibreTextImporter extends Plugin {
          * @throws IOException Thrown by the CSV Reader.
          * @throws ParseException Thrown by the CSV Reader.
          */
-        private static RawEntry parseEntry(final CsvReader reader) throws IOException, ParseException {
+        @Override
+        public List<VaultEntry> parseEntry(final CsvReader reader) throws IOException, ParseException {
 
             String[] validHeader = LIBRE_CSV_HEADER[0];
-            int type = Integer.parseInt(reader.get(validHeader[1]));
+            int type = Integer.parseInt(reader.get("Art des Eintrags"));
 
             if (type == LIBRE_TYPE_INTEGER[1]) { // HistoricGlucose
                 Date timestamp = TimestampUtils.createCleanTimestamp(reader.get(validHeader[0]), TIME_FORMAT_LIBRE_DE);
@@ -210,8 +232,25 @@ public class LibreTextImporter extends Plugin {
                 return null;
             }
 
-            return null;
+            VaultEntry tempEntry;
+            Date timestamp = TimestampUtils.createCleanTimestamp(reader.get(TIME_CHANGED.getHeader()), TIME_FORMAT_LIBRE_DE);
+            switch (LIBRE_TYPE.getFromType(type)) {
+                case HISTORIC_GLUCOSE:
+                    double value = Double.parseDouble(reader.get(HISTORIC_GLUCOSE.getHeader()));
+
+                    tempEntry = new VaultEntry(VaultEntryType.GLUCOSE_CGM, timestamp, value);
+                    tempEntry.addAnnotation(new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.CGM_VENDOR_LIBRE));
+                    break;
+                case SCAN_GLUCOSE:
+                    double value = Double.parseDouble(reader.get(SCAN_GLUCOSE.getHeader()));
+                    tempEntry = (new VaultEntry(VaultEntryType.GLUCOSE_CGM_ALERT,timestamp, value);
+                    break;
+            }
+            return tempEntry;
 
         }
+
+        @Override
+        protected void preprocessingIfNeeded(final String filePath) {}
     }
 }
