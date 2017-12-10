@@ -180,7 +180,7 @@ public class VaultEntryAnnotation implements Serializable {
          */
         GLUCOSE_RISE_20_MIN,
         /**
-         * TODO.
+         * Serial blood glucose meter.
          */
         GLUCOSE_BG_METER_SERIAL,
         /**
@@ -239,65 +239,120 @@ public class VaultEntryAnnotation implements Serializable {
          * User text.
          */
         USER_TEXT,
-
-        BOLUS_CORRECTION,
-
-        BOLUS_MEAL,
-
-        BLOOD_PRESSURE_Systolic,
-
-        BLOOD_PRESSURE_Diastolic,
-
-        EXERCISE_cosy,
-
-        EXERCISE_ordinary,
-
-        EXERCISE_demanding,
-
-        MEAL_Information,
-
-        TAG_BeforeTheMeal,
-
-        TAG_Breakfast,
-
-        TAG_Correction,
-
-        TAG_Sports,
-
-        TAG_Snack,
-
-        TAG_Dinner,
-
-        TAG_OfficeWork,
-
-        TAG_Lunch,
-
-        TAG_Bedtime,
-
-        TAG_HypoFeeling,
-
-        TAG_Sad,
-
-        TAG_Sick,
-
-        TAG_AfterTheMeal,
-
-        TAG_HyperFeeling,
-
-        TAG_Party,
-
-        TAG_Bingeing,
-
-        TAG_Alcohol,
-
-        TAG_Nervous,
-
-        TAG_Stress,
-
-        TAG_Note,
-
         /**
-         * Unhandled Tags get this value
+         * Bolus correction.
+         */
+        BOLUS_CORRECTION,
+        /**
+         * Meal bolus.
+         */
+        BOLUS_MEAL,
+        /**
+         * Systolic blood pressure.
+         */
+        BLOOD_PRESSURE_Systolic,
+        /**
+         * Diastolic blood pressure.
+         */
+        BLOOD_PRESSURE_Diastolic,
+        /**
+         * Cosy exercise.
+         */
+        EXERCISE_cosy,
+        /**
+         * Ordinary exercise.
+         */
+        EXERCISE_ordinary,
+        /**
+         * Demanding exercise.
+         */
+        EXERCISE_demanding,
+        /**
+         * Meal information.
+         */
+        MEAL_Information,
+        /**
+         * BeforeTheMeal tag.
+         */
+        TAG_BeforeTheMeal,
+        /**
+         * Breakfast tag.
+         */
+        TAG_Breakfast,
+        /**
+         * Correction tag.
+         */
+        TAG_Correction,
+        /**
+         * Sports tag.
+         */
+        TAG_Sports,
+        /**
+         * Snack tag.
+         */
+        TAG_Snack,
+        /**
+         * Dinner tag.
+         */
+        TAG_Dinner,
+        /**
+         * Office work tag.
+         */
+        TAG_OfficeWork,
+        /**
+         * Lunch tag.
+         */
+        TAG_Lunch,
+        /**
+         * Bedtime tag.
+         */
+        TAG_Bedtime,
+        /**
+         * Hypo feeling tag.
+         */
+        TAG_HypoFeeling,
+        /**
+         * Sad tag.
+         */
+        TAG_Sad,
+        /**
+         * Sick tag.
+         */
+        TAG_Sick,
+        /**
+         * AfterTheMeal tag.
+         */
+        TAG_AfterTheMeal,
+        /**
+         * Hyper feeling tag.
+         */
+        TAG_HyperFeeling,
+        /**
+         * Party tag.
+         */
+        TAG_Party,
+        /**
+         * Bingeing tag.
+         */
+        TAG_Bingeing,
+        /**
+         * Alcohol tag.
+         */
+        TAG_Alcohol,
+        /**
+         * Nervous tag.
+         */
+        TAG_Nervous,
+        /**
+         * Strss tag.
+         */
+        TAG_Stress,
+        /**
+         * Note tag.
+         */
+        TAG_Note,
+        /**
+         * Unhandled Tags get this value.
          */
         TAG_Unknown
     }
