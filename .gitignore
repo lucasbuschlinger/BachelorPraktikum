@@ -4,3 +4,5 @@ out/
 plugins_out/
 export/
 *.iml
+.classpath
+.project
