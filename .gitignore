@@ -6,3 +6,4 @@ export/
 *.iml
 .classpath
 .project
+reports/resources/checkstyle/checkstyle_errors.xml
