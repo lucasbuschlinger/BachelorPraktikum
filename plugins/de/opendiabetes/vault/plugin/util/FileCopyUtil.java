@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -27,7 +27,13 @@ import java.io.OutputStream;
 /**
  * This class implements a utility to copy files.
  */
-public class FileCopyUtil {
+public final class FileCopyUtil {
+
+    /**
+     * Private constructor to hinder default constructor creation.
+     */
+    private FileCopyUtil() {
+    }
 
     /**
      * Method to copy a file or directory.
@@ -36,7 +42,7 @@ public class FileCopyUtil {
      * @param targetLocation The target file or directory to be copied to.
      * @throws IOException Thrown if an invalid file location is given or no matching file types given.
      */
-    public static void copy(File sourceLocation, File targetLocation) throws IOException {
+    public static void copy(final File sourceLocation, final File targetLocation) throws IOException {
         if (sourceLocation.isDirectory()) {
             copyDirectory(sourceLocation, targetLocation);
         } else {
@@ -51,7 +57,7 @@ public class FileCopyUtil {
      * @param target The target directory to be copied to.
      * @throws IOException Thrown if an invalid directory location is given.
      */
-    public static void copyDirectory(File source, File target) throws IOException {
+    public static void copyDirectory(final File source, final File target) throws IOException {
         if (!target.exists()) {
             target.mkdir();
         }
@@ -68,11 +74,12 @@ public class FileCopyUtil {
      * @param target The target file to be copied to.
      * @throws IOException Thrown if an invalid file location is given.
      */
-    public static void copyFile(File source, File target) throws IOException {
+    public static void copyFile(final File source, final File target) throws IOException {
+        final int kilobyte = 1024;
         try (
                 InputStream in = new FileInputStream(source);
                 OutputStream out = new FileOutputStream(target)) {
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[kilobyte];
             int length;
             while ((length = in.read(buf)) > 0) {
                 out.write(buf, 0, length);

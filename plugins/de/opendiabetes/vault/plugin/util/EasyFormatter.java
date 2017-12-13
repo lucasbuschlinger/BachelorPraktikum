@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -19,9 +19,15 @@ package de.opendiabetes.vault.plugin.util;
 import java.util.Locale;
 
 /**
- * This class implements an easy formatter for TODO.
+ * This class implements an easy formatter for double representation.
  */
-public class EasyFormatter {
+public final class EasyFormatter {
+
+    /**
+     * Private constructor to hinder default constructor creation.
+     */
+    private EasyFormatter() {
+    }
 
     /**
      * Format of the output.
@@ -29,12 +35,12 @@ public class EasyFormatter {
     public static final String DOUBLE_FORMAT = "%1$.2f";
 
     /**
-     * TODO.
+     * Formats doubles from x,yz to x.yz.
      *
      * @param input The double to be formatted.
      * @return The formatted double as a string.
      */
-    public static String formatDouble(double input) {
+    public static String formatDouble(final double input) {
         return String.format(Locale.ENGLISH, DOUBLE_FORMAT, input).replace(",", "");
     }
 }
