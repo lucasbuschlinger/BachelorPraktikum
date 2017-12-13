@@ -57,20 +57,34 @@ public class MedtronicAnnotatedVaultEntry extends VaultEntry {
     }
 
     /**
-     * {@inheritDoc}
+     * Converts the MedtronicAnnotatedVaultEntry to a string.
+     *
+     * @return The MedtronicAnnotatedVaultEntry.
      */
     @Override
     public String toString() {
         return super.toString() + " MedtronicAnnotatedVaultEntry{" + "rawType=" + rawType + '}';
     }
 
+    /**
+     * Hashcode generator for a MedtronicAnnotatedVaultEntry.
+     *
+     * @return The hashcode.
+     */
     @Override
     public int hashCode() {
-        return 67 * super.hashCode() + Objects.hashCode(this.rawType);
+        final int magicNumber = 67;
+        return magicNumber * super.hashCode() + Objects.hashCode(this.rawType);
     }
 
+    /**
+     * Checks whether two MedtronicAnnotatedVaultEntry are equal.
+     *
+     * @param obj The MedtronicAnnotatedVaultEntry to be compared against to MedtronicAnnotatedVaultEntry this gets called on.
+     * @return True of the entries are equal, false otherwise.
+     */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!super.equals(obj)) {
             return false;
         }

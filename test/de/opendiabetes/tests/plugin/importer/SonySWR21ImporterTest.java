@@ -61,9 +61,9 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        SonySWR21Importer.setImportFilePath("path/to/data");
-        Assert.assertFalse(SonySWR21Importer.importData());
+        Importer sonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
+        sonySWR21Importer.setImportFilePath("path/to/data");
+        Assert.assertFalse(sonySWR21Importer.importData());
     }
 
     /**
@@ -71,9 +71,9 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        SonySWR21Importer.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", SonySWR21Importer.getImportFilePath());
+        Importer sonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
+        sonySWR21Importer.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", sonySWR21Importer.getImportFilePath());
     }
 
     /**
@@ -81,18 +81,18 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer SonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
+        Importer sonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
         Handler handler;
 
-        SonySWR21Importer.LOG.addHandler(new Handler() {
+        sonySWR21Importer.LOG.addHandler(new Handler() {
             String logOut = "";
-            int msgs_recieved = 0;
+            int msgsReceived = 0;
 
             @Override
-            public void publish(LogRecord record) {
+            public void publish(final LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
                 Assert.assertTrue(logOut.contains("WARNING: SonySWR21Importer does not support configuration."));
-                msgs_recieved++;
+                msgsReceived++;
             }
 
             @Override
@@ -101,10 +101,10 @@ public class SonySWR21ImporterTest {
 
             @Override
             public void close() throws SecurityException {
-                Assert.assertTrue(msgs_recieved>0);
+                Assert.assertTrue(msgsReceived > 0);
             }
         });
-        Assert.assertFalse(SonySWR21Importer.loadConfiguration("path/to/configuration"));
-        SonySWR21Importer.LOG.getHandlers()[0].close();
+        Assert.assertFalse(sonySWR21Importer.loadConfiguration("path/to/configuration"));
+        sonySWR21Importer.LOG.getHandlers()[0].close();
     }
 }

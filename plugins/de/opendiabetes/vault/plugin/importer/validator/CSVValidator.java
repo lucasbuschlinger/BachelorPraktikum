@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -22,46 +22,70 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
- * @author mswin
+ * The abstract validator for CSV data.
+ *
+ * @author Jens Heuschkel
  */
 public abstract class CSVValidator {
 
+    /**
+     * The logger used by the validator.
+     */
     protected static final Logger LOG = Logger.getLogger(CSVValidator.class.getName());
-    private final String[] HEADER_DE;
-
-    ;
-    private final String[] HEADER_EN;
+    /**
+     * The German header.
+     */
+    private final String[] headerDe;
+    /**
+     * The English header.
+     */
+    private final String[] headerEn;
+    /**
+     * The selected language.
+     */
     protected Language languageSelection;
 
-    protected CSVValidator(String[] HEADER_DE, String[] HEADER_EN) {
-        this.HEADER_DE = HEADER_DE;
-        this.HEADER_EN = HEADER_EN;
+    /**
+     * Constructor for CSV validators.
+     *
+     * @param germanHeader The German header.
+     * @param englishHeader The English header.
+     */
+    protected CSVValidator(final String[] germanHeader, final String[] englishHeader) {
+        this.headerDe = germanHeader;
+        this.headerEn = englishHeader;
     }
 
-    public boolean validateHeader(String[] header) {
+    /**
+     * Validator for CSV headers.
+     *
+     * @param header The header to check for.
+     * @return True if a valid header is present, false otherwise.
+     */
+    public boolean validateHeader(final String[] header) {
 
         boolean result = true;
         Set<String> headerSet = new TreeSet<>(Arrays.asList(header));
 
         // Check german header
-        for (String item : HEADER_DE) {
+        for (String item : headerDe) {
             result &= headerSet.contains(item);
             if (!result) {
                 break;
             }
         }
-        if (result == true) {
+        if (result) {
             languageSelection = Language.DE;
         } else {
             // try again with english header
             result = true;
-            for (String item : HEADER_EN) {
+            for (String item : headerEn) {
                 result &= headerSet.contains(item);
                 if (!result) {
                     break;
                 }
             }
-            if (result == true) {
+            if (result) {
                 languageSelection = Language.EN;
             }
         }
@@ -69,6 +93,9 @@ public abstract class CSVValidator {
         return result;
     }
 
+    /**
+     * The possible languages.
+     */
     public enum Language {
         /**
          * German.
@@ -77,6 +104,23 @@ public abstract class CSVValidator {
         /**
          * English.
          */
-        EN;
+        EN
+    }
+
+    /**
+     * Setter for the {@link #languageSelection}.
+     * @param language The language to be set.
+     */
+    public void setLanguageSelection(final Language language) {
+        this.languageSelection = language;
+    }
+
+    /**
+     * Getter for the {@link #languageSelection}.
+     *
+     * @return The set language.
+     */
+    public Language getLanguageSelection() {
+        return languageSelection;
     }
 }

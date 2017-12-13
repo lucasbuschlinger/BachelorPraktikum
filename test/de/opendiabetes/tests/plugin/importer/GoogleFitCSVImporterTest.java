@@ -28,17 +28,6 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 
-import de.opendiabetes.vault.plugin.importer.Importer;
-import org.junit.Assert;
-import org.junit.Test;
-import org.pf4j.DefaultPluginManager;
-import org.pf4j.PluginException;
-import org.pf4j.PluginManager;
-
-import java.nio.file.Paths;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
-
 /**
  * Tests for the GoogleFitCSVImporter plugin.
  */
@@ -77,9 +66,9 @@ public class GoogleFitCSVImporterTest {
         manager.loadPlugins();
         manager.enablePlugin("GoogleFitCSVImporter");
         manager.startPlugin("GoogleFitCSVImporter");
-        Importer GoogleFitCSVImporter = manager.getExtensions(Importer.class).get(0);
-        GoogleFitCSVImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(GoogleFitCSVImporter.importData());
+        Importer googleFitCSVImporter = manager.getExtensions(Importer.class).get(0);
+        googleFitCSVImporter.setImportFilePath("path/to/data");
+        Assert.assertFalse(googleFitCSVImporter.importData());
     }
 
     /**
@@ -87,9 +76,9 @@ public class GoogleFitCSVImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer GoogleFitCSVImporter = TestImporterUtil.getImporter("GoogleFitCSVImporter");
-        GoogleFitCSVImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", GoogleFitCSVImporter.getImportFilePath());
+        Importer googleFitCSVImporter = TestImporterUtil.getImporter("GoogleFitCSVImporter");
+        googleFitCSVImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", googleFitCSVImporter.getImportFilePath());
     }
 
     /**
@@ -97,17 +86,17 @@ public class GoogleFitCSVImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer GoogleFitCSVImporter = TestImporterUtil.getImporter("GoogleFitCSVImporter");
+        Importer googleFitCSVImporter = TestImporterUtil.getImporter("GoogleFitCSVImporter");
 
-        GoogleFitCSVImporter.LOG.addHandler(new Handler() {
+        googleFitCSVImporter.LOG.addHandler(new Handler() {
             String logOut = "";
-            int msgs_recieved = 0;
+            int msgsReceived = 0;
 
             @Override
-            public void publish(LogRecord record) {
+            public void publish(final LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
                 Assert.assertTrue(logOut.contains("WARNING: GoogleFitCSVImporter does not support configuration."));
-                msgs_recieved++;
+                msgsReceived++;
             }
 
             @Override
@@ -116,11 +105,11 @@ public class GoogleFitCSVImporterTest {
 
             @Override
             public void close() throws SecurityException {
-                Assert.assertTrue(msgs_recieved>0);
+                Assert.assertTrue(msgsReceived > 0);
             }
         });
-        Assert.assertFalse(GoogleFitCSVImporter.loadConfiguration("path/to/configuration"));
-        GoogleFitCSVImporter.LOG.getHandlers()[0].close();
+        Assert.assertFalse(googleFitCSVImporter.loadConfiguration("path/to/configuration"));
+        googleFitCSVImporter.LOG.getHandlers()[0].close();
     }
 
     //TODO add test for notifyMechanism

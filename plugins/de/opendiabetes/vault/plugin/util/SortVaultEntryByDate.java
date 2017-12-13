@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -34,7 +34,7 @@ public class SortVaultEntryByDate implements Comparator<VaultEntry>, Serializabl
      * @return -1 when the second VaultEntry is larger, 0 if they are equal, 1 if the first VaultEntry is larger.
      */
     @Override
-    public int compare(VaultEntry entry1, VaultEntry entry2) {
+    public int compare(final VaultEntry entry1, final VaultEntry entry2) {
         return entry1.getTimestamp().compareTo(entry2.getTimestamp());
     }
 

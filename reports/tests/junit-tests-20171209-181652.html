@@ -1,0 +1,1455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns:string="xalan://java.lang.String" xmlns:lxslt="http://xml.apache.org/xslt">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Unit Test Results.</title>
+<style type="text/css">
+      body {
+        font:normal 68% verdana,arial,helvetica;
+        color:#000000;
+      }
+      table tr td, table tr th {
+          font-size: 68%;
+      }
+      table.details tr th{
+        font-weight: bold;
+        text-align:left;
+        background:#a6caf0;
+      }
+      table.details tr td{
+        background:#eeeee0;
+      }
+
+      p {
+        line-height:1.5em;
+        margin-top:0.5em; margin-bottom:1.0em;
+      }
+      h1 {
+        margin: 0px 0px 5px; font: 165% verdana,arial,helvetica
+      }
+      h2 {
+        margin-top: 1em; margin-bottom: 0.5em; font: bold 125% verdana,arial,helvetica
+      }
+      h3 {
+        margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica
+      }
+      h4 {
+        margin-bottom: 0.5em; font: bold 100% verdana,arial,helvetica
+      }
+      h5 {
+        margin-bottom: 0.5em; font: bold 100% verdana,arial,helvetica
+      }
+      h6 {
+        margin-bottom: 0.5em; font: bold 100% verdana,arial,helvetica
+      }
+      .Error {
+        font-weight:bold; color:red;
+      }
+      .Failure {
+        font-weight:bold; color:purple;
+      }
+      .Properties {
+        text-align:right;
+      }
+      </style>
+<script type="text/javascript" language="JavaScript">
+        var TestCases = new Array();
+        var cur;
+        
+    cur = TestCases['de.opendiabetes.tests.plugin.importer.GoogleFitCSVImporterTest'] = new Array();
+    
+        cur['ant.core.lib'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.bp'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.bp'] = 'file';
+    
+        cur['ant.home'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant';
+    
+        cur['ant.java.version'] = '1.8';
+    
+        cur['ant.library.dir'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib';
+    
+        cur['ant.project.default-target'] = 'plugin';
+    
+        cur['ant.project.invoked-targets'] = 'reports';
+    
+        cur['ant.project.name'] = 'bp';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.9.4 compiled on April 29 2014';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['compiler.args'] = '';
+    
+        cur['compiler.args.opendiabetes'] = '-encoding UTF-8 -source 8 -target 8 ';
+    
+        cur['compiler.debug'] = 'on';
+    
+        cur['compiler.generate.no.warnings'] = 'off';
+    
+        cur['compiler.max.memory'] = '700m';
+    
+        cur['DSTAMP'] = '20171209';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['findbugs.home'] = 'reports/resources/findbugs';
+    
+        cur['idea.home'] = '/home/magnus/idea-IC-172.4343.14';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-antlr.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bcel.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bsf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-log4j.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-oro.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-regexp.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-resolver.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-xalan2.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-logging.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-net.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jai.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-javamail.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jdepend.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jmf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jsch.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit4.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-launcher.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-netrexx.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-swing.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-testutil.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\lib\\tools.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\idea_rt.jar';
+    
+        cur['java.class.version'] = '52.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\Users\\LUCASB~1\\AppData\\Local\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\bin;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Java\\jdk1.8.0_60\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\texlive\\2017\\bin\\win32;C:\\ant;C:\\Python\\Scripts\\;C:\\Python\\;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\atom\\bin;C:\\Program Files\\Java\\jdk1.8.0_65/lib;C:\\Users\\Lucas Buschlinger\\AppData\\Roaming\\npm;;.';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.8.0_151-b12';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.specification.version'] = '1.8';
+    
+        cur['java.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vendor.url'] = 'http://java.oracle.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://bugreport.sun.com/bugreport/';
+    
+        cur['java.version'] = '1.8.0_151';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.specification.version'] = '1.8';
+    
+        cur['java.vm.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.version'] = '25.151-b12';
+    
+        cur['javac2.home'] = '/home/magnus/idea-IC-172.4343.14/lib';
+    
+        cur['jdk.bin.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['jdk.home.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['junit.path'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ant-contrib-1.0b3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\gson-2.8.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\hsqldb.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\javacsv.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\log4j-1.2.16.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\pf4j-2.0.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-api-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-log4j12-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\sqltool.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\ant-junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\checkstyle-8.5-all.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\findbugs-ant.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\hamcrest-core-1.3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit-4.12.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\production\\OpenDiabetes;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\test';
+    
+        cur['line.separator'] = '\r\n';
+    
+        cur['module.jdk.bin.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['module.jdk.classpath.opendiabetes'] = 'jdk.classpath.1.8';
+    
+        cur['module.jdk.home.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['module.opendiabetes.basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['opendiabetes.output.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/production/OpenDiabetes';
+    
+        cur['opendiabetes.testoutput.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/test';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Windows 10';
+    
+        cur['os.version'] = '10.0';
+    
+        cur['path.separator'] = ';';
+    
+        cur['plugin.path'] = 'export';
+    
+        cur['plugin.src.base'] = 'plugins/de/opendiabetes/vault/plugin';
+    
+        cur['plugins_out'] = 'out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer';
+    
+        cur['project.jdk.bin'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['project.jdk.classpath'] = 'jdk.classpath.1.8';
+    
+        cur['project.jdk.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'amd64';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'com.intellij.rt.ant.execution.AntMain2 -logger com.intellij.rt.ant.execution.IdeaAntLogger2 -inputhandler com.intellij.rt.ant.execution.IdeaInputHandler -buildfile C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml reports';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'Cp1252';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = '';
+    
+        cur['timestamp'] = '20171209-181652';
+    
+        cur['TODAY'] = 'December 9 2017';
+    
+        cur['TSTAMP'] = '1816';
+    
+        cur['user.country'] = 'DE';
+    
+        cur['user.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['user.home'] = 'C:\\Users\\Lucas Buschlinger';
+    
+        cur['user.language'] = 'de';
+    
+        cur['user.name'] = 'Lucas Buschlinger';
+    
+        cur['user.script'] = '';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+    cur = TestCases['de.opendiabetes.tests.plugin.importer.MedtronicImporterTest'] = new Array();
+    
+        cur['ant.core.lib'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.bp'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.bp'] = 'file';
+    
+        cur['ant.home'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant';
+    
+        cur['ant.java.version'] = '1.8';
+    
+        cur['ant.library.dir'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib';
+    
+        cur['ant.project.default-target'] = 'plugin';
+    
+        cur['ant.project.invoked-targets'] = 'reports';
+    
+        cur['ant.project.name'] = 'bp';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.9.4 compiled on April 29 2014';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['compiler.args'] = '';
+    
+        cur['compiler.args.opendiabetes'] = '-encoding UTF-8 -source 8 -target 8 ';
+    
+        cur['compiler.debug'] = 'on';
+    
+        cur['compiler.generate.no.warnings'] = 'off';
+    
+        cur['compiler.max.memory'] = '700m';
+    
+        cur['DSTAMP'] = '20171209';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['findbugs.home'] = 'reports/resources/findbugs';
+    
+        cur['idea.home'] = '/home/magnus/idea-IC-172.4343.14';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-antlr.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bcel.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bsf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-log4j.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-oro.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-regexp.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-resolver.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-xalan2.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-logging.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-net.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jai.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-javamail.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jdepend.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jmf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jsch.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit4.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-launcher.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-netrexx.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-swing.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-testutil.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\lib\\tools.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\idea_rt.jar';
+    
+        cur['java.class.version'] = '52.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\Users\\LUCASB~1\\AppData\\Local\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\bin;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Java\\jdk1.8.0_60\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\texlive\\2017\\bin\\win32;C:\\ant;C:\\Python\\Scripts\\;C:\\Python\\;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\atom\\bin;C:\\Program Files\\Java\\jdk1.8.0_65/lib;C:\\Users\\Lucas Buschlinger\\AppData\\Roaming\\npm;;.';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.8.0_151-b12';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.specification.version'] = '1.8';
+    
+        cur['java.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vendor.url'] = 'http://java.oracle.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://bugreport.sun.com/bugreport/';
+    
+        cur['java.version'] = '1.8.0_151';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.specification.version'] = '1.8';
+    
+        cur['java.vm.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.version'] = '25.151-b12';
+    
+        cur['javac2.home'] = '/home/magnus/idea-IC-172.4343.14/lib';
+    
+        cur['jdk.bin.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['jdk.home.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['junit.path'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ant-contrib-1.0b3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\gson-2.8.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\hsqldb.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\javacsv.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\log4j-1.2.16.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\pf4j-2.0.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-api-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-log4j12-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\sqltool.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\ant-junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\checkstyle-8.5-all.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\findbugs-ant.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\hamcrest-core-1.3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit-4.12.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\production\\OpenDiabetes;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\test';
+    
+        cur['line.separator'] = '\r\n';
+    
+        cur['module.jdk.bin.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['module.jdk.classpath.opendiabetes'] = 'jdk.classpath.1.8';
+    
+        cur['module.jdk.home.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['module.opendiabetes.basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['opendiabetes.output.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/production/OpenDiabetes';
+    
+        cur['opendiabetes.testoutput.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/test';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Windows 10';
+    
+        cur['os.version'] = '10.0';
+    
+        cur['path.separator'] = ';';
+    
+        cur['plugin.path'] = 'export';
+    
+        cur['plugin.src.base'] = 'plugins/de/opendiabetes/vault/plugin';
+    
+        cur['plugins_out'] = 'out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer';
+    
+        cur['project.jdk.bin'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['project.jdk.classpath'] = 'jdk.classpath.1.8';
+    
+        cur['project.jdk.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'amd64';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'com.intellij.rt.ant.execution.AntMain2 -logger com.intellij.rt.ant.execution.IdeaAntLogger2 -inputhandler com.intellij.rt.ant.execution.IdeaInputHandler -buildfile C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml reports';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'Cp1252';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = '';
+    
+        cur['timestamp'] = '20171209-181652';
+    
+        cur['TODAY'] = 'December 9 2017';
+    
+        cur['TSTAMP'] = '1816';
+    
+        cur['user.country'] = 'DE';
+    
+        cur['user.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['user.home'] = 'C:\\Users\\Lucas Buschlinger';
+    
+        cur['user.language'] = 'de';
+    
+        cur['user.name'] = 'Lucas Buschlinger';
+    
+        cur['user.script'] = '';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+    cur = TestCases['de.opendiabetes.tests.plugin.importer.ODVDBJsonImporterTest'] = new Array();
+    
+        cur['ant.core.lib'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.bp'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.bp'] = 'file';
+    
+        cur['ant.home'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant';
+    
+        cur['ant.java.version'] = '1.8';
+    
+        cur['ant.library.dir'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib';
+    
+        cur['ant.project.default-target'] = 'plugin';
+    
+        cur['ant.project.invoked-targets'] = 'reports';
+    
+        cur['ant.project.name'] = 'bp';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.9.4 compiled on April 29 2014';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['compiler.args'] = '';
+    
+        cur['compiler.args.opendiabetes'] = '-encoding UTF-8 -source 8 -target 8 ';
+    
+        cur['compiler.debug'] = 'on';
+    
+        cur['compiler.generate.no.warnings'] = 'off';
+    
+        cur['compiler.max.memory'] = '700m';
+    
+        cur['DSTAMP'] = '20171209';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['findbugs.home'] = 'reports/resources/findbugs';
+    
+        cur['idea.home'] = '/home/magnus/idea-IC-172.4343.14';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-antlr.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bcel.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bsf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-log4j.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-oro.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-regexp.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-resolver.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-xalan2.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-logging.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-net.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jai.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-javamail.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jdepend.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jmf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jsch.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit4.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-launcher.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-netrexx.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-swing.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-testutil.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\lib\\tools.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\idea_rt.jar';
+    
+        cur['java.class.version'] = '52.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\Users\\LUCASB~1\\AppData\\Local\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\bin;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Java\\jdk1.8.0_60\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\texlive\\2017\\bin\\win32;C:\\ant;C:\\Python\\Scripts\\;C:\\Python\\;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\atom\\bin;C:\\Program Files\\Java\\jdk1.8.0_65/lib;C:\\Users\\Lucas Buschlinger\\AppData\\Roaming\\npm;;.';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.8.0_151-b12';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.specification.version'] = '1.8';
+    
+        cur['java.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vendor.url'] = 'http://java.oracle.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://bugreport.sun.com/bugreport/';
+    
+        cur['java.version'] = '1.8.0_151';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.specification.version'] = '1.8';
+    
+        cur['java.vm.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.version'] = '25.151-b12';
+    
+        cur['javac2.home'] = '/home/magnus/idea-IC-172.4343.14/lib';
+    
+        cur['jdk.bin.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['jdk.home.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['junit.path'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ant-contrib-1.0b3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\gson-2.8.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\hsqldb.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\javacsv.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\log4j-1.2.16.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\pf4j-2.0.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-api-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-log4j12-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\sqltool.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\ant-junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\checkstyle-8.5-all.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\findbugs-ant.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\hamcrest-core-1.3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit-4.12.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\production\\OpenDiabetes;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\test';
+    
+        cur['line.separator'] = '\r\n';
+    
+        cur['module.jdk.bin.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['module.jdk.classpath.opendiabetes'] = 'jdk.classpath.1.8';
+    
+        cur['module.jdk.home.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['module.opendiabetes.basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['opendiabetes.output.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/production/OpenDiabetes';
+    
+        cur['opendiabetes.testoutput.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/test';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Windows 10';
+    
+        cur['os.version'] = '10.0';
+    
+        cur['path.separator'] = ';';
+    
+        cur['plugin.path'] = 'export';
+    
+        cur['plugin.src.base'] = 'plugins/de/opendiabetes/vault/plugin';
+    
+        cur['plugins_out'] = 'out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer';
+    
+        cur['project.jdk.bin'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['project.jdk.classpath'] = 'jdk.classpath.1.8';
+    
+        cur['project.jdk.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'amd64';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'com.intellij.rt.ant.execution.AntMain2 -logger com.intellij.rt.ant.execution.IdeaAntLogger2 -inputhandler com.intellij.rt.ant.execution.IdeaInputHandler -buildfile C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml reports';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'Cp1252';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = '';
+    
+        cur['timestamp'] = '20171209-181652';
+    
+        cur['TODAY'] = 'December 9 2017';
+    
+        cur['TSTAMP'] = '1816';
+    
+        cur['user.country'] = 'DE';
+    
+        cur['user.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['user.home'] = 'C:\\Users\\Lucas Buschlinger';
+    
+        cur['user.language'] = 'de';
+    
+        cur['user.name'] = 'Lucas Buschlinger';
+    
+        cur['user.script'] = '';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+    cur = TestCases['de.opendiabetes.tests.plugin.importer.SonySWR21ImporterTest'] = new Array();
+    
+        cur['ant.core.lib'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.bp'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.bp'] = 'file';
+    
+        cur['ant.home'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant';
+    
+        cur['ant.java.version'] = '1.8';
+    
+        cur['ant.library.dir'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib';
+    
+        cur['ant.project.default-target'] = 'plugin';
+    
+        cur['ant.project.invoked-targets'] = 'reports';
+    
+        cur['ant.project.name'] = 'bp';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.9.4 compiled on April 29 2014';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['compiler.args'] = '';
+    
+        cur['compiler.args.opendiabetes'] = '-encoding UTF-8 -source 8 -target 8 ';
+    
+        cur['compiler.debug'] = 'on';
+    
+        cur['compiler.generate.no.warnings'] = 'off';
+    
+        cur['compiler.max.memory'] = '700m';
+    
+        cur['DSTAMP'] = '20171209';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['findbugs.home'] = 'reports/resources/findbugs';
+    
+        cur['idea.home'] = '/home/magnus/idea-IC-172.4343.14';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-antlr.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bcel.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bsf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-log4j.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-oro.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-regexp.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-resolver.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-xalan2.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-logging.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-net.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jai.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-javamail.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jdepend.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jmf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jsch.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit4.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-launcher.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-netrexx.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-swing.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-testutil.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\lib\\tools.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\idea_rt.jar';
+    
+        cur['java.class.version'] = '52.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\Users\\LUCASB~1\\AppData\\Local\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\bin;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Java\\jdk1.8.0_60\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\texlive\\2017\\bin\\win32;C:\\ant;C:\\Python\\Scripts\\;C:\\Python\\;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\atom\\bin;C:\\Program Files\\Java\\jdk1.8.0_65/lib;C:\\Users\\Lucas Buschlinger\\AppData\\Roaming\\npm;;.';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.8.0_151-b12';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.specification.version'] = '1.8';
+    
+        cur['java.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vendor.url'] = 'http://java.oracle.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://bugreport.sun.com/bugreport/';
+    
+        cur['java.version'] = '1.8.0_151';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.specification.version'] = '1.8';
+    
+        cur['java.vm.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.version'] = '25.151-b12';
+    
+        cur['javac2.home'] = '/home/magnus/idea-IC-172.4343.14/lib';
+    
+        cur['jdk.bin.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['jdk.home.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['junit.path'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ant-contrib-1.0b3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\gson-2.8.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\hsqldb.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\javacsv.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\log4j-1.2.16.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\pf4j-2.0.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-api-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-log4j12-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\sqltool.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\ant-junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\checkstyle-8.5-all.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\findbugs-ant.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\hamcrest-core-1.3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit-4.12.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\production\\OpenDiabetes;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\test';
+    
+        cur['line.separator'] = '\r\n';
+    
+        cur['module.jdk.bin.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['module.jdk.classpath.opendiabetes'] = 'jdk.classpath.1.8';
+    
+        cur['module.jdk.home.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['module.opendiabetes.basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['opendiabetes.output.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/production/OpenDiabetes';
+    
+        cur['opendiabetes.testoutput.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/test';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Windows 10';
+    
+        cur['os.version'] = '10.0';
+    
+        cur['path.separator'] = ';';
+    
+        cur['plugin.path'] = 'export';
+    
+        cur['plugin.src.base'] = 'plugins/de/opendiabetes/vault/plugin';
+    
+        cur['plugins_out'] = 'out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer';
+    
+        cur['project.jdk.bin'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['project.jdk.classpath'] = 'jdk.classpath.1.8';
+    
+        cur['project.jdk.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'amd64';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'com.intellij.rt.ant.execution.AntMain2 -logger com.intellij.rt.ant.execution.IdeaAntLogger2 -inputhandler com.intellij.rt.ant.execution.IdeaInputHandler -buildfile C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml reports';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'Cp1252';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = '';
+    
+        cur['timestamp'] = '20171209-181652';
+    
+        cur['TODAY'] = 'December 9 2017';
+    
+        cur['TSTAMP'] = '1816';
+    
+        cur['user.country'] = 'DE';
+    
+        cur['user.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['user.home'] = 'C:\\Users\\Lucas Buschlinger';
+    
+        cur['user.language'] = 'de';
+    
+        cur['user.name'] = 'Lucas Buschlinger';
+    
+        cur['user.script'] = '';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+    cur = TestCases['de.opendiabetes.tests.plugin.importer.TestImporterUtil'] = new Array();
+    
+        cur['ant.core.lib'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.bp'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.bp'] = 'file';
+    
+        cur['ant.home'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant';
+    
+        cur['ant.java.version'] = '1.8';
+    
+        cur['ant.library.dir'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib';
+    
+        cur['ant.project.default-target'] = 'plugin';
+    
+        cur['ant.project.invoked-targets'] = 'reports';
+    
+        cur['ant.project.name'] = 'bp';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.9.4 compiled on April 29 2014';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['compiler.args'] = '';
+    
+        cur['compiler.args.opendiabetes'] = '-encoding UTF-8 -source 8 -target 8 ';
+    
+        cur['compiler.debug'] = 'on';
+    
+        cur['compiler.generate.no.warnings'] = 'off';
+    
+        cur['compiler.max.memory'] = '700m';
+    
+        cur['DSTAMP'] = '20171209';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['findbugs.home'] = 'reports/resources/findbugs';
+    
+        cur['idea.home'] = '/home/magnus/idea-IC-172.4343.14';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-antlr.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bcel.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bsf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-log4j.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-oro.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-regexp.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-resolver.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-xalan2.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-logging.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-net.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jai.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-javamail.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jdepend.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jmf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jsch.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit4.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-launcher.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-netrexx.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-swing.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-testutil.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\lib\\tools.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\idea_rt.jar';
+    
+        cur['java.class.version'] = '52.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\Users\\LUCASB~1\\AppData\\Local\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\bin;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Java\\jdk1.8.0_60\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\texlive\\2017\\bin\\win32;C:\\ant;C:\\Python\\Scripts\\;C:\\Python\\;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\atom\\bin;C:\\Program Files\\Java\\jdk1.8.0_65/lib;C:\\Users\\Lucas Buschlinger\\AppData\\Roaming\\npm;;.';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.8.0_151-b12';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.specification.version'] = '1.8';
+    
+        cur['java.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vendor.url'] = 'http://java.oracle.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://bugreport.sun.com/bugreport/';
+    
+        cur['java.version'] = '1.8.0_151';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.specification.version'] = '1.8';
+    
+        cur['java.vm.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.version'] = '25.151-b12';
+    
+        cur['javac2.home'] = '/home/magnus/idea-IC-172.4343.14/lib';
+    
+        cur['jdk.bin.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['jdk.home.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['junit.path'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ant-contrib-1.0b3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\gson-2.8.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\hsqldb.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\javacsv.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\log4j-1.2.16.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\pf4j-2.0.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-api-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-log4j12-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\sqltool.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\ant-junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\checkstyle-8.5-all.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\findbugs-ant.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\hamcrest-core-1.3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit-4.12.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\production\\OpenDiabetes;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\test';
+    
+        cur['line.separator'] = '\r\n';
+    
+        cur['module.jdk.bin.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['module.jdk.classpath.opendiabetes'] = 'jdk.classpath.1.8';
+    
+        cur['module.jdk.home.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['module.opendiabetes.basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['opendiabetes.output.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/production/OpenDiabetes';
+    
+        cur['opendiabetes.testoutput.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/test';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Windows 10';
+    
+        cur['os.version'] = '10.0';
+    
+        cur['path.separator'] = ';';
+    
+        cur['plugin.path'] = 'export';
+    
+        cur['plugin.src.base'] = 'plugins/de/opendiabetes/vault/plugin';
+    
+        cur['plugins_out'] = 'out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer';
+    
+        cur['project.jdk.bin'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['project.jdk.classpath'] = 'jdk.classpath.1.8';
+    
+        cur['project.jdk.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'amd64';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'com.intellij.rt.ant.execution.AntMain2 -logger com.intellij.rt.ant.execution.IdeaAntLogger2 -inputhandler com.intellij.rt.ant.execution.IdeaInputHandler -buildfile C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml reports';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'Cp1252';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = '';
+    
+        cur['timestamp'] = '20171209-181652';
+    
+        cur['TODAY'] = 'December 9 2017';
+    
+        cur['TSTAMP'] = '1816';
+    
+        cur['user.country'] = 'DE';
+    
+        cur['user.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['user.home'] = 'C:\\Users\\Lucas Buschlinger';
+    
+        cur['user.language'] = 'de';
+    
+        cur['user.name'] = 'Lucas Buschlinger';
+    
+        cur['user.script'] = '';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    
+    cur = TestCases['de.opendiabetes.tests.plugin.importer.VaultODVImporterTest'] = new Array();
+    
+        cur['ant.core.lib'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar';
+    
+        cur['ant.file'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.bp'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml';
+    
+        cur['ant.file.type'] = 'file';
+    
+        cur['ant.file.type.bp'] = 'file';
+    
+        cur['ant.home'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant';
+    
+        cur['ant.java.version'] = '1.8';
+    
+        cur['ant.library.dir'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib';
+    
+        cur['ant.project.default-target'] = 'plugin';
+    
+        cur['ant.project.invoked-targets'] = 'reports';
+    
+        cur['ant.project.name'] = 'bp';
+    
+        cur['ant.version'] = 'Apache Ant(TM) version 1.9.4 compiled on April 29 2014';
+    
+        cur['awt.toolkit'] = 'sun.awt.windows.WToolkit';
+    
+        cur['basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['compiler.args'] = '';
+    
+        cur['compiler.args.opendiabetes'] = '-encoding UTF-8 -source 8 -target 8 ';
+    
+        cur['compiler.debug'] = 'on';
+    
+        cur['compiler.generate.no.warnings'] = 'off';
+    
+        cur['compiler.max.memory'] = '700m';
+    
+        cur['DSTAMP'] = '20171209';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '\\';
+    
+        cur['findbugs.home'] = 'reports/resources/findbugs';
+    
+        cur['idea.home'] = '/home/magnus/idea-IC-172.4343.14';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.Win32GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.awt.windows.WPrinterJob';
+    
+        cur['java.class.path'] = 'C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-antlr.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bcel.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-bsf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-log4j.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-oro.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-regexp.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-resolver.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-apache-xalan2.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-logging.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-commons-net.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jai.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-javamail.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jdepend.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jmf.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-jsch.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-junit4.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-launcher.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-netrexx.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-swing.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant-testutil.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\ant\\lib\\ant.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\lib\\tools.jar;C:\\Program Files\\JetBrains\\IntelliJ IDEA 2017.3\\lib\\idea_rt.jar';
+    
+        cur['java.class.version'] = '52.0';
+    
+        cur['java.endorsed.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\endorsed';
+    
+        cur['java.ext.dirs'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\ext;C:\\WINDOWS\\Sun\\Java\\lib\\ext';
+    
+        cur['java.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['java.io.tmpdir'] = 'C:\\Users\\LUCASB~1\\AppData\\Local\\Temp\\';
+    
+        cur['java.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\bin;C:\\WINDOWS\\Sun\\Java\\bin;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\ProgramData\\Oracle\\Java\\javapath;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Java\\jdk1.8.0_60\\bin;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\Git\\cmd;C:\\texlive\\2017\\bin\\win32;C:\\ant;C:\\Python\\Scripts\\;C:\\Python\\;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\Lucas Buschlinger\\AppData\\Local\\atom\\bin;C:\\Program Files\\Java\\jdk1.8.0_65/lib;C:\\Users\\Lucas Buschlinger\\AppData\\Roaming\\npm;;.';
+    
+        cur['java.runtime.name'] = 'Java(TM) SE Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.8.0_151-b12';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.specification.version'] = '1.8';
+    
+        cur['java.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vendor.url'] = 'http://java.oracle.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://bugreport.sun.com/bugreport/';
+    
+        cur['java.version'] = '1.8.0_151';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'Java HotSpot(TM) 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.specification.version'] = '1.8';
+    
+        cur['java.vm.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.version'] = '25.151-b12';
+    
+        cur['javac2.home'] = '/home/magnus/idea-IC-172.4343.14/lib';
+    
+        cur['jdk.bin.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['jdk.home.1.8'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['junit.path'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ant-contrib-1.0b3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\gson-2.8.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\hsqldb.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\javacsv.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\log4j-1.2.16.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-core-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-javadoc.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0-sources.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\ormlite-jdbc-5.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\pf4j-2.0.0.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-api-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\slf4j-log4j12-1.7.5.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\lib\\sqltool.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\ant-junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\checkstyle-8.5-all.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\findbugs-ant.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\hamcrest-core-1.3.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit-4.12.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\testlib\\junit.jar;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\production\\OpenDiabetes;C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\out\\test';
+    
+        cur['line.separator'] = '\r\n';
+    
+        cur['module.jdk.bin.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['module.jdk.classpath.opendiabetes'] = 'jdk.classpath.1.8';
+    
+        cur['module.jdk.home.opendiabetes'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['module.opendiabetes.basedir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['opendiabetes.output.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/production/OpenDiabetes';
+    
+        cur['opendiabetes.testoutput.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code/out/test';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Windows 10';
+    
+        cur['os.version'] = '10.0';
+    
+        cur['path.separator'] = ';';
+    
+        cur['plugin.path'] = 'export';
+    
+        cur['plugin.src.base'] = 'plugins/de/opendiabetes/vault/plugin';
+    
+        cur['plugins_out'] = 'out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer';
+    
+        cur['project.jdk.bin'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre/bin';
+    
+        cur['project.jdk.classpath'] = 'jdk.classpath.1.8';
+    
+        cur['project.jdk.home'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\resources.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\rt.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\sunrsasign.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jsse.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jce.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\charsets.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\lib\\jfr.jar;C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\classes';
+    
+        cur['sun.boot.library.path'] = 'C:\\Program Files\\Java\\jdk1.8.0_151\\jre\\bin';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = 'amd64';
+    
+        cur['sun.desktop'] = 'windows';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'com.intellij.rt.ant.execution.AntMain2 -logger com.intellij.rt.ant.execution.IdeaAntLogger2 -inputhandler com.intellij.rt.ant.execution.IdeaInputHandler -buildfile C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code\\build.xml reports';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'Cp1252';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = '';
+    
+        cur['timestamp'] = '20171209-181652';
+    
+        cur['TODAY'] = 'December 9 2017';
+    
+        cur['TSTAMP'] = '1816';
+    
+        cur['user.country'] = 'DE';
+    
+        cur['user.dir'] = 'C:\\Users\\Lucas Buschlinger\\Desktop\\Studium\\BP\\Code';
+    
+        cur['user.home'] = 'C:\\Users\\Lucas Buschlinger';
+    
+        cur['user.language'] = 'de';
+    
+        cur['user.name'] = 'Lucas Buschlinger';
+    
+        cur['user.script'] = '';
+    
+        cur['user.timezone'] = '';
+    
+        cur['user.variant'] = '';
+    </script><script type="text/javascript" language="JavaScript">
+        function displayProperties (name) {
+          var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
+          var doc = win.document;
+          doc.open();
+          doc.write("<html><head><title>Properties of " + name + "</title>");
+          doc.write("<style>")
+          doc.write("body {font:normal 68% verdana,arial,helvetica; color:#000000; }");
+          doc.write("table tr td, table tr th { font-size: 68%; }");
+          doc.write("table.properties { border-collapse:collapse; border-left:solid 1 #cccccc; border-top:solid 1 #cccccc; padding:5px; }");
+          doc.write("table.properties th { text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#eeeeee; }");
+          doc.write("table.properties td { font:normal; text-align:left; border-right:solid 1 #cccccc; border-bottom:solid 1 #cccccc; background-color:#fffffff; }");
+          doc.write("h3 { margin-bottom: 0.5em; font: bold 115% verdana,arial,helvetica }");
+          doc.write("</style>");
+          doc.write("</head><body>");
+          doc.write("<h3>Properties of " + name + "</h3>");
+          doc.write("<div align=\"right\"><a href=\"javascript:window.close();\">Close</a></div>");
+          doc.write("<table class='properties'>");
+          doc.write("<tr><th>Name</th><th>Value</th></tr>");
+          for (prop in TestCases[name]) {
+            doc.write("<tr><th>" + prop + "</th><td>" + TestCases[name][prop] + "</td></tr>");
+          }
+          doc.write("</table>");
+          doc.write("</body></html>");
+          doc.close();
+          win.focus();
+        }
+      
+      </script>
+</head>
+<body>
+<a name="top"></a>
+<h1>Unit Test Results.</h1>
+<table width="100%">
+<tr>
+<td align="left"></td><td align="right">Designed for use with <a href="http://www.junit.org">JUnit</a> and <a href="http://ant.apache.org/ant">Ant</a>.</td>
+</tr>
+</table>
+<hr size="1">
+<h2>Summary</h2>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Tests</th><th>Failures</th><th>Errors</th><th>Skipped</th><th>Success rate</th><th>Time</th>
+</tr>
+<tr valign="top" class="">
+<td>26</td><td>0</td><td>0</td><td>1</td><td>100.00%</td><td>2.263</td>
+</tr>
+</table>
+<table border="0" width="95%">
+<tr>
+<td style="text-align: justify;">
+        Note: <i>failures</i> are anticipated and checked for with assertions while <i>errors</i> are unanticipated.
+        </td>
+</tr>
+</table>
+<hr size="1" width="95%" align="left">
+<h2>Packages</h2>
+        Note: package statistics are not computed recursively, they only sum up all of its testsuites numbers.
+        <table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="">
+<td><a href="#de.opendiabetes.tests.plugin.importer">de.opendiabetes.tests.plugin.importer</a></td><td>26</td><td>0</td><td>0</td><td>1</td><td>2.263</td><td>2017-12-09T17:16:59</td><td>WasIsLos</td>
+</tr>
+</table>
+<hr size="1" width="95%" align="left">
+<a name="de.opendiabetes.tests.plugin.importer"></a>
+<h3>Package de.opendiabetes.tests.plugin.importer</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
+</tr>
+<tr valign="top" class="">
+<td><a href="#GoogleFitCSVImporterTest">GoogleFitCSVImporterTest</a></td><td>5</td><td>0</td><td>0</td><td>0</td><td>1.303</td><td>2017-12-09T17:16:59</td><td>WasIsLos</td>
+</tr>
+<tr valign="top" class="">
+<td><a href="#MedtronicImporterTest">MedtronicImporterTest</a></td><td>5</td><td>0</td><td>0</td><td>0</td><td>0.152</td><td>2017-12-09T17:17:00</td><td>WasIsLos</td>
+</tr>
+<tr valign="top" class="">
+<td><a href="#ODVDBJsonImporterTest">ODVDBJsonImporterTest</a></td><td>5</td><td>0</td><td>0</td><td>0</td><td>0.357</td><td>2017-12-09T17:17:00</td><td>WasIsLos</td>
+</tr>
+<tr valign="top" class="">
+<td><a href="#SonySWR21ImporterTest">SonySWR21ImporterTest</a></td><td>5</td><td>0</td><td>0</td><td>0</td><td>0.327</td><td>2017-12-09T17:17:01</td><td>WasIsLos</td>
+</tr>
+<tr valign="top" class="">
+<td><a href="#TestImporterUtil">TestImporterUtil</a></td><td>1</td><td>0</td><td>0</td><td>1</td><td>0.003</td><td>2017-12-09T17:17:01</td><td>WasIsLos</td>
+</tr>
+<tr valign="top" class="">
+<td><a href="#VaultODVImporterTest">VaultODVImporterTest</a></td><td>5</td><td>0</td><td>0</td><td>0</td><td>0.121</td><td>2017-12-09T17:17:01</td><td>WasIsLos</td>
+</tr>
+</table>
+<a href="#top">Back to top</a>
+<p></p>
+<p></p>
+<hr size="1" width="95%" align="left">
+<a name="GoogleFitCSVImporterTest"></a>
+<h3>TestCase GoogleFitCSVImporterTest</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="">
+<td>setGetPath</td><td>Success</td><td></td><td>1.145</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginLoad</td><td>Success</td><td></td><td>0.018</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginStart</td><td>Success</td><td></td><td>0.024</td>
+</tr>
+<tr valign="top" class="">
+<td>printLogOnLoadConfiguration</td><td>Success</td><td></td><td>0.026</td>
+</tr>
+<tr valign="top" class="">
+<td>callPlugin</td><td>Success</td><td></td><td>0.068</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('de.opendiabetes.tests.plugin.importer.GoogleFitCSVImporterTest');">
+                    Properties &raquo;
+                </a>
+</div>
+<p></p>
+<a href="#top">Back to top</a><a name="MedtronicImporterTest"></a>
+<h3>TestCase MedtronicImporterTest</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="">
+<td>setGetPath</td><td>Success</td><td></td><td>0.053</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginLoad</td><td>Success</td><td></td><td>0.019</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginStart</td><td>Success</td><td></td><td>0.017</td>
+</tr>
+<tr valign="top" class="">
+<td>printLogOnLoadConfiguration</td><td>Success</td><td></td><td>0.028</td>
+</tr>
+<tr valign="top" class="">
+<td>callPlugin</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('de.opendiabetes.tests.plugin.importer.MedtronicImporterTest');">
+                    Properties &raquo;
+                </a>
+</div>
+<p></p>
+<a href="#top">Back to top</a><a name="ODVDBJsonImporterTest"></a>
+<h3>TestCase ODVDBJsonImporterTest</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="">
+<td>setGetPath</td><td>Success</td><td></td><td>0.029</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginLoad</td><td>Success</td><td></td><td>0.020</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginStart</td><td>Success</td><td></td><td>0.094</td>
+</tr>
+<tr valign="top" class="">
+<td>printLogOnLoadConfiguration</td><td>Success</td><td></td><td>0.112</td>
+</tr>
+<tr valign="top" class="">
+<td>callPlugin</td><td>Success</td><td></td><td>0.099</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('de.opendiabetes.tests.plugin.importer.ODVDBJsonImporterTest');">
+                    Properties &raquo;
+                </a>
+</div>
+<p></p>
+<a href="#top">Back to top</a><a name="SonySWR21ImporterTest"></a>
+<h3>TestCase SonySWR21ImporterTest</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="">
+<td>setGetPath</td><td>Success</td><td></td><td>0.120</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginLoad</td><td>Success</td><td></td><td>0.065</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginStart</td><td>Success</td><td></td><td>0.038</td>
+</tr>
+<tr valign="top" class="">
+<td>printLogOnLoadConfiguration</td><td>Success</td><td></td><td>0.029</td>
+</tr>
+<tr valign="top" class="">
+<td>callPlugin</td><td>Success</td><td></td><td>0.072</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('de.opendiabetes.tests.plugin.importer.SonySWR21ImporterTest');">
+                    Properties &raquo;
+                </a>
+</div>
+<p></p>
+<a href="#top">Back to top</a><a name="TestImporterUtil"></a>
+<h3>TestCase TestImporterUtil</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="">
+<td>de.opendiabetes.tests.plugin.importer.TestImporterUtil</td><td>Skipped</td><td>N/A<code>
+<br>
+<br>
+</code></td><td>0.000</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('de.opendiabetes.tests.plugin.importer.TestImporterUtil');">
+                    Properties &raquo;
+                </a>
+</div>
+<p></p>
+<a href="#top">Back to top</a><a name="VaultODVImporterTest"></a>
+<h3>TestCase VaultODVImporterTest</h3>
+<table class="details" border="0" cellpadding="5" cellspacing="2" width="95%">
+<tr valign="top">
+<th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
+</tr>
+<tr valign="top" class="">
+<td>setGetPath</td><td>Success</td><td></td><td>0.031</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginLoad</td><td>Success</td><td></td><td>0.018</td>
+</tr>
+<tr valign="top" class="">
+<td>pluginStart</td><td>Success</td><td></td><td>0.022</td>
+</tr>
+<tr valign="top" class="">
+<td>printLogOnLoadConfiguration</td><td>Success</td><td></td><td>0.025</td>
+</tr>
+<tr valign="top" class="">
+<td>callPlugin</td><td>Success</td><td></td><td>0.023</td>
+</tr>
+</table>
+<div class="Properties">
+<a href="javascript:displayProperties('de.opendiabetes.tests.plugin.importer.VaultODVImporterTest');">
+                    Properties &raquo;
+                </a>
+</div>
+<p></p>
+<a href="#top">Back to top</a>
+</body>
+</html>

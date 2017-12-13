@@ -389,7 +389,7 @@ public class MedtronicImporter extends Plugin {
                     break;
                 case BOLUS_SQUARE:
                     tmpEntry = extractDoubleEntry(timestamp,
-                            VaultEntryType.BOLUS_SQARE, rawValues,
+                            VaultEntryType.BOLUS_SQUARE, rawValues,
                             AMOUNT_PATTERN, creader.getValues());
                     if (tmpEntry != null) {
                         tmpEntry = extractSecondValue(tmpEntry, rawValues,

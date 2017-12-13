@@ -55,6 +55,9 @@ public class MySugrCsvImporter extends Plugin {
     @Extension
     public static class MySugrCsvImporterImplementation extends CSVImporter {
 
+        /**
+         * The maximum number of lines to scan for a header.
+         */
         private static final int MAX_HEADER_LINES_SCAN = 15;
 
         /**

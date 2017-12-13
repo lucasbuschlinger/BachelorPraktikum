@@ -75,9 +75,9 @@ public class MedtronicImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-        MedtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", MedtronicImporter.getImportFilePath());
+        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
+        medtronicImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", medtronicImporter.getImportFilePath());
     }
 
     /**
@@ -85,17 +85,17 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer MedtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
+        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
 
-        MedtronicImporter.LOG.addHandler(new Handler() {
+        medtronicImporter.LOG.addHandler(new Handler() {
             String logOut = "";
-            int msgs_recieved = 0;
+            int msgsReceived = 0;
 
             @Override
-            public void publish(LogRecord record) {
+            public void publish(final LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
                 Assert.assertTrue(logOut.contains("WARNING: MedtronicImporter does not support configuration."));
-                msgs_recieved++;
+                msgsReceived++;
             }
 
             @Override
@@ -104,11 +104,11 @@ public class MedtronicImporterTest {
 
             @Override
             public void close() throws SecurityException {
-                Assert.assertTrue(msgs_recieved>0);
+                Assert.assertTrue(msgsReceived > 0);
             }
         });
-        Assert.assertFalse(MedtronicImporter.loadConfiguration("path/to/configuration"));
-        MedtronicImporter.LOG.getHandlers()[0].close();
+        Assert.assertFalse(medtronicImporter.loadConfiguration("path/to/configuration"));
+        medtronicImporter.LOG.getHandlers()[0].close();
     }
 
     //TODO add test for notifyMechanism

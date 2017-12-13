@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,12 @@ import java.util.GregorianCalendar;
 /**
  * This class implements timestamps.
  */
-public class TimestampUtils {
+public final class TimestampUtils {
+
+    /**
+     * Private constructor to hinder default constructor creation.
+     */
+    private TimestampUtils() { }
 
 
     //public static final String TIME_FORMAT_LIBRE_DE = "yyyy.MM.dd HH:mm"; TODO: deprecated?
@@ -43,7 +48,7 @@ public class TimestampUtils {
      * @return The Date
      * @throws ParseException Gets thrown if the dateTime can not be parsed.
      */
-    public static Date createCleanTimestamp(String dateTime, String format) throws ParseException {
+    public static Date createCleanTimestamp(final String dateTime, final String format) throws ParseException {
         SimpleDateFormat df = new SimpleDateFormat(format);
         Date rawDate = df.parse(dateTime);
         return createCleanTimestamp(rawDate);
@@ -51,13 +56,12 @@ public class TimestampUtils {
 
     /**
      * Utility to convert a timestamp from Date to String.
-     * TODO: deprecated?
      *
      * @param timestamp The timestamp to be converted.
      * @param format    The format of the timestamp.
      * @return The timestamp as a string.
      */
-    public static String timestampToString(Date timestamp, String format) {
+    public static String timestampToString(final Date timestamp, final String format) {
         return new SimpleDateFormat(format).format(timestamp);
     }
 
@@ -67,7 +71,7 @@ public class TimestampUtils {
      * @param rawDate The date to create a timestamp of.
      * @return The cleaned timestamp.
      */
-    public static Date createCleanTimestamp(Date rawDate) {
+    public static Date createCleanTimestamp(final Date rawDate) {
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(rawDate);
         // round to 5 minutes
@@ -87,7 +91,7 @@ public class TimestampUtils {
      * @param minutes   The minuted to be added.
      * @return The timestamp with minutes.
      */
-    public static Date addMinutesToTimestamp(Date timestamp, long minutes) {
+    public static Date addMinutesToTimestamp(final Date timestamp, final long minutes) {
         return new Date(addMinutesToTimestamp(timestamp.getTime(), minutes));
     }
 
@@ -98,18 +102,20 @@ public class TimestampUtils {
      * @param minutes   The minutes to be added.
      * @return The timestamp with minutes.
      */
-    public static long addMinutesToTimestamp(long timestamp, long minutes) {
-        timestamp += minutes * 60000; // 1 m = 60000 ms
-        return timestamp;
+    public static long addMinutesToTimestamp(final long timestamp, final long minutes) {
+        long tmpTimestamp = timestamp;
+        final int msPerMin = 60000;
+        tmpTimestamp += minutes * msPerMin; // 1 m = 60000 ms
+        return tmpTimestamp;
     }
 
     /**
-     * TODO.
+     * Gets the date from a local date without an offset.
      *
-     * @param inputDate
-     * @return
+     * @param inputDate The local date.
+     * @return The local date in the generally used date.
      */
-    public static Date fromLocalDate(LocalDate inputDate) {
+    public static Date fromLocalDate(final LocalDate inputDate) {
         return fromLocalDate(inputDate, 0);
     }
 
@@ -120,20 +126,19 @@ public class TimestampUtils {
      * @return The local time.
      * @link https://blog.progs.be/542/date-to-java-time
      */
-    public static LocalTime dateToLocalTime(Date inputDate) {
+    public static LocalTime dateToLocalTime(final Date inputDate) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(inputDate.getTime()), ZoneId.systemDefault()).toLocalTime();
     }
 
     /**
-     * TODO.
+     * Gets the date from a local date with an offset.
      *
-     * @param inputDate
-     * @param offsetInMilliseconds
-     * @return
+     * @param inputDate The local date.
+     * @param offsetInMilliseconds The offset of the timestamp used in the local date.
+     * @return The local date in the generally used date.
      */
-    public static Date fromLocalDate(LocalDate inputDate, long offsetInMilliseconds) {
-        Date tmpInputDate = Date.from(Instant.from(inputDate
-                .atStartOfDay(ZoneId.systemDefault())));
+    public static Date fromLocalDate(final LocalDate inputDate, final long offsetInMilliseconds) {
+        Date tmpInputDate = Date.from(Instant.from(inputDate.atStartOfDay(ZoneId.systemDefault())));
         if (offsetInMilliseconds > 0) {
             tmpInputDate = new Date(tmpInputDate.getTime() + offsetInMilliseconds);
         }
@@ -141,24 +146,24 @@ public class TimestampUtils {
     }
 
     /**
-     * TODO.
+     * Gets the hours of a day from a timestamp.
      *
-     * @param timestamp
-     * @return
+     * @param timestamp The timestamp to get the hours from.
+     * @return Nr of hours of a day in the timestamp.
      */
-    public static int getHourOfDay(Date timestamp) {
+    public static int getHourOfDay(final Date timestamp) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(timestamp);
         return cal.get(Calendar.HOUR_OF_DAY);
     }
 
     /**
-     * TODO.
+     * Gets the minutes of an hour from a timestamp.
      *
-     * @param timestamp
-     * @return
+     * @param timestamp The timestamp to get the minutes from.
+     * @return Nr of minutes of a hour in the timestamp.
      */
-    public static int getMinuteOfHour(Date timestamp) {
+    public static int getMinuteOfHour(final Date timestamp) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(timestamp);
         return cal.get(Calendar.MINUTE);
@@ -172,8 +177,7 @@ public class TimestampUtils {
      * @param timePoint checks if this time point is within timespan.
      * @return True if the time is within the borders.
      */
-    public static boolean withinDateTimeSpan(Date startTime, Date endTime,
-                                             Date timePoint) {
+    public static boolean withinDateTimeSpan(final Date startTime, final Date endTime, final Date timePoint) {
         return startTime.before(timePoint) && endTime.after(timePoint)
                 || startTime.equals(timePoint) || endTime.equals(timePoint);
 
@@ -187,7 +191,7 @@ public class TimestampUtils {
      * @param timePoint checks if this time point is within timespan.
      * @return True if the time is within the borders.
      */
-    public static boolean withinTimeSpan(LocalTime startTime, LocalTime endTime, LocalTime timePoint) {
+    public static boolean withinTimeSpan(final LocalTime startTime, final LocalTime endTime, final LocalTime timePoint) {
         if (startTime.isBefore(endTime)) {
             // timespan is wihtin a day
             return (timePoint.isAfter(startTime) || timePoint.equals(startTime))
@@ -207,7 +211,7 @@ public class TimestampUtils {
      * @param timePoint checks if this time point is within timespan.
      * @return True if the time is within the borders.
      */
-    public static boolean withinTimeSpan(LocalTime startTime, LocalTime endTime, Date timePoint) {
+    public static boolean withinTimeSpan(final LocalTime startTime, final LocalTime endTime, final Date timePoint) {
 
         LocalTime tp = dateToLocalTime(timePoint);
         if (startTime.isBefore(endTime)) {

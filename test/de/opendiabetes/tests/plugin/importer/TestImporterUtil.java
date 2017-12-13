@@ -10,7 +10,12 @@ import java.nio.file.Paths;
 
 @Ignore
 public class TestImporterUtil {
-    public static Importer getImporter(String importer){
+    /**
+     * Returns an instance of the specified importer.
+     * @param importer The type of the importer to be returned.
+     * @return An instance of the specified importer.
+     */
+    public static Importer getImporter(final String importer) {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin(importer);
