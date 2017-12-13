@@ -43,7 +43,7 @@ public abstract class CSVValidator {
     /**
      * The selected language.
      */
-    private Language languageSelection;
+    protected Language languageSelection;
 
     /**
      * Constructor for CSV validators.
