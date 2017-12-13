@@ -23,6 +23,9 @@ import de.opendiabetes.vault.container.csv.VaultCsvEntry;
  */
 public class VaultCSVValidator extends CSVValidator {
 
+    /**
+     * Constructor for VaultCSVValidators.
+     */
     public VaultCSVValidator() {
         super(new VaultCsvEntry().getCsvHeaderRecord(),
                 new VaultCsvEntry().getCsvHeaderRecord());
