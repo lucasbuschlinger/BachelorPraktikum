@@ -17,11 +17,11 @@
 package de.opendiabetes.vault.plugin.importer.medtronic;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.plugin.container.MedtronicAlertCodes;
-import de.opendiabetes.vault.plugin.container.MedtronicAnnotatedVaultEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
+import de.opendiabetes.vault.plugin.container.MedtronicAlertCodes;
+import de.opendiabetes.vault.plugin.container.MedtronicAnnotatedVaultEntry;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
 import de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator;
 import org.pf4j.Extension;
@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -152,7 +153,7 @@ public class MedtronicImporter extends Plugin {
                                 value);
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -181,7 +182,7 @@ public class MedtronicImporter extends Plugin {
                         return vaultEntry;
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -212,7 +213,7 @@ public class MedtronicImporter extends Plugin {
                                 oldVaultEntry, rawType);
                     } catch (NumberFormatException ex) {
                         LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                                new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                                new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                     }
                 }
             }
@@ -220,15 +221,31 @@ public class MedtronicImporter extends Plugin {
         }
 
         /**
-         * Method to load configuration file for the MedtronicImporter plugin.
-         *
-         * @param filePath Path to the configuration file.
-         * @return True when configuration can be loaded, false otherwise.
+         * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final String filePath) {
-            LOG.log(Level.WARNING, "MedtronicImporter does not support configuration.");
-            return false;
+        public boolean loadConfiguration(final Properties configuration) {
+            //check if delimiter is set in configuration
+            if (!configuration.containsKey("delimiter")
+                    || configuration.getProperty("delimiter") == null
+                    || configuration.getProperty("delimiter").length() == 0) {
+                LOG.log(Level.WARNING, "MedtronicImporter configuration does not specify a delimiter to use");
+                return false;
+            }
+
+            char delimiter = configuration.getProperty("delimiter").charAt(0);
+
+            //checking validity of delimiter
+            final String allowedDelimiters = ",;\t";
+            if (allowedDelimiters.indexOf(delimiter) == -1) {
+                LOG.log(Level.WARNING,
+                        "MedtronicImporter does not support delimiter: "
+                                + delimiter + " (" + configuration.getProperty("delimiter") + ")");
+                return false;
+            }
+
+            this.setDelimiter(delimiter);
+            return true;
         }
 
         /**

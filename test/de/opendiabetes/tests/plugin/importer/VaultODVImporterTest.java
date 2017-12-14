@@ -24,6 +24,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -114,7 +115,7 @@ public class VaultODVImporterTest {
                 Assert.assertTrue(msgsReceived > 0);
             }
         });
-        Assert.assertFalse(vaultODVImporter.loadConfiguration("path/to/configuration"));
+        Assert.assertFalse(vaultODVImporter.loadConfiguration(new Properties()));
         vaultODVImporter.LOG.getHandlers()[0].close();
     }
 

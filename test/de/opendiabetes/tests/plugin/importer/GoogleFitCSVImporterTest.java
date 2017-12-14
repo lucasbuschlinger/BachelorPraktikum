@@ -24,6 +24,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -108,7 +109,7 @@ public class GoogleFitCSVImporterTest {
                 Assert.assertTrue(msgsReceived > 0);
             }
         });
-        Assert.assertFalse(googleFitCSVImporter.loadConfiguration("path/to/configuration"));
+        Assert.assertFalse(googleFitCSVImporter.loadConfiguration(new Properties()));
         googleFitCSVImporter.LOG.getHandlers()[0].close();
     }
 

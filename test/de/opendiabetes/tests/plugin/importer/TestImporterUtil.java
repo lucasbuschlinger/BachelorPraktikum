@@ -20,7 +20,7 @@ public class TestImporterUtil {
         manager.loadPlugins();
         manager.startPlugin(importer);
         Assert.assertEquals(1, manager.getStartedPlugins().size());
-        Assert.assertEquals(1, manager.getExtensions(Importer.class).size());
+        Assert.assertEquals("please delete out folder, most of the time default plugin loader finds plugins on default classpath that are not wanted",1, manager.getExtensions(Importer.class).size());
         return manager.getExtensions(Importer.class).get(0);
 
     }

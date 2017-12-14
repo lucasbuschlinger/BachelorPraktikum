@@ -21,6 +21,7 @@ import de.opendiabetes.vault.container.VaultEntry;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 
@@ -87,10 +88,10 @@ public interface Importer extends ExtensionPoint {
     /**
      * Method to load the plugin's configuration file.
      *
-     * @param filePath Path to the configuration file.
+     * @param configuration the configuration object
      * @return True if configuration can be loaded, false otherwise.
      */
-    boolean loadConfiguration(String filePath);
+    boolean loadConfiguration(Properties configuration);
 
     /**
      * Method to register listeners to the Plugins.

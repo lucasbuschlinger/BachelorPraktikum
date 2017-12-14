@@ -33,6 +33,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -102,13 +103,10 @@ public class ODVDBJsonImporter extends Plugin {
         }
 
         /**
-         * Configuration loader for the ODVDBJsonImporter plugin.
-         *
-         * @param filePath Path to the configuration file.
-         * @return True when configuration can be loaded, false otherwise.
+         *{@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final String filePath) {
+        public boolean loadConfiguration(final Properties configuration) {
             LOG.log(Level.WARNING, "ODVDBJsonImporter does not support configuration.");
             return false;
         }

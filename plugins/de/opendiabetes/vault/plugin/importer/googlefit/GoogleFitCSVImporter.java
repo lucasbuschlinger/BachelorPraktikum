@@ -31,6 +31,7 @@ import org.pf4j.PluginWrapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -123,7 +124,7 @@ public class GoogleFitCSVImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final String filePath) {
+        public boolean loadConfiguration(final Properties configuration) {
             LOG.log(Level.WARNING, "GoogleFitCSVImporter does not support configuration.");
             return false;
         }

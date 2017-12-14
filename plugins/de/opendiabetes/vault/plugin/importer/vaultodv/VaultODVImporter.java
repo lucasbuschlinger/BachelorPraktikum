@@ -36,6 +36,7 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -140,10 +141,10 @@ public class VaultODVImporter extends Plugin {
         }
 
         /**
-         * {@inheritDoc}
+         *{@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final String filePath) {
+        public boolean loadConfiguration(final Properties configuration) {
             LOG.log(Level.WARNING, "VaultODVImporter does not support configuration.");
             return false;
         }
