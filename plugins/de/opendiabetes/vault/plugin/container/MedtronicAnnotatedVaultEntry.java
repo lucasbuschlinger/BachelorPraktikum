@@ -14,8 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.container;
+package de.opendiabetes.vault.plugin.container;
 
+import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator;
 
 import java.util.Objects;
@@ -88,7 +89,7 @@ public class MedtronicAnnotatedVaultEntry extends VaultEntry {
         if (!super.equals(obj)) {
             return false;
         }
-        return this.rawType.equals(((MedtronicAnnotatedVaultEntry) obj).getRawType());
+        return this.rawType.equals(((de.opendiabetes.vault.plugin.container.MedtronicAnnotatedVaultEntry) obj).getRawType());
     }
 
 }

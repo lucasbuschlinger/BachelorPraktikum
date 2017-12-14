@@ -17,8 +17,8 @@
 package de.opendiabetes.vault.plugin.importer.medtronic;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.container.MedtronicAlertCodes;
-import de.opendiabetes.vault.container.MedtronicAnnotatedVaultEntry;
+import de.opendiabetes.vault.plugin.container.MedtronicAlertCodes;
+import de.opendiabetes.vault.plugin.container.MedtronicAnnotatedVaultEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
