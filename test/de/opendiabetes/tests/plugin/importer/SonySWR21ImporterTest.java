@@ -24,6 +24,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -104,7 +105,7 @@ public class SonySWR21ImporterTest {
                 Assert.assertTrue(msgsReceived > 0);
             }
         });
-        Assert.assertFalse(sonySWR21Importer.loadConfiguration("path/to/configuration"));
+        Assert.assertFalse(sonySWR21Importer.loadConfiguration(new Properties()));
         sonySWR21Importer.LOG.getHandlers()[0].close();
     }
 }

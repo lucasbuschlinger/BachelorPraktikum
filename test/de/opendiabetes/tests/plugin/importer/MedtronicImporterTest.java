@@ -23,9 +23,10 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+import java.util.Properties;
 
 /**
  * Tests for the MedtronicImporter plugin.
@@ -87,28 +88,51 @@ public class MedtronicImporterTest {
     public void printLogOnLoadConfiguration() {
         Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
 
-        medtronicImporter.LOG.addHandler(new Handler() {
-            String logOut = "";
-            int msgsReceived = 0;
+        //load properties from file
+        Properties config = new Properties();
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream("properties/medtronic.properties");
+            config.load(input);
 
-            @Override
-            public void publish(final LogRecord record) {
-                logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: MedtronicImporter does not support configuration."));
-                msgsReceived++;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Assert.fail("path to configuration not found, aborting test");
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
+        
+        Assert.assertTrue(medtronicImporter.loadConfiguration(config));
 
-            @Override
-            public void flush() {
-            }
 
-            @Override
-            public void close() throws SecurityException {
-                Assert.assertTrue(msgsReceived > 0);
-            }
-        });
-        Assert.assertFalse(medtronicImporter.loadConfiguration("path/to/configuration"));
-        medtronicImporter.LOG.getHandlers()[0].close();
+        //check validity check
+        config.setProperty("delimiter", "\t");
+        Assert.assertTrue(medtronicImporter.loadConfiguration(config));
+
+        config.setProperty("delimiter", ";");
+        Assert.assertTrue(medtronicImporter.loadConfiguration(config));
+
+        config.setProperty("delimiter", ",");
+        Assert.assertTrue(medtronicImporter.loadConfiguration(config));
+
+        config.setProperty("delimiter", "not a valid delimiter");
+        Assert.assertFalse(medtronicImporter.loadConfiguration(config));
+
+        //not providing a value for delimiter
+        config = new Properties();
+        config.setProperty("another property", "value");
+        Assert.assertFalse(medtronicImporter.loadConfiguration(config));
+
+
+        config.setProperty("delimiter", "");
+        Assert.assertFalse(medtronicImporter.loadConfiguration(config));
+
     }
 
     //TODO add test for notifyMechanism

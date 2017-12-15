@@ -30,6 +30,7 @@ import org.pf4j.PluginWrapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -187,13 +188,10 @@ public class SonySWR21Importer extends Plugin {
         }
 
         /**
-         * Method to load configuration file for the SonySWR21Importer plugin.
-         *
-         * @param filePath Path to the configuration file.
-         * @return True when configuration can be loaded, false otherwise.
+         *{@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final String filePath) {
+        public boolean loadConfiguration(final Properties configuration) {
             LOG.log(Level.WARNING, "SonySWR21Importer does not support configuration.");
             return false;
         }

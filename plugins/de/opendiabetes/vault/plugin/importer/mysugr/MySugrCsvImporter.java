@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -324,13 +325,10 @@ public class MySugrCsvImporter extends Plugin {
         }
 
         /**
-         * Method to load configuration file for the MySugrCsvImporter plugin.
-         *
-         * @param path Path to the configuration file.
-         * @return True when configuration can be loaded, false otherwise.
+         *{@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final String path) {
+        public boolean loadConfiguration(final Properties configuration) {
             LOG.log(Level.WARNING, "MySugrCsvImporter does not support configuration");
             return false;
         }
