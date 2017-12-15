@@ -17,12 +17,13 @@
 package de.opendiabetes.vault.container.csv;
 
 import de.opendiabetes.vault.container.VaultEntry;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static de.opendiabetes.vault.plugin.util.TimestampUtils.copyTimestamp;
 
 /**
  * Definition of the VaultCSVEntry.
@@ -154,7 +155,7 @@ public class VaultCsvEntry extends CsvEntry {
      * @return The entry's {@link #timestamp}.
      */
     public Date getTimestamp() {
-        return timestamp;
+        return copyTimestamp(timestamp);
     }
 
     /**
@@ -163,7 +164,7 @@ public class VaultCsvEntry extends CsvEntry {
      * @param timestamp The {@link #timestamp} to be set.
      */
     public void setTimestamp(final Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = copyTimestamp(timestamp);
     }
 
     /**

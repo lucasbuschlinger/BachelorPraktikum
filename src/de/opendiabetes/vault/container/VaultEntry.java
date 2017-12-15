@@ -29,6 +29,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static de.opendiabetes.vault.plugin.util.TimestampUtils.copyTimestamp;
+
 /**
  * This class defines a vault entry.
  *
@@ -145,7 +147,7 @@ public class VaultEntry implements Serializable {
     public VaultEntry(final VaultEntryType type, final Date timestamp, final double value) {
         this();
         this.type = type;
-        this.timestamp = timestamp;
+        this.timestamp = copyTimestamp(timestamp);
         this.value = value;
     }
 
@@ -158,7 +160,7 @@ public class VaultEntry implements Serializable {
     public VaultEntry(final VaultEntryType type, final Date timestamp) {
         this();
         this.type = type;
-        this.timestamp = timestamp;
+        this.timestamp = copyTimestamp(timestamp);
         this.value = VALUE_UNUSED;
     }
 
@@ -251,7 +253,7 @@ public class VaultEntry implements Serializable {
      * @return The timestamp of the VaultEntry.
      */
     public Date getTimestamp() {
-        return timestamp;
+        return copyTimestamp(timestamp);
     }
 
     /**
