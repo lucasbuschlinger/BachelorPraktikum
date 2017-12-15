@@ -413,17 +413,20 @@
         <pathelement path="out/test"/>
     </path>
 
-    <property name="plugins_out" value="out/production/OpenDiabetes/de/opendiabetes/vault/plugin/importer"/>
+    <property name="plugins_out" value="out/production/OpenDiabetes/de/opendiabetes/vault/plugin"/>
 
-    <target name="clean_for_tests">
+    <target name="prepare_for_tests">
         <delete includeemptydirs="true">
-            <fileset dir="${plugins_out}">
+            <fileset dir="${plugins_out}/importer">
                 <exclude name="*.class"/>
-                <exclude name="ImportProcessor/**"/>
-                <exclude name="preprocessor/**"/>
                 <exclude name="validator/**"/>
             </fileset>
+            <fileset dir="${plugins_out}/exporter">
+                <exclude name="*.class"/>
+            </fileset>
         </delete>
+        <move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j.properties"
+              tofile="out/production/OpenDiabetes/log4j.properties"/>
     </target>
 
 
@@ -431,7 +434,7 @@
     <taskdef name="junit"
              classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
              classpath="${basedir}/testlib/ant-junit.jar"/>
-    <target name="test" depends="plugin, compile.module.opendiabetes.tests, clean_for_tests">
+    <target name="test" depends="plugin, compile.module.opendiabetes.tests, prepare_for_tests">
         <mkdir dir="reports/resources/junit"/>
         <property name="junit.path" refid="junit.class.path"/>
         <junit>
