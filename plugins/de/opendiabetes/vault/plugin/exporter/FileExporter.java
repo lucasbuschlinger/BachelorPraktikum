@@ -126,7 +126,7 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @return True if the data is period restricted, false otherwise.
      */
-    public boolean getIsPeriodRestricted() {
+    protected boolean getIsPeriodRestricted() {
         return isPeriodRestricted;
     }
 
@@ -136,7 +136,7 @@ public abstract class FileExporter extends AbstractExporter {
      * @param periodRestricted The value to set the flag to,
      *                         true if the data is period restricted, false otherwise.
      */
-    public void setIsPeriodRestricted(final boolean periodRestricted) {
+    protected void setIsPeriodRestricted(final boolean periodRestricted) {
         this.isPeriodRestricted = periodRestricted;
     }
 
@@ -145,7 +145,7 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @param exportPeriodFrom The date to be set.
      */
-    public void setExportPeriodFrom(final Date exportPeriodFrom) {
+    protected void setExportPeriodFrom(final Date exportPeriodFrom) {
         this.exportPeriodFrom = exportPeriodFrom;
     }
 
@@ -154,7 +154,7 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @return The date the data is period limited from.
      */
-    public Date getExportPeriodFrom() {
+    protected Date getExportPeriodFrom() {
         return exportPeriodFrom;
     }
 
@@ -163,7 +163,7 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @param exportPeriodTo The date to be set.
      */
-    public void setExportPeriodTo(final Date exportPeriodTo) {
+    protected void setExportPeriodTo(final Date exportPeriodTo) {
         this.exportPeriodTo = exportPeriodTo;
     }
 
@@ -172,7 +172,7 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @return The date the data is period limited from.
      */
-    public Date getExportPeriodTo() {
+    protected Date getExportPeriodTo() {
         return exportPeriodTo;
     }
 }
