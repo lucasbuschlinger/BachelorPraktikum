@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static de.opendiabetes.vault.plugin.util.TimestampUtils.copyTimestamp;
+
 /**
  * This class defines the SliceEntry data type.
  */
@@ -87,7 +89,7 @@ public class SliceEntry {
      * @param duration  The value that duration will be set to.
      */
     public SliceEntry(final Date timestamp, final long duration) {
-        this.timestamp = timestamp;
+        this.timestamp = copyTimestamp(timestamp);
         this.duration = duration;
 //        this.type = type;
     }
@@ -113,7 +115,7 @@ public class SliceEntry {
      * @return The timestamp of the SliceEntry.
      */
     public Date getTimestamp() {
-        return timestamp;
+        return copyTimestamp(timestamp);
     }
 
     /**
@@ -122,7 +124,7 @@ public class SliceEntry {
      * @param timestamp The value that the timestamp will be set to.
      */
     public void setTimestamp(final Date timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = copyTimestamp(timestamp);
     }
 
     /**
