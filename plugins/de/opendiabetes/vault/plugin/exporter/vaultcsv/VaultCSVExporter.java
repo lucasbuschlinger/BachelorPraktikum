@@ -251,7 +251,7 @@ public class VaultCSVExporter extends Plugin {
                     csvEntry.setCgmAlertValue(entry.getValue());
                     break;
                 case GLUCOSE_CGM:
-                    // TODO y does this happen
+                    // TODO why does this happen
                     // --> when more than one cgm value per minute is available
                     // but cgm ticks are every 15 minutes ...
                     if (csvEntry.getCgmValue()
@@ -276,7 +276,7 @@ public class VaultCSVExporter extends Plugin {
                 case GLUCOSE_BG:
                 case GLUCOSE_BG_MANUAL:
                     // TODO why does this happen ?
-                    // it often happens with identical values, but db has been cleaned bevore ...
+                    // it often happens with identical values, but db has been cleaned before ...
                     if (csvEntry.getBgValue()
                             == VaultCsvEntry.UNINITIALIZED_DOUBLE) {
                         csvEntry.setBgValue(entry.getValue());
