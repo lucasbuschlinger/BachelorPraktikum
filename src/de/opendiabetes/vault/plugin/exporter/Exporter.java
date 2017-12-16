@@ -17,6 +17,7 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
@@ -125,7 +126,7 @@ public interface Exporter extends ExtensionPoint {
      */
     interface StatusListener {
         /**
-         * Is called multiple times on all listeners during the import process to notify them about the import progress.
+         * Is called multiple times on all listeners during the export process to notify them about the import progress.
          *
          * @param progress Percentage of completion.
          * @param status   Current Status.

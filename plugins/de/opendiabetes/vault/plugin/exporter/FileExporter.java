@@ -59,6 +59,9 @@ public abstract class FileExporter extends AbstractExporter {
      * {@inheritDoc}
      */
     public int exportDataToFile(final List<VaultEntry> data) {
+        // Status update constants.
+        final int startWriteProgress = 80;
+        final int writeDoneProgress = 100;
         String filePath = this.getExportFilePath();
         // check file stuff
         File checkFile = new File(filePath);
@@ -78,7 +81,7 @@ public abstract class FileExporter extends AbstractExporter {
         if (exportData == null || exportData.isEmpty()) {
             return ReturnCode.RESULT_NO_DATA.getCode();
         }
-
+        this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
         try {
             writeToFile(exportData);
@@ -92,6 +95,9 @@ public abstract class FileExporter extends AbstractExporter {
                 LOG.log(Level.WARNING, "Error while closing the fileOutputStream, uncritical.", exception);
             }
         }
+
+        this.notifyStatus(writeDoneProgress, "Writing to file successful, all done.");
+
         return ReturnCode.RESULT_OK.getCode();
     }
 
@@ -100,16 +106,16 @@ public abstract class FileExporter extends AbstractExporter {
      */
     @Override
     protected void writeToFile(final List<ExportEntry> data) throws IOException {
-        FileChannel fc = fileOutputStream.getChannel();
+        FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 
         for (ExportEntry entry : data) {
             byte[] messageBytes = entry.toByteEntryLine();
-            fc.write(ByteBuffer.wrap(messageBytes));
-            fc.write(ByteBuffer.wrap(lineFeed));
+            channel.write(ByteBuffer.wrap(messageBytes));
+            channel.write(ByteBuffer.wrap(lineFeed));
         }
 
-        fc.close();
+        channel.close();
     }
 
     /**
@@ -131,7 +137,7 @@ public abstract class FileExporter extends AbstractExporter {
     }
 
     /**
-     * Setter for the period restriction flag.
+     * Setter for the period restriction flag {@link #isPeriodRestricted}.
      *
      * @param periodRestricted The value to set the flag to,
      *                         true if the data is period restricted, false otherwise.

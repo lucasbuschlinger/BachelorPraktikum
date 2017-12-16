@@ -110,7 +110,14 @@ public class VaultCSVExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+            // Status update constants
+            final int queryDataProgress = 20;
+            final int startPrepareProgress = 40;
+            final int prepareDoneProgress = 60;
+
             List<ExportEntry> returnValues = new ArrayList<>();
+
+            this.notifyStatus(queryDataProgress, "Querying data");
 
             List<VaultEntry> tmpValues = queryData();
             if (tmpValues == null || tmpValues.isEmpty()) {
@@ -120,6 +127,8 @@ public class VaultCSVExporter extends Plugin {
             // list is ordered by timestamp from database (or should be ordered otherwise)
             Date fromTimestamp = tmpValues.get(0).getTimestamp();
             Date toTimestamp = tmpValues.get(tmpValues.size() - 1).getTimestamp();
+
+            this.notifyStatus(startPrepareProgress, "Preparing data for export");
 
             if (!tmpValues.isEmpty()) {
                 int i = 0;
@@ -163,6 +172,9 @@ public class VaultCSVExporter extends Plugin {
                     fromTimestamp = TimestampUtils.addMinutesToTimestamp(fromTimestamp, 1);
                 }
             }
+
+            this.notifyStatus(prepareDoneProgress, "Preparation of data successful");
+
             return returnValues;
         }
 
@@ -171,8 +183,12 @@ public class VaultCSVExporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            // Status update constant
+            final int loadConfigProgress = 0;
             // Format of dates which must be used.
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+            this.notifyStatus(loadConfigProgress, "Loading configuration");
 
             if (!configuration.containsKey("periodRestriction")
                     || configuration.getProperty("periodRestriction") == null
