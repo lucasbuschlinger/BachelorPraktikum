@@ -13,15 +13,15 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-public class VaultCSVExporterTest {
+public class VaultODVExporterTest {
 
     @Test
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("VaultCSVExporter");
+        manager.enablePlugin("VaultODVExporter");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("VaultCSVExporter"));
+        Assert.assertTrue(manager.enablePlugin("VaultODVExporter"));
     }
 
     /**
@@ -29,9 +29,9 @@ public class VaultCSVExporterTest {
      */
     @Test
     public void setGetPath() {
-        Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
-        vaultCSVExporter.setExportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", vaultCSVExporter.getExportFilePath());
+        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
+        vaultODVExporter.setExportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", vaultODVExporter.getExportFilePath());
     }
 
     /**
@@ -39,13 +39,13 @@ public class VaultCSVExporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
+        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
 
         //load properties from file
         Properties config = new Properties();
         FileInputStream input = null;
         try {
-            input = new FileInputStream("properties/vaultcsvexporter.properties");
+            input = new FileInputStream("properties/VaultODVexporter.properties");
             config.load(input);
 
         } catch (IOException e) {
@@ -61,29 +61,29 @@ public class VaultCSVExporterTest {
             }
         }
 
-        Assert.assertTrue(vaultCSVExporter.loadConfiguration(config));
+        Assert.assertTrue(vaultODVExporter.loadConfiguration(config));
 
 
         //check which wrong dates
         config.remove("periodRestrictionTo");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
 
         config.remove("periodRestrictionFrom");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
 
         config.setProperty("periodRestrictionFrom", "12/12/2017");
         config.setProperty("periodRestrictionTo", "12/11/2017");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
 
         //check no restriction => all get exported
         config = new Properties();
         config.setProperty("periodRestriction", "false");
-        Assert.assertTrue(vaultCSVExporter.loadConfiguration(config));
+        Assert.assertTrue(vaultODVExporter.loadConfiguration(config));
 
         // check wrong format of date
         config.setProperty("periodRestriction", "True");
         config.setProperty("periodRestrictionFrom", "12.03.98");
         config.setProperty("periodRestrictionTo", "14.03.99");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
     }
 }
