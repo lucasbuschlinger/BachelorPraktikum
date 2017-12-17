@@ -27,9 +27,7 @@ public abstract class VaultExporter extends CSVFileExporter {
     private VaultDao database;
 
     /**
-     * Setter for the database.
-     *
-     * @param database The database to be set.
+     * {@inheritDoc}
      */
     public void setDatabase(final VaultDao database) {
         this.database = database;
