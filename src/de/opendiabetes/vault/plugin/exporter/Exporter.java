@@ -17,7 +17,7 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.csv.VaultCsvEntry;
+import de.opendiabetes.vault.data.VaultDao;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
@@ -95,6 +95,15 @@ public interface Exporter extends ExtensionPoint {
      * @return The exportFilePath.
      */
     String getExportFilePath();
+
+    /**
+     * Setter for the database to export from.
+     * This should only be fully implemented by exporters which actually work with a database.
+     * Implement empty otherwise.
+     *
+     * @param database The database to be set.
+     */
+    void setDatabase(VaultDao database);
 
     /**
      * Exports the data to a file.
