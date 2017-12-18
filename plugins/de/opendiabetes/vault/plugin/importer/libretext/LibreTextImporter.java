@@ -22,7 +22,6 @@ import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
 import de.opendiabetes.vault.plugin.importer.validator.LibreTextCSVValidator;
-import de.opendiabetes.vault.plugin.util.TimestampUtils;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -34,10 +33,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
-import static de.opendiabetes.vault.plugin.importer.libretext.LibreTextImporter.LibreTextImporterImplementation.LIBRE_TYPE.*;
-
 /**
  * Wrapper class for the LibreTextImporter plugin.
+ *
+ * @author Lucas Buschlinger
+ * @author Magnus Gärtner
  */
 public class LibreTextImporter extends Plugin {
 
@@ -59,41 +59,6 @@ public class LibreTextImporter extends Plugin {
          * Time format used in LibreText data.
          */
         private static final String TIME_FORMAT_LIBRE_DE = "yyyy.MM.dd HH:mm";
-
-        protected enum LIBRE_TYPE {
-            SCAN_GLUCOSE (1, "Gescannte Glukose (mg/dL)"),
-            HISTORIC_GLUCOSE (0, "Historische Glukose (mg/dL)"),
-            BLOOD_GLUCOSE (2, "Teststreifen-Blutzucker (mg/dL)"),
-            TIME_CHANGED (6, "Uhrzeit");
-            final int index;
-            final String header;
-            LIBRE_TYPE(int index, String header) {
-                this.index = index;
-                this.header = header;
-            }
-            final int getIndex(){
-                return index;
-            }
-            final String getHeader(){
-                return header;
-            }
-
-            static LIBRE_TYPE getFromType(int type){
-                switch (type) {
-                    case 1:
-                        return SCAN_GLUCOSE;
-                    case 0:
-                        return HISTORIC_GLUCOSE;
-                    case 2:
-                        return BLOOD_GLUCOSE;
-                    case 6:
-                        return TIME_CHANGED;
-                    default:
-                        LOG.log(Level.SEVERE, "Error while type checking!");
-                        throw new IllegalArgumentException("No such type for LibreText data.");
-                }
-            }
-        }
 
         /**
          * Constructor for a CSV validator.
@@ -124,27 +89,34 @@ public class LibreTextImporter extends Plugin {
          */
         @Override
         public List<VaultEntry> parseEntry(final CsvReader reader) throws IOException, ParseException {
-
-            int type = Integer.parseInt(reader.get("Art des Eintrags"));
-
             List<VaultEntry> retVal = new ArrayList<>();
+            LibreTextCSVValidator parseValidator = (LibreTextCSVValidator) getValidator();
+
+            LibreTextCSVValidator.TYPE type = parseValidator.getType(reader);
+            if (type == null) {
+                return null;
+            }
+
+            Date timestamp = parseValidator.getTimestamp(reader);
+            if (timestamp == null) {
+                return null;
+            }
 
             VaultEntry tempEntry;
             double value;
-            Date timestamp = TimestampUtils.createCleanTimestamp(reader.get(TIME_CHANGED.getHeader()), TIME_FORMAT_LIBRE_DE);
 
-            switch (LIBRE_TYPE.getFromType(type)) {
+            switch (type) {
                 case HISTORIC_GLUCOSE:
-                    value = Double.parseDouble(reader.get(HISTORIC_GLUCOSE.getHeader()));
+                    value = parseValidator.getHistoricGlucose(reader);
                     tempEntry = new VaultEntry(VaultEntryType.GLUCOSE_CGM, timestamp, value);
                     tempEntry.addAnnotation(new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.CGM_VENDOR_LIBRE));
                     break;
                 case SCAN_GLUCOSE:
-                    value = Double.parseDouble(reader.get(SCAN_GLUCOSE.getHeader()));
+                    value = parseValidator.getScanGlucose(reader);
                     tempEntry = new VaultEntry(VaultEntryType.GLUCOSE_CGM_ALERT, timestamp, value);
                     break;
                 case BLOOD_GLUCOSE:
-                    value = Double.parseDouble(reader.get(BLOOD_GLUCOSE.getHeader()));
+                    value = parseValidator.getBloodGlucose(reader);
                     tempEntry = new VaultEntry(VaultEntryType.GLUCOSE_BG, timestamp, value);
                     break;
                  default:
@@ -155,7 +127,12 @@ public class LibreTextImporter extends Plugin {
 
         }
 
+        /**
+         * Unimplemented preprocessing method as no preprocessing is necessary for LibreText CSV data.
+         *
+         * @param filePath Path to the file that would be preprocessed.
+         */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) {}
+        protected void preprocessingIfNeeded(final String filePath) { }
     }
 }
