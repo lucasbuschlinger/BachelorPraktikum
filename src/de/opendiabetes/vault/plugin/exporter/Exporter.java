@@ -97,13 +97,16 @@ public interface Exporter extends ExtensionPoint {
     String getExportFilePath();
 
     /**
-     * Setter for the database to export from.
-     * This should only be fully implemented by exporters which actually work with a database.
-     * Implement empty otherwise.
+     * Setter for an object used by the specific exporters.
+     * The implementation of this should only call a private setter method like {@link VaultExporter#setDatabase(VaultDao)}
+     * in the exporters and pass the object to those.
      *
-     * @param database The database to be set.
+     * @param object The object to be set.
+     * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a {@link VaultDao} object gets passed
+     *                                     to a {@link de.opendiabetes.vault.plugin.exporter.slicelayoutcsv.SliceLayoutCSVExporter} which
+     *                                     only takes a list of {@link de.opendiabetes.vault.container.SliceEntry}.
      */
-    void setDatabase(VaultDao database);
+    void setAdditional(Object object) throws IllegalArgumentException;
 
     /**
      * Exports the data to a file.

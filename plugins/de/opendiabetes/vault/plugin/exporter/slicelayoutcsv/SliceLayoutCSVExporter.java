@@ -20,7 +20,6 @@ import de.opendiabetes.vault.container.SliceEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.SliceCsVEntry;
-import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.CSVFileExporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -58,7 +57,34 @@ public class SliceLayoutCSVExporter extends Plugin {
     @Extension
     public static class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
 
+        /**
+         * The entries to be exported by the SliceLayoutCSVExporter plugins.
+         */
         private List<SliceEntry> entries;
+
+        /**
+         * Setter for the {@link SliceLayoutCSVExporterImplementation#entries}.
+         *
+         * @param entries The entries to be set.
+         */
+        private void setEntries(final List<SliceEntry> entries) {
+            this.entries = entries;
+        }
+
+        /**
+         * This implementation sets the list of {@link SliceEntry} to be exported.
+         *
+         * @param object The list of {@link SliceEntry} to be set.
+         * @throws IllegalArgumentException Thrown if the object passed is not an instance of {@link List}.
+         */
+        @Override
+        public void setAdditional(final Object object) {
+            if (object instanceof List) {
+                setEntries((List<SliceEntry>) object);
+            } else {
+                throw new IllegalArgumentException("Wrong argument given, only objects of type List<SliceEntry> are applicable!");
+            }
+        }
 
         /**
          * {@inheritDoc}
@@ -70,15 +96,6 @@ public class SliceLayoutCSVExporter extends Plugin {
                 retVal.add(new SliceCsVEntry(item));
             }
             return retVal;
-        }
-
-        /**
-         * BS
-         * @param database The database to be set.
-         */
-        @Override
-        public void setDatabase(final VaultDao database) {
-
         }
 
         /**
