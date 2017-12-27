@@ -31,6 +31,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -68,13 +69,10 @@ public class LibreTextImporter extends Plugin {
         }
 
         /**
-         * Method to load configuration file for the LibreTextImporter plugin.
-         *
-         * @param filePath Path to the configuration file.
-         * @return True when configuration can be loaded, false otherwise.
+         * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final String filePath) {
+        public boolean loadConfiguration(final Properties configuration) {
             LOG.log(Level.WARNING, "LibreTextImporter does not support configuration.");
             return false;
         }
