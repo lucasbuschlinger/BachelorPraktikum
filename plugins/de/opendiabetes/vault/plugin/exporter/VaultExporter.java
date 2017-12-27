@@ -27,10 +27,27 @@ public abstract class VaultExporter extends CSVFileExporter {
     private VaultDao database;
 
     /**
-     * {@inheritDoc}
+     * Setter for the {@link VaultExporter#database}.
+     *
+     * @param database The database to be set.
      */
-    public void setDatabase(final VaultDao database) {
+    private void setDatabase(final VaultDao database) {
         this.database = database;
+    }
+
+    /**
+     * This variant of setAdditional sets the database used by the {@link VaultExporter}s.
+     *
+     * @param object The database to be set.
+     * @throws IllegalArgumentException Thrown if the object passed is not an instance of {@link VaultDao}.
+     */
+    @Override
+    public void setAdditional(final Object object) throws IllegalArgumentException {
+        if (object instanceof VaultDao) {
+            setDatabase((VaultDao) object);
+        } else {
+            throw new IllegalArgumentException("Wrong argument given, only objects of type VaultDao are applicable!");
+        }
     }
 
     /**

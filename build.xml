@@ -386,7 +386,7 @@
         </checkstyle>
 
         <xslt in="reports/resources/checkstyle/checkstyle_errors.xml"
-              out="reports/checkstyle_errors${timestamp}.html"
+              out="reports/checkstyle_errors.html"
               style="reports/resources/checkstyle/checkstyle.xsl"/>
     </target>
 
@@ -398,7 +398,7 @@
     <target name="findbugs" depends="plugin">
         <findbugs home="${findbugs.home}"
                   output="html"
-                  outputFile="reports/findbugs_report${timestamp}.html">
+                  outputFile="reports/findbugs_report.html">
             <!--<auxClasspath path="${basedir}/lib/Regex.jar" />-->
             <!--<sourcePath path="${basedir}/src/" />-->
             <class location="${basedir}/out/production/OpenDiabetes/de"/>
@@ -456,7 +456,7 @@
             <report format="noframes" todir="reports/tests"/>
         </junitreport>
         <move file="reports/tests/junit-noframes.html"
-              tofile="reports/tests/junit-tests-${timestamp}.html"/>
+              tofile="reports/tests/junit-tests.html"/>
         <delete dir="reports/resources/junit"/>
     </target>
 

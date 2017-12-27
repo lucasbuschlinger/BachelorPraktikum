@@ -1,29 +1,27 @@
 package de.opendiabetes.tests.plugin.exporter;
 
 import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
-import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
-import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 
-public class VaultODVExporterTest {
+public class SliceLayoutCSVExporterTest {
 
     @Test
-    public void pluginStart() {
+    public void pluginStart()  {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("VaultODVExporter");
+        manager.enablePlugin("SliceLayoutCSVExporter");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("VaultODVExporter"));
+        Assert.assertTrue(manager.enablePlugin("SliceLayoutCSVExporter"));
     }
 
     /**
@@ -31,23 +29,27 @@ public class VaultODVExporterTest {
      */
     @Test
     public void setGetPath() {
-        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
-        vaultODVExporter.setExportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", vaultODVExporter.getExportFilePath());
+        Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        SliceLayoutCSVExporter.setExportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", SliceLayoutCSVExporter.getExportFilePath());
     }
 
     /**
      * Test to see whether the needed database can be set.
      */
     @Test
-    public void setDatabase() {
-        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
-        try {
-            VaultDao.initializeDb();
-        } catch (SQLException exception){
-            Assert.fail("Initialization of the VaultDao database went wrong.");
-        }
-        vaultODVExporter.setAdditional(VaultDao.getInstance());
+    public void setEntries() {
+        Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        sliceLayoutCSVExporter.setAdditional(new ArrayList<>());
+    }
+
+    /**
+     * Test to see whether the IllegalArgumentException gets thrown when passing wrong input to setAdditional
+     */
+    @Test(expected =  IllegalArgumentException.class)
+    public void setAdditionalException() {
+        Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        sliceLayoutCSVExporter.setAdditional(new Object());
     }
 
     /**
@@ -55,13 +57,13 @@ public class VaultODVExporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
+        Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
 
         //load properties from file
         Properties config = new Properties();
         FileInputStream input = null;
         try {
-            input = new FileInputStream("properties/VaultODVexporter.properties");
+            input = new FileInputStream("properties/slicelayoutcsvexporter.properties");
             config.load(input);
 
         } catch (IOException e) {
@@ -77,29 +79,29 @@ public class VaultODVExporterTest {
             }
         }
 
-        Assert.assertTrue(vaultODVExporter.loadConfiguration(config));
+        Assert.assertTrue(SliceLayoutCSVExporter.loadConfiguration(config));
 
 
         //check which wrong dates
         config.remove("periodRestrictionTo");
-        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
+        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
 
         config.remove("periodRestrictionFrom");
-        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
+        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
 
         config.setProperty("periodRestrictionFrom", "12/12/2017");
         config.setProperty("periodRestrictionTo", "12/11/2017");
-        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
+        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
 
         //check no restriction => all get exported
         config = new Properties();
         config.setProperty("periodRestriction", "false");
-        Assert.assertTrue(vaultODVExporter.loadConfiguration(config));
+        Assert.assertTrue(SliceLayoutCSVExporter.loadConfiguration(config));
 
         // check wrong format of date
         config.setProperty("periodRestriction", "True");
         config.setProperty("periodRestrictionFrom", "12.03.98");
         config.setProperty("periodRestrictionTo", "14.03.99");
-        Assert.assertFalse(vaultODVExporter.loadConfiguration(config));
+        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
     }
 }
