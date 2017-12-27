@@ -134,7 +134,9 @@
         <module name="AvoidInlineConditionals"/>
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <!-- Taken out as discussed in the meeting on 11.12.17
+        <!-- Taken out as discussed in the meeting on 11.12.17,
+        because it is considered standard to have setters with their arguments having the
+        same name as the variable they set.
         <module name="HiddenField"/>
       -->
         <module name="IllegalInstantiation"/>
