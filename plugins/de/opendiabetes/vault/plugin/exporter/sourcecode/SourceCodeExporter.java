@@ -171,7 +171,7 @@ public class SourceCodeExporter extends Plugin {
                 entries.add(toListCode(value));
             }
 
-            // durty hack again to overcome savety features ...
+            // Dirty hack again to overcome safety features
             ArrayList<ExportEntry> dummy = new ArrayList<>();
             dummy.add(new CsvEntry() {
                 @Override
@@ -225,7 +225,7 @@ public class SourceCodeExporter extends Plugin {
                     dateFrom = dateFormat.parse(startDate);
                     dateTo = dateFormat.parse(endDate);
                 } catch (ParseException exception) {
-                    LOG.log(Level.SEVERE, "Either of the dates specified in the VaultCSVExporter config is malformed."
+                    LOG.log(Level.SEVERE, "Either of the dates specified in the SourceCodeExporter config is malformed."
                             + " The expected format is dd/mm/yyyy.");
                     return false;
                 }
@@ -242,7 +242,7 @@ public class SourceCodeExporter extends Plugin {
                 LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString());
                 return true;
             } else {
-                LOG.log(Level.INFO, "Export data is not period restricted by VaultCSVExporter configuration.");
+                LOG.log(Level.INFO, "Export data is not period restricted by SourceCodeExporter configuration.");
                 return true;
             }
         }
