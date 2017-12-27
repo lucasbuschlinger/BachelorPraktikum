@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2017 mswin
- *
+ * Copyright (C) 2017 OpenDiabetes
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -25,27 +25,57 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * @author mswin
+ * Validator for Google Fit CSV data.
+ *
+ * @author Jens Heuschkel
  */
 public class GoogleFitCSVValidator extends CSVValidator {
 
+
+    /**
+     * Field of the German Google Fit CSV header containing the start time of an activity.
+     */
     public static final String HEADER_START_TIME_DE = "Beginn";
+    /**
+     * Field of the German Google Fit CSV header containing the end time of an activity.
+     */
     public static final String HEADER_END_TIME_DE = "Ende";
+    /**
+     * Field of the German Google Fit CSV header containing biking duration.
+     */
     public static final String HEADER_BIKE_VALUE_DE = "Radfahren – Dauer (ms)";
+    /**
+     * Field of the German Google Fit CSV header containing walking duration.
+     */
     public static final String HEADER_WALK_VALUE_DE = "Gehen – Dauer (ms)";
+    /**
+     * Field of the German Google Fit CSV header containing running duration.
+     */
     public static final String HEADER_RUN_VALUE_DE = "Laufen – Dauer (ms)";
+    /**
+     * Field of the German Google Fit CSV header containing maximum velocity.
+     */
     public static final String HEADER_MAX_SPEED_VALUE_DE = "Maximale Geschwindigkeit (m/s)";
+    /**
+     * Time format used Google Fit CSV data.
+     */
     public static final String TIME_FORMAT_DE = "yyyy-MM-dd HHmmss.SSSZ";        //01:00:00.000+01:00
 
+    /**
+     * The composed German header used in Google Fit CSV data.
+     */
     public static final String[] HEADER_DE = {
             HEADER_START_TIME_DE, HEADER_END_TIME_DE,
             // files without this values doesn't contain this headers ... --> json ?
-            //        HEADER_BIKE_VALUE_DE,
+            //        HEADER_BIKE_VALUE_DE, //todo why uncommented?
             //        HEADER_WALK_VALUE_DE,
             //        HEADER_RUN_VALUE_DE,
             HEADER_MAX_SPEED_VALUE_DE
     };
 
+    /**
+     * The composed English header used in Google fit CSV data.
+     */
     // TODO add english header
     public static final String[] HEADER_EN = {
             HEADER_START_TIME_DE, HEADER_END_TIME_DE,
@@ -55,12 +85,22 @@ public class GoogleFitCSVValidator extends CSVValidator {
             HEADER_MAX_SPEED_VALUE_DE
     };
 
+    /**
+     * Constructor.
+     */
     public GoogleFitCSVValidator() {
         super(HEADER_DE, HEADER_EN);
     }
 
+    /**
+     * Getter for the biking value.
+     *
+     * @param creader The CSV reader to use.
+     * @return The biking value.
+     * @throws IOException Thrown when reading the data goes wrong.
+     */
     // TODO add language selection
-    public long getBikeValue(CsvReader creader) throws IOException {
+    public long getBikeValue(final CsvReader creader) throws IOException {
         String tmpValue = creader.get(HEADER_BIKE_VALUE_DE);
         if (tmpValue != null && !tmpValue.isEmpty()) {
             return Long.parseLong(tmpValue);
@@ -69,7 +109,14 @@ public class GoogleFitCSVValidator extends CSVValidator {
         }
     }
 
-    public long getWalkValue(CsvReader creader) throws IOException {
+    /**
+     * Getter for the walking value.
+     *
+     * @param creader The CSV reader to use.
+     * @return The walking value.
+     * @throws IOException Thrown when reading the data goes wrong.
+     */
+    public long getWalkValue(final CsvReader creader) throws IOException {
         String tmpValue = creader.get(HEADER_WALK_VALUE_DE);
         if (tmpValue != null && !tmpValue.isEmpty()) {
             return Long.parseLong(tmpValue);
@@ -78,7 +125,14 @@ public class GoogleFitCSVValidator extends CSVValidator {
         }
     }
 
-    public long getRunValue(CsvReader creader) throws IOException {
+    /**
+     * Getter for the running value.
+     *
+     * @param creader The CSV reader to use.
+     * @return The running value.
+     * @throws IOException Thrown when reading the data goes wrong.
+     */
+    public long getRunValue(final CsvReader creader) throws IOException {
         String tmpValue = creader.get(HEADER_RUN_VALUE_DE);
         if (tmpValue != null && !tmpValue.isEmpty()) {
             return Long.parseLong(tmpValue);
@@ -87,7 +141,14 @@ public class GoogleFitCSVValidator extends CSVValidator {
         }
     }
 
-    public double getMaxSpeedValue(CsvReader creader) throws IOException {
+    /**
+     * Getter for the maximum velocity.
+     *
+     * @param creader The CSV reader to use.
+     * @return The maximum velocity.
+     * @throws IOException Thrown when reading the data goes wrong.
+     */
+    public double getMaxSpeedValue(final CsvReader creader) throws IOException {
         String tmpValue = creader.get(HEADER_MAX_SPEED_VALUE_DE);
         if (tmpValue != null && !tmpValue.isEmpty()) {
             return Double.parseDouble(tmpValue);
@@ -96,20 +157,46 @@ public class GoogleFitCSVValidator extends CSVValidator {
         }
     }
 
-    public long getStartTime(CsvReader creader, String fileName) throws IOException, ParseException {
+    /**
+     * Getter for the starting time of an activity.
+     *
+     * @param creader The CSV reader to use.
+     * @param fileName The name of the file to extract the time from.
+     * @return The starting time.
+     * @throws IOException Thrown when reading the data goes wrong.
+     * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
+     */
+    public long getStartTime(final CsvReader creader, final String fileName) throws IOException, ParseException {
         return timestampHack(creader.get(HEADER_START_TIME_DE), fileName);
     }
 
-    public long getEndTime(CsvReader creader, String fileName) throws IOException, ParseException {
+    /**
+     * Getter for the ending time of an activity.
+     *
+     * @param creader The CSV reader to use.
+     * @param fileName The name of the file to extract the time from.
+     * @return The ending time.
+     * @throws IOException Thrown when reading the data goes wrong.
+     * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
+     */
+    public long getEndTime(final CsvReader creader, final String fileName) throws IOException, ParseException {
         return timestampHack(creader.get(HEADER_END_TIME_DE), fileName);
     }
 
-    private long timestampHack(String dbString, String fileName) throws ParseException {
+    /**
+     * A hack to extract a timestamp for the file.
+     *
+     * @param dbString The field to get the timestamp from.
+     * @param fileName The name of the file to extract the time from.
+     * @return The timestamp.
+     * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
+     */
+    private long timestampHack(final String dbString, final String fileName) throws ParseException {
         if (dbString == null || dbString.isEmpty()) {
             return 0;
         }
-        fileName = new File(fileName).getName();
-        String dateString = fileName.split("\\.")[0]; //dirty hack --> change to json would solve this problem
+        String tempFileName = new File(fileName).getName();
+        String dateString = tempFileName.split("\\.")[0]; //dirty hack --> change to json would solve this problem
         Date timestamp = TimestampUtils.createCleanTimestamp(
                 dateString + " " + dbString.replaceAll(":", ""),
                 TIME_FORMAT_DE);

@@ -17,7 +17,6 @@
 package de.opendiabetes.tests.plugin.importer;
 
 import de.opendiabetes.vault.plugin.importer.Importer;
-import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicImporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
@@ -25,6 +24,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -63,7 +63,7 @@ public class ODVDBJsonImporterTest {
     @Test
     public void callPlugin() {
         Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
-        System.out.println("TEST"+odvImporter.getClass());
+        System.out.println("TEST" + odvImporter.getClass());
         odvImporter.setImportFilePath("path/to/data");
         Assert.assertFalse(odvImporter.importData());
     }
@@ -86,12 +86,12 @@ public class ODVDBJsonImporterTest {
         Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
         Handler handler = new Handler() {
             String logOut = "";
-            int msgs_recieved = 0;
+            int msgsReceived = 0;
 
             @Override
-            public void publish(LogRecord record) {
+            public void publish(final LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                msgs_recieved++;
+                msgsReceived++;
                 Assert.assertTrue(logOut.contains("WARNING: ODVDBJsonImporter does not support configuration."));
             }
 
@@ -101,13 +101,13 @@ public class ODVDBJsonImporterTest {
 
             @Override
             public void close() throws SecurityException {
-                Assert.assertTrue(msgs_recieved>0);
+                Assert.assertTrue(msgsReceived > 0);
 
             }
         };
         odvImporter.LOG.addHandler(handler);
 
-        odvImporter.loadConfiguration("path/to/configuration");
+        odvImporter.loadConfiguration(new Properties());
 
         odvImporter.LOG.getHandlers()[0].close();
     }

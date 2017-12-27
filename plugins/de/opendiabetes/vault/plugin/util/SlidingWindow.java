@@ -52,7 +52,7 @@ public class SlidingWindow {
      * @param typeToReactOn       Type to filter for.
      * @param outputFilterSize    Size of the output filter.
      */
-    public SlidingWindow(long windowSizeInMinutes, VaultEntryType typeToReactOn, double outputFilterSize) {
+    public SlidingWindow(final long windowSizeInMinutes, final VaultEntryType typeToReactOn, final double outputFilterSize) {
         this.windowSizeInMinutes = windowSizeInMinutes;
         this.typeToReactOn = typeToReactOn;
         this.outputFilterSize = outputFilterSize;
@@ -65,7 +65,7 @@ public class SlidingWindow {
      * @return Absolute elevation within the window or 0 if wrong type or buffer
      * not statuated. TODO
      */
-    public double updateValue1WindowElevation(VaultEntry entry) {
+    public double updateValue1WindowElevation(final VaultEntry entry) {
         if (entry.getType() != typeToReactOn) {
             return 0.0;
         }

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * This class implements the pseudo ODV DB Json entry data structure.
  */
-public class OdvDbJsonPseudoEntry implements ExportEntry {
+public final class OdvDbJsonPseudoEntry implements ExportEntry {
 
     /**
      * The data.

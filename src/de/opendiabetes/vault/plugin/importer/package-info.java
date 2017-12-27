@@ -1,4 +1,4 @@
 /**
- * This package holds the extension points onto which the plugins hook on.
+ * This package holds the extension point onto which the importer plugins hook on.
  */
 package de.opendiabetes.vault.plugin.importer;

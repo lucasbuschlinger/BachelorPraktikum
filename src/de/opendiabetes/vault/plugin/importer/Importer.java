@@ -21,6 +21,7 @@ import de.opendiabetes.vault.container.VaultEntry;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 
@@ -29,7 +30,7 @@ import java.util.logging.Logger;
  * @author Lucas Buschlinger
  * This interface specifies the methods shared by all importers.
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
- * Therefore all importer plugins must implement this interface to get recognized as importer
+ * Therefore all importer plugins must implement this interface to get recognized as importer.
  */
 public interface Importer extends ExtensionPoint {
 
@@ -87,10 +88,10 @@ public interface Importer extends ExtensionPoint {
     /**
      * Method to load the plugin's configuration file.
      *
-     * @param filePath Path to the configuration file.
+     * @param configuration the configuration object
      * @return True if configuration can be loaded, false otherwise.
      */
-    boolean loadConfiguration(String filePath);
+    boolean loadConfiguration(Properties configuration);
 
     /**
      * Method to register listeners to the Plugins.

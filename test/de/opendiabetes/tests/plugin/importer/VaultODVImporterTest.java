@@ -24,6 +24,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -65,9 +66,9 @@ public class VaultODVImporterTest {
         manager.loadPlugins();
         manager.enablePlugin("VaultODVImporter");
         manager.startPlugin("VaultODVImporter");
-        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
-        VaultODVImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(VaultODVImporter.importData());
+        Importer vaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        vaultODVImporter.setImportFilePath("path/to/data");
+        Assert.assertFalse(vaultODVImporter.importData());
     }
 
     /**
@@ -78,9 +79,9 @@ public class VaultODVImporterTest {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("VaultODVImporter");
-        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
-        VaultODVImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", VaultODVImporter.getImportFilePath());
+        Importer vaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        vaultODVImporter.setImportFilePath("path/to/import/file");
+        Assert.assertEquals("path/to/import/file", vaultODVImporter.getImportFilePath());
     }
 
     /**
@@ -91,18 +92,18 @@ public class VaultODVImporterTest {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.startPlugin("VaultODVImporter");
-        Importer VaultODVImporter = manager.getExtensions(Importer.class).get(0);
+        Importer vaultODVImporter = manager.getExtensions(Importer.class).get(0);
         Handler handler;
 
-        VaultODVImporter.LOG.addHandler(new Handler() {
+        vaultODVImporter.LOG.addHandler(new Handler() {
             String logOut = "";
-            int msgs_recieved = 0;
+            int msgsReceived = 0;
 
             @Override
-            public void publish(LogRecord record) {
+            public void publish(final LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
                 Assert.assertTrue(logOut.contains("WARNING: VaultODVImporter does not support configuration."));
-                msgs_recieved++;
+                msgsReceived++;
             }
 
             @Override
@@ -111,11 +112,11 @@ public class VaultODVImporterTest {
 
             @Override
             public void close() throws SecurityException {
-                Assert.assertTrue(msgs_recieved>0);
+                Assert.assertTrue(msgsReceived > 0);
             }
         });
-        Assert.assertFalse(VaultODVImporter.loadConfiguration("path/to/configuration"));
-        VaultODVImporter.LOG.getHandlers()[0].close();
+        Assert.assertFalse(vaultODVImporter.loadConfiguration(new Properties()));
+        vaultODVImporter.LOG.getHandlers()[0].close();
     }
 
     //TODO add test for notifyMechanism
