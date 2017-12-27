@@ -36,12 +36,12 @@ public class CrawlerClass {
      * @param logger - a logger instance.
      * @param configFilePath - file path to specific crawler configuration.
      */
-    private void generateDocument(final Map<String, String> loginCookies,
-                                  final String startDate,
-                                  final String endDate,
-                                  final String userWorkingDirecotry,
-                                  final Logger logger,
-                                  final String configFilePath) {
+    public void generateDocument(final Map<String, String> loginCookies,
+                          final String startDate,
+                          final String endDate,
+                          final String userWorkingDirecotry,
+                          final Logger logger,
+                          final String configFilePath) {
 
         logger.info("Inside class CrawlerClass");
         try {

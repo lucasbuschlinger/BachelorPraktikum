@@ -85,7 +85,7 @@ public class CheckDatesClass {
      * @return a boolean whether the date has a correct or incorrect format
      * @throws ParseException - thrown if the given date could not be parsed
      */
-    private Boolean getStratDate(final String fromDate, final Logger logger) throws ParseException {
+    public Boolean getStratDate(final String fromDate, final Logger logger) throws ParseException {
 
         logger.info("Inside Class CheckDatesClass, Method getStratDate");
         SimpleDateFormat formatTodayDate = new SimpleDateFormat(dateFormat); // to format today's date as DD/MM/YYYY
@@ -134,7 +134,7 @@ public class CheckDatesClass {
      * @return a boolean whether the given dates are valid
      * @throws ParseException - thrown if the given date could not be parsed
      */
-    private boolean getEndDate(final String startDate, final String endDate, final Logger logger) throws ParseException {
+    public boolean getEndDate(final String startDate, final String endDate, final Logger logger) throws ParseException {
         logger.info("Inside Class CheckDatesClass, Method getEndDate");
         SimpleDateFormat formatTodayDate = new SimpleDateFormat(dateFormat);
         String todayDate = formatTodayDate.format(new Date());

@@ -16,36 +16,66 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/**
+ * Class for generating a password hash.
+ */
 public class CreateSecurePasswordClass {
 
-    public String[] createHash(String username, String password, Logger logger) throws GeneralSecurityException, IOException {
-        // TODO Auto-generated method stub
-        logger.info("Inside Class CreateSecurePasswordClass, Method createHash");
-        String userkey = username;
+    /**
+     * The number of iterations for the hashing algorithm.
+     * Decreasing this speeds down startup time and can be useful during
+     * testing, but it also makes it easier for brute force attackers.
+     */
+    private static final int ITERATION_COUNT = 40000;
 
+    /**
+     * The length of the key.
+     * Other values give me java.security.InvalidKeyException: Illegal key
+     * size or default parameters.
+     */
+    private static final int KEY_LENGTH = 128;
+
+    /**
+     * Creates a hash for the given username and password.
+     *
+     * @param username - username of the user.
+     * @param password - password of the user.
+     * @param logger - a logger instance.
+     * @return an array containing the encrypted and the decrypted password.
+     * @throws GeneralSecurityException - thrown if there was an error hashing the password.
+     * @throws IOException - thrown if there was an input/ouptput error.
+     */
+    String[] createHash(final String username, final String password, final Logger logger)
+            throws GeneralSecurityException, IOException {
+        logger.info("Inside Class CreateSecurePasswordClass, Method createHash");
 
         // The salt (probably) can be stored along with the encrypted data
         byte[] salt = new String("12345678").getBytes();
 
-        // Decreasing this speeds down startup time and can be useful during
-        // testing, but it also makes it easier for brute force attackers
-        int iterationCount = 40000;
-        // Other values give me java.security.InvalidKeyException: Illegal key
-        // size or default parameters
-        int keyLength = 128;
-        SecretKeySpec key = createSecretKey(userkey.toCharArray(), salt, iterationCount, keyLength, logger);
-
-        String originalPassword = password;
-
-        String encryptedPassword = encrypt(originalPassword, key);
-
+        SecretKeySpec key = createSecretKey(username.toCharArray(), salt, ITERATION_COUNT, KEY_LENGTH, logger);
+        String encryptedPassword = encrypt(password, key);
         String decryptedPassword = decrypt(encryptedPassword, key, logger);
-
         return new String[]{encryptedPassword, decryptedPassword};
 
     }
 
-    public static SecretKeySpec createSecretKey(char[] password, byte[] salt, int iterationCount, int keyLength, Logger logger)
+    /**
+     * Creates a secret key with a password.
+     *
+     * @param password - the password to encrypt.
+     * @param salt - a salt to add to the hash.
+     * @param iterationCount - the times the hashing function should iterate.
+     * @param keyLength - the final key length.
+     * @param logger - a logger instance.
+     * @return a secret key specification.
+     * @throws NoSuchAlgorithmException - thrown if the hashing algorithm is unknown at system level.
+     * @throws InvalidKeySpecException - thrown if the key could not be generated.
+     */
+    protected static SecretKeySpec createSecretKey(final char[] password,
+                                                   final byte[] salt,
+                                                   final int iterationCount,
+                                                   final int keyLength,
+                                                   final Logger logger)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         logger.info("Inside Class CreateSecurePasswordClass, Method createSecretKey");
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
@@ -54,7 +84,16 @@ public class CreateSecurePasswordClass {
         return new SecretKeySpec(keyTmp.getEncoded(), "AES");
     }
 
-    static String encrypt(String property, SecretKeySpec key)
+    /**
+     * Encrypts a given property with the given key.
+     *
+     * @param property - the property to encrypt.
+     * @param key - a key specification.
+     * @return the encrypted hash.
+     * @throws GeneralSecurityException - thrown if there was an error creating the hash.
+     * @throws UnsupportedEncodingException - thrown if there was an error encoding the property.
+     */
+    private static String encrypt(final String property, final SecretKeySpec key)
             throws GeneralSecurityException, UnsupportedEncodingException {
         Cipher pbeCipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         pbeCipher.init(Cipher.ENCRYPT_MODE, key);
@@ -65,11 +104,28 @@ public class CreateSecurePasswordClass {
         return base64Encode(iv) + ":" + base64Encode(cryptoText);
     }
 
-    private static String base64Encode(byte[] bytes) {
+    /**
+     * Creates the base64 representation of the given byte array.
+     *
+     * @param bytes - a byte array.
+     * @return a base64 encoded string.
+     */
+    private static String base64Encode(final byte[] bytes) {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    public static String decrypt(String string, SecretKeySpec key, Logger logger) throws GeneralSecurityException, IOException {
+    /**
+     * Decrypts the given property with the given key.
+     *
+     * @param string - the hashed string.
+     * @param key - a key specification.
+     * @param logger - a logger instance.
+     * @return the decrypted string.
+     * @throws GeneralSecurityException - thrown if there was an error decrypting.
+     * @throws IOException - thrown if there was any input/output error.
+     */
+    protected static String decrypt(final String string, final SecretKeySpec key, final Logger logger)
+            throws GeneralSecurityException, IOException {
         logger.info("Inside Class CreateSecurePasswordClass, Method decrypt");
         String iv = string.split(":")[0];
         String property = string.split(":")[1];
@@ -78,7 +134,14 @@ public class CreateSecurePasswordClass {
         return new String(pbeCipher.doFinal(base64Decode(property)), "UTF-8");
     }
 
-    private static byte[] base64Decode(String property) throws IOException {
+    /**
+     * Decodes the given base64 string into a byte array.
+     *
+     * @param property - a base64 encoded string.
+     * @return a byte array.
+     * @throws IOException - thrown if there was an error decoding.
+     */
+    private static byte[] base64Decode(final String property) throws IOException {
         return Base64.getDecoder().decode(property);
     }
 }

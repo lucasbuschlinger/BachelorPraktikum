@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Logger;
 import javax.crypto.spec.SecretKeySpec;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
@@ -22,25 +20,91 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+/**
+ * Class to parse argument flags from command line.
+ */
 public class FlagArgumentsClass {
 
-    String UPDSArray[];
-    String decrypetedPassowrd = null;
-    String username = null;
-    String password = null;
-    String configFilePath = null;
-    String CsvDownloadOutputPath = null;
-    String fromDate = null, toDate = null;
-    int TempCounterforThrowingerror = 0; /*
-                                             * This counter will check if it is
-											 * 0 then at very last throw a error
-											 * or else different modules have
-											 * already handled error with
-											 * appropriate message
-											 */
+    /**
+     * An array holding the user data.
+     */
+    private String[] updsArray;
 
-    // Below function will run program depending on flag/argument chosen
-    void RunDifferentArguments(String[] args, Logger logger) throws IOException, ParseException, SecurityException,
+    /**
+     * The decrypted password of the user.
+     */
+    private String decryptedPassowrd = null;
+
+    /**
+     * The username of the user.
+     */
+    private String username = null;
+
+    /**
+     * The password of the user.
+     */
+    private String password = null;
+
+    /**
+     * File path pointing to the config file.
+     */
+    private String configFilePath = null;
+
+    /**
+     * The path where the csv file should be downloaded to.
+     */
+    private String csvDownloadOutputPath = null;
+
+    /**
+     * The date from when the csv file data should start.
+     */
+    private String fromDate = null;
+
+    /**
+     * The date until when the csv file data should go.
+     */
+    private String toDate = null;
+
+    /**
+     * This counter will check if it is
+     * 0 then at very last throw a error
+     * or else different modules have
+     * already handled error with
+     * appropriate message.
+     */
+    private int tempCounterForThrowingError = 0;
+
+    /**
+     * The number of iterations for the hashing algorithm.
+     *
+     * Decreasing this speeds down startup time and
+     * can be useful during testing,
+     * but it also makes it easier for brute force attackers.
+     */
+    private static final int ITERATION_COUNT = 40000;
+
+    /**
+     * The length of the key.
+     * Other values give me java.security.InvalidKeyException: Illegal key
+     * size or default parameters.
+     */
+    private static final int KEY_LENGTH = 128;
+
+    /**
+     * Will run program depending on flag/argument chosen.
+     *
+     * @param args - the arguments for the application.
+     * @param logger - a logger instance.
+     * @throws IOException - thrown if any input/output failure occurred.
+     * @throws ParseException - thrown if there was an error parsing the arguments.
+     * @throws SecurityException - thrown if there was a security error.
+     * @throws AWTException - thrown if there was a awt error.
+     * @throws InterruptedException - thrown if there was a threading error.
+     * @throws java.text.ParseException - thrown if there was an error parsing the arguments.
+     * @throws GeneralSecurityException - thrown if there was a security error.
+     */
+    public void runDifferentArguments(final String[] args, final Logger logger)
+            throws IOException, ParseException, SecurityException,
             AWTException, InterruptedException, java.text.ParseException, GeneralSecurityException {
 
         logger.info("Inside Class FlagArgumentsClass");
@@ -56,12 +120,12 @@ public class FlagArgumentsClass {
 			 * ignored
 			 */
 
-            Options OptionsForHelp = new Options();
+            Options optionsForHelp = new Options();
 
-            Option option_help_short = Option.builder("h").required(false).desc("The short help option").longOpt("help").build();
-            OptionsForHelp.addOption((org.apache.commons.cli.Option) option_help_short);
+            Option shortHelpOptions = Option.builder("h").required(false).desc("The short help option").longOpt("help").build();
+            optionsForHelp.addOption((org.apache.commons.cli.Option) shortHelpOptions);
 
-            commandLine = new DefaultParser().parse(OptionsForHelp, args, true);
+            commandLine = new DefaultParser().parse(optionsForHelp, args, true);
             if (commandLine.getOptions().length != 0) {
                 if (commandLine.getOptions()[0].getOpt() == "h") {
                     System.out.println("Version: Carelink Crawler v0.1\n" + "Options: "
@@ -82,7 +146,7 @@ public class FlagArgumentsClass {
                             + "Date Format:\n"
                             + "English: DD/MM/YYYY\n"
                             + "German: DD.MM.YYYY\n");
-                    TempCounterforThrowingerror++;
+                    tempCounterForThrowingError++;
                     return;
                 }
             }
@@ -92,31 +156,31 @@ public class FlagArgumentsClass {
 			 * ignored
 			 */
 
-            Options OptionForVersion = new Options();
-            Option option_version_short = Option.builder("v").required(false).desc("The short version option").longOpt("version")
+            Options optionForVersion = new Options();
+            Option shortVersionOptions = Option.builder("v").required(false).desc("The short version option").longOpt("version")
                     .build();
-            OptionForVersion.addOption((org.apache.commons.cli.Option) option_version_short);
-            commandLine = new DefaultParser().parse(OptionForVersion, args, true);
+            optionForVersion.addOption((org.apache.commons.cli.Option) shortVersionOptions);
+            commandLine = new DefaultParser().parse(optionForVersion, args, true);
             if (commandLine.getOptions().length != 0) {
                 if (commandLine.getOptions()[0].getOpt() == "v") {
                     System.out.println("Version: Carelink Crawler v0.1\n");
-                    TempCounterforThrowingerror++;
+                    tempCounterForThrowingError++;
                     return;
                 }
             }
 
 
-				/*
-				 * If first argument is for initilization, all other arguments
-				 * will be ignored
-				 */
-            Options OptionForInitilization = new Options();
+            /*
+             * If first argument is for initilization, all other arguments
+             * will be ignored
+             */
+            Options optionForInitilization = new Options();
 
-            Option option_Init_short = Option.builder("i").required(false).desc("The init option").longOpt("init").build();
+            Option shortInitOptions = Option.builder("i").required(false).desc("The init option").longOpt("init").build();
 
-            OptionForInitilization.addOption((org.apache.commons.cli.Option) option_Init_short);
+            optionForInitilization.addOption((org.apache.commons.cli.Option) shortInitOptions);
 
-            commandLine = new DefaultParser().parse(OptionForInitilization, args, true);
+            commandLine = new DefaultParser().parse(optionForInitilization, args, true);
             if (commandLine.getOptions().length != 0) {
                 if (commandLine.getOptions()[0].getOpt() == "i") {
                     logger.info("User input flag such as -u or -c or -init");
@@ -150,7 +214,7 @@ public class FlagArgumentsClass {
                     // Class to create config file with user given details
                     CreateConfigFile config = new CreateConfigFile();
                     config.createFile(username, password, logger);
-                    TempCounterforThrowingerror++;
+                    tempCounterForThrowingError++;
 
                     return;
 
@@ -166,33 +230,33 @@ public class FlagArgumentsClass {
 			 * ****************************************
 			 */
 
-            Option option_Upload_short = Option.builder("u").required(false).desc("The U option").longOpt("upload").build();
+            Option shortUploadOptions = Option.builder("u").required(false).desc("The U option").longOpt("upload").build();
 
-            Option option_Crawler = Option.builder("crawler").required(false).desc("The Crawler option").build();
+            Option crawlerOptions = Option.builder("crawler").required(false).desc("The Crawler option").build();
 
-            Option option_FromDate = Option.builder("from").hasArg().required(false).desc("The from option").build();
+            Option fromDateOptions = Option.builder("from").hasArg().required(false).desc("The from option").build();
 
-            Option option_ToDate = Option.builder("to").hasArg().required(false).desc("The to option").build();
+            Option toDateOptions = Option.builder("to").hasArg().required(false).desc("The to option").build();
 
-            Option option_config_short = Option.builder("c").hasArg().required(false).desc("The c option").longOpt("config").build();
+            Option shortConfigOptions = Option.builder("c").hasArg().required(false).desc("The c option").longOpt("config").build();
 
-            Option option_output_short = Option.builder("o").hasArg().required(false).desc("The o option").longOpt("output").build();
+            Option shortOutputOptions = Option.builder("o").hasArg().required(false).desc("The o option").longOpt("output").build();
 
 
             Options options = new Options();
-            options.addOption((org.apache.commons.cli.Option) option_Upload_short);
+            options.addOption((org.apache.commons.cli.Option) shortUploadOptions);
 
 
-            options.addOption((org.apache.commons.cli.Option) option_Crawler);
+            options.addOption((org.apache.commons.cli.Option) crawlerOptions);
 
-            options.addOption((org.apache.commons.cli.Option) option_FromDate);
+            options.addOption((org.apache.commons.cli.Option) fromDateOptions);
 
-            options.addOption((org.apache.commons.cli.Option) option_ToDate);
+            options.addOption((org.apache.commons.cli.Option) toDateOptions);
 
-            options.addOption((org.apache.commons.cli.Option) option_config_short);
+            options.addOption((org.apache.commons.cli.Option) shortConfigOptions);
 
 
-            options.addOption((org.apache.commons.cli.Option) option_output_short);
+            options.addOption((org.apache.commons.cli.Option) shortOutputOptions);
 
 
             // Command line argument into list
@@ -215,7 +279,7 @@ public class FlagArgumentsClass {
 
                 if (commandLine.hasOption("o")) {
 
-                    CsvDownloadOutputPath = commandLine.getOptionValue("o");
+                    csvDownloadOutputPath = commandLine.getOptionValue("o");
 
                 }
 
@@ -305,22 +369,22 @@ public class FlagArgumentsClass {
                 }
 */
 
-                Boolean Isupload = false;
+                Boolean isInsideUpload = false;
                 if (commandLine.getOptions().length > 1) {
-                    if ((commandLine.getOptions()[0].getOpt() == "c" && commandLine.getOptions()[1].getOpt() == "u") ||
-                            (commandLine.getOptions()[1].getOpt() == "c" || commandLine.getOptions()[0].getOpt() == "u")) {
+                    if ((commandLine.getOptions()[0].getOpt() == "c" && commandLine.getOptions()[1].getOpt() == "u")
+                            || (commandLine.getOptions()[1].getOpt() == "c" || commandLine.getOptions()[0].getOpt() == "u")) {
 
-                        Isupload = true;
+                        isInsideUpload = true;
                     }
                 }
 
-                if (Isupload) {
+                if (isInsideUpload) {
 
                     logger.info("Inside upload");
                     System.out.println("Starting upload Program");
-                    RunConfigFile RunConfig = new RunConfigFile();
-                    RunConfig.runFile(logger, configFilePath);
-                    TempCounterforThrowingerror++;
+                    RunConfigFile runConfig = new RunConfigFile();
+                    runConfig.runFile(logger, configFilePath);
+                    tempCounterForThrowingError++;
                     return;
                 }
 
@@ -350,54 +414,46 @@ public class FlagArgumentsClass {
                             if (f.exists()) {
                                 logger.info("config file is availabe");
                                 BufferedReader b = new BufferedReader(new FileReader(f));
-                                GetUserNamePasswordDeviceSNFromFileClass GetUPDS = new GetUserNamePasswordDeviceSNFromFileClass();
+                                GetUserNamePasswordDeviceSNFromFileClass getUdps = new GetUserNamePasswordDeviceSNFromFileClass();
 
-                                UPDSArray = GetUPDS.getUsernamePassDevPumpSN(b, logger);
+                                updsArray = getUdps.getUsernamePassDevPumpSN(b, logger);
 
                                 /*************
                                  *
-                                 * UPDSArray[0] =Username
-                                 * UPDSArray[1] = Password
-                                 * UPDSArray[2] = device
-                                 * UPDSArray[3] = pump
-                                 *  UPDSArray[4] = SN
+                                 * updsArray[0] =Username
+                                 * updsArray[1] = Password
+                                 * updsArray[2] = device
+                                 * updsArray[3] = pump
+                                 *  updsArray[4] = SN
                                  */
 
                                 logger.info("Function is called to get Encrypted username and passowrd");
 
                                 byte[] salt = new String("12345678").getBytes();
 
-                                // Decreasing this speeds down startup
-                                // time
-                                // and can be useful
-                                // during testing, but it also makes it
-                                // easier for brute force
-                                // attackers
-                                int iterationCount = 40000;
-                                int keyLength = 128;
                                 try {
-                                    if (UPDSArray[0] != null & !UPDSArray[0].isEmpty() && UPDSArray[1] != null
-                                            && !UPDSArray[1].isEmpty()
+                                    if (updsArray[0] != null & !updsArray[0].isEmpty() && updsArray[1] != null
+                                            && !updsArray[1].isEmpty()
 													/*&& UPDSArray[4] != null & !UPDSArray[4].isEmpty()*/) {
                                         logger.info("username and passowrd is not empty");
                                         SecretKeySpec createSecretKey = CreateSecurePasswordClass
-                                                .createSecretKey(UPDSArray[0].toCharArray(), salt,
-                                                        iterationCount, keyLength, logger);
-                                        decrypetedPassowrd = CreateSecurePasswordClass.decrypt(UPDSArray[1],
+                                                .createSecretKey(updsArray[0].toCharArray(), salt,
+                                                        ITERATION_COUNT, KEY_LENGTH, logger);
+                                        decryptedPassowrd = CreateSecurePasswordClass.decrypt(updsArray[1],
                                                 createSecretKey, logger);
-                                        LoginDetailsClass LoginDetails = new LoginDetailsClass();
-                                        if (LoginDetails.checkConnection(UPDSArray[0], decrypetedPassowrd,
+                                        LoginDetailsClass loginDetails = new LoginDetailsClass();
+                                        if (loginDetails.checkConnection(updsArray[0], decryptedPassowrd,
                                                 logger)) {
                                             logger.info("username and passowrd Enetered are correct");
-                                            String Lang = LoginDetails.GetLanguage();
-                                            if (Lang == null) {
+                                            String lang = loginDetails.GetLanguage();
+                                            if (lang == null) {
                                                 System.out.println(
                                                         "Language of User logged in is not supporetd by Carelink Java program!! \n"
                                                                 + "Please try with user who has language as English or German");
                                                 return;
                                             }
 
-                                            CheckDatesClass checkdates = new CheckDatesClass(Lang);
+                                            CheckDatesClass checkdates = new CheckDatesClass(lang);
                                             if (checkdates.getStratDate(fromDate, logger)) {
 
                                                 logger.info("from date is correct");
@@ -408,13 +464,13 @@ public class FlagArgumentsClass {
 
 
                                                     if (commandLine.hasOption("o")) {
-                                                        CrawlerClass Crawler = new CrawlerClass();
-                                                        Crawler.generateDocument(LoginDetails.getcookies(), fromDate,
-                                                                toDate, CsvDownloadOutputPath, logger, configFilePath);
+                                                        CrawlerClass crawler = new CrawlerClass();
+                                                        crawler.generateDocument(loginDetails.getcookies(), fromDate,
+                                                                toDate, csvDownloadOutputPath, logger, configFilePath);
                                                     } else {
                                                         String userHomepath = System.getProperty("user.dir");
-                                                        CrawlerClass Crawler = new CrawlerClass();
-                                                        Crawler.generateDocument(LoginDetails.getcookies(), fromDate,
+                                                        CrawlerClass crawler = new CrawlerClass();
+                                                        crawler.generateDocument(loginDetails.getcookies(), fromDate,
                                                                 toDate, userHomepath, logger, configFilePath);
                                                     }
                                                 }
@@ -425,8 +481,8 @@ public class FlagArgumentsClass {
                                     }
                                 } catch (Exception e) {
                                     logger.info("Username or password was changed in config file");
-                                    System.out.println(
-                                            "Username or password or Path to save CSV was changed, Please initilize the config file once again");
+                                    System.out.println("Username or password or Path to save CSV was changed,"
+                                            + " Please initilize the config file once again");
                                 }
                                 return;
                             } else {
@@ -442,22 +498,23 @@ public class FlagArgumentsClass {
                     }
 
                 }
-                TempCounterforThrowingerror++;
+                tempCounterForThrowingError++;
 
 
-                //TempCounterforThrowingerror++;
-                //	System.out.println("Arguments are not in correct combination please try --help or -h for getting correct combination");
+                // TempCounterforThrowingerror++;
+                // System.out.println("Arguments are not in correct combination
+                // please try --help or -h for getting correct combination");
 
 
             } catch (ParseException exception) {
-                TempCounterforThrowingerror++;
+                tempCounterForThrowingError++;
                 System.out.print("Parse error: ");
                 System.out.println(exception.getMessage());
 
             }
         }
 
-        if (TempCounterforThrowingerror == 0) {
+        if (tempCounterForThrowingError == 0) {
             System.out.println(
                     "Arguments are not in correct combination please try --help or -h for getting correct combination");
         }

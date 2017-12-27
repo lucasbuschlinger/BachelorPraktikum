@@ -16,28 +16,23 @@
  */
 package de.opendiabetes.vault.plugin.importer.crawler;
 
-import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.VaultEntryAnnotation;
-import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.importer.CSVImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
-import de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator;
-import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Properties;
 import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Wrapper class for the GoogleFitCSVImporter plugin.
+ * Wrapper class for the CrawlerImporter plugin.
  *
  * @author Magnus Gärtner
  */
@@ -53,29 +48,32 @@ public class CrawlerImporter extends Plugin {
     }
 
     /**
-     * Actual implementation of the Medtronic importer plugin.
+     * Actual implementation of the CrawlerImporter plugin.
      */
     @Extension
-    public static class CrawlerImporterImplementation extends Importer {
+    public static class CrawlerImporterImplementation implements Importer {
 
         /**
          * Constructor.
+         *
+         * @throws IOException - thrown if the log file could not be written.
          */
         public CrawlerImporterImplementation() throws IOException {
             Logger logger = Logger.getLogger("MyLog");
             FileHandler fh;
-            SimpleDateFormat FORMATS = new SimpleDateFormat("dd-mm-HHMMSS");
+            SimpleDateFormat formats = new SimpleDateFormat("dd-mm-HHMMSS");
 
-            String PathForLogFile = System.getProperty("user.dir");
-            System.out.println("Log will be saved at location " + PathForLogFile);
-            fh = new FileHandler(PathForLogFile + "/CommandLine_" + FORMATS.format(Calendar.getInstance().getTime()) + ".log");
+            String pathForLogFile = System.getProperty("user.dir");
+            System.out.println("Log will be saved at location " + pathForLogFile);
+            fh = new FileHandler(pathForLogFile + "/CommandLine_" + formats.format(Calendar.getInstance().getTime()) + ".log");
             logger.addHandler(fh);
             fh.setFormatter(new MyCustomFormatterForLogger());
             logger.setUseParentHandlers(false);
             logger.info("Command Line application started");
             logger.info("Log is saved at location " + System.getProperty("user.home") + "under name CommandLine");
-            FlagArgumentsClass Flagargument = new FlagArgumentsClass(); // this class is called to get all the different arguments and it's values
-            Flagargument.RunDifferentArguments(args, logger); // This function will run program depending on flag/argument choosen
+            FlagArgumentsClass flagArgument = new FlagArgumentsClass();
+            // this class is called to get all the different arguments and it's values
+            // flagArgument.RunDifferentArguments(args, logger); // This function will run program depending on flag/argument choosen
         }
 
 
@@ -95,7 +93,7 @@ public class CrawlerImporter extends Plugin {
          * @param filePath The path to the import file.
          */
         @Override
-        public void setImportFilePath(String filePath) {
+        public void setImportFilePath(final String filePath) {
 
         }
 
@@ -149,7 +147,7 @@ public class CrawlerImporter extends Plugin {
          * @return True if configuration can be loaded, false otherwise.
          */
         @Override
-        public boolean loadConfiguration(Properties configuration) {
+        public boolean loadConfiguration(final Properties configuration) {
             return false;
         }
 
@@ -160,7 +158,7 @@ public class CrawlerImporter extends Plugin {
          * @param listener A listener.
          */
         @Override
-        public void registerStatusCallback(StatusListener listener) {
+        public void registerStatusCallback(final StatusListener listener) {
 
         }
     }
