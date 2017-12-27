@@ -1,7 +1,6 @@
 package de.opendiabetes.tests.plugin.exporter;
 
 import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
-import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
@@ -19,7 +18,7 @@ import java.util.Properties;
 public class VaultODVExporterTest {
 
     @Test
-    public void pluginStart() throws PluginException {
+    public void pluginStart() {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
         manager.enablePlugin("VaultODVExporter");

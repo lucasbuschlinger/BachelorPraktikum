@@ -7,3 +7,4 @@ export/
 .classpath
 .project
 reports/resources/checkstyle/checkstyle_errors.xml
+*.html
