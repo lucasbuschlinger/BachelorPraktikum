@@ -92,6 +92,10 @@
 
     <!-- Project Libraries -->
 
+    <path id="library.jsoup.classpath">
+        <pathelement location="${basedir}/plugins/de.opendiabetes.vault.plugin/importer/crawler/lib/jsoup-1.10.2.jar"/>
+    </path>
+
     <path id="library.log4j-1.2.16.classpath">
         <pathelement location="${basedir}/lib/log4j-1.2.16.jar"/>
     </path>
