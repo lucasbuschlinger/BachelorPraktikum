@@ -92,10 +92,6 @@
 
     <!-- Project Libraries -->
 
-    <path id="library.jsoup.classpath">
-        <pathelement location="${basedir}/plugins/de.opendiabetes.vault.plugin/importer/crawler/lib/jsoup-1.10.2.jar"/>
-    </path>
-
     <path id="library.log4j-1.2.16.classpath">
         <pathelement location="${basedir}/lib/log4j-1.2.16.jar"/>
     </path>
@@ -108,6 +104,14 @@
         <pathelement location="${basedir}/lib/ormlite-jdbc-5.0.jar"/>
         <pathelement location="${basedir}/lib/servlet-2_3-fcs-classfiles.zip"/>
         <pathelement location="${basedir}/lib/sqltool.jar"/>
+    </path>
+
+    <path id="library.jsoup.classpath">
+        <pathelement location="${basedir}/lib/jsoup-1.10.2.jar"/>
+    </path>
+
+    <path id="library.openqa-selenium.classpath">
+        <pathelement location="${basedir}/lib/client-combined-3.4.0-nodeps.jar"/>
     </path>
 
     <path id="library.junit.classpath">
