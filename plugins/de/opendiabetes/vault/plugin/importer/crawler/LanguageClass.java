@@ -4,9 +4,19 @@ import java.util.logging.Logger;
 
 import java.awt.event.KeyEvent;
 
-public class LanguageClass {
+/**
+ * Helper class for localisation conditions.
+ */
+class LanguageClass {
 
-    public int getReplacment(String lang, Logger logger) {
+    /**
+     * Returns the correct key event for the given language string. If the language could not be detected the function will return 0.
+     *
+     * @param lang - a two char language string.
+     * @param logger - a logger instance.
+     * @return a key event.
+     */
+    int getReplacment(final String lang, final Logger logger) {
         // This function is used when pressing keys.
         logger.info("Inside Class, LanguageClass");
         if (lang.contains("en")) {
