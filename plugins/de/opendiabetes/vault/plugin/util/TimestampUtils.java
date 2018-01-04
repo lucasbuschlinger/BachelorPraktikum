@@ -37,9 +37,6 @@ public final class TimestampUtils {
      */
     private TimestampUtils() { }
 
-
-    //public static final String TIME_FORMAT_LIBRE_DE = "yyyy.MM.dd HH:mm"; TODO: deprecated?
-
     /**
      * Constructor for a clean timestamp.
      *

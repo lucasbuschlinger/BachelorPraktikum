@@ -61,10 +61,10 @@ public abstract class VaultExporter extends CSVFileExporter {
         try {
             // query entries
             if (this.getIsPeriodRestricted()) {
-                entries = database.queryVaultEntrysBetween(this.getExportPeriodFrom(),
+                entries = database.queryVaultEntriesBetween(this.getExportPeriodFrom(),
                         this.getExportPeriodTo());
             } else {
-                entries = database.queryAllVaultEntrys();
+                entries = database.queryAllVaultEntries();
             }
 
             return entries;
