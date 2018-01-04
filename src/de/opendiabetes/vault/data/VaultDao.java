@@ -27,6 +27,7 @@ import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.sun.xml.internal.bind.v2.TODO;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryType;
@@ -242,13 +243,13 @@ public final class VaultDao {
      *     <li>{@link VaultEntryType#GLUCOSE_BG}</li>
      *     <li>{@link VaultEntryType#GLUCOSE_CGM}</li>
      *     <li>{@link VaultEntryType#GLUCOSE_CGM_ALERT}</li>
-     *     TODO OTHER TYPES? Let's ask Jens @next meeting
      * </ul>
      *
      * @param from The start of the period to query entries from.
      * @param to The end of the period to query entries from.
      * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
      */
+    //TODO OTHER TYPES? Let's ask Jens @next meeting
     public List<VaultEntry> queryGlucoseBetween(final Date from, final Date to) {
         List<VaultEntry> returnValues = null;
         try {
@@ -278,13 +279,13 @@ public final class VaultDao {
      *     <li>{@link VaultEntryType#EXERCISE_RUN}</li>
      *     <li>{@link VaultEntryType#EXERCISE_WALK}</li>
      *     <li>{@link VaultEntryType#EXERCISE_MANUAL}</li>
-     *     TODO OTHER TYPES? Let's ask Jens @next meeting
      * </ul>
      *
      * @param from The start of the period to query entries from.
      * @param to The end of the period to query entries from.
      * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
      */
+    //TODO OTHER TYPES? Let's ask Jens @next meeting
     public List<VaultEntry> queryExerciseBetween(final Date from, final Date to) {
         List<VaultEntry> returnValues = null;
         try {

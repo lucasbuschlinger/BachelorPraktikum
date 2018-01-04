@@ -121,7 +121,7 @@ public final class TimestampUtils {
      *
      * @param inputDate The date to be converted.
      * @return The local time.
-     * @link https://blog.progs.be/542/date-to-java-time
+     * @see  <a href="https://blog.progs.be/542/date-to-java-time">https://blog.progs.be/542/date-to-java-time</a>
      */
     public static LocalTime dateToLocalTime(final Date inputDate) {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(inputDate.getTime()), ZoneId.systemDefault()).toLocalTime();
