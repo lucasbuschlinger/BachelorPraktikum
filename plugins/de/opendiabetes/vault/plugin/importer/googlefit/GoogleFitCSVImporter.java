@@ -79,8 +79,8 @@ public class GoogleFitCSVImporter extends Plugin {
             long runTime = parseValidator.getRunValue(creader);
             long bikeTime = parseValidator.getBikeValue(creader);
 
-            final int mmPerMeter = 1000;
-            final int msPerMin = 60000;
+            final float mmPerMeter = 1000;
+            final float msPerMin = 60000;
 
             // basic filtering of idle entries
             // --> relevant activity has to be more than 1m

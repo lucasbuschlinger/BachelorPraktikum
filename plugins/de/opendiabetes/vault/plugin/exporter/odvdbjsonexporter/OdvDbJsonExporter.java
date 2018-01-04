@@ -55,7 +55,7 @@ public class OdvDbJsonExporter extends Plugin {
      * Actual implementation of the OdvDbJsonExporter.
      */
     @Extension
-    public class OdvDbJsonExporterImplementation extends FileExporter {
+    public static class OdvDbJsonExporterImplementation extends FileExporter {
 
         /**
          * Prepares data for the export by putting it into exportable containers.
