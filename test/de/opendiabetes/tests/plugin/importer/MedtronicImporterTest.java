@@ -86,7 +86,7 @@ public class MedtronicImporterTest {
      * Test to see whether load configuration returns the correct log.
      */
     @Test
-    public void printLogOnLoadConfiguration() {
+    public void printLogOnLoadConfigurationCSVImporters() {
         Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
 
         //load properties from file
@@ -131,7 +131,13 @@ public class MedtronicImporterTest {
 
     }
 
-/*
+
+    /* to test the delimiter detection you need testdata
+     * that cannot be checked in to github,
+     * also it appears sometimes that you need to delete the lib folder from
+     * the plugin in order to get this working
+     */
+   /*
     @Test
     public void smartDelimiterDetectionTest() {
         Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
