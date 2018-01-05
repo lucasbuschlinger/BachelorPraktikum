@@ -136,13 +136,15 @@ public class MedtronicImporterTest {
 
     }
 
+    /*
     @Test
-    public void smartDelimiterDetectionTest() throws FileNotFoundException {
+    public void smartDelimiterDetectionTest() {
         Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-        String dataPath = "/home/magnus/Downloads/dump-2017-04-01.csv";
+        String dataPath = "/home/magnus/Downloads/CareLink-Export-1486459734778.csv";
         medtronicImporter.setImportFilePath(dataPath);
         medtronicImporter.importData();
-    }
+        return;
+    }*/
 
     //TODO add test for notifyMechanism
 
