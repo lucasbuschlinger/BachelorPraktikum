@@ -77,35 +77,4 @@ public class SonySWR21ImporterTest {
         Assert.assertEquals("path/to/import/file", sonySWR21Importer.getImportFilePath());
     }
 
-    /**
-     * Test to see whether load configuration returns the correct log.
-     */
-    @Test
-    public void printLogOnLoadConfiguration() {
-        Importer sonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
-        Handler handler;
-
-        sonySWR21Importer.LOG.addHandler(new Handler() {
-            String logOut = "";
-            int msgsReceived = 0;
-
-            @Override
-            public void publish(final LogRecord record) {
-                logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: SonySWR21Importer does not support configuration."));
-                msgsReceived++;
-            }
-
-            @Override
-            public void flush() {
-            }
-
-            @Override
-            public void close() throws SecurityException {
-                Assert.assertTrue(msgsReceived > 0);
-            }
-        });
-        Assert.assertFalse(sonySWR21Importer.loadConfiguration(new Properties()));
-        sonySWR21Importer.LOG.getHandlers()[0].close();
-    }
 }

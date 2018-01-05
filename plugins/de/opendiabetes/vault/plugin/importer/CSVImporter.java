@@ -182,7 +182,6 @@ public abstract class CSVImporter extends FileImporter {
 
     /**
      * allows to set the delimiter to use.
-     * allows to set the maximum number of lines to search for a valid header.
      * {@inheritDoc}
      */
     @Override
@@ -196,6 +195,7 @@ public abstract class CSVImporter extends FileImporter {
                 LOG.log(Level.WARNING,
                         "please set the delimiter property if the following format: \n"
                                 + "delimiter = ,\n"
+                                + "where \",\" can be any char you want to use as delimiter\n"
                                 + "or remove the delimiter property to use automatic delimiter detection");
                 return false;
             }

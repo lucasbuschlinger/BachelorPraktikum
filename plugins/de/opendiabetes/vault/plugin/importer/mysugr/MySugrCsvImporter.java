@@ -327,8 +327,7 @@ public class MySugrCsvImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "MySugrCsvImporter does not support configuration");
-            return false;
+            return super.loadConfiguration(configuration);
         }
     }
 }

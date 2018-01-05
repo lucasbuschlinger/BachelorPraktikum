@@ -73,8 +73,7 @@ public class LibreTextImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "LibreTextImporter does not support configuration.");
-            return false;
+            return super.loadConfiguration(configuration);
         }
 
         /**

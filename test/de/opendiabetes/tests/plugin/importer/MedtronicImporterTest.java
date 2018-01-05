@@ -125,18 +125,13 @@ public class MedtronicImporterTest {
         config.setProperty("delimiter", "not a valid delimiter");
         Assert.assertFalse(medtronicImporter.loadConfiguration(config));
 
-        //not providing a value for delimiter
-        config = new Properties();
-        config.setProperty("another property", "value");
-        Assert.assertFalse(medtronicImporter.loadConfiguration(config));
-
 
         config.setProperty("delimiter", "");
         Assert.assertFalse(medtronicImporter.loadConfiguration(config));
 
     }
 
-    /*
+/*
     @Test
     public void smartDelimiterDetectionTest() {
         Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");

@@ -192,8 +192,7 @@ public class SonySWR21Importer extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "SonySWR21Importer does not support configuration.");
-            return false;
+            return super.loadConfiguration(configuration);
         }
     }
 }
