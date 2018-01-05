@@ -63,11 +63,9 @@ public class MySugrCsvImporter extends Plugin {
 
         /**
          * Constructor.
-         *
-         * @param delimiter The delimiter that should be used.
          */
-        public MySugrCsvImporterImplementation(final char delimiter) {
-            super(new MySugrCSVValidator(), delimiter);
+        public MySugrCsvImporterImplementation() {
+            super(new MySugrCSVValidator());
         }
 
         /**

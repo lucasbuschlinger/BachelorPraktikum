@@ -60,7 +60,7 @@ public class GoogleFitCSVImporter extends Plugin {
          * Constructor.
          */
         public GoogleFitCSVImporterImplementation() {
-            super(new GoogleFitCSVValidator(), ',');
+            super(new GoogleFitCSVValidator());
         }
 
 

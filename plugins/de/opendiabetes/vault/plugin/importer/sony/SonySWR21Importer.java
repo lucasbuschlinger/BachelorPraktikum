@@ -60,7 +60,7 @@ public class SonySWR21Importer extends Plugin {
          * Constructor.
          */
         public SonySWR21ImporterImplementation() {
-            super(new SonySWR12Validator(), ',');
+            super(new SonySWR12Validator());
         }
 
         /**

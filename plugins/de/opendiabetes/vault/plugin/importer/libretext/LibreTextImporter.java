@@ -65,7 +65,7 @@ public class LibreTextImporter extends Plugin {
          * Constructor for a CSV validator.
          */
         public LibreTextImporterImplementation() {
-            super(new LibreTextCSVValidator(), '\t');
+            super(new LibreTextCSVValidator());
         }
 
         /**

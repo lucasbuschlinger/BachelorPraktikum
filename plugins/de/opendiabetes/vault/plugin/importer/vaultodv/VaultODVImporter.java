@@ -70,7 +70,7 @@ public class VaultODVImporter extends Plugin {
          *
          */
         public VaultODVImporterImplementation() {
-            super(new VaultCSVValidator(), ',');
+            super(new VaultCSVValidator());
         }
 
         /**

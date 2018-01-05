@@ -124,7 +124,7 @@ public class MedtronicImporter extends Plugin {
          * Constructor.
          */
         public MedtronicImporterImplementation() {
-            super(new MedtronicCSVValidator(), ',');
+            super(new MedtronicCSVValidator());
         }
 
 
@@ -249,43 +249,11 @@ public class MedtronicImporter extends Plugin {
         }
 
         /**
-         * Preprocessing for medtronic data.
-         *
-         * @param filePath Path to the import file.
+         * no preprocessing needed.
+         * {@inheritDoc}
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-            //TODO test for delimiter
-            CsvReader creader = null;
-            try {
-                // test for , delimiter
-                creader = new CsvReader(filePath, ',', Charset.forName("UTF-8"));
-                final int linesToSkip = 15;
-                for (int i = 0; i < linesToSkip; i++) { // just scan the first 15 lines for a valid header
-                    if (creader.readHeaders()) {
-                        if (getValidator().validateHeader(creader.getHeaders())) {
-                            // found valid header --> finish
-                            setDelimiter(',');
-                            creader.close();
-                            LOG.log(Level.FINE, "Use ',' as delimiter for Carelink CSV: {0}", filePath);
-                            return;
-                        }
-                    }
-                }
-                // if you end up here there was no valid header within the range
-                // try the other delimiter in normal operation
-                setDelimiter(';'); //TODO why is this enough to proceed processing?
-                LOG.log(Level.FINE, "Use ';' as delimiter for Carelink CSV: {0}", filePath);
-
-            } catch (IOException ex) {
-                LOG.log(Level.WARNING, "Error while parsing Careling CSV in delimiter check: "
-                        + filePath, ex);
-            } finally {
-                if (creader != null) {
-                    creader.close();
-                }
-            }
-        }
+        protected void preprocessingIfNeeded(final String filePath) { }
 
         /**
          * Parser for medtronic CSV Data.
