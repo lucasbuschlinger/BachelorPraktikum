@@ -1,16 +1,16 @@
 /*
- * Copyright (C) 2017 Jens Heuschkel
- *
+ * Copyright (C) 2017 OpenDiabetes
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -41,24 +41,58 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * The class implements an interface to the database used.
+ * It does so by using the Database Access Objects defined in {@link Dao}.
  *
- * @author mswin
+ * @author Jens Heuschkel
+ * @author Lucas Buschlinger
  */
-public class VaultDao {
+public final class VaultDao {
 
+    /**
+     * Error code indicating that an error occurred.
+     */
     public static final long RESULT_ERROR = -1;
+    /**
+     * The link to the database used.
+     */
     private static final String DATABASE_URL = "jdbc:hsqldb:mem:odvault";
     //private static final String DATABASE_URL = "jdbc:hsqldb:file:./test.db";
+    /**
+     * The {@link Logger} used by this Vault Database Access Object.
+     */
     private static final Logger LOG = Logger.getLogger(VaultDao.class.getName());
+    /**
+     * The instance of the Database Access Object used herein.
+     */
     private static VaultDao INSTANCE = null;
 
+    /**
+     * The {@link ConnectionSource} used herein.
+     */
     private ConnectionSource connectionSource;
+    /**
+     * The Database Access Object ({@link Dao}) for data in the form of {@link VaultEntry} used herein.
+     */
     private Dao<VaultEntry, Long> vaultDao;
+    /**
+     * The Database Access Object ({@link Dao}) for data in the form of {@link RawEntry} used herein.
+     */
     private Dao<RawEntry, Long> rawDao;
 
+    /**
+     * Default constructor for the Vault Database Access Object.
+     * It is declared private as {@link #initializeDb()} has to be used to set up the database access.
+     */
     private VaultDao() {
     }
 
+    /**
+     * Getter for the {@link #INSTANCE} of the database.
+     * If the database has not been initialized by calling {@link #initializeDb()} this will terminate the execution.
+     *
+     * @return The instance of the Vault Database Access Object, provided it has been initialized by {@link #initializeDb()}.
+     */
     public static VaultDao getInstance() {
         if (INSTANCE == null) {
             LOG.severe("Database is not initialized. Call VaultDao.initializeDb first!");
@@ -67,10 +101,20 @@ public class VaultDao {
         return INSTANCE;
     }
 
+    /**
+     * Closes the connection to the database and thus finalizes the Vault Database Access Object {@link #INSTANCE}.
+     *
+     * @throws IOException Thrown if the connection to the database can not be closed.
+     */
     public static void finalizeDb() throws IOException {
         INSTANCE.connectionSource.close();
     }
 
+    /**
+     * Initializes the connection to the database and sets up the Vault Database Access Object {@link #INSTANCE}.
+     *
+     * @throws SQLException Thrown if the database can not be successfully initialized.
+     */
     public static void initializeDb() throws SQLException {
         //TODO combine logging
         System.setProperty(LoggerFactory.LOG_TYPE_SYSTEM_PROPERTY,
@@ -82,11 +126,16 @@ public class VaultDao {
         INSTANCE.initDb();
     }
 
+    /**
+     * Initializes the actual database as a {@link JdbcConnectionSource}.
+     *
+     * @throws SQLException Thrown if the database can not be successfully initialized.
+     */
     private void initDb() throws SQLException {
         // create a connection source to our database
         connectionSource = new JdbcConnectionSource(DATABASE_URL, "sa", "",
                 new HsqldbDatabaseType());
-        // instantiate the DAO 
+        // instantiate the DAO
         vaultDao = DaoManager.createDao(connectionSource, VaultEntry.class);
         if (!vaultDao.isTableExists()) {
             TableUtils.createTableIfNotExists(connectionSource, VaultEntry.class);
@@ -102,31 +151,44 @@ public class VaultDao {
     }
 
     /**
+     * Puts {@link VaultEntry}s into the database.
      *
-     * @param entry
-     * @return id of respective entry or RESULT_ERROR
+     * @param entry The {@link VaultEntry} to be put into the database.
+     * @return The ID of respective entry or {@link #RESULT_ERROR}.
      */
-    public long putEntry(VaultEntry entry) {
+    public long putEntry(final VaultEntry entry) {
         try {
             return vaultDao.createIfNotExists(entry).getId();
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
             return RESULT_ERROR;
         }
     }
 
-    public long putRawEntry(RawEntry entry) {
+    /**
+     * Puts {@link RawEntry}s into the database.
+     *
+     * @param entry The {@link RawEntry} to be put into the database.
+     * @return The ID of the respective entry or {@link #RESULT_ERROR}.
+     */
+    public long putRawEntry(final RawEntry entry) {
         // TODO rethink raw entry tracking
         return 0;
 //        try {
 //            return rawDao.createIfNotExists(entry).getId();
-//        } catch (SQLException ex) {
-//            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), ex);
+//        } catch (SQLException exception) {
+//            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
 //            return RESULT_ERROR;
 //        }
     }
 
-    public boolean removeDublicates() {
+    /**
+     * Searches the database for duplicate entries and removes them accordingly.
+     *
+     * @return True if no duplicate entries were found or all duplicate entries were successfully removed from the database.
+     *          False if a duplicate entry could not be removed.
+     */
+    public boolean removeDuplicates() {
         // DELETE FROM MyTable WHERE RowId NOT IN (SELECT MIN(RowId) FROM MyTable GROUP BY Col1, Col2, Col3);
         // but we need a workaround for the or mapper
         try {
@@ -137,7 +199,7 @@ public class VaultDao {
 
             Date startGenerationTimestamp = null;
             List<VaultEntry> tmpList = new ArrayList<>();
-            List<Long> dublicateId = new ArrayList<>();
+            List<Long> duplicateId = new ArrayList<>();
             while (iterator.hasNext()) {
                 VaultEntry entry = iterator.next();
                 if (startGenerationTimestamp == null) {
@@ -151,29 +213,43 @@ public class VaultDao {
                     tmpList.clear();
                     tmpList.add(entry);
                 } else {
-                    // same timestamp --> check if it is a dublicate
+                    // same timestamp --> check if it is a duplicate
                     for (VaultEntry item : tmpList) {
                         if (item.equals(entry)) {
-                            // dublicate --> delete and move on
-                            dublicateId.add(entry.getId());
+                            // duplicate --> delete and move on
+                            duplicateId.add(entry.getId());
                             break;
                         }
                     }
                 }
             }
 
-            // delete dublicates
-            int lines = vaultDao.deleteIds(dublicateId);
-            LOG.log(Level.INFO, "Removed {0} dublicates", lines);
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+            // delete duplicates
+            int lines = vaultDao.deleteIds(duplicateId);
+            LOG.log(Level.INFO, "Removed {0} duplicates", lines);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
             return false;
         }
 
         return true;
     }
 
-    public List<VaultEntry> queryGlucoseBetween(Date from, Date to) {
+    /**
+     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
+     * The types to be queried for are glucose types:
+     * <ul>
+     *     <li>{@link VaultEntryType#GLUCOSE_BG}</li>
+     *     <li>{@link VaultEntryType#GLUCOSE_CGM}</li>
+     *     <li>{@link VaultEntryType#GLUCOSE_CGM_ALERT}</li>
+     * </ul>
+     *
+     * @param from The start of the period to query entries from.
+     * @param to The end of the period to query entries from.
+     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
+     */
+    //TODO OTHER TYPES? Let's ask Jens @next meeting
+    public List<VaultEntry> queryGlucoseBetween(final Date from, final Date to) {
         List<VaultEntry> returnValues = null;
         try {
             PreparedQuery<VaultEntry> query
@@ -188,13 +264,28 @@ public class VaultDao {
                     .between(VaultEntry.TIMESTAMP_FIELD_NAME, from, to)
                     .prepare();
             returnValues = vaultDao.query(query);
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
         }
         return returnValues;
     }
 
-    public List<VaultEntry> queryExerciseBetween(Date from, Date to) {
+    /**
+     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
+     * The types to be queried for are exercise types:
+     * <ul>
+     *     <li>{@link VaultEntryType#EXERCISE_BICYCLE}</li>
+     *     <li>{@link VaultEntryType#EXERCISE_RUN}</li>
+     *     <li>{@link VaultEntryType#EXERCISE_WALK}</li>
+     *     <li>{@link VaultEntryType#EXERCISE_MANUAL}</li>
+     * </ul>
+     *
+     * @param from The start of the period to query entries from.
+     * @param to The end of the period to query entries from.
+     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
+     */
+    //TODO OTHER TYPES? Let's ask Jens @next meeting
+    public List<VaultEntry> queryExerciseBetween(final Date from, final Date to) {
         List<VaultEntry> returnValues = null;
         try {
             PreparedQuery<VaultEntry> query
@@ -211,13 +302,21 @@ public class VaultDao {
                     .between(VaultEntry.TIMESTAMP_FIELD_NAME, from, to)
                     .prepare();
             returnValues = vaultDao.query(query);
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
         }
         return returnValues;
     }
 
-    public VaultEntry queryLatestEventBefore(Date timestamp, VaultEntryType type) {
+    /**
+     * This is used to query a single Event ({@link VaultEntry} before a given point in time.
+     * This is useful to determine why certain events might have happened (correlation of events).
+     *
+     * @param timestamp The point in time to get the preceding event from.
+     * @param type The Type of {@link VaultEntry} to query for.
+     * @return The event of the {@link VaultEntryType} preceding the specified point in time.
+     */
+    public VaultEntry queryLatestEventBefore(final Date timestamp, final VaultEntryType type) {
         VaultEntry returnValue = null;
         try {
 
@@ -233,13 +332,18 @@ public class VaultDao {
             if (tmpList.size() > 0) {
                 returnValue = tmpList.get(0);
             }
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
         }
         return returnValue;
     }
 
-    public List<VaultEntry> queryAllVaultEntrys() {
+    /**
+     * This is used to query all {@link VaultEntry}s currently store in the database.
+     *
+     * @return The full list of all {@link VaultEntry}s in the database.
+     */
+    public List<VaultEntry> queryAllVaultEntries() {
         List<VaultEntry> returnValues = new ArrayList<>();
         try {
 
@@ -247,35 +351,43 @@ public class VaultDao {
                     = vaultDao.queryBuilder().orderBy("timestamp", true)
                     .prepare();
             returnValues = vaultDao.query(query);
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
         }
         return returnValues;
     }
 
     /**
+     * This is used to retrieve an entry from the database by its identifier.
      *
-     * @param id
-     * @return vault entry with respective id or null
+     * @param id The ID of the {@link VaultEntry} to be retrieved.
+     * @return The {@link VaultEntry} with respective ID or null.
      */
-    public VaultEntry queryVaultEntryById(long id) {
-        List<VaultEntry> returnValues = new ArrayList<>();
+    public VaultEntry queryVaultEntryById(final long id) {
+        List<VaultEntry> returnValues;
         try {
             PreparedQuery<VaultEntry> query
                     = vaultDao.queryBuilder().orderBy("timestamp", true)
-                    .limit(1l)
+                    .limit(1L)
                     .where()
                     .eq(VaultEntry.ID_FIELD_NAME, id)
                     .prepare();
             returnValues = vaultDao.query(query);
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
             return null;
         }
         return returnValues.get(0);
     }
 
-    public List<VaultEntry> queryVaultEntrysBetween(Date from, Date to) {
+    /**
+     * This is used to retrieve all {@link VaultEntry}s from the database which lie in the specified period of time, no matter their type.
+     *
+     * @param from The start of the time period to query entries from.
+     * @param to The end of the time period to query entries from.
+     * @return List of all {@link VaultEntry}s which lie in the specified time period.
+     */
+    public List<VaultEntry> queryVaultEntriesBetween(final Date from, final Date to) {
         List<VaultEntry> returnValues = new ArrayList<>();
         try {
             Date fromTimestamp = TimestampUtils.createCleanTimestamp(from);
@@ -287,13 +399,25 @@ public class VaultDao {
                     .between(VaultEntry.TIMESTAMP_FIELD_NAME, fromTimestamp, toTimestamp)
                     .prepare();
             returnValues = vaultDao.query(query);
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
         }
         return returnValues;
     }
-
-    public List<VaultEntry> queryBasalBetween(Date from, Date to) {
+    /**
+     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
+     * The types to be queried for are basal types:
+     * <ul>
+     *     <li>{@link VaultEntryType#BASAL_MANUAL}</li>
+     *     <li>{@link VaultEntryType#BASAL_PROFILE}</li>
+     *     <li>{@link VaultEntryType#BASAL_INTERPRETER}</li>
+     * </ul>
+     *
+     * @param from The start of the period to query entries from.
+     * @param to The end of the period to query entries from.
+     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
+     */
+    public List<VaultEntry> queryBasalBetween(final Date from, final Date to) {
         List<VaultEntry> returnValues = null;
         try {
             PreparedQuery<VaultEntry> query
@@ -308,18 +432,24 @@ public class VaultDao {
                     .between(VaultEntry.TIMESTAMP_FIELD_NAME, from, to)
                     .prepare();
             returnValues = vaultDao.query(query);
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
         }
         return returnValues;
     }
 
-    public boolean removeEntry(VaultEntry historyEntry) {
+    /**
+     * This is used to remove a specific entry from the database.
+     *
+     * @param historyEntry The {@link VaultEntry} to be removed from the database.
+     * @return True if the entry was removed, false if not.
+     */
+    public boolean removeEntry(final VaultEntry historyEntry) {
         try {
             vaultDao.deleteById(historyEntry.getId());
             LOG.log(Level.INFO, "Removed dntry: {0}", historyEntry.toString());
-        } catch (SQLException ex) {
-            LOG.log(Level.SEVERE, "Error while db query", ex);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
             return false;
         }
 

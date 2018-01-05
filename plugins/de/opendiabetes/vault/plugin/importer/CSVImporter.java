@@ -58,7 +58,8 @@ public abstract class CSVImporter extends FileImporter {
         importedData = new ArrayList<>();
         importedRawData = new ArrayList<>();
         final int maxProgress = 100;
-        //TODO what is this list for if it gets deleted
+        //This list is used as a placeholder for future extensions
+        //TODO suppress FB warning with @SuppressFBWarning
         List<String[]> metaEntries = new ArrayList<>();
 
         this.notifyStatus(0, "Reading Header");
