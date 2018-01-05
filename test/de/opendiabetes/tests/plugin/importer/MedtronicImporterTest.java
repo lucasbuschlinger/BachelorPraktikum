@@ -24,6 +24,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -133,6 +134,14 @@ public class MedtronicImporterTest {
         config.setProperty("delimiter", "");
         Assert.assertFalse(medtronicImporter.loadConfiguration(config));
 
+    }
+
+    @Test
+    public void smartDelimiterDetectionTest() throws FileNotFoundException {
+        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
+        String dataPath = "/home/magnus/Downloads/dump-2017-04-01.csv";
+        medtronicImporter.setImportFilePath(dataPath);
+        medtronicImporter.importData();
     }
 
     //TODO add test for notifyMechanism
