@@ -28,8 +28,6 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -225,27 +223,7 @@ public class MedtronicImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            //check if delimiter is set in configuration
-            if (!configuration.containsKey("delimiter")
-                    || configuration.getProperty("delimiter") == null
-                    || configuration.getProperty("delimiter").length() == 0) {
-                LOG.log(Level.WARNING, "MedtronicImporter configuration does not specify a delimiter to use");
-                return false;
-            }
-
-            char delimiter = configuration.getProperty("delimiter").charAt(0);
-
-            //checking validity of delimiter
-            final String allowedDelimiters = ",;\t";
-            if (allowedDelimiters.indexOf(delimiter) == -1) {
-                LOG.log(Level.WARNING,
-                        "MedtronicImporter does not support delimiter: "
-                                + delimiter + " (" + configuration.getProperty("delimiter") + ")");
-                return false;
-            }
-
-            this.setDelimiter(delimiter);
-            return true;
+            return super.loadConfiguration(configuration);
         }
 
         /**
