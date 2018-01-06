@@ -7,13 +7,12 @@ import java.util.logging.Logger;
 /**
  * Extracts the relevant data from the reader buffer.
  */
-class GetUserNamePasswordDeviceSNFromFileClass {
+public class MetadataExtractor {
 
     /**
      * The reader offset for reading the password.
      */
     private static final int READER_PASSWORD_OFFSET = +9;
-
 
     /**
      * The reader offset for reading the csv path.
@@ -63,7 +62,7 @@ class GetUserNamePasswordDeviceSNFromFileClass {
      * @return a string array containing the data.
      * @throws IOException - thrown if there was an error reading the file.
      */
-     String[] getUsernamePassDevPumpSN(final BufferedReader b, final Logger logger) throws IOException {
+    String[] getUsernamePassDevPumpSN(final BufferedReader b, final Logger logger) throws IOException {
         // TODO Auto-generated method stub
         logger.info("Inside class GetUserNamePasswordDeviceSNFromFileClass");
         while ((readLine = b.readLine()) != null) {

@@ -7,13 +7,10 @@ import java.util.Date;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-
 /**
  * Actual class for crawling the minimed web page.
  */
-public class CrawlerClass {
+public class Crawler {
 
     /**
      * Time until the crawler should try to finish the action before timing out.
@@ -37,11 +34,11 @@ public class CrawlerClass {
      * @param configFilePath - file path to specific crawler configuration.
      */
     public void generateDocument(final Map<String, String> loginCookies,
-                          final String startDate,
-                          final String endDate,
-                          final String userWorkingDirecotry,
-                          final Logger logger,
-                          final String configFilePath) {
+                                 final String startDate,
+                                 final String endDate,
+                                 final String userWorkingDirecotry,
+                                 final Logger logger,
+                                 final String configFilePath) {
 
         logger.info("Inside class CrawlerClass");
         try {
@@ -76,7 +73,5 @@ public class CrawlerClass {
                     "There is an issue Downloading File. Please try checking output path or try again after some time!!");
 
         }
-
     }
-
 }

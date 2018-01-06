@@ -39,9 +39,9 @@ public class CreateConfigFile {
             file = new File(currentRelativePath.toAbsolutePath() + "/config_" + (new Date().getTime()) + ".txt");
             // current location from where program ran
             PrintWriter writer = new PrintWriter(file, "UTF-8");
-            CreateSecurePasswordClass createSecurePassword = new CreateSecurePasswordClass();
+            SecurityHelper securityHelper = new SecurityHelper();
             logger.info("Class CreateConfigFile, creating Hash password");
-            encodedPW = createSecurePassword.createHash(username, password, logger); // In config file Password is saved as hashed
+            encodedPW = securityHelper.createHash(username, password, logger); // In config file Password is saved as hashed
 
             writer.println("#Username for access on http://carelink.minimed.eu");
             writer.println("UserName: " + username);

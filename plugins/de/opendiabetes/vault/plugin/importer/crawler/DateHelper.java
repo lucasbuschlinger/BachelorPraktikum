@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 /**
- * Implementation to check dates.
+ * Checks various date values.
  */
-public class CheckDatesClass {
+public class DateHelper {
 
     /**
      * The date format for the current localisation.
@@ -25,11 +25,6 @@ public class CheckDatesClass {
      * The formatted version of the entered start date.
      */
     private Date formattedEnteredStartDate;
-
-    /**
-     * The formatted version of the entered end date.
-     */
-    private Date formattedEnteredEndDate;
 
     /**
      * A date formation error message.
@@ -48,7 +43,7 @@ public class CheckDatesClass {
      * @throws IllegalArgumentException - thrown if the given argument is null.
      * @throws ParseException - thrown if the date format cannot be parsed.
      */
-    public CheckDatesClass(final String lang) throws IllegalArgumentException, ParseException {
+    public DateHelper(final String lang) throws IllegalArgumentException, ParseException {
 
         if (lang == null) {
             throw new IllegalArgumentException("Language is not allowed to be null");
@@ -85,7 +80,7 @@ public class CheckDatesClass {
      * @return a boolean whether the date has a correct or incorrect format
      * @throws ParseException - thrown if the given date could not be parsed
      */
-    public Boolean getStratDate(final String fromDate, final Logger logger) throws ParseException {
+    public Boolean getStartDate(final String fromDate, final Logger logger) throws ParseException {
 
         logger.info("Inside Class CheckDatesClass, Method getStratDate");
         SimpleDateFormat formatTodayDate = new SimpleDateFormat(dateFormat); // to format today's date as DD/MM/YYYY
@@ -139,6 +134,8 @@ public class CheckDatesClass {
         SimpleDateFormat formatTodayDate = new SimpleDateFormat(dateFormat);
         String todayDate = formatTodayDate.format(new Date());
 
+        Date formattedEnteredEndDate;
+
         // Date StiatcValidStartDate = new SimpleDateFormat(dateFormat).parse("01/01/1998");
         formattedEnteredStartDate = new SimpleDateFormat(dateFormat).parse(startDate);
 
@@ -170,6 +167,4 @@ public class CheckDatesClass {
             return false;
         }
     }
-
-
 }

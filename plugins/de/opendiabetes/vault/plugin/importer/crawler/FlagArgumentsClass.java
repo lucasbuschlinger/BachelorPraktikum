@@ -414,9 +414,9 @@ public class FlagArgumentsClass {
                             if (f.exists()) {
                                 logger.info("config file is availabe");
                                 BufferedReader b = new BufferedReader(new FileReader(f));
-                                GetUserNamePasswordDeviceSNFromFileClass getUdps = new GetUserNamePasswordDeviceSNFromFileClass();
+                                MetadataExtractor extractor = new MetadataExtractor();
 
-                                updsArray = getUdps.getUsernamePassDevPumpSN(b, logger);
+                                updsArray = extractor.getUsernamePassDevPumpSN(b, logger);
 
                                 /*************
                                  *
@@ -436,16 +436,16 @@ public class FlagArgumentsClass {
                                             && !updsArray[1].isEmpty()
 													/*&& UPDSArray[4] != null & !UPDSArray[4].isEmpty()*/) {
                                         logger.info("username and passowrd is not empty");
-                                        SecretKeySpec createSecretKey = CreateSecurePasswordClass
+                                        SecretKeySpec createSecretKey = SecurityHelper
                                                 .createSecretKey(updsArray[0].toCharArray(), salt,
                                                         ITERATION_COUNT, KEY_LENGTH, logger);
-                                        decryptedPassowrd = CreateSecurePasswordClass.decrypt(updsArray[1],
+                                        decryptedPassowrd = SecurityHelper.decrypt(updsArray[1],
                                                 createSecretKey, logger);
                                         LoginDetailsClass loginDetails = new LoginDetailsClass();
                                         if (loginDetails.checkConnection(updsArray[0], decryptedPassowrd,
                                                 logger)) {
                                             logger.info("username and passowrd Enetered are correct");
-                                            String lang = loginDetails.GetLanguage();
+                                            String lang = loginDetails.getLanguage();
                                             if (lang == null) {
                                                 System.out.println(
                                                         "Language of User logged in is not supporetd by Carelink Java program!! \n"
@@ -453,23 +453,20 @@ public class FlagArgumentsClass {
                                                 return;
                                             }
 
-                                            CheckDatesClass checkdates = new CheckDatesClass(lang);
-                                            if (checkdates.getStratDate(fromDate, logger)) {
-
+                                            DateHelper dateHelper = new DateHelper(lang);
+                                            if (dateHelper.getStartDate(fromDate, logger)) {
                                                 logger.info("from date is correct");
 
-                                                if (checkdates.getEndDate(fromDate, toDate, logger)) {
-
+                                                if (dateHelper.getEndDate(fromDate, toDate, logger)) {
                                                     logger.info("End date is correct");
 
-
                                                     if (commandLine.hasOption("o")) {
-                                                        CrawlerClass crawler = new CrawlerClass();
+                                                        Crawler crawler = new Crawler();
                                                         crawler.generateDocument(loginDetails.getcookies(), fromDate,
                                                                 toDate, csvDownloadOutputPath, logger, configFilePath);
                                                     } else {
                                                         String userHomepath = System.getProperty("user.dir");
-                                                        CrawlerClass crawler = new CrawlerClass();
+                                                        Crawler crawler = new Crawler();
                                                         crawler.generateDocument(loginDetails.getcookies(), fromDate,
                                                                 toDate, userHomepath, logger, configFilePath);
                                                     }

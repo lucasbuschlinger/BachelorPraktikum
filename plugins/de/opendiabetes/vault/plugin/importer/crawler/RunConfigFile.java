@@ -80,9 +80,9 @@ public class RunConfigFile {
             if (f.exists()) {
                 logger.info("Inside class RunConfigFile, File exist");
                 BufferedReader b = new BufferedReader(new FileReader(f));
-                GetUserNamePasswordDeviceSNFromFileClass getUPDS = new GetUserNamePasswordDeviceSNFromFileClass();
+                MetadataExtractor extractor = new MetadataExtractor();
                 logger.info("Inside class RunConfigFile, Geeting info from config file");
-                uPDSArray = getUPDS.getUsernamePassDevPumpSN(b, logger);
+                uPDSArray = extractor.getUsernamePassDevPumpSN(b, logger);
                 byte[] salt = new String("12345678").getBytes();
 
                 // Decreasing this speeds down startup time and can be useful
@@ -109,10 +109,10 @@ public class RunConfigFile {
                         // password is decrypted from config file, and hence username and passowrd are checked if available
 
                         logger.info("Inside class RunConfigFile, Username and Password is not empty");
-                        SecretKeySpec createSecretKey = CreateSecurePasswordClass.createSecretKey(username.toCharArray(),
+                        SecretKeySpec createSecretKey = SecurityHelper.createSecretKey(username.toCharArray(),
                                 salt, ITERATION_COUNT, KEY_LENGTH, logger);
 
-                        decryptedPassowrd = CreateSecurePasswordClass.decrypt(password, createSecretKey, logger);
+                        decryptedPassowrd = SecurityHelper.decrypt(password, createSecretKey, logger);
 
                         if (device != null && !device.isEmpty() && pump != null && !pump.isEmpty()
                                 && sn != null && !sn.isEmpty()) {
