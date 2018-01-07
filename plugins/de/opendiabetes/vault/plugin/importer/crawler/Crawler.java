@@ -59,14 +59,13 @@ public class Crawler {
                     .data("datePicker1", endDate) // End date
 					/*.header("X-Requested-With", "XMLHttpRequest")*/.method(Connection.Method.GET).execute();
 
-            String userHome = userWorkingDirecotry;
-            String outputFolder = userHome + File.separator + "careLink-Export";
+            String outputFolder = userWorkingDirecotry + File.separator + "careLink-Export";
 
-            PrintWriter pw1 = new PrintWriter(new File(outputFolder + (new Date().getTime()) + ".csv"));
-            pw1.write(reportDocument.body());
-            pw1.close();
+            PrintWriter printWriter = new PrintWriter(new File(outputFolder + (new Date().getTime()) + ".csv"));
+            printWriter.write(reportDocument.body());
+            printWriter.close();
             System.out.println("Export Sucessfull!");
-            System.out.println("File will be saved to location " + userHome + " with name: " + "\"careLink-Export"
+            System.out.println("File will be saved to location " + userWorkingDirecotry + " with name: " + "\"careLink-Export"
                     + (new Date().getTime()) + ".csv\"");
             logger.info("Export Sucessfull!");
 
