@@ -143,7 +143,7 @@ public class MouseSimulator {
 
                 logger.info("(Inside Method Startmagic) Checking for IEDriver path ");
 
-                String location = SimulateMouseClass.class.getResource("SimulateMouseClass.class").toString();
+                String location = MouseSimulator.class.getResource("SimulateMouseClass.class").toString();
 
                 url = this.getClass().getResource("/IEDriverServer.exe");
                 //System.out.println();
