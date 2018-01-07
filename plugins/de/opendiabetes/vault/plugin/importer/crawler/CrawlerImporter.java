@@ -71,9 +71,9 @@ public class CrawlerImporter extends Plugin {
             logger.setUseParentHandlers(false);
             logger.info("Command Line application started");
             logger.info("Log is saved at location " + System.getProperty("user.home") + "under name CommandLine");
-            FlagArgumentsClass flagArgument = new FlagArgumentsClass();
+            CommandLineArgumentParser cliParser = new CommandLineArgumentParser();
             // this class is called to get all the different arguments and it's values
-            // flagArgument.RunDifferentArguments(args, logger); // This function will run program depending on flag/argument choosen
+            // cliParser.runDifferentArguments(args, logger); // This function will run program depending on flag/argument choosen
         }
 
 

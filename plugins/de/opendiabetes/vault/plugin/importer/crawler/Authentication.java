@@ -4,13 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-
 /**
  * Handles the login detail page.
  */
-public class LoginDetailsClass {
+public class Authentication {
 
     /**
      * Holds the login cookies set by the webpage.

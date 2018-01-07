@@ -1,29 +1,21 @@
 package de.opendiabetes.vault.plugin.importer.crawler;
 
-import java.awt.AWTException;
-import java.io.BufferedReader;
-import java.io.Console;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import org.apache.commons.cli.*;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.awt.*;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Logger;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 
 /**
  * Class to parse argument flags from command line.
  */
-public class FlagArgumentsClass {
+public class CommandLineArgumentParser {
 
     /**
      * An array holding the user data.
@@ -441,11 +433,11 @@ public class FlagArgumentsClass {
                                                         ITERATION_COUNT, KEY_LENGTH, logger);
                                         decryptedPassowrd = SecurityHelper.decrypt(updsArray[1],
                                                 createSecretKey, logger);
-                                        LoginDetailsClass loginDetails = new LoginDetailsClass();
-                                        if (loginDetails.checkConnection(updsArray[0], decryptedPassowrd,
+                                        Authentication auth = new Authentication();
+                                        if (auth.checkConnection(updsArray[0], decryptedPassowrd,
                                                 logger)) {
                                             logger.info("username and passowrd Enetered are correct");
-                                            String lang = loginDetails.getLanguage();
+                                            String lang = auth.getLanguage();
                                             if (lang == null) {
                                                 System.out.println(
                                                         "Language of User logged in is not supporetd by Carelink Java program!! \n"
@@ -462,12 +454,12 @@ public class FlagArgumentsClass {
 
                                                     if (commandLine.hasOption("o")) {
                                                         Crawler crawler = new Crawler();
-                                                        crawler.generateDocument(loginDetails.getcookies(), fromDate,
+                                                        crawler.generateDocument(auth.getcookies(), fromDate,
                                                                 toDate, csvDownloadOutputPath, logger, configFilePath);
                                                     } else {
                                                         String userHomepath = System.getProperty("user.dir");
                                                         Crawler crawler = new Crawler();
-                                                        crawler.generateDocument(loginDetails.getcookies(), fromDate,
+                                                        crawler.generateDocument(auth.getcookies(), fromDate,
                                                                 toDate, userHomepath, logger, configFilePath);
                                                     }
                                                 }
@@ -515,6 +507,5 @@ public class FlagArgumentsClass {
             System.out.println(
                     "Arguments are not in correct combination please try --help or -h for getting correct combination");
         }
-
     }
 }

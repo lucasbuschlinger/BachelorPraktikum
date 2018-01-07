@@ -117,12 +117,12 @@ public class RunConfigFile {
                         if (device != null && !device.isEmpty() && pump != null && !pump.isEmpty()
                                 && sn != null && !sn.isEmpty()) {
 
-                            LoginDetailsClass loginDetails = new LoginDetailsClass();
+                            Authentication auth = new Authentication();
                             logger.info("Inside class RunConfigFile, device and SN number is not empty");
 
-                            if (loginDetails.checkConnection(username, decryptedPassowrd, logger)) {
+                            if (auth.checkConnection(username, decryptedPassowrd, logger)) {
 
-                                String lang = loginDetails.getLanguage();
+                                String lang = auth.getLanguage();
                                 if (lang == null) {
                                     System.out.println(
                                             "Language of User logged in is not supporetd by Carelink Java program!! \n"
