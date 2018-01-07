@@ -48,6 +48,11 @@ public class VaultCSVExporterTest {
             Assert.fail("Initialization of the VaultDao database went wrong.");
         }
         vaultODVExporter.setAdditional(VaultDao.getInstance());
+        try {
+            VaultDao.finalizeDb();
+        } catch (IOException exception) {
+            // Do nothing, uninteresting.
+        }
     }
 
     /**

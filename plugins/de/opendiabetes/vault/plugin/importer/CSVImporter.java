@@ -85,7 +85,8 @@ public abstract class CSVImporter extends FileImporter {
         importedData = new ArrayList<>();
         importedRawData = new ArrayList<>();
         final int maxProgress = 100;
-
+      
+        //This list is used as a placeholder for future extensions
         List<String[]> metaEntries = new ArrayList<>();
 
         this.notifyStatus(0, "Reading Header");
