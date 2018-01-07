@@ -132,10 +132,10 @@ public class MedtronicImporterTest {
     }
 
 
-    /* to test the delimiter detection you need testdata
-     * that cannot be checked in to github,
-     * also it appears sometimes that you need to delete the lib folder from
-     * the plugin in order to get this working
+    /* To test the delimiter detection you need testdata
+     * that can not be checked in to github.
+     * You have to delete the lib folder from
+     * the plugin in order to get this test working.
      */
    /*
     @Test

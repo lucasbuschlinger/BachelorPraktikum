@@ -227,7 +227,7 @@ public class MedtronicImporter extends Plugin {
         }
 
         /**
-         * no preprocessing needed.
+         * No preprocessing needed.
          * {@inheritDoc}
          */
         @Override
