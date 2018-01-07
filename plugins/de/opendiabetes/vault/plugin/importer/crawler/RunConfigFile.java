@@ -130,10 +130,8 @@ public class RunConfigFile {
                                     return;
                                 }
 
-                                SimulateMouseClass sm = new SimulateMouseClass();
-
-                                sm.startMouseClicks(username, decryptedPassowrd, device, pump, sn, logger);
-
+                                MouseSimulator simulator = new MouseSimulator();
+                                simulator.start(username, decryptedPassowrd, device, pump, sn, logger);
                             }
                         } else {
                             logger.info("Inside class RunConfigFile,Empty Device or SN Number, Try changing or runnning Config file again");

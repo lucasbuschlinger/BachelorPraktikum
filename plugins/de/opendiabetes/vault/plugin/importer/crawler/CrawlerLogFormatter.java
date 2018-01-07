@@ -6,7 +6,7 @@ import java.util.logging.LogRecord;
 /**
  * Class for custom log formatting.
  */
-public class MyCustomFormatterForLogger extends Formatter {
+public class CrawlerLogFormatter extends Formatter {
 
     @Override
     public String format(final LogRecord record) {

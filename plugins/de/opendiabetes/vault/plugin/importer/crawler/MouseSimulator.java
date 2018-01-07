@@ -1,8 +1,8 @@
 package de.opendiabetes.vault.plugin.importer.crawler;
 
-import java.awt.AWTException;
-import java.awt.Robot;
+import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +22,7 @@ import java.awt.event.KeyEvent;
 /**
  * Simulates mouse clicks for the crawler.
  */
-class SimulateMouseClass {
+public class MouseSimulator {
 
     /**
      * Length of the minimed serial number.
@@ -48,7 +48,7 @@ class SimulateMouseClass {
      * @throws SecurityException - thrown if the password could not be decrypted
      * @throws IOException - thrown if there was an error reading/writing files
      */
-    void startMouseClicks(final String loginName,
+    void start(final String loginName,
                           final String loginPassword,
                           final String device,
                           final String pump,
@@ -653,5 +653,4 @@ class SimulateMouseClass {
             robot.keyRelease(code);
         }
     }
-
 }

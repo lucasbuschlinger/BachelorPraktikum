@@ -67,7 +67,7 @@ public class CrawlerImporter extends Plugin {
             System.out.println("Log will be saved at location " + pathForLogFile);
             fh = new FileHandler(pathForLogFile + "/CommandLine_" + formats.format(Calendar.getInstance().getTime()) + ".log");
             logger.addHandler(fh);
-            fh.setFormatter(new MyCustomFormatterForLogger());
+            fh.setFormatter(new CrawlerLogFormatter());
             logger.setUseParentHandlers(false);
             logger.info("Command Line application started");
             logger.info("Log is saved at location " + System.getProperty("user.home") + "under name CommandLine");
