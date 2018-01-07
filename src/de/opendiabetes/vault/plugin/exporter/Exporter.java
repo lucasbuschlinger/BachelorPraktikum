@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.data.VaultDao;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
@@ -98,11 +97,13 @@ public interface Exporter extends ExtensionPoint {
 
     /**
      * Setter for an object used by the specific exporters.
-     * The implementation of this should only call a private setter method like {@link VaultExporter#setDatabase(VaultDao)}
+     * The implementation of this should only call a private setter method like
+     * {@link VaultExporter#setDatabase(de.opendiabetes.vault.data.VaultDao)}.
      * in the exporters and pass the object to those.
      *
      * @param object The object to be set.
-     * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a {@link VaultDao} object gets passed
+     * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a
+     *                                     {@link de.opendiabetes.vault.data.VaultDao} object gets passed
      *                                     to a {@link de.opendiabetes.vault.plugin.exporter.slicelayoutcsv.SliceLayoutCSVExporter} which
      *                                     only takes a list of {@link de.opendiabetes.vault.container.SliceEntry}.
      */

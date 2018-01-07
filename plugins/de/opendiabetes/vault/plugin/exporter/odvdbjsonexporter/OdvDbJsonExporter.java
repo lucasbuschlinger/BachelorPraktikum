@@ -19,6 +19,7 @@ package de.opendiabetes.vault.plugin.exporter.odvdbjsonexporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.OdvDbJsonPseudoEntry;
+import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.FileExporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -54,7 +55,7 @@ public class OdvDbJsonExporter extends Plugin {
      * Actual implementation of the OdvDbJsonExporter.
      */
     @Extension
-    public class OdvDbJsonExporterImplementation extends FileExporter {
+    public static class OdvDbJsonExporterImplementation extends FileExporter {
 
         /**
          * Prepares data for the export by putting it into exportable containers.
@@ -71,13 +72,14 @@ public class OdvDbJsonExporter extends Plugin {
 
         /**
          * Setter for an object used by the specific exporters.
-         * The implementation of this should only call a private setter method like {@link VaultExporter#setDatabase(VaultDao)}
+         * The implementation of this should only call a private setter method like
+         * {@link de.opendiabetes.vault.plugin.exporter.VaultExporter#setDatabase(VaultDao)}.
          * in the exporters and pass the object to those.
          *
          * @param object The object to be set.
          * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a {@link VaultDao} object gets passed
-         *                                  to a {@link SliceLayoutCSVExporter} which
-         *                                  only takes a list of {@link SliceEntry}.
+         *                                  to a {@link de.opendiabetes.vault.plugin.exporter.slicelayoutcsv.SliceLayoutCSVExporter} which
+         *                                  only takes a list of {@link de.opendiabetes.vault.container.SliceEntry}.
          */
         @Override
         public void setAdditional(final Object object) throws IllegalArgumentException {

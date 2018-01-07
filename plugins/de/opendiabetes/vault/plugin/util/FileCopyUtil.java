@@ -59,7 +59,9 @@ public final class FileCopyUtil {
      */
     public static void copyDirectory(final File source, final File target) throws IOException {
         if (!target.exists()) {
-            target.mkdir();
+            if (!target.mkdir()){
+                throw new IOException("Target directory could not be made");
+            }
         }
 
         for (String f : source.list()) {
