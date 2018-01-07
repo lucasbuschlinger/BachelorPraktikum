@@ -70,7 +70,7 @@ public class VaultODVImporter extends Plugin {
          *
          */
         public VaultODVImporterImplementation() {
-            super(new VaultCSVValidator(), ',');
+            super(new VaultCSVValidator());
         }
 
         /**
@@ -145,8 +145,7 @@ public class VaultODVImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "VaultODVImporter does not support configuration.");
-            return false;
+            return super.loadConfiguration(configuration);
         }
 
         /**

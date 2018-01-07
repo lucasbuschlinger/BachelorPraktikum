@@ -60,7 +60,7 @@ public class GoogleFitCSVImporter extends Plugin {
          * Constructor.
          */
         public GoogleFitCSVImporterImplementation() {
-            super(new GoogleFitCSVValidator(), ',');
+            super(new GoogleFitCSVValidator());
         }
 
 
@@ -125,8 +125,7 @@ public class GoogleFitCSVImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "GoogleFitCSVImporter does not support configuration.");
-            return false;
+            return super.loadConfiguration(configuration);
         }
     }
 

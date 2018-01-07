@@ -60,7 +60,7 @@ public class SonySWR21Importer extends Plugin {
          * Constructor.
          */
         public SonySWR21ImporterImplementation() {
-            super(new SonySWR12Validator(), ',');
+            super(new SonySWR12Validator());
         }
 
         /**
@@ -192,8 +192,7 @@ public class SonySWR21Importer extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "SonySWR21Importer does not support configuration.");
-            return false;
+            return super.loadConfiguration(configuration);
         }
     }
 }

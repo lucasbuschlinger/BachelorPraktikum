@@ -63,11 +63,9 @@ public class MySugrCsvImporter extends Plugin {
 
         /**
          * Constructor.
-         *
-         * @param delimiter The delimiter that should be used.
          */
-        public MySugrCsvImporterImplementation(final char delimiter) {
-            super(new MySugrCSVValidator(), delimiter);
+        public MySugrCsvImporterImplementation() {
+            super(new MySugrCSVValidator());
         }
 
         /**
@@ -329,8 +327,7 @@ public class MySugrCsvImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "MySugrCsvImporter does not support configuration");
-            return false;
+            return super.loadConfiguration(configuration);
         }
     }
 }
