@@ -1,0 +1,23 @@
+A guide to mount an (existing) Importer/Exporter(-class) to the plugin-system.
+
+1. Build the wrapper class for the plugin, which extends "Plugin", the constructor uses the wrapper from the superclass.
+
+	public class XYImporter extends Plugin {
+		
+		public XYImporter(final PluginWrapper wrapper) {
+			super(wrapper);
+	[...]
+
+	}
+
+2. The actual implementation follows with "@Extension".
+   Herefore, there are already some abstract Importer with methods provided which you can extend from 
+   or you can write a new abstract class, where you extend the interface, as it is, e.g. AbstractImporter.
+   It is important that the interface exists as Extension Point, i.e. extends ExtensionPoint.
+
+	@Extension
+	public static class XYImporterImplementation extends ZImporter {
+	
+	[...]
+
+	}
