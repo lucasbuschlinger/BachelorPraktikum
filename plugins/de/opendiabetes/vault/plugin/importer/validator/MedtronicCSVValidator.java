@@ -70,34 +70,33 @@ public class MedtronicCSVValidator extends CSVValidator {
     };
 
     /**
-     * Field of the German Medtronic CSV headers containing the date.
+     * Field of the English Medtronic CSV headers containing the date.
      */
     public static final String CARELINK_HEADER_EN_DATE = "Date";
     /**
-     * Field of the German Medtronic CSV headers containing the time.
+     * Field of the English Medtronic CSV headers containing the time.
      */
     public static final String CARELINK_HEADER_EN_TIME = "Time";
     /**
-     * Field of the German Medtronic CSV headers containing the timestamp.
+     * Field of the English Medtronic CSV headers containing the timestamp.
      */
     public static final String CARELINK_HEADER_EN_TIMESTAMP = "Timestamp";
     /**
-     * Field of the German Medtronic CSV headers containing the type.
+     * Field of the English Medtronic CSV headers containing the type.
      */
     public static final String CARELINK_HEADER_EN_TYPE = "Raw-Type";
     /**
-     * Field of the German Medtronic CSV headers containing the values.
+     * Field of the English Medtronic CSV headers containing the values.
      */
     public static final String CARELINK_HEADER_EN_VALUE = "Raw-Values";
     /**
-     * Field of the German Medtronic CSV headers containing the sequential number.
+     * Field of the English Medtronic CSV headers containing the sequential number.
      */
     public static final String CARELINK_HEADER_EN_SEQ_NUM = "Raw-Seq Num";
     /**
      * The time format used in Medtronic CSV data.
      */
-    //TODO:
-    public static final String TIME_FORMAT_EN = "dd.MM.yy HH:mm:ss";
+    public static final String TIME_FORMAT_EN = "MM/dd/yy hh:mm a";
 
     /**
      * The composed header used in Medtronic CSV data.
@@ -112,8 +111,7 @@ public class MedtronicCSVValidator extends CSVValidator {
      * Constructor.
      */
     public MedtronicCSVValidator() {
-        //TODO add english header
-        super(CARELINK_HEADER_DE, CARELINK_HEADER_DE);
+        super(CARELINK_HEADER_DE, CARELINK_HEADER_EN);
     }
 
     /**
@@ -129,7 +127,7 @@ public class MedtronicCSVValidator extends CSVValidator {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_VALUE);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(CARELINK_HEADER_EN_VALUE);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -169,7 +167,7 @@ public class MedtronicCSVValidator extends CSVValidator {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_TYPE).trim();
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(CARELINK_HEADER_EN_TYPE).trim();
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -197,12 +195,14 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws UnsupportedOperationException Thrown if English header is selected.
      */
     public Date getTimestamp(final CsvReader creader) throws IOException, ParseException, UnsupportedOperationException {
+        String timeString;
         switch (languageSelection) {
             case DE:
-                String timeString = creader.get(CARELINK_HEADER_DE_TIMESTAMP).trim();
+                timeString = creader.get(CARELINK_HEADER_DE_TIMESTAMP).trim();
                 return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_DE);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                timeString = creader.get(CARELINK_HEADER_EN_TIMESTAMP).trim();
+                return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -220,14 +220,17 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws UnsupportedOperationException Thrown if English header is selected.
      */
     public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException, UnsupportedOperationException {
+        String date;
+        String time;
         switch (languageSelection) {
             case DE:
-                String timeString1 = creader.get(CARELINK_HEADER_DE_DATE).trim();
-                String timeString2 = creader.get(CARELINK_HEADER_DE_TIME).trim();
-                return TimestampUtils.createCleanTimestamp(
-                        timeString1 + " " + timeString2, TIME_FORMAT_DE);
+                date = creader.get(CARELINK_HEADER_DE_DATE).trim();
+                time = creader.get(CARELINK_HEADER_DE_TIME).trim();
+                return TimestampUtils.createCleanTimestamp(date + " " + time, TIME_FORMAT_DE);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                date = creader.get(CARELINK_HEADER_EN_DATE).trim();
+                time = creader.get(CARELINK_HEADER_EN_TIME).trim();
+                return TimestampUtils.createCleanTimestamp(date + " " + time, TIME_FORMAT_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
