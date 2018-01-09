@@ -70,6 +70,45 @@ public class MedtronicCSVValidator extends CSVValidator {
     };
 
     /**
+     * Field of the German Medtronic CSV headers containing the date.
+     */
+    public static final String CARELINK_HEADER_EN_DATE = "Date";
+    /**
+     * Field of the German Medtronic CSV headers containing the time.
+     */
+    public static final String CARELINK_HEADER_EN_TIME = "Time";
+    /**
+     * Field of the German Medtronic CSV headers containing the timestamp.
+     */
+    public static final String CARELINK_HEADER_EN_TIMESTAMP = "Timestamp";
+    /**
+     * Field of the German Medtronic CSV headers containing the type.
+     */
+    public static final String CARELINK_HEADER_EN_TYPE = "Raw-Type";
+    /**
+     * Field of the German Medtronic CSV headers containing the values.
+     */
+    public static final String CARELINK_HEADER_EN_VALUE = "Raw-Values";
+    /**
+     * Field of the German Medtronic CSV headers containing the sequential number.
+     */
+    public static final String CARELINK_HEADER_EN_SEQ_NUM = "Raw-Seq Num";
+    /**
+     * The time format used in Medtronic CSV data.
+     */
+    //TODO:
+    public static final String TIME_FORMAT_EN = "dd.MM.yy HH:mm:ss";
+
+    /**
+     * The composed header used in Medtronic CSV data.
+     */
+    public static final String[] CARELINK_HEADER_EN = {
+            CARELINK_HEADER_EN_DATE, CARELINK_HEADER_EN_TIME,
+            CARELINK_HEADER_EN_TIMESTAMP, CARELINK_HEADER_EN_TYPE,
+            CARELINK_HEADER_EN_VALUE
+    };
+
+    /**
      * Constructor.
      */
     public MedtronicCSVValidator() {
@@ -110,7 +149,7 @@ public class MedtronicCSVValidator extends CSVValidator {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_SEQ_NUM);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(CARELINK_HEADER_EN_SEQ_NUM);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
