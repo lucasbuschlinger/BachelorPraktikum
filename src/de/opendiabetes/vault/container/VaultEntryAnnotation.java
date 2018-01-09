@@ -97,15 +97,19 @@ public class VaultEntryAnnotation implements Serializable {
 
     /**
      * Converting VaultEntries to string.
+     *
      * @return the VaultEntry as string.
-     * TODO.
      */
     @Override
     public String toString() {
-        return type.toString();
+        return "VaultEntryAnnotation{" +
+                "valuePattern=" + valuePattern +
+                ", type=" + type +
+                ", value='" + value + '\'' +
+                '}';
     }
 
-    // TODO reimplement with pattern matching
+    // TO DO reimplement with pattern matching, if needed to do
 //    /**
 //     *
 //     * @param annotationString representing VaultEntryAnnotation as string
@@ -133,7 +137,7 @@ public class VaultEntryAnnotation implements Serializable {
      * @return The VaultEntry as string.
      */
     public String toStringWithValue() {
-        return value.isEmpty() ? this.toString() : this.toString() + "=" + value;
+        return value.isEmpty() ? this.getType().toString() : this.getType().toString() + "=" + value;
     }
 
     /**

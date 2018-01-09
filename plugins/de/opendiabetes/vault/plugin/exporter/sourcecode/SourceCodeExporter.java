@@ -101,7 +101,7 @@ public class SourceCodeExporter extends Plugin {
                 sb.append("tmpAnnotations = new ArrayList<>();\n");
                 for (VaultEntryAnnotation annotation : data.getAnnotations()) {
                     sb.append("tmpAnnotations.add(new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.");
-                    sb.append(annotation.toString());
+                    sb.append(annotation.getType().toString());
                     if (!annotation.getValue().isEmpty()) {
                         sb.append(").setValue(\"");
                         sb.append(annotation.getValue());
