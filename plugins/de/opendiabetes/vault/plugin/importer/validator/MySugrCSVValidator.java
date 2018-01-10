@@ -197,7 +197,7 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * German header entries.
      */
-    public static final String[] HEADER_DE = {
+    private static final String[] HEADER_DE = {
             MY_SUGR_HEADER_DE_DATE, MY_SUGR_HEADER_DE_TIME, MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL,
             MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT, MY_SUGR_HEADER_DE_MEAL_MANUAL,
             MY_SUGR_HEADER_DE_BASAL_INJECTION_UNITS,
@@ -206,7 +206,7 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * English header entries.
      */
-    public static final String[] HEADER_EN = {
+    private static final String[] HEADER_EN = {
             MY_SUGR_HEADER_EN_DATE, MY_SUGR_HEADER_EN_TIME, MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_MEAL,
             MY_SUGR_HEADER_EN_BLOOD_GLUCOSE_MEASUREMENT, MY_SUGR_HEADER_EN_MEAL_MANUAL,
             MY_SUGR_HEADER_EN_BASAL_INJECTION_UNITS,

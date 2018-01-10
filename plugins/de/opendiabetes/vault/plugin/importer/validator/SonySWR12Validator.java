@@ -33,28 +33,28 @@ public class SonySWR12Validator extends CSVValidator {
     /**
      * Field of the Sony SWR 21 CSV headers containing the activity type.
      */
-    public static final String HEADER_TYPE = "activity_type";
+    private static final String HEADER_TYPE = "activity_type";
     /**
      * Field of the Sony SWR 21 CSV headers containing the activity data.
      */
-    public static final String HEADER_VALUE = "activity_data";
+    private static final String HEADER_VALUE = "activity_data";
     /**
      * Field of the Sony SWR 21 CSV headers containing the time the activity started.
      */
-    public static final String HEADER_START_TIME = "start_time";
+    private static final String HEADER_START_TIME = "start_time";
     /**
      * Field of the Sony SWR 21 CSV headers containing the time the activity ended.
      */
-    public static final String HEADER_END_TIME = "end_time";
+    private static final String HEADER_END_TIME = "end_time";
     /**
      * The time format used in Sony SWR21 CSV data.
      */
-    public static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * The composed header used in Sony SWR21 CSV data.
      */
-    public static final String[] HEADER = {
+    private static final String[] HEADER = {
             HEADER_START_TIME, HEADER_END_TIME,
             HEADER_TYPE,
             HEADER_VALUE
