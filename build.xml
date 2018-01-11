@@ -125,30 +125,6 @@
     </path>
 
     <!-- Global Libraries -->
-    <!--TODO: necessary?-->
-    <path id="library.groovy-1.8.6.classpath">
-        <pathelement location="/usr/share/groovy/lib/ant-junit.jar"/>
-        <pathelement location="/usr/share/groovy/lib/ant-launcher.jar"/>
-        <pathelement location="/usr/share/groovy/lib/ant.jar"/>
-        <pathelement location="/usr/share/groovy/lib/antlr.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3-analysis.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3-tree.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3-util.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3.jar"/>
-        <pathelement location="/usr/share/groovy/lib/bsf.jar"/>
-        <pathelement location="/usr/share/groovy/lib/commons-cli.jar"/>
-        <pathelement location="/usr/share/groovy/lib/commons-logging.jar"/>
-        <pathelement location="/usr/share/groovy/lib/groovy-1.8.6.jar"/>
-        <pathelement location="/usr/share/groovy/lib/ivy.jar"/>
-        <pathelement location="/usr/share/groovy/lib/jansi.jar"/>
-        <pathelement location="/usr/share/groovy/lib/jline.jar"/>
-        <pathelement location="/usr/share/groovy/lib/jsp-api.jar"/>
-        <pathelement location="/usr/share/groovy/lib/junit4.jar"/>
-        <pathelement location="/usr/share/groovy/lib/mockobjects-core.jar"/>
-        <pathelement location="/usr/share/groovy/lib/regexp.jar"/>
-        <pathelement location="/usr/share/groovy/lib/servlet-api.jar"/>
-        <pathelement location="/usr/share/groovy/lib/xstream.jar"/>
-    </path>
     <!-- Register Custom Compiler Taskdefs -->
     <property name="javac2.home" value="${idea.home}/lib"/>
     <path id="javac2.classpath">
@@ -184,7 +160,6 @@
     </path>
     <path id="opendiabetes.module.production.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
         <path refid="library.log4j2"/>
@@ -194,7 +169,6 @@
     </path>
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
         <path refid="library.log4j2"/>
@@ -205,7 +179,6 @@
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
         <path refid="library.log4j2"/>
@@ -216,7 +189,6 @@
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
         <path refid="library.log4j2"/>
