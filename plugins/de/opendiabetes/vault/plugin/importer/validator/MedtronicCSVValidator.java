@@ -28,42 +28,43 @@ import java.util.logging.Logger;
  * Validator for Medtronic data.
  *
  * @author Jens Heuschkel
+ * @author Lucas Buschlinger
  */
 public class MedtronicCSVValidator extends CSVValidator {
 
     /**
      * Field of the German Medtronic CSV headers containing the date.
      */
-    public static final String CARELINK_HEADER_DE_DATE = "Datum";
+    private static final String CARELINK_HEADER_DE_DATE = "Datum";
     /**
      * Field of the German Medtronic CSV headers containing the time.
      */
-    public static final String CARELINK_HEADER_DE_TIME = "Zeit";
+    private static final String CARELINK_HEADER_DE_TIME = "Zeit";
     /**
      * Field of the German Medtronic CSV headers containing the timestamp.
      */
-    public static final String CARELINK_HEADER_DE_TIMESTAMP = "Zeitstempel";
+    private static final String CARELINK_HEADER_DE_TIMESTAMP = "Zeitstempel";
     /**
      * Field of the German Medtronic CSV headers containing the type.
      */
-    public static final String CARELINK_HEADER_DE_TYPE = "Roh-Typ";
+    private static final String CARELINK_HEADER_DE_TYPE = "Roh-Typ";
     /**
      * Field of the German Medtronic CSV headers containing the values.
      */
-    public static final String CARELINK_HEADER_DE_VALUE = "Roh-Werte";
+    private static final String CARELINK_HEADER_DE_VALUE = "Roh-Werte";
     /**
      * Field of the German Medtronic CSV headers containing the sequential number.
      */
-    public static final String CARELINK_HEADER_DE_SEQ_NUM = "Roh-Seq Num";
+    private static final String CARELINK_HEADER_DE_SEQ_NUM = "Roh-Seq Num";
     /**
      * The time format used in Medtronic CSV data.
      */
-    public static final String TIME_FORMAT_DE = "dd.MM.yy HH:mm:ss";
+    private static final String TIME_FORMAT_DE = "dd.MM.yy HH:mm:ss";
 
     /**
      * The composed header used in Medtronic CSV data.
      */
-    public static final String[] CARELINK_HEADER_DE = {
+    private static final String[] CARELINK_HEADER_DE = {
             CARELINK_HEADER_DE_DATE, CARELINK_HEADER_DE_TIME,
             CARELINK_HEADER_DE_TIMESTAMP, CARELINK_HEADER_DE_TYPE,
             CARELINK_HEADER_DE_VALUE
@@ -72,36 +73,36 @@ public class MedtronicCSVValidator extends CSVValidator {
     /**
      * Field of the English Medtronic CSV headers containing the date.
      */
-    public static final String CARELINK_HEADER_EN_DATE = "Date";
+    private static final String CARELINK_HEADER_EN_DATE = "Date";
     /**
      * Field of the English Medtronic CSV headers containing the time.
      */
-    public static final String CARELINK_HEADER_EN_TIME = "Time";
+    private static final String CARELINK_HEADER_EN_TIME = "Time";
     /**
      * Field of the English Medtronic CSV headers containing the timestamp.
      */
-    public static final String CARELINK_HEADER_EN_TIMESTAMP = "Timestamp";
+    private static final String CARELINK_HEADER_EN_TIMESTAMP = "Timestamp";
     /**
      * Field of the English Medtronic CSV headers containing the type.
      */
-    public static final String CARELINK_HEADER_EN_TYPE = "Raw-Type";
+    private static final String CARELINK_HEADER_EN_TYPE = "Raw-Type";
     /**
      * Field of the English Medtronic CSV headers containing the values.
      */
-    public static final String CARELINK_HEADER_EN_VALUE = "Raw-Values";
+    private static final String CARELINK_HEADER_EN_VALUE = "Raw-Values";
     /**
      * Field of the English Medtronic CSV headers containing the sequential number.
      */
-    public static final String CARELINK_HEADER_EN_SEQ_NUM = "Raw-Seq Num";
+    private static final String CARELINK_HEADER_EN_SEQ_NUM = "Raw-Seq Num";
     /**
      * The time format used in Medtronic CSV data.
      */
-    public static final String TIME_FORMAT_EN = "MM/dd/yy hh:mm a";
+    private static final String TIME_FORMAT_EN = "MM/dd/yy hh:mm a";
 
     /**
      * The composed header used in Medtronic CSV data.
      */
-    public static final String[] CARELINK_HEADER_EN = {
+    private static final String[] CARELINK_HEADER_EN = {
             CARELINK_HEADER_EN_DATE, CARELINK_HEADER_EN_TIME,
             CARELINK_HEADER_EN_TIMESTAMP, CARELINK_HEADER_EN_TYPE,
             CARELINK_HEADER_EN_VALUE
@@ -122,7 +123,7 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws IOException Thrown when reading the data goes wrong.
      * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public String getRawValues(final CsvReader creader) throws IOException, UnsupportedOperationException {
+    public String getRawValues(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_VALUE);
@@ -142,7 +143,7 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws IOException Thrown when reading the data goes wrong.
      * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public String getRawSeqNum(final CsvReader creader) throws IOException, UnsupportedOperationException {
+    public String getRawSeqNum(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_SEQ_NUM);
@@ -162,7 +163,7 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws IOException Thrown when reading the data goes wrong.
      * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public String getCarelinkTypeString(final CsvReader creader) throws IOException, UnsupportedOperationException {
+    public String getCarelinkTypeString(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_TYPE).trim();
@@ -194,7 +195,7 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
      * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public Date getTimestamp(final CsvReader creader) throws IOException, ParseException, UnsupportedOperationException {
+    public Date getTimestamp(final CsvReader creader) throws IOException, ParseException {
         String timeString;
         switch (languageSelection) {
             case DE:
@@ -219,7 +220,7 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
      * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException, UnsupportedOperationException {
+    public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException {
         String date;
         String time;
         switch (languageSelection) {
