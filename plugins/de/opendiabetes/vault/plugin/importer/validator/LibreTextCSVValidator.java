@@ -64,7 +64,6 @@ public class LibreTextCSVValidator extends CSVValidator {
             TIME_FORMAT_LIBRE_DE
     };
 
-    //TODO English header?
 
     /**
      * Constructor for a LibreTextCSV validator.

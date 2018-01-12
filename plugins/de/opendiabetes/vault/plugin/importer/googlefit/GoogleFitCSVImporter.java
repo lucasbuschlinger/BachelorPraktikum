@@ -63,9 +63,13 @@ public class GoogleFitCSVImporter extends Plugin {
             super(new GoogleFitCSVValidator());
         }
 
-
+        /**
+         * Unimplemented preprocessing method as no preprocessing is necessary for GoogleFit CSV data.
+         *
+         * @param filePath Path to the file that would be preprocessed.
+         */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) { /*not needed yet*/ }
+        protected void preprocessingIfNeeded(final String filePath) { }
 
         /**
          * {@inheritDoc}

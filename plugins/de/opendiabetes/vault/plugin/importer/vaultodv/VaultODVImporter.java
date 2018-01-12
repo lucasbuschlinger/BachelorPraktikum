@@ -161,12 +161,12 @@ public class VaultODVImporter extends Plugin {
         }
 
         /**
-         * {@inheritDoc}
+         * Unimplemented preprocessing method as no preprocessing is necessary for VaultODV CSV data.
+         *
+         * @param filePath Path to the file that would be preprocessed.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-            //not needed
-        }
+        protected void preprocessingIfNeeded(final String filePath) { }
     }
 
 

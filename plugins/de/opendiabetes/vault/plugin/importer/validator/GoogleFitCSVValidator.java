@@ -67,7 +67,7 @@ public class GoogleFitCSVValidator extends CSVValidator {
     private static final String[] HEADER_DE = {
             HEADER_START_TIME_DE, HEADER_END_TIME_DE,
             // files without this values doesn't contain this headers ... --> json ?
-            //        HEADER_BIKE_VALUE_DE, //todo why uncommented?
+            //        HEADER_BIKE_VALUE_DE, //todo why commented?
             //        HEADER_WALK_VALUE_DE,
             //        HEADER_RUN_VALUE_DE,
             HEADER_MAX_SPEED_VALUE_DE
@@ -76,7 +76,6 @@ public class GoogleFitCSVValidator extends CSVValidator {
     /**
      * The composed English header used in Google fit CSV data.
      */
-    // TODO add english header
     private static final String[] HEADER_EN = {
             HEADER_START_TIME_DE, HEADER_END_TIME_DE,
             HEADER_BIKE_VALUE_DE,
@@ -99,7 +98,6 @@ public class GoogleFitCSVValidator extends CSVValidator {
      * @return The biking value.
      * @throws IOException Thrown when reading the data goes wrong.
      */
-    // TODO add language selection
     public long getBikeValue(final CsvReader creader) throws IOException {
         String tmpValue = creader.get(HEADER_BIKE_VALUE_DE);
         if (tmpValue != null && !tmpValue.isEmpty()) {

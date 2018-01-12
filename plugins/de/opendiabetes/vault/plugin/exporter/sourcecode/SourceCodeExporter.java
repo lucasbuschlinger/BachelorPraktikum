@@ -161,7 +161,7 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
-            //TODO what does this part from line 164-173 do?
+            //TODO
             final List<String> entries = new ArrayList<>(); //super dirty hack, since I am to lazy to update the architecture at the moment
             List<VaultEntry> tmpValues = queryData();
             if (tmpValues == null || tmpValues.isEmpty()) {

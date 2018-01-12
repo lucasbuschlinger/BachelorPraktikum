@@ -286,41 +286,12 @@ public class MySugrCsvImporter extends Plugin {
         }
 
         /**
-         * This method finds a valid header in the CSV file if it exists.
+         *Unimplemented preprocessing method as no preprocessing is necessary for MySugr CSV data.
          *
          * @param filePath The file path of the file to pre process.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-            // test for delimiter
-            CsvReader creader = null;
-            MySugrCSVValidator validator = (MySugrCSVValidator) getValidator();
-            try {
-                // test for , delimiter
-                creader = new CsvReader(filePath, ',', Charset.forName("UTF-8"));
-                for (int i = 0; i < MAX_HEADER_LINES_SCAN; i++) { // just scan the first 15 lines for a valid header
-                    if (creader.readHeaders()) {
-                        if (validator.validateHeader(creader.getHeaders())) {
-                            // found valid header --> finish
-                            setDelimiter(',');
-                            creader.close();
-                            LOG.log(Level.FINE, "Use ',' as delimiter for MySugr CSV: {0}", filePath);
-                            return;
-                        }
-                    }
-                }
-                // if you end up here there was no valid header within the range
-                // try the other delimiter in normal operation
-                setDelimiter(';');
-                LOG.log(Level.FINE, "Use ';' as delimiter for MySugr CSV: {0}", filePath);
-            } catch (IOException ex) {
-                LOG.log(Level.WARNING, "Error while parsing MySugr CSV in delimiter check: " + filePath, ex);
-            } finally {
-                if (creader != null) {
-                    creader.close();
-                }
-            }
-        }
+        protected void preprocessingIfNeeded(final String filePath) { }
 
         /**
          *{@inheritDoc}

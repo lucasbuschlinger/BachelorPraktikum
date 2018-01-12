@@ -128,7 +128,6 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Method to extract double entries from the import file.
-         * //TODO add an example
          *
          * @param timestamp The timestamp when the entry was generated.
          * @param type      The of the entry.
@@ -227,8 +226,9 @@ public class MedtronicImporter extends Plugin {
         }
 
         /**
-         * No preprocessing needed.
-         * {@inheritDoc}
+         * Unimplemented preprocessing method as no preprocessing is necessary for Medtronic data.
+         *
+         * @param filePath Path to the file that would be preprocessed.
          */
         @Override
         protected void preprocessingIfNeeded(final String filePath) { }

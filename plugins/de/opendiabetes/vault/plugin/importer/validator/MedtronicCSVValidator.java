@@ -73,7 +73,6 @@ public class MedtronicCSVValidator extends CSVValidator {
      * Constructor.
      */
     public MedtronicCSVValidator() {
-        //TODO add english header
         super(CARELINK_HEADER_DE, CARELINK_HEADER_DE);
     }
 

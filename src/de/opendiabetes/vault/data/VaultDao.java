@@ -172,7 +172,7 @@ public final class VaultDao {
 //     * @return The ID of the respective entry or {@link #RESULT_ERROR}.
 //     */
 //    public long putRawEntry(final RawEntry entry) {
-//        // TODO rethink raw entry tracking
+//        // TO DO rethink raw entry tracking
 //        return 0;
 ////        try {
 ////            return rawDao.createIfNotExists(entry).getId();
@@ -248,7 +248,7 @@ public final class VaultDao {
 //     * @param to The end of the period to query entries from.
 //     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
 //     */
-//    //TODO OTHER TYPES? Let's ask Jens @next meeting
+//    //TO DO OTHER TYPES? Let's ask Jens @next meeting
 //    public List<VaultEntry> queryGlucoseBetween(final Date from, final Date to) {
 //        List<VaultEntry> returnValues = null;
 //        try {
@@ -284,7 +284,7 @@ public final class VaultDao {
 //     * @param to The end of the period to query entries from.
 //     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
 //     */
-//    //TODO OTHER TYPES? Let's ask Jens @next meeting
+//    //TO DO OTHER TYPES? Let's ask Jens @next meeting
 //    public List<VaultEntry> queryExerciseBetween(final Date from, final Date to) {
 //        List<VaultEntry> returnValues = null;
 //        try {

@@ -82,8 +82,4 @@ public class GoogleFitCSVImporterTest {
         Assert.assertEquals("path/to/import/file", googleFitCSVImporter.getImportFilePath());
     }
 
-
-
-    //TODO add test for notifyMechanism
-
 }
