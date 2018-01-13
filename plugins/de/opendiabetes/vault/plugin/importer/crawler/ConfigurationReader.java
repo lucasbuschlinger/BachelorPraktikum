@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 /**
  * Extracts the relevant data from the reader buffer.
  */
-public class MetadataExtractor {
+class ConfigurationReader {
 
     /**
      * The reader offset for reading the password.
@@ -20,51 +20,22 @@ public class MetadataExtractor {
     private static final int READER_PATH_TO_CSV_OFFSET = 17;
 
     /**
-     * The current reading line of the reader.
-     */
-    private String readLine = "";
-
-    /**
-     * Username extracted from the reader.
-     */
-    private String userName = null;
-
-    /**
-     * Password extracted from the reader.
-     */
-    private String password = null;
-
-    /**
-     * Device extracted from the reader.
-     */
-    private String device = null;
-
-    /**
-     * Pump extracted from the reader.
-     */
-    private String pump = null;
-
-    /**
-     * SN extracted from the reader.
-     */
-    private String sn = null;
-
-    /**
-     * The path to the csv file extracted from the reader.
-     */
-    private String pathForCsv = null;
-
-    /**
      * Extracts the username, password, device, pump and SN from the reader.
      *
      * @param b - a BufferedReader instance reading the csv file.
      * @param logger - a logger instance.
-     * @return a string array containing the data.
+     * @return a configuration object
      * @throws IOException - thrown if there was an error reading the file.
      */
-    String[] getUsernamePassDevPumpSN(final BufferedReader b, final Logger logger) throws IOException {
-        // TODO Auto-generated method stub
+    Configuration read(final BufferedReader b, final Logger logger) throws IOException {
         logger.info("Inside class GetUserNamePasswordDeviceSNFromFileClass");
+        String readLine = "";
+        String userName = null;
+        String password = null;
+        String device = null;
+        String pump = null;
+        String serialNumber = null;
+        String csvPath = null;
         while ((readLine = b.readLine()) != null) {
 
             if (readLine.toLowerCase().contains("username:")) {
@@ -123,28 +94,28 @@ public class MetadataExtractor {
 
             if (readLine.toLowerCase()
                     .contains("sn:") /* && readLine.contains("#") */) {
-                sn = readLine.substring(readLine.lastIndexOf(":") + 1);
-                String tempSNString = sn.replaceAll("\t", "");
+                serialNumber = readLine.substring(readLine.lastIndexOf(":") + 1);
+                String tempSNString = serialNumber.replaceAll("\t", "");
                 tempSNString = tempSNString.replaceAll("\\s", "");
 
                 if (tempSNString.indexOf("#") > 0) {
                     tempSNString = tempSNString.substring(0, tempSNString.indexOf("#"));
                 }
 
-                sn = tempSNString.replaceAll("\\s+$", "");
+                serialNumber = tempSNString.replaceAll("\\s+$", "");
                 logger.info("Inside class GetUserNamePasswordDeviceSNFromFileClass, Get SN from command line input");
             }
             if (readLine.toLowerCase().contains("path to save csv:")) {
-                pathForCsv = readLine.substring(READER_PATH_TO_CSV_OFFSET);
-                String tempPathForCsvString = pathForCsv.replaceAll("\t", "");
+                csvPath = readLine.substring(READER_PATH_TO_CSV_OFFSET);
+                String tempPathForCsvString = csvPath.replaceAll("\t", "");
                 tempPathForCsvString = tempPathForCsvString.replaceAll("\\s", "");
 
-                pathForCsv = tempPathForCsvString;
+                csvPath = tempPathForCsvString;
                 logger.info(
                         "Inside class GetUserNamePasswordDeviceSNFromFileClass, Get pathForCsv from command line input");
             }
 
         }
-        return new String[]{userName, password, device, pump, sn, pathForCsv};
+        return new Configuration(userName, password, device, pump, serialNumber, csvPath);
     }
 }

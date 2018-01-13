@@ -373,9 +373,9 @@ public class CommandLineArgumentParser {
 
                 logger.info("config file is availabe");
                 BufferedReader b = new BufferedReader(new FileReader(f));
-                MetadataExtractor extractor = new MetadataExtractor();
+                ConfigurationReader configurationReader = new ConfigurationReader();
 
-                String[] metadata = extractor.getUsernamePassDevPumpSN(b, logger);
+                Configuration configuration = configurationReader.read(b, logger);
 
                 /*************
                  *
@@ -390,10 +390,10 @@ public class CommandLineArgumentParser {
 
                 byte[] salt = new String("12345678").getBytes();
 
-                if (metadata[0] == null
-                        || metadata[0].isEmpty()
-                        || metadata[1] == null
-                        || metadata[1].isEmpty()
+                if (configuration.getUsername() == null
+                        || configuration.getUsername().isEmpty()
+                        || configuration.getPassword() == null
+                        || configuration.getPassword().isEmpty()
                                 /*|| metadata[4] == null & metadata[4].isEmpty()*/) {
                     logger.info("username and passowrd is empty");
                     return;
@@ -401,12 +401,12 @@ public class CommandLineArgumentParser {
 
                 logger.info("username and passowrd is not empty");
                 SecretKeySpec createSecretKey = SecurityHelper
-                        .createSecretKey(metadata[0].toCharArray(), salt,
+                        .createSecretKey(configuration.getUsername().toCharArray(), salt,
                                 ITERATION_COUNT, KEY_LENGTH, logger);
-                String decryptedPassword = SecurityHelper.decrypt(metadata[1],
+                String decryptedPassword = SecurityHelper.decrypt(configuration.getPassword(),
                         createSecretKey, logger);
                 Authentication auth = new Authentication();
-                if (!auth.checkConnection(metadata[0], decryptedPassword, logger)) {
+                if (!auth.checkConnection(configuration.getUsername(), decryptedPassword, logger)) {
                     logger.info("username and passowrd entered are incorrect");
                     return;
                 }
