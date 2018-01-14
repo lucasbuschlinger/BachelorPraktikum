@@ -1,7 +1,7 @@
-package de.opendiabetes.vault.plugin.importer.crawler;
+package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 /**
- * Model to hold the configuration for the crawler.
+ * Model to hold the configuration for the medtroniccrawler.
  */
 public class Configuration {
 

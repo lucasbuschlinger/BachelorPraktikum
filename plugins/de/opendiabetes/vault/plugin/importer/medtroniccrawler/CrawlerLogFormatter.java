@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.importer.crawler;
+package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
@@ -8,6 +8,9 @@ import java.util.logging.LogRecord;
  */
 public class CrawlerLogFormatter extends Formatter {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String format(final LogRecord record) {
         StringBuffer sb = new StringBuffer();

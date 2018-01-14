@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.importer.crawler;
+package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
@@ -32,33 +32,31 @@ import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 
 /**
- * Wrapper class for the CrawlerImporter plugin.
- *
- * @author Magnus Gärtner
+ * Wrapper class for the MedtronicCrawlerImporter plugin.
  */
-public class CrawlerImporter extends Plugin {
+public class MedtronicCrawlerImporter extends Plugin {
 
     /**
      * Constructor for the PluginManager.
      *
      * @param wrapper The PluginWrapper.
      */
-    public CrawlerImporter(final PluginWrapper wrapper) {
+    public MedtronicCrawlerImporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
     /**
-     * Actual implementation of the CrawlerImporter plugin.
+     * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class CrawlerImporterImplementation implements Importer {
+    public static class MedtronicCrawlerImporterImplementation implements Importer {
 
         /**
          * Constructor.
          *
          * @throws IOException - thrown if the log file could not be written.
          */
-        public CrawlerImporterImplementation() throws IOException {
+        public MedtronicCrawlerImporterImplementation() throws IOException {
             Logger logger = Logger.getLogger("MyLog");
             FileHandler fh;
             SimpleDateFormat formats = new SimpleDateFormat("dd-mm-HHMMSS");

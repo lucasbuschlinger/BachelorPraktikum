@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.importer.crawler;
+package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -17,10 +17,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.awt.event.KeyEvent;
-
 /**
- * Simulates mouse clicks for the crawler.
+ * Simulates mouse clicks for the medtroniccrawler.
  */
 public class MouseSimulator {
 
@@ -41,7 +39,7 @@ public class MouseSimulator {
      * @param loginPassword - users password
      * @param device - selected device
      * @param pump - selected pump
-     * @param sn - sn number
+     * @param serialNumber - serial number
      * @param logger - a logger instance
      * @throws AWTException - thrown if there was an exception crawling
      * @throws InterruptedException - thrown if there was a multithreading error
@@ -52,19 +50,19 @@ public class MouseSimulator {
                           final String loginPassword,
                           final String device,
                           final String pump,
-                          final String sn,
+                          final String serialNumber,
                           final Logger logger)
             throws AWTException, InterruptedException, SecurityException, IOException {
         logger.info("Inside Class Simulate mouse and Method Startmagic");
 
-        Boolean bg = false;
+        Boolean bloodGlucoseDevice = false;
         Boolean stick = false;
         Boolean minimedpump = false;
         Boolean paradigmpump = false;
         if (device.toLowerCase().equals("stick")) {
             stick = true;
         } else if (device.toLowerCase().equals("bgdevice")) {
-            bg = true;
+            bloodGlucoseDevice = true;
         } else {
             logger.info("Device not properly selected)");
             System.out.println("Device not properly selected, Try changing config file");
@@ -81,7 +79,7 @@ public class MouseSimulator {
         }
 
         if (minimedpump) {
-            if (sn.length() != SERIAL_NUMBER_LENGTH_MINIMED) {
+            if (serialNumber.length() != SERIAL_NUMBER_LENGTH_MINIMED) {
                 logger.info("SN Number should be of 10 characters (alpha numeric only),"
                         + " Because Minimed Pump is selected");
                 System.out.println(
@@ -89,8 +87,8 @@ public class MouseSimulator {
                                 + ", Try changing config file");
                 return;
             } else {
-                for (int i = 0; i < sn.length(); i++) {
-                    char c = sn.charAt(i);
+                for (int i = 0; i < serialNumber.length(); i++) {
+                    char c = serialNumber.charAt(i);
                     if (c < 0x30 || (c >= 0x3a && c <= 0x40) || (c > 0x5a && c <= 0x60) || c > 0x7a) {
                         logger.info("SN Number should be of alpha numeric only");
                         System.out.println("SN Number should be of alpha numeric only"
@@ -101,7 +99,7 @@ public class MouseSimulator {
 
             }
         } else if (paradigmpump) {
-            if (sn.length() != SERIAL_NUMBER_LENGTH_PARDAIGMPUMP) {
+            if (serialNumber.length() != SERIAL_NUMBER_LENGTH_PARDAIGMPUMP) {
                 logger.info("SN Number should be of 6 characters (numeric only),"
                         + " Because Paradigm Pump is selected");
                 System.out.println(
@@ -109,8 +107,8 @@ public class MouseSimulator {
                                 + ", Try changing config file");
                 return;
             } else {
-                for (int i = 0; i < sn.length(); i++) {
-                    char c = sn.charAt(i);
+                for (int i = 0; i < serialNumber.length(); i++) {
+                    char c = serialNumber.charAt(i);
                     if (c < 0x30 || c > 0x39) {
                         logger.info("SN Number should be only numeric only");
                         System.out.println("SN Number should be of numeric only"
@@ -286,8 +284,8 @@ public class MouseSimulator {
 
             if (driver.findElements(By.tagName("object")).size() > 0) {
                 compleAutoClick = runAppletWithButtonSimulation(
-                        sn,
-                        bg,
+                        serialNumber,
+                        bloodGlucoseDevice,
                         stick,
                         paradigmpump,
                         minimedpump,
@@ -299,8 +297,8 @@ public class MouseSimulator {
                 Thread.sleep(10000);
                 if (driver.findElements(By.tagName("object")).size() > 0) {
                     compleAutoClick = runAppletWithButtonSimulation(
-                            sn,
-                            bg,
+                            serialNumber,
+                            bloodGlucoseDevice,
                             stick,
                             paradigmpump,
                             minimedpump,
@@ -312,8 +310,8 @@ public class MouseSimulator {
                     Thread.sleep(12000);
                     if (driver.findElements(By.tagName("object")).size() > 0) {
                         compleAutoClick = runAppletWithButtonSimulation(
-                                sn,
-                                bg,
+                                serialNumber,
+                                bloodGlucoseDevice,
                                 stick,
                                 paradigmpump,
                                 minimedpump,
@@ -360,8 +358,8 @@ public class MouseSimulator {
     /**
      * Runs the applet with the given simulation.
      *
-     * @param sn - the devices serial number
-     * @param bg - true if the device is a bg
+     * @param serialNumber - the devices serial number
+     * @param bloodGlucoseDevice - true if the device is a blood glucose device
      * @param stick - true if the device is a stick
      * @param paradigmpump - true if the device is a pardigmpump
      * @param minimedpump - true if the device is a minimedpump
@@ -372,8 +370,8 @@ public class MouseSimulator {
      * @throws InterruptedException - thrown if there was a multithreading error
      * @throws AWTException - thrown if there was an error crawling
      */
-    private Boolean runAppletWithButtonSimulation(final String sn,
-                                                  final Boolean bg,
+    private Boolean runAppletWithButtonSimulation(final String serialNumber,
+                                                  final Boolean bloodGlucoseDevice,
                                                   final Boolean stick,
                                                   final Boolean paradigmpump,
                                                   final Boolean minimedpump,
@@ -497,7 +495,7 @@ public class MouseSimulator {
 
         // Entering Value for Device
         Thread.sleep(2000);
-        type(sn);
+        type(serialNumber);
 
         // Fourth selecting ALT + N
         Thread.sleep(200);
@@ -544,7 +542,7 @@ public class MouseSimulator {
             robot.keyRelease(KeyEvent.VK_DOWN);
             Thread.sleep(4000);
         }
-        if (bg) {
+        if (bloodGlucoseDevice) {
             robot.keyPress(KeyEvent.VK_DOWN);
             robot.keyRelease(KeyEvent.VK_DOWN);
             Thread.sleep(2000);
@@ -587,7 +585,7 @@ public class MouseSimulator {
             robot.keyRelease(KeyEvent.VK_ALT);
             robot.keyRelease(KeyEvent.VK_ALT);
         }
-        if (bg) {
+        if (bloodGlucoseDevice) {
             robot.keyPress(KeyEvent.VK_ALT);
             robot.keyPress(KeyEvent.VK_F);
             robot.keyRelease(KeyEvent.VK_F);

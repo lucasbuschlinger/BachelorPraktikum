@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.importer.crawler;
+package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class Crawler {
 
     /**
-     * Time until the crawler should try to finish the action before timing out.
+     * Time until the medtroniccrawler should try to finish the action before timing out.
      */
     private static final int CONNECT_TIMEOUT = 60000;
 
@@ -27,14 +27,14 @@ public class Crawler {
             + "Chrome/56.0.2924.87 Safari/537.36";
 
     /**
-     * Checks if the login and the entered dates are and then downloads the csv file.
+     * Checks if the login and the entered dates are valid and then downloads the csv file.
      *
      * @param loginCookies - the login cookies to be sent.
      * @param startDate - start date from when the csv file data should begin.
      * @param endDate - end date until when the csv file data should go.
      * @param userWorkingDirecotry - the director where the csv file should be downloaded to.
      * @param logger - a logger instance.
-     * @param configFilePath - file path to specific crawler configuration.
+     * @param configFilePath - file path to specific medtroniccrawler configuration.
      */
     public void generateDocument(final Map<String, String> loginCookies,
                                  final String startDate,

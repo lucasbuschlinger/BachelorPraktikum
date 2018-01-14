@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.importer.crawler;
+package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import java.text.DateFormat;
 import java.text.ParseException;

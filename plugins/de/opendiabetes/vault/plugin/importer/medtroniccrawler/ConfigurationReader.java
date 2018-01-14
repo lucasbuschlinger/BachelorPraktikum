@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.importer.crawler;
+package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,12 +22,12 @@ class ConfigurationReader {
     /**
      * Extracts the username, password, device, pump and SN from the reader.
      *
-     * @param b - a BufferedReader instance reading the csv file.
+     * @param reader - a BufferedReader instance reading the csv file.
      * @param logger - a logger instance.
      * @return a configuration object
      * @throws IOException - thrown if there was an error reading the file.
      */
-    Configuration read(final BufferedReader b, final Logger logger) throws IOException {
+    Configuration read(final BufferedReader reader, final Logger logger) throws IOException {
         logger.info("Inside class GetUserNamePasswordDeviceSNFromFileClass");
         String readLine = "";
         String userName = null;
@@ -36,7 +36,7 @@ class ConfigurationReader {
         String pump = null;
         String serialNumber = null;
         String csvPath = null;
-        while ((readLine = b.readLine()) != null) {
+        while ((readLine = reader.readLine()) != null) {
 
             if (readLine.toLowerCase().contains("username:")) {
 
