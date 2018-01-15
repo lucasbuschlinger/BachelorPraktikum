@@ -1,6 +1,7 @@
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
-import java.awt.*;
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;

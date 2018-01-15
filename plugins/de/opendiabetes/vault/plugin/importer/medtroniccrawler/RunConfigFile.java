@@ -59,7 +59,8 @@ public class RunConfigFile {
             // during testing, but it also makes it easier for brute force
             // attackers
 
-            if (config.getUsername() == null || config.getUsername().isEmpty() || config.getPassword() == null || config.getPassword().isEmpty()) {
+            if (config.getUsername() == null || config.getUsername().isEmpty()
+                    || config.getPassword() == null || config.getPassword().isEmpty()) {
                 logger.info("Inside class RunConfigFile,Empty UserName or Password, Try Runnig Config file again");
                 System.out.println("Empty UserName or Password, Try Runnig Config file again");
                 return;
@@ -94,7 +95,8 @@ public class RunConfigFile {
                 }
 
                 MouseSimulator simulator = new MouseSimulator();
-                simulator.start(config.getUsername(), decryptedPassword, config.getDevice(), config.getPump(), config.getSerialNumber(), logger);
+                simulator.start(config.getUsername(), decryptedPassword, config.getDevice(), config.getPump(),
+                        config.getSerialNumber(), logger);
             }
         } catch (IOException e) {
             logger.info("Inside class RunConfigFile,error occured during checking config file");

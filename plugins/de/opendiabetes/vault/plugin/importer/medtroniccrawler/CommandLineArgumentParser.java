@@ -1,10 +1,19 @@
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
-import org.apache.commons.cli.*;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.awt.*;
-import java.io.*;
+import java.awt.AWTException;
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
@@ -177,9 +186,9 @@ public class CommandLineArgumentParser {
                     System.out.println("Enter password: ");
                     password = reader.nextLine();
                     logger.info("Ask user for password");
-					// final JPasswordField pf = new JPasswordField();
-					// password = JOptionPane.showConfirmDialog(null, pf, "Password", JOptionPane.OK_CANCEL_OPTION,
-					// JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION ? new String(pf.getPassword()) : "";
+                    // final JPasswordField pf = new JPasswordField();
+                    // password = JOptionPane.showConfirmDialog(null, pf, "Password", JOptionPane.OK_CANCEL_OPTION,
+                    // JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION ? new String(pf.getPassword()) : "";
                 } else {
                     logger.info("Ask user for password");
                     password = new String(console.readPassword("Password: "));
@@ -377,7 +386,7 @@ public class CommandLineArgumentParser {
                         || configuration.getUsername().isEmpty()
                         || configuration.getPassword() == null
                         || configuration.getPassword().isEmpty()
-                                /*|| metadata[4] == null & metadata[4].isEmpty()*/) {
+                    /*|| metadata[4] == null & metadata[4].isEmpty()*/) {
                     logger.info("username and passowrd is empty");
                     return;
                 }
