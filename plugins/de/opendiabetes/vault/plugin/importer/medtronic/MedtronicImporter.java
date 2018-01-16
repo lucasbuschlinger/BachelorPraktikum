@@ -259,12 +259,14 @@ public class MedtronicImporter extends Plugin {
             } catch (ParseException ex) {
                 // maybe old format without good timestamp
                 // try again with separated fields
-                timestamp = parseValidator.getManualTimestamp(creader);
+                try {
+                    timestamp = parseValidator.getManualTimestamp(creader);
+                } catch (ParseException exception) {
+                    LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
+                    return null;
+                }
             }
-            if (timestamp == null) { //decided not to remove this code as suggested by FindBugs
-                LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
-                return null;
-            }
+
             String rawValues = parseValidator.getRawValues(creader);
             VaultEntry tmpEntry;
 

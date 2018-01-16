@@ -27,6 +27,7 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,8 +81,10 @@ public class SonySWR21Importer extends Plugin {
                 return null;
             }
 
-            Date timestamp = parseValidator.getTimestamp(creader);
-            if (timestamp == null) {
+            Date timestamp;
+            try {
+                timestamp = parseValidator.getTimestamp(creader);
+            } catch (ParseException exception) {
                 return null;
             }
 

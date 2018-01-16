@@ -94,8 +94,10 @@ public class LibreTextImporter extends Plugin {
                 return null;
             }
 
-            Date timestamp = parseValidator.getTimestamp(reader);
-            if (timestamp == null) {
+            Date timestamp;
+            try {
+                timestamp = parseValidator.getTimestamp(reader);
+            } catch (ParseException exception) {
                 return null;
             }
 
