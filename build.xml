@@ -382,8 +382,8 @@
                 <exclude name="*.class"/>
             </fileset>
         </delete>
-        <move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j2.properties"
-              tofile="out/production/OpenDiabetes/log4j2.properties"/>
+        <!--move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j2.properties"
+              tofile="out/production/OpenDiabetes/log4j2.properties"/-->
     </target>
 
 
