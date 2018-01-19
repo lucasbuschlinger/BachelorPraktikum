@@ -63,7 +63,7 @@ public class SourceCodeExporter extends Plugin {
      */
     @Extension
     public static class SourceCodeExporterImplementation extends VaultExporter {
-
+        private final List<String> entries = new ArrayList<>();
         /**
          * Method to get the ListInitCode.
          *
@@ -134,7 +134,6 @@ public class SourceCodeExporter extends Plugin {
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
         protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
-            final List<String> entries = new ArrayList<>(); //super dirty hack, since I am to lazy to update the architecture at the moment
             FileOutputStream fileOutputStream = getFileOutputStream();
             String filePath = null;
 
@@ -161,8 +160,6 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
-            //TODO
-            final List<String> entries = new ArrayList<>(); //super dirty hack, since I am to lazy to update the architecture at the moment
             List<VaultEntry> tmpValues = queryData();
             if (tmpValues == null || tmpValues.isEmpty()) {
                 return null;

@@ -117,6 +117,9 @@ public final class VaultDao {
      */
     public static void initializeDb() throws SQLException {
         //TODO combine logging
+        // Der OR Mapper benutzt (soweit ich mich erinnere) Log4J zum loggen und ich möchte gerne den Logger
+        // der bei Java dabei ist benutzen. D.h. man muss den Log Stream von dem Log4J irgendwie auf den
+        // normalen Logger umlenken, und die Loglevel übertragen .. aber hatte bisher nicht rausgefunden wie das geht.
         System.setProperty(LoggerFactory.LOG_TYPE_SYSTEM_PROPERTY,
                 LoggerFactory.LogType.LOCAL.toString());
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY,
