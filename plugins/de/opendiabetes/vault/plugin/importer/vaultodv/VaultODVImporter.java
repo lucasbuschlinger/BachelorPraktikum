@@ -21,7 +21,6 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.exporter.vaultodv.VaultODVExporter;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.validator.VaultCSVValidator;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
