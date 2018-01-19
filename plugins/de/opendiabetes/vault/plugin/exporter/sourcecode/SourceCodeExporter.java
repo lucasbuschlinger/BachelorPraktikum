@@ -63,6 +63,11 @@ public class SourceCodeExporter extends Plugin {
      */
     @Extension
     public static class SourceCodeExporterImplementation extends VaultExporter {
+
+        /**
+         * List to hold all the entries queried from the database in {@link #prepareData(List)}
+         * and written on {@link #writeToFile(List)}
+         */
         private final List<String> entries = new ArrayList<>();
         /**
          * Method to get the ListInitCode.
