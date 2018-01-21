@@ -393,9 +393,12 @@ public class MedtronicImporter extends Plugin {
                     if (tmpEntry != null) {
                         MedtronicAlertCodes codeObj = MedtronicAlertCodes.fromCode(
                                 (int) Math.round(tmpEntry.getValue()));
-                        String codeString = codeObj == MedtronicAlertCodes.UNKNOWN_ALERT
-                                ? String.valueOf(Math.round(tmpEntry.getValue()))
-                                : codeObj.toString();
+                        String codeString;
+                        if (codeObj == MedtronicAlertCodes.UNKNOWN_ALERT) {
+                            codeString = String.valueOf(Math.round(tmpEntry.getValue()));
+                        } else {
+                            codeString = codeObj.toString();
+                        }
 
                         switch (codeObj) {
                             case NO_DELIVERY:

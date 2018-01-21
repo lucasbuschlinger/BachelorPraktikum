@@ -140,7 +140,12 @@ public class SonySWR21Importer extends Plugin {
 
                         // calculate stress value
                         value2 -= uninitializedStressValue;
-                        double weight = value2 < 0 ? highWeight : lowWeight;
+                        double weight;
+                        if (value2 < 0) {
+                            weight = highWeight;
+                        } else {
+                            weight = lowWeight;
+                        }
 
                         double stressValue = baseStressValue - value2 * weight;
                         tmpEntry = new VaultEntry(

@@ -102,11 +102,11 @@ public class VaultEntryAnnotation implements Serializable {
      */
     @Override
     public String toString() {
-        return "VaultEntryAnnotation{" +
-                "valuePattern=" + valuePattern +
-                ", type=" + type +
-                ", value='" + value + '\'' +
-                '}';
+        return "VaultEntryAnnotation{"
+                + "valuePattern=" + valuePattern
+                + ", type=" + type
+                + ", value='" + value + '\''
+                + '}';
     }
 
     // TO DO reimplement with pattern matching, if needed to do
@@ -137,7 +137,11 @@ public class VaultEntryAnnotation implements Serializable {
      * @return The VaultEntry as string.
      */
     public String toStringWithValue() {
-        return value.isEmpty() ? this.getType().toString() : this.getType().toString() + "=" + value;
+        if (value.isEmpty()) {
+            return this.getType().toString();
+        } else {
+            return this.getType().toString() + "=" + value;
+        }
     }
 
     /**

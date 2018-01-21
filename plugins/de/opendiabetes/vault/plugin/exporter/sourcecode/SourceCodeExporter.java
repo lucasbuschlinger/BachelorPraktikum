@@ -66,7 +66,7 @@ public class SourceCodeExporter extends Plugin {
 
         /**
          * List to hold all the entries queried from the database in {@link #prepareData(List)}
-         * and written on {@link #writeToFile(List)}
+         * and written on {@link #writeToFile(List)}.
          */
         private final List<String> entries = new ArrayList<>();
         /**
