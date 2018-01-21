@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 public interface Importer extends ExtensionPoint {
 
     /**
-     * Logger object of all Importers. Logs all messages of the importers to a human readable file.//TODO which file?
+     * Logger object of all Importers. Logs all messages of the importers to a human readable file.
      */
     Logger LOG = Logger.getLogger(Importer.class.getName());
 

@@ -63,7 +63,7 @@ public class SlidingWindow {
      *
      * @param entry The VaultEntry to update.
      * @return Absolute elevation within the window or 0 if wrong type or buffer
-     * not statuated. TODO
+     * not statuated.
      */
     public double updateValue1WindowElevation(final VaultEntry entry) {
         if (entry.getType() != typeToReactOn) {

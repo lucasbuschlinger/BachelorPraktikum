@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.importer.validator;
+package de.opendiabetes.vault.plugin.importer.googlefit;
 
 import com.csvreader.CsvReader;
+import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.File;
@@ -35,39 +36,39 @@ public class GoogleFitCSVValidator extends CSVValidator {
     /**
      * Field of the German Google Fit CSV header containing the start time of an activity.
      */
-    public static final String HEADER_START_TIME_DE = "Beginn";
+    private static final String HEADER_START_TIME_DE = "Beginn";
     /**
      * Field of the German Google Fit CSV header containing the end time of an activity.
      */
-    public static final String HEADER_END_TIME_DE = "Ende";
+    private static final String HEADER_END_TIME_DE = "Ende";
     /**
      * Field of the German Google Fit CSV header containing biking duration.
      */
-    public static final String HEADER_BIKE_VALUE_DE = "Radfahren – Dauer (ms)";
+    private static final String HEADER_BIKE_VALUE_DE = "Radfahren – Dauer (ms)";
     /**
      * Field of the German Google Fit CSV header containing walking duration.
      */
-    public static final String HEADER_WALK_VALUE_DE = "Gehen – Dauer (ms)";
+    private static final String HEADER_WALK_VALUE_DE = "Gehen – Dauer (ms)";
     /**
      * Field of the German Google Fit CSV header containing running duration.
      */
-    public static final String HEADER_RUN_VALUE_DE = "Laufen – Dauer (ms)";
+    private static final String HEADER_RUN_VALUE_DE = "Laufen – Dauer (ms)";
     /**
      * Field of the German Google Fit CSV header containing maximum velocity.
      */
-    public static final String HEADER_MAX_SPEED_VALUE_DE = "Maximale Geschwindigkeit (m/s)";
+    private static final String HEADER_MAX_SPEED_VALUE_DE = "Maximale Geschwindigkeit (m/s)";
     /**
      * Time format used Google Fit CSV data.
      */
-    public static final String TIME_FORMAT_DE = "yyyy-MM-dd HHmmss.SSSZ";        //01:00:00.000+01:00
+    private static final String TIME_FORMAT_DE = "yyyy-MM-dd HHmmss.SSSZ";        //01:00:00.000+01:00
 
     /**
      * The composed German header used in Google Fit CSV data.
      */
-    public static final String[] HEADER_DE = {
+    private static final String[] HEADER_DE = {
             HEADER_START_TIME_DE, HEADER_END_TIME_DE,
             // files without this values doesn't contain this headers ... --> json ?
-            //        HEADER_BIKE_VALUE_DE, //todo why uncommented?
+            //        HEADER_BIKE_VALUE_DE,
             //        HEADER_WALK_VALUE_DE,
             //        HEADER_RUN_VALUE_DE,
             HEADER_MAX_SPEED_VALUE_DE
@@ -76,8 +77,7 @@ public class GoogleFitCSVValidator extends CSVValidator {
     /**
      * The composed English header used in Google fit CSV data.
      */
-    // TODO add english header
-    public static final String[] HEADER_EN = {
+    private static final String[] HEADER_EN = {
             HEADER_START_TIME_DE, HEADER_END_TIME_DE,
             HEADER_BIKE_VALUE_DE,
             HEADER_WALK_VALUE_DE,
@@ -99,7 +99,6 @@ public class GoogleFitCSVValidator extends CSVValidator {
      * @return The biking value.
      * @throws IOException Thrown when reading the data goes wrong.
      */
-    // TODO add language selection
     public long getBikeValue(final CsvReader creader) throws IOException {
         String tmpValue = creader.get(HEADER_BIKE_VALUE_DE);
         if (tmpValue != null && !tmpValue.isEmpty()) {

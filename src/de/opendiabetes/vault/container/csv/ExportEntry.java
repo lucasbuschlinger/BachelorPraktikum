@@ -27,7 +27,7 @@ public interface ExportEntry {
      * Converts entry to a entry in the export file.
      *
      * @return byte array representing the entry.
-     * @throws IOException Thrown if something went wrong TODO.
+     * @throws IOException Thrown if no byte entry can be calculated.
      */
     byte[] toByteEntryLine() throws IOException;
 }

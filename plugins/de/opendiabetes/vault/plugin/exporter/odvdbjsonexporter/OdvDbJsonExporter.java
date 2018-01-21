@@ -19,7 +19,6 @@ package de.opendiabetes.vault.plugin.exporter.odvdbjsonexporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.OdvDbJsonPseudoEntry;
-import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.FileExporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;

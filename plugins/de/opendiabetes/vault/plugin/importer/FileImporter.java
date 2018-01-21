@@ -87,14 +87,13 @@ public abstract class FileImporter extends AbstractImporter {
     }
 
     /**
-     * Method for preprocessing the data.//TODO more specific.
+     * Method for preprocessing the data if needed.
      *
      * @param filePath Path to the import file.
      */
     protected abstract void preprocessingIfNeeded(String filePath);
 
     /**
-     * //TODO more specific
      * Method for processing the data.
      *
      * @param fileInputStream    The input stream for the imported data.

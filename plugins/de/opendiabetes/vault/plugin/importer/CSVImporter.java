@@ -57,10 +57,12 @@ public abstract class CSVImporter extends FileImporter {
      *
      * @param delimiter       the delimiter to use to read the file
      * @param fileInputStream the file to read
+     * @param metaEntries     placeholder for future extensions
      * @return a CsvReader pointing to the headers, null if the headers could not be validated
      * @throws IOException if file reading goes wrong
      */
-    private CsvReader getValidatedCreader(final char delimiter, final InputStream fileInputStream, List<String[]> metaEntries) throws IOException {
+    private CsvReader getValidatedCreader(final char delimiter, final InputStream fileInputStream, final List<String[]> metaEntries)
+            throws IOException {
         // open file
         CsvReader creader = new CsvReader(fileInputStream, delimiter, Charset.forName("UTF-8"));
 
@@ -85,9 +87,9 @@ public abstract class CSVImporter extends FileImporter {
         importedData = new ArrayList<>();
         importedRawData = new ArrayList<>();
         final int maxProgress = 100;
-      
+
         //This list is used as a placeholder for future extensions
-        List<String[]> metaEntries = new ArrayList<>();
+         List<String[]> metaEntries = new ArrayList<>();
 
         this.notifyStatus(0, "Reading Header");
         try {

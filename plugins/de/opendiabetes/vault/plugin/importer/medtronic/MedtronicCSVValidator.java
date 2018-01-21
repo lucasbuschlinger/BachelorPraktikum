@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.importer.validator;
+package de.opendiabetes.vault.plugin.importer.medtronic;
 
 import com.csvreader.CsvReader;
+import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.IOException;
@@ -34,36 +35,36 @@ public class MedtronicCSVValidator extends CSVValidator {
     /**
      * Field of the German Medtronic CSV headers containing the date.
      */
-    public static final String CARELINK_HEADER_DE_DATE = "Datum";
+    private static final String CARELINK_HEADER_DE_DATE = "Datum";
     /**
      * Field of the German Medtronic CSV headers containing the time.
      */
-    public static final String CARELINK_HEADER_DE_TIME = "Zeit";
+    private static final String CARELINK_HEADER_DE_TIME = "Zeit";
     /**
      * Field of the German Medtronic CSV headers containing the timestamp.
      */
-    public static final String CARELINK_HEADER_DE_TIMESTAMP = "Zeitstempel";
+    private static final String CARELINK_HEADER_DE_TIMESTAMP = "Zeitstempel";
     /**
      * Field of the German Medtronic CSV headers containing the type.
      */
-    public static final String CARELINK_HEADER_DE_TYPE = "Roh-Typ";
+    private static final String CARELINK_HEADER_DE_TYPE = "Roh-Typ";
     /**
      * Field of the German Medtronic CSV headers containing the values.
      */
-    public static final String CARELINK_HEADER_DE_VALUE = "Roh-Werte";
+    private static final String CARELINK_HEADER_DE_VALUE = "Roh-Werte";
     /**
      * Field of the German Medtronic CSV headers containing the sequential number.
      */
-    public static final String CARELINK_HEADER_DE_SEQ_NUM = "Roh-Seq Num";
+    private static final String CARELINK_HEADER_DE_SEQ_NUM = "Roh-Seq Num";
     /**
      * The time format used in Medtronic CSV data.
      */
-    public static final String TIME_FORMAT_DE = "dd.MM.yy HH:mm:ss";
+    private static final String TIME_FORMAT_DE = "dd.MM.yy HH:mm:ss";
 
     /**
      * The composed header used in Medtronic CSV data.
      */
-    public static final String[] CARELINK_HEADER_DE = {
+    private static final String[] CARELINK_HEADER_DE = {
             CARELINK_HEADER_DE_DATE, CARELINK_HEADER_DE_TIME,
             CARELINK_HEADER_DE_TIMESTAMP, CARELINK_HEADER_DE_TYPE,
             CARELINK_HEADER_DE_VALUE
@@ -73,7 +74,6 @@ public class MedtronicCSVValidator extends CSVValidator {
      * Constructor.
      */
     public MedtronicCSVValidator() {
-        //TODO add english header
         super(CARELINK_HEADER_DE, CARELINK_HEADER_DE);
     }
 

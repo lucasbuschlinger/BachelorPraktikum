@@ -84,6 +84,4 @@ public class VaultODVImporterTest {
         Assert.assertEquals("path/to/import/file", vaultODVImporter.getImportFilePath());
     }
 
-    //TODO add test for notifyMechanism
-
 }
