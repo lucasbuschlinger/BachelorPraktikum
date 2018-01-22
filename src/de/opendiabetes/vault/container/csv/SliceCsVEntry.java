@@ -44,7 +44,7 @@ public class SliceCsVEntry extends CsvEntry {
 
     /**
      * Constructor for a sliced CSV entry.
-     * @param data The data to be sliced TODO.
+     * @param data The chunk of data to be sliced from.
      */
     public SliceCsVEntry(final SliceEntry data) {
         this.data = data;

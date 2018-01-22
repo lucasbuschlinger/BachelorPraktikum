@@ -147,6 +147,4 @@ public class MedtronicImporterTest {
         return;
     }*/
 
-    //TODO add test for notifyMechanism
-
 }

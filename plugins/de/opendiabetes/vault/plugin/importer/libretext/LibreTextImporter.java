@@ -21,7 +21,6 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.validator.LibreTextCSVValidator;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * Wrapper class for the LibreTextImporter plugin.
@@ -94,8 +92,10 @@ public class LibreTextImporter extends Plugin {
                 return null;
             }
 
-            Date timestamp = parseValidator.getTimestamp(reader);
-            if (timestamp == null) {
+            Date timestamp;
+            try {
+                timestamp = parseValidator.getTimestamp(reader);
+            } catch (ParseException exception) {
                 return null;
             }
 

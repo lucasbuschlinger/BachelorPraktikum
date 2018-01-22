@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.importer.validator;
+package de.opendiabetes.vault.plugin.importer.libretext;
 
 import com.csvreader.CsvReader;
+import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.IOException;
@@ -64,7 +65,6 @@ public class LibreTextCSVValidator extends CSVValidator {
             TIME_FORMAT_LIBRE_DE
     };
 
-    //TODO English header?
 
     /**
      * Constructor for a LibreTextCSV validator.
