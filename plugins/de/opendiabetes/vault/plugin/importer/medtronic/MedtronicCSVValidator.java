@@ -122,7 +122,6 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @param creader The CSV reader to use.
      * @return The raw values.
      * @throws IOException Thrown when reading the data goes wrong.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
     public String getRawValues(final CsvReader creader) throws IOException {
         switch (languageSelection) {
@@ -142,7 +141,6 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @param creader The CSV reader to use.
      * @return The raw sequential number.
      * @throws IOException Thrown when reading the data goes wrong.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
     public String getRawSeqNum(final CsvReader creader) throws IOException {
         switch (languageSelection) {
@@ -162,7 +160,6 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @param creader The CSV reader to use.
      * @return The type.
      * @throws IOException Thrown when reading the data goes wrong.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
     public String getCarelinkTypeString(final CsvReader creader) throws IOException {
         switch (languageSelection) {
@@ -194,7 +191,6 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @return The timestamp.
      * @throws IOException Thrown when reading the data goes wrong.
      * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
     public Date getTimestamp(final CsvReader creader) throws IOException, ParseException {
         String timeString;
@@ -219,7 +215,6 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @return The timestamp.
      * @throws IOException Thrown when reading the data goes wrong.
      * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
     public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException {
         String date;

@@ -34,7 +34,7 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate german date header.
      */
-    private static final String MY_SUGR_HEADER_DE_DATE = "Date";
+    private static final String MY_SUGR_HEADER_DE_DATE = "Datum";
     /**
      * Pattern to indicate german time header.
      */
@@ -50,15 +50,15 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate german blood glucose measurement header.
      */
-    private static final String MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT = "Blood Glucose Measurement (mg/dL)";
+    private static final String MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT = "Blutzuckermessung (mg/dL)";
     /**
      * Pattern to indicate german meal manual header.
      */
-    private static final String MY_SUGR_HEADER_DE_MEAL_MANUAL = "Meal Carbohydrates (Grams, Factor 1)";
+    private static final String MY_SUGR_HEADER_DE_MEAL_MANUAL = "Mahlzeitkohlenhydrate (Gramm, Faktor 1)";
     /**
      * Pattern to indicate german basal injection units header.
      */
-    private static final String MY_SUGR_HEADER_DE_BASAL_INJECTION_UNITS = "Basal Injection Units";
+    private static final String MY_SUGR_HEADER_DE_BASAL_INJECTION_UNITS = "Basalinjektionseinheiten";
     /**
      * Pattern to indicate german bolus header.
      */
@@ -66,15 +66,15 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate german exercise header.
      */
-    private static final String MY_SUGR_HEADER_DE_EXERCISE = "Activity Duration (Minutes)";
+    private static final String MY_SUGR_HEADER_DE_EXERCISE = "Aktivitätsdauer (Minuten)";
     /**
      * Pattern to indicate german exercise intensity header.
      */
-    private static final String MY_SUGR_HEADER_DE_EXERCISE_INTENSITY = "Activity Intensity (1: Cosy, 2: Ordinary, 3: Demanding)";
+    private static final String MY_SUGR_HEADER_DE_EXERCISE_INTENSITY = "Aktivitätsintensität (1: Bequem, 2: Normal, 3: Anstrengend)";
     /**
      * Pattern to indicate german ketones header.
      */
-    private static final String MY_SUGR_HEADER_DE_KETONES = "Ketones";
+    private static final String MY_SUGR_HEADER_DE_KETONES = "Ketone";
     /**
      * Pattern to indicate german insulin injection pen units header.
      */
@@ -86,15 +86,15 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate german blood pressure header.
      */
-    private static final String MY_SUGR_HEADER_DE_BLOOD_PRESSURE = "Blood Pressure";
+    private static final String MY_SUGR_HEADER_DE_BLOOD_PRESSURE = "Blutdruck";
     /**
      * Pattern to indicate german meal descriptions header.
      */
-    private static final String MY_SUGR_HEADER_DE_MEAL_DESCRIPTIONS = "Meal Descriptions";
+    private static final String MY_SUGR_HEADER_DE_MEAL_DESCRIPTIONS = "Mahlzeitbeschreibung";
     /**
      * Pattern to indicate german food type header.
      */
-    private static final String MY_SUGR_HEADER_DE_FOOD_TYPE = "Food type";
+    private static final String MY_SUGR_HEADER_DE_FOOD_TYPE = "Art der Nahrung";
     /**
      * Pattern to indicate german tags header.
      */
@@ -102,11 +102,12 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate german note header.
      */
-    private static final String MY_SUGR_HEADER_DE_NOTE = "Note";
+    private static final String MY_SUGR_HEADER_DE_NOTE = "Notiz";
     /**
      * German date time format.
      */
     private static final String TIME_FORMAT_DE = "MM.dd.yy HH:mm:ss";
+
 
     /**
      * Pattern to indicate english date header.
@@ -306,7 +307,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getBGMeasurement(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not suppported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_BLOOD_GLUCOSE_MEASUREMENT);
             default:
@@ -325,7 +326,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getMealCarbs(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not suppported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_MEAL_MANUAL);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_MEAL_MANUAL);
             default:
@@ -344,7 +345,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getBasalUnits(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not suppported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_BASAL_INJECTION_UNITS);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_BASAL_INJECTION_UNITS);
             default:
@@ -362,14 +363,19 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws ParseException If there was an error while parsing.
      */
     public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException {
+        String dateString;
+        String timeString;
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
-            case EN:
-                String timeString1 = dateFormatter(creader.get(MY_SUGR_HEADER_EN_DATE).trim());
-                String timeString2 = timeFormatter(creader.get(MY_SUGR_HEADER_EN_TIME).trim());
+                dateString = dateFormatter(creader.get(MY_SUGR_HEADER_DE_DATE).trim());
+                timeString = timeFormatter(creader.get(MY_SUGR_HEADER_DE_TIME).trim());
                 return TimestampUtils.createCleanTimestamp(
-                        timeString1 + " " + timeString2, TIME_FORMAT_EN);
+                        dateString + " " + timeString, TIME_FORMAT_DE);
+            case EN:
+                dateString = dateFormatter(creader.get(MY_SUGR_HEADER_EN_DATE).trim());
+                timeString = timeFormatter(creader.get(MY_SUGR_HEADER_EN_TIME).trim());
+                return TimestampUtils.createCleanTimestamp(
+                        dateString + " " + timeString, TIME_FORMAT_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -419,7 +425,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getActivity(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_EXERCISE);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_EXERCISE);
             default:
@@ -438,7 +444,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getKetones(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_KETONES);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_KETONES);
             default:
@@ -457,7 +463,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getBloodPressure(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_BLOOD_PRESSURE);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_BLOOD_PRESSURE);
             default:
@@ -476,7 +482,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getActivityIntensity(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_EXERCISE_INTENSITY);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_EXERCISE_INTENSITY);
             default:
@@ -495,7 +501,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getMealDescriptions(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_MEAL_DESCRIPTIONS);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_MEAL_DESCRIPTIONS);
             default:
@@ -514,7 +520,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getFoodType(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_FOOD_TYPE);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_FOOD_TYPE);
             default:
@@ -533,7 +539,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getTags(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_TAGS);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_TAGS);
             default:
@@ -552,7 +558,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getNotes(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_NOTE);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_NOTE);
             default:

@@ -110,9 +110,10 @@ public class GoogleFitCSVValidator extends CSVValidator {
 
     public static final String[] HEADER_EN = {
             HEADER_START_TIME_EN, HEADER_END_TIME_EN,
-            HEADER_BIKE_VALUE_EN,
-            HEADER_WALK_VALUE_EN,
-            HEADER_RUN_VALUE_EN,
+            // files without this values doesn't contain this headers ... --> json ?
+            //        HEADER_BIKE_VALUE_EN,
+            //        HEADER_WALK_VALUE_EN,
+            //        HEADER_RUN_VALUE_EN,
             HEADER_MAX_SPEED_VALUE_EN
     };
 
