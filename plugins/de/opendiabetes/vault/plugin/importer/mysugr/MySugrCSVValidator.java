@@ -27,7 +27,10 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 /**
- * @author juehv
+ * This class is used to validate MySugr based data and to extract the values from the file.
+ *
+ * @author Jens Heuschkel
+ * @author Lucas Buschlinger
  */
 public class MySugrCSVValidator extends CSVValidator {
 
@@ -42,11 +45,11 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate german insulin injection meal units header.
      */
-    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL = "Insulin (Meal)";
+    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL = "Bolus (Mahlzeit)";
     /**
      * Pattern to indicate german insulin injection correction units header.
      */
-    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_CORRECTION = "Insulin (Correction)";
+    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_CORRECTION = "Bolus (Korrektur)";
     /**
      * Pattern to indicate german blood glucose measurement header.
      */
@@ -78,11 +81,11 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate german insulin injection pen units header.
      */
-    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PEN = "Insulin Injection Units (Pen)";
+    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PEN = "Bolusinjektionseinheiten (Pen)";
     /**
      * Pattern to indicate german insulin injection pump units header.
      */
-    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PUMP = "Insulin Injection Units (pump)";
+    private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PUMP = "Bolusinjektionseinheiten (Pump)";
     /**
      * Pattern to indicate german blood pressure header.
      */
@@ -231,7 +234,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getInsulinMeal(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not suppported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_MEAL);
             default:
@@ -250,7 +253,7 @@ public class MySugrCSVValidator extends CSVValidator {
     public String getInsulinCorrection(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not suppported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_CORRECTION);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_CORRECTION);
             default:
@@ -269,7 +272,7 @@ public class MySugrCSVValidator extends CSVValidator {
     private String getInsulinPen(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not suppported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PEN);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_PEN);
             default:
@@ -288,7 +291,7 @@ public class MySugrCSVValidator extends CSVValidator {
     private String getInsulinPump(final CsvReader creader) throws IOException {
         switch (languageSelection) {
             case DE:
-                throw new UnsupportedOperationException("Not suppported yet.");
+                return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PUMP);
             case EN:
                 return creader.get(MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_PUMP);
             default:
