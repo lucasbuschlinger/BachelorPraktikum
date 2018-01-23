@@ -124,7 +124,8 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws IOException Thrown when reading the data goes wrong.
      */
     public String getRawValues(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_VALUE);
             case EN:
@@ -143,7 +144,8 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws IOException Thrown when reading the data goes wrong.
      */
     public String getRawSeqNum(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_SEQ_NUM);
             case EN:
@@ -162,7 +164,8 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws IOException Thrown when reading the data goes wrong.
      */
     public String getCarelinkTypeString(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_TYPE).trim();
             case EN:
@@ -194,7 +197,8 @@ public class MedtronicCSVValidator extends CSVValidator {
      */
     public Date getTimestamp(final CsvReader creader) throws IOException, ParseException {
         String timeString;
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 timeString = creader.get(CARELINK_HEADER_DE_TIMESTAMP).trim();
                 return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_DE);
@@ -219,7 +223,8 @@ public class MedtronicCSVValidator extends CSVValidator {
     public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException {
         String date;
         String time;
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 date = creader.get(CARELINK_HEADER_DE_DATE).trim();
                 time = creader.get(CARELINK_HEADER_DE_TIME).trim();

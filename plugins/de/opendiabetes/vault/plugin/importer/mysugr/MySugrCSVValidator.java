@@ -232,7 +232,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getInsulinMeal(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL);
             case EN:
@@ -251,7 +252,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getInsulinCorrection(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_CORRECTION);
             case EN:
@@ -270,7 +272,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     private String getInsulinPen(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PEN);
             case EN:
@@ -289,7 +292,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     private String getInsulinPump(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PUMP);
             case EN:
@@ -308,7 +312,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getBGMeasurement(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT);
             case EN:
@@ -327,7 +332,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getMealCarbs(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_MEAL_MANUAL);
             case EN:
@@ -346,7 +352,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getBasalUnits(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_BASAL_INJECTION_UNITS);
             case EN:
@@ -368,7 +375,8 @@ public class MySugrCSVValidator extends CSVValidator {
     public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException {
         String dateString;
         String timeString;
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 dateString = dateFormatter(creader.get(MY_SUGR_HEADER_DE_DATE).trim());
                 timeString = timeFormatter(creader.get(MY_SUGR_HEADER_DE_TIME).trim());
@@ -426,7 +434,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getActivity(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_EXERCISE);
             case EN:
@@ -445,7 +454,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getKetones(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_KETONES);
             case EN:
@@ -464,7 +474,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getBloodPressure(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_BLOOD_PRESSURE);
             case EN:
@@ -483,7 +494,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getActivityIntensity(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_EXERCISE_INTENSITY);
             case EN:
@@ -502,7 +514,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getMealDescriptions(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_MEAL_DESCRIPTIONS);
             case EN:
@@ -521,7 +534,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getFoodType(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_FOOD_TYPE);
             case EN:
@@ -540,7 +554,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getTags(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_TAGS);
             case EN:
@@ -559,7 +574,8 @@ public class MySugrCSVValidator extends CSVValidator {
      * @throws IOException If the file could not be opened.
      */
     public String getNotes(final CsvReader creader) throws IOException {
-        switch (languageSelection) {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(MY_SUGR_HEADER_DE_NOTE);
             case EN:
