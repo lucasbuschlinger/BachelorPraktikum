@@ -108,7 +108,7 @@ public class GoogleFitCSVValidator extends CSVValidator {
      * The composed English header used in Google fit CSV data.
      */
 
-    public static final String[] HEADER_EN = {
+    private static final String[] HEADER_EN = {
             HEADER_START_TIME_EN, HEADER_END_TIME_EN,
             // Files without these values don't contain these headers ... --> json ?
             //        HEADER_BIKE_VALUE_EN,
