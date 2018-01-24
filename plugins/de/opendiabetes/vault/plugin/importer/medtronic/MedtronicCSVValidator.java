@@ -221,18 +221,18 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
      */
     public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException {
-        String date;
-        String time;
+        String dateString;
+        String timeString;
         Language language = getLanguageSelection();
         switch (language) {
             case DE:
-                date = creader.get(CARELINK_HEADER_DE_DATE).trim();
-                time = creader.get(CARELINK_HEADER_DE_TIME).trim();
-                return TimestampUtils.createCleanTimestamp(date + " " + time, TIME_FORMAT_DE);
+                dateString = creader.get(CARELINK_HEADER_DE_DATE).trim();
+                timeString = creader.get(CARELINK_HEADER_DE_TIME).trim();
+                return TimestampUtils.createCleanTimestamp(dateString + " " + timeString, TIME_FORMAT_DE);
             case EN:
-                date = creader.get(CARELINK_HEADER_EN_DATE).trim();
-                time = creader.get(CARELINK_HEADER_EN_TIME).trim();
-                return TimestampUtils.createCleanTimestamp(date + " " + time, TIME_FORMAT_EN);
+                dateString = creader.get(CARELINK_HEADER_EN_DATE).trim();
+                timeString = creader.get(CARELINK_HEADER_EN_TIME).trim();
+                return TimestampUtils.createCleanTimestamp(dateString + " " + timeString, TIME_FORMAT_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();

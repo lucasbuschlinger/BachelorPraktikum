@@ -59,7 +59,7 @@ public class GoogleFitCSVValidator extends CSVValidator {
      */
     private static final String HEADER_MAX_SPEED_VALUE_DE = "Maximale Geschwindigkeit (m/s)";
     /**
-     * Time format used Google Fit CSV data.
+     * Time format used in German Google Fit CSV data.
      */
     private static final String TIME_FORMAT_DE = "yyyy-MM-dd HHmmss.SSSZ";        //01:00:00.000+01:00
 
@@ -68,7 +68,7 @@ public class GoogleFitCSVValidator extends CSVValidator {
      */
     private static final String[] HEADER_DE = {
             HEADER_START_TIME_DE, HEADER_END_TIME_DE,
-            // files without this values doesn't contain this headers ... --> json ?
+            // Files without these values don't contain these headers --> json ?
             //        HEADER_BIKE_VALUE_DE,
             //        HEADER_WALK_VALUE_DE,
             //        HEADER_RUN_VALUE_DE,
@@ -100,7 +100,7 @@ public class GoogleFitCSVValidator extends CSVValidator {
      */
     private static final String HEADER_MAX_SPEED_VALUE_EN = "Max speed (m/s)";
     /**
-     * Time format used Google Fit CSV data.
+     * Time format used in English Google Fit CSV data.
      */
     private static final String TIME_FORMAT_EN = "yyyy-MM-dd HHmmss.SSSZ";
 
@@ -110,7 +110,7 @@ public class GoogleFitCSVValidator extends CSVValidator {
 
     public static final String[] HEADER_EN = {
             HEADER_START_TIME_EN, HEADER_END_TIME_EN,
-            // files without this values doesn't contain this headers ... --> json ?
+            // Files without these values don't contain these headers ... --> json ?
             //        HEADER_BIKE_VALUE_EN,
             //        HEADER_WALK_VALUE_EN,
             //        HEADER_RUN_VALUE_EN,

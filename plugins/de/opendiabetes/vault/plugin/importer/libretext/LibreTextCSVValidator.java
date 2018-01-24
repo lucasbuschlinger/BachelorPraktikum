@@ -47,11 +47,11 @@ public class LibreTextCSVValidator extends CSVValidator {
      */
     private static final String LIBRE_HEADER_DE_BLOOD    = "Teststreifen-Blutzucker (mg/dL)";
     /**
-     * The header field of German English LibreText CSV data which contains the timestamp.
+     * The header field of German LibreText CSV data which contains the timestamp.
      */
     private static final String LIBRE_HEADER_DE_TIME     = "Uhrzeit";
     /**
-     * The header field of German LibreTextCSV data which contains the type of the entry.
+     * The header field of German LibreText CSV data which contains the type of the entry.
      */
     private static final String LIBRE_HEADER_DE_TYPE     = "Art des Eintrags";
     /**

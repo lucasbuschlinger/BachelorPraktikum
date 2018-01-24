@@ -35,75 +35,75 @@ import java.util.logging.Logger;
 public class MySugrCSVValidator extends CSVValidator {
 
     /**
-     * Pattern to indicate german date header.
+     * Pattern to indicate German date header.
      */
     private static final String MY_SUGR_HEADER_DE_DATE = "Datum";
     /**
-     * Pattern to indicate german time header.
+     * Pattern to indicate German time header.
      */
     private static final String MY_SUGR_HEADER_DE_TIME = "Zeit";
     /**
-     * Pattern to indicate german insulin injection meal units header.
+     * Pattern to indicate German insulin injection meal units header.
      */
     private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL = "Bolus (Mahlzeit)";
     /**
-     * Pattern to indicate german insulin injection correction units header.
+     * Pattern to indicate German insulin injection correction units header.
      */
     private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_CORRECTION = "Bolus (Korrektur)";
     /**
-     * Pattern to indicate german blood glucose measurement header.
+     * Pattern to indicate German blood glucose measurement header.
      */
     private static final String MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT = "Blutzuckermessung (mg/dL)";
     /**
-     * Pattern to indicate german meal manual header.
+     * Pattern to indicate German meal manual header.
      */
     private static final String MY_SUGR_HEADER_DE_MEAL_MANUAL = "Mahlzeitkohlenhydrate (Gramm, Faktor 1)";
     /**
-     * Pattern to indicate german basal injection units header.
+     * Pattern to indicate German basal injection units header.
      */
     private static final String MY_SUGR_HEADER_DE_BASAL_INJECTION_UNITS = "Basalinjektionseinheiten";
     /**
-     * Pattern to indicate german bolus header.
+     * Pattern to indicate German bolus header.
      */
     private static final String MY_SUGR_HEADER_DE_BOLUS = "Bolus Normal"; //self created one, for saving entries in Vault
     /**
-     * Pattern to indicate german exercise header.
+     * Pattern to indicate German exercise header.
      */
     private static final String MY_SUGR_HEADER_DE_EXERCISE = "Aktivitätsdauer (Minuten)";
     /**
-     * Pattern to indicate german exercise intensity header.
+     * Pattern to indicate German exercise intensity header.
      */
     private static final String MY_SUGR_HEADER_DE_EXERCISE_INTENSITY = "Aktivitätsintensität (1: Bequem, 2: Normal, 3: Anstrengend)";
     /**
-     * Pattern to indicate german ketones header.
+     * Pattern to indicate German ketones header.
      */
     private static final String MY_SUGR_HEADER_DE_KETONES = "Ketone";
     /**
-     * Pattern to indicate german insulin injection pen units header.
+     * Pattern to indicate German insulin injection pen units header.
      */
     private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PEN = "Bolusinjektionseinheiten (Pen)";
     /**
-     * Pattern to indicate german insulin injection pump units header.
+     * Pattern to indicate German insulin injection pump units header.
      */
     private static final String MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_PUMP = "Bolusinjektionseinheiten (Pump)";
     /**
-     * Pattern to indicate german blood pressure header.
+     * Pattern to indicate German blood pressure header.
      */
     private static final String MY_SUGR_HEADER_DE_BLOOD_PRESSURE = "Blutdruck";
     /**
-     * Pattern to indicate german meal descriptions header.
+     * Pattern to indicate German meal descriptions header.
      */
     private static final String MY_SUGR_HEADER_DE_MEAL_DESCRIPTIONS = "Mahlzeitbeschreibung";
     /**
-     * Pattern to indicate german food type header.
+     * Pattern to indicate German food type header.
      */
     private static final String MY_SUGR_HEADER_DE_FOOD_TYPE = "Art der Nahrung";
     /**
-     * Pattern to indicate german tags header.
+     * Pattern to indicate German tags header.
      */
     private static final String MY_SUGR_HEADER_DE_TAGS = "Tags";
     /**
-     * Pattern to indicate german note header.
+     * Pattern to indicate German note header.
      */
     private static final String MY_SUGR_HEADER_DE_NOTE = "Notiz";
     /**
@@ -113,75 +113,75 @@ public class MySugrCSVValidator extends CSVValidator {
 
 
     /**
-     * Pattern to indicate english date header.
+     * Pattern to indicate English date header.
      */
     private static final String MY_SUGR_HEADER_EN_DATE = "Date";
     /**
-     * Pattern to indicate english time header.
+     * Pattern to indicate English time header.
      */
     private static final String MY_SUGR_HEADER_EN_TIME = "Time";
     /**
-     * Pattern to indicate english insulin injection meal units header.
+     * Pattern to indicate English insulin injection meal units header.
      */
     private static final String MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_MEAL = "Insulin (Meal)";
     /**
-     * Pattern to indicate english insulin injection correction units header.
+     * Pattern to indicate English insulin injection correction units header.
      */
     private static final String MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_CORRECTION = "Insulin (Correction)";
     /**
-     * Pattern to indicate english blood glucose measurement header.
+     * Pattern to indicate English blood glucose measurement header.
      */
     private static final String MY_SUGR_HEADER_EN_BLOOD_GLUCOSE_MEASUREMENT = "Blood Glucose Measurement (mg/dL)";
     /**
-     * Pattern to indicate english meal manual header.
+     * Pattern to indicate English meal manual header.
      */
     private static final String MY_SUGR_HEADER_EN_MEAL_MANUAL = "Meal Carbohydrates (Grams, Factor 1)";
     /**
-     * Pattern to indicate english basal injection units header.
+     * Pattern to indicate English basal injection units header.
      */
     private static final String MY_SUGR_HEADER_EN_BASAL_INJECTION_UNITS = "Basal Injection Units";
     /**
-     * Pattern to indicate english bolus header.
+     * Pattern to indicate English bolus header.
      */
     private static final String MY_SUGR_HEADER_EN_BOLUS = "Bolus Normal"; //self created one, for saving entries in Vault
     /**
-     * Pattern to indicate english exercises header.
+     * Pattern to indicate English exercises header.
      */
     private static final String MY_SUGR_HEADER_EN_EXERCISE = "Activity Duration (Minutes)";
     /**
-     * Pattern to indicate english exercise intensity header.
+     * Pattern to indicate English exercise intensity header.
      */
     private static final String MY_SUGR_HEADER_EN_EXERCISE_INTENSITY = "Activity Intensity (1: Cosy, 2: Ordinary, 3: Demanding)";
     /**
-     * Pattern to indicate english ketones header.
+     * Pattern to indicate English ketones header.
      */
     private static final String MY_SUGR_HEADER_EN_KETONES = "Ketones";
     /**
-     * Pattern to indicate english insulin injection pen units header.
+     * Pattern to indicate English insulin injection pen units header.
      */
     private static final String MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_PEN = "Insulin Injection Units (Pen)";
     /**
-     * Pattern to indicate english insulin injection pump units header.
+     * Pattern to indicate English insulin injection pump units header.
      */
     private static final String MY_SUGR_HEADER_EN_INSULIN_INJECTION_UNITS_PUMP = "Insulin Injection Units (pump)";
     /**
-     * Pattern to indicate english blood pressure.
+     * Pattern to indicate English blood pressure.
      */
     private static final String MY_SUGR_HEADER_EN_BLOOD_PRESSURE = "Blood pressure";
     /**
-     * Pattern to indicate english meal descriptions header.
+     * Pattern to indicate English meal descriptions header.
      */
     private static final String MY_SUGR_HEADER_EN_MEAL_DESCRIPTIONS = "Meal Descriptions";
     /**
-     * Pattern to indicate english food type header.
+     * Pattern to indicate English food type header.
      */
     private static final String MY_SUGR_HEADER_EN_FOOD_TYPE = "Food type";
     /**
-     * Pattern to indicate english tags header.
+     * Pattern to indicate English tags header.
      */
     private static final String MY_SUGR_HEADER_EN_TAGS = "Tags";
     /**
-     * Pattern to indicate english note header.
+     * Pattern to indicate English note header.
      */
     private static final String MY_SUGR_HEADER_EN_NOTE = "Note";
     /**
