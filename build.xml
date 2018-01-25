@@ -112,6 +112,18 @@
         <pathelement location="${basedir}/lib/sqltool.jar"/>
     </path>
 
+    <path id="library.jsoup.classpath">
+        <pathelement location="${basedir}/lib/jsoup-1.10.2.jar"/>
+    </path>
+
+    <path id="library.openqa-selenium.classpath">
+        <pathelement location="${basedir}/lib/client-combined-3.4.0-nodeps.jar"/>
+    </path>
+
+    <path id="library.commons-cli.classpath">
+        <pathelement location="${basedir}/lib/commons-cli-1.4.jar"/>
+    </path>
+
     <path id="library.junit.classpath">
         <pathelement location="${basedir}/testlib/junit-4.12.jar"/>
     </path>
@@ -166,6 +178,9 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -175,6 +190,9 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
@@ -185,6 +203,9 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
@@ -195,6 +216,9 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
