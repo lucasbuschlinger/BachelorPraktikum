@@ -29,6 +29,7 @@ import java.util.logging.Logger;
  * Validator for Medtronic data.
  *
  * @author Jens Heuschkel
+ * @author Lucas Buschlinger
  */
 public class MedtronicCSVValidator extends CSVValidator {
 
@@ -71,10 +72,48 @@ public class MedtronicCSVValidator extends CSVValidator {
     };
 
     /**
+     * Field of the English Medtronic CSV headers containing the date.
+     */
+    private static final String CARELINK_HEADER_EN_DATE = "Date";
+    /**
+     * Field of the English Medtronic CSV headers containing the time.
+     */
+    private static final String CARELINK_HEADER_EN_TIME = "Time";
+    /**
+     * Field of the English Medtronic CSV headers containing the timestamp.
+     */
+    private static final String CARELINK_HEADER_EN_TIMESTAMP = "Timestamp";
+    /**
+     * Field of the English Medtronic CSV headers containing the type.
+     */
+    private static final String CARELINK_HEADER_EN_TYPE = "Raw-Type";
+    /**
+     * Field of the English Medtronic CSV headers containing the values.
+     */
+    private static final String CARELINK_HEADER_EN_VALUE = "Raw-Values";
+    /**
+     * Field of the English Medtronic CSV headers containing the sequential number.
+     */
+    private static final String CARELINK_HEADER_EN_SEQ_NUM = "Raw-Seq Num";
+    /**
+     * The time format used in Medtronic CSV data.
+     */
+    private static final String TIME_FORMAT_EN = "MM/dd/yy hh:mm a";
+
+    /**
+     * The composed header used in Medtronic CSV data.
+     */
+    private static final String[] CARELINK_HEADER_EN = {
+            CARELINK_HEADER_EN_DATE, CARELINK_HEADER_EN_TIME,
+            CARELINK_HEADER_EN_TIMESTAMP, CARELINK_HEADER_EN_TYPE,
+            CARELINK_HEADER_EN_VALUE
+    };
+
+    /**
      * Constructor.
      */
     public MedtronicCSVValidator() {
-        super(CARELINK_HEADER_DE, CARELINK_HEADER_DE);
+        super(CARELINK_HEADER_DE, CARELINK_HEADER_EN);
     }
 
     /**
@@ -83,14 +122,14 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @param creader The CSV reader to use.
      * @return The raw values.
      * @throws IOException Thrown when reading the data goes wrong.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public String getRawValues(final CsvReader creader) throws IOException, UnsupportedOperationException {
-        switch (languageSelection) {
+    public String getRawValues(final CsvReader creader) throws IOException {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_VALUE);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(CARELINK_HEADER_EN_VALUE);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -103,14 +142,14 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @param creader The CSV reader to use.
      * @return The raw sequential number.
      * @throws IOException Thrown when reading the data goes wrong.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public String getRawSeqNum(final CsvReader creader) throws IOException, UnsupportedOperationException {
-        switch (languageSelection) {
+    public String getRawSeqNum(final CsvReader creader) throws IOException {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_SEQ_NUM);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(CARELINK_HEADER_EN_SEQ_NUM);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -123,14 +162,14 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @param creader The CSV reader to use.
      * @return The type.
      * @throws IOException Thrown when reading the data goes wrong.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public String getCarelinkTypeString(final CsvReader creader) throws IOException, UnsupportedOperationException {
-        switch (languageSelection) {
+    public String getCarelinkTypeString(final CsvReader creader) throws IOException {
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
                 return creader.get(CARELINK_HEADER_DE_TYPE).trim();
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                return creader.get(CARELINK_HEADER_EN_TYPE).trim();
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -155,15 +194,17 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @return The timestamp.
      * @throws IOException Thrown when reading the data goes wrong.
      * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public Date getTimestamp(final CsvReader creader) throws IOException, ParseException, UnsupportedOperationException {
-        switch (languageSelection) {
+    public Date getTimestamp(final CsvReader creader) throws IOException, ParseException {
+        String timeString;
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
-                String timeString = creader.get(CARELINK_HEADER_DE_TIMESTAMP).trim();
+                timeString = creader.get(CARELINK_HEADER_DE_TIMESTAMP).trim();
                 return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_DE);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                timeString = creader.get(CARELINK_HEADER_EN_TIMESTAMP).trim();
+                return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -178,17 +219,20 @@ public class MedtronicCSVValidator extends CSVValidator {
      * @return The timestamp.
      * @throws IOException Thrown when reading the data goes wrong.
      * @throws ParseException Thrown when a {@link TimestampUtils#createCleanTimestamp(String, String)} can not be created.
-     * @throws UnsupportedOperationException Thrown if English header is selected.
      */
-    public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException, UnsupportedOperationException {
-        switch (languageSelection) {
+    public Date getManualTimestamp(final CsvReader creader) throws IOException, ParseException {
+        String dateString;
+        String timeString;
+        Language language = getLanguageSelection();
+        switch (language) {
             case DE:
-                String timeString1 = creader.get(CARELINK_HEADER_DE_DATE).trim();
-                String timeString2 = creader.get(CARELINK_HEADER_DE_TIME).trim();
-                return TimestampUtils.createCleanTimestamp(
-                        timeString1 + " " + timeString2, TIME_FORMAT_DE);
+                dateString = creader.get(CARELINK_HEADER_DE_DATE).trim();
+                timeString = creader.get(CARELINK_HEADER_DE_TIME).trim();
+                return TimestampUtils.createCleanTimestamp(dateString + " " + timeString, TIME_FORMAT_DE);
             case EN:
-                throw new UnsupportedOperationException("Not supported yet.");
+                dateString = creader.get(CARELINK_HEADER_EN_DATE).trim();
+                timeString = creader.get(CARELINK_HEADER_EN_TIME).trim();
+                return TimestampUtils.createCleanTimestamp(dateString + " " + timeString, TIME_FORMAT_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
