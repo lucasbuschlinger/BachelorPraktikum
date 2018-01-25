@@ -391,16 +391,16 @@ public class MySugrCSVValidator extends CSVValidator {
         String tempPump = getInsulinPump(creader);
         int insulinMeal = 0, insulinCorrection = 0, insulinPen = 0, insulinPump = 0;
         if (!tempMeal.isEmpty()) {
-            insulinMeal = Integer.valueOf(tempMeal);
+            insulinMeal = Integer.parseInt(tempMeal);
         }
         if (!tempCorrection.isEmpty()) {
-            insulinCorrection = Integer.valueOf(tempCorrection);
+            insulinCorrection = Integer.parseInt(tempCorrection);
         }
         if (!tempPen.isEmpty()) {
-            insulinPen = Integer.valueOf(tempPen);
+            insulinPen = Integer.parseInt(tempPen);
         }
         if (!tempPump.isEmpty()) {
-            insulinPump = Integer.valueOf(tempPump);
+            insulinPump = Integer.parseInt(tempPump);
         }
         if (insulinMeal + insulinCorrection + insulinPen + insulinPump != 0) {
             return Integer.toString(insulinMeal + insulinCorrection + insulinPen + insulinPump);
