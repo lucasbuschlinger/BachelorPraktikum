@@ -43,7 +43,7 @@ public abstract class CSVValidator {
     /**
      * The selected language.
      */
-    private Language languageSelection;
+    protected Language languageSelection;
 
     /**
      * Constructor for CSV validators.
@@ -105,6 +105,14 @@ public abstract class CSVValidator {
          * English.
          */
         EN
+    }
+
+    /**
+     * Setter for the {@link #languageSelection}.
+     * @param language The language to be set.
+     */
+    public void setLanguageSelection(final Language language) {
+        this.languageSelection = language;
     }
 
     /**
