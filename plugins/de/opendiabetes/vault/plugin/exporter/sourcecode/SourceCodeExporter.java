@@ -65,6 +65,11 @@ public class SourceCodeExporter extends Plugin {
     public static class SourceCodeExporterImplementation extends VaultExporter {
 
         /**
+         * List to hold all the entries queried from the database in {@link #prepareData(List)}
+         * and written on {@link #writeToFile(List)}.
+         */
+        private final List<String> entries = new ArrayList<>();
+        /**
          * Method to get the ListInitCode.
          *
          * @return The List of Entries.
@@ -101,7 +106,7 @@ public class SourceCodeExporter extends Plugin {
                 sb.append("tmpAnnotations = new ArrayList<>();\n");
                 for (VaultEntryAnnotation annotation : data.getAnnotations()) {
                     sb.append("tmpAnnotations.add(new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.");
-                    sb.append(annotation.toString());
+                    sb.append(annotation.getType().toString());
                     if (!annotation.getValue().isEmpty()) {
                         sb.append(").setValue(\"");
                         sb.append(annotation.getValue());
@@ -134,7 +139,6 @@ public class SourceCodeExporter extends Plugin {
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
         protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
-            final List<String> entries = new ArrayList<>(); //super dirty hack, since I am to lazy to update the architecture at the moment
             FileOutputStream fileOutputStream = getFileOutputStream();
             String filePath = null;
 
@@ -161,8 +165,6 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
-            //TODO what does this part from line 164-173 do?
-            final List<String> entries = new ArrayList<>(); //super dirty hack, since I am to lazy to update the architecture at the moment
             List<VaultEntry> tmpValues = queryData();
             if (tmpValues == null || tmpValues.isEmpty()) {
                 return null;

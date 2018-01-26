@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.importer.validator;
+package de.opendiabetes.vault.plugin.importer.vaultodv;
 
 import de.opendiabetes.vault.container.csv.VaultCsvEntry;
+import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 
 /**
  * @author juehv

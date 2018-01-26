@@ -20,10 +20,7 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.container.MedtronicAlertCodes;
-import de.opendiabetes.vault.plugin.container.MedtronicAnnotatedVaultEntry;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -128,7 +125,6 @@ public class MedtronicImporter extends Plugin {
 
         /**
          * Method to extract double entries from the import file.
-         * //TODO add an example
          *
          * @param timestamp The timestamp when the entry was generated.
          * @param type      The of the entry.
@@ -227,8 +223,9 @@ public class MedtronicImporter extends Plugin {
         }
 
         /**
-         * No preprocessing needed.
-         * {@inheritDoc}
+         * Unimplemented preprocessing method as no preprocessing is necessary for Medtronic data.
+         *
+         * @param filePath Path to the file that would be preprocessed.
          */
         @Override
         protected void preprocessingIfNeeded(final String filePath) { }
@@ -259,12 +256,14 @@ public class MedtronicImporter extends Plugin {
             } catch (ParseException ex) {
                 // maybe old format without good timestamp
                 // try again with separated fields
-                timestamp = parseValidator.getManualTimestamp(creader);
+                try {
+                    timestamp = parseValidator.getManualTimestamp(creader);
+                } catch (ParseException exception) {
+                    LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
+                    return null;
+                }
             }
-            if (timestamp == null) { //decided not to remove this code as suggested by FindBugs
-                LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
-                return null;
-            }
+
             String rawValues = parseValidator.getRawValues(creader);
             VaultEntry tmpEntry;
 
@@ -394,9 +393,12 @@ public class MedtronicImporter extends Plugin {
                     if (tmpEntry != null) {
                         MedtronicAlertCodes codeObj = MedtronicAlertCodes.fromCode(
                                 (int) Math.round(tmpEntry.getValue()));
-                        String codeString = codeObj == MedtronicAlertCodes.UNKNOWN_ALERT
-                                ? String.valueOf(Math.round(tmpEntry.getValue()))
-                                : codeObj.toString();
+                        String codeString;
+                        if (codeObj == MedtronicAlertCodes.UNKNOWN_ALERT) {
+                            codeString = String.valueOf(Math.round(tmpEntry.getValue()));
+                        } else {
+                            codeString = codeObj.toString();
+                        }
 
                         switch (codeObj) {
                             case NO_DELIVERY:
@@ -406,7 +408,6 @@ public class MedtronicImporter extends Plugin {
                             case SUSPEND_BEFORE_LOW:
                                 VaultEntry extraTmpEntry = new VaultEntry(VaultEntryType.PUMP_AUTONOMOUS_SUSPEND, timestamp);
                                 retVal.add(extraTmpEntry);
-                                //TODO Fall through?
                             case LOW_WHEN_SUSPENDED:
                             case LOW:
                             case RISE_ALERT:

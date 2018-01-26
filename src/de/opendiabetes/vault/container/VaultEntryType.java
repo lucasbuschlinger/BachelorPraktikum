@@ -20,7 +20,6 @@ package de.opendiabetes.vault.container;
  * This enum defines different vault entry types.
  */
 public enum VaultEntryType {
-    //TODO.
     // Bolus
 // Bolus
     /**
