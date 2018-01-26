@@ -112,6 +112,16 @@
         <pathelement location="${basedir}/lib/sqltool.jar"/>
     </path>
 
+    <path id="library.google.classpath">
+        <pathelement location="${basedir}/lib/google-api-client-1.23.0.jar"/>
+        <pathelement location="${basedir}/lib/google-api-client-jackson2-1.23.0.jar"/>
+        <pathelement location="${basedir}/lib/google-http-client-1.23.0.jar"/>
+        <pathelement location="${basedir}/lib/google-http-client-jackson-1.23.0.jar"/>
+        <pathelement location="${basedir}/lib/google-oauth-client-1.23.0.jar"/>
+        <pathelement location="${basedir}/lib/jackson-core-2.1.3.jar"/>
+        <pathelement location="${basedir}/lib/jsr305-1.3.9.jar"/>
+    </path>
+
     <path id="library.junit.classpath">
         <pathelement location="${basedir}/testlib/junit-4.12.jar"/>
     </path>
@@ -166,6 +176,7 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.google.classpath"/>
     </path>
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -175,6 +186,7 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.google.classpath"/>
     </path>
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
@@ -185,6 +197,7 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.google.classpath"/>
     </path>
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
@@ -195,6 +208,7 @@
         <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
+        <path refid="library.google.classpath"/>
     </path>
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
