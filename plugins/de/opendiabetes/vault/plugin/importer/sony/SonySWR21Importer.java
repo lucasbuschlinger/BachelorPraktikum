@@ -157,7 +157,7 @@ public class SonySWR21Importer extends Plugin {
                     break;
                 case RUN:
                     tmpEntry = new VaultEntry(
-                            VaultEntryType.EXERCISE_RUN,
+                            VaultEntryType.EXERCISE_OTHER,
                             timestamp,
                             durationInMinutes);
                     tmpEntry.addAnnotation(new VaultEntryAnnotation(
@@ -166,7 +166,7 @@ public class SonySWR21Importer extends Plugin {
                     break;
                 case WALK:
                     tmpEntry = new VaultEntry(
-                            VaultEntryType.EXERCISE_WALK,
+                            VaultEntryType.EXERCISE_OTHER,
                             timestamp,
                             durationInMinutes);
                     tmpEntry.addAnnotation(new VaultEntryAnnotation(

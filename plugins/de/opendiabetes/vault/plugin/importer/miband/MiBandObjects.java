@@ -26,6 +26,19 @@ import java.util.List;
  */
 public class MiBandObjects {
 
+    /**
+     * This object will hold the data if there was some of the {@link HeartMonitorData} monitor type.
+     */
+    public List<HeartMonitorData> HeartMonitorData;
+    /**
+     * This object will hold the data if there was some of the {@link SleepIntervalData} interval type.
+     */
+    public List<SleepIntervalData> SleepIntervalData;
+    /**
+     * This object will hold the data if there was some of the {@link Workout} type
+     */
+    public List<Workout> Workout;
+
     /*
      * These are the containers for the actual data in the JSON objects used within MIBand data.
      * The reason these containers have to be used is, that the JSON objects hold arrays of the actual data.
@@ -195,8 +208,8 @@ public class MiBandObjects {
          *
          * @return The average heart rate parsed from String.
          */
-        public double getHeartRateAvg() {
-            return Double.parseDouble(heartRateAvg);
+        public String getHeartRateAvg() {
+            return heartRateAvg;
         }
 
         /**
@@ -205,9 +218,10 @@ public class MiBandObjects {
          *
          * @return The duration of the sleep interval.
          */
-        public long getDuration() {
-            long start = Long.parseLong(startDateTime);
-            long end = Long.parseLong(endDateTime);
+        public double getDuration() {
+            final double millisecPerSec = 1000;
+            double start = Double.parseDouble(startDateTime) / millisecPerSec;
+            double end = Double.parseDouble(endDateTime) / millisecPerSec;
             return end - start;
         }
 
@@ -289,14 +303,17 @@ public class MiBandObjects {
         }
 
         /**
-         * Getter for the duration of the entry.
+         * Getter for the duration of the entry in seconds.
          * Computed by the difference between start and end times of the entry.
+         * As the timestamps are given in UNIX timestamps, the difference between them is in milliseconds.
+         * This gets converted to seconds herein.
          *
          * @return The duration of the workout entry.
          */
-        public long getDuration() {
-            long start = Long.parseLong(startDateTime);
-            long end = Long.parseLong(endDateTime);
+        public double getDuration() {
+            final double millisecPerSec = 1000;
+            double start = Double.parseDouble(startDateTime) / millisecPerSec;
+            double end = Double.parseDouble(endDateTime) / millisecPerSec;
             return end - start;
         }
 
@@ -305,8 +322,8 @@ public class MiBandObjects {
          *
          * @return The average heart rate in the entry.
          */
-        public int getHeartAvg() {
-            return Integer.parseInt(heartAvg);
+        public String getHeartAvg() {
+            return heartAvg;
         }
     }
 }

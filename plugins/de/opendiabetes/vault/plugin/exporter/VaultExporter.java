@@ -251,9 +251,9 @@ public abstract class VaultExporter extends CSVFileExporter {
             case MEAL_MANUAL:
                 csvEntry.setMealValue(entry.getValue());
                 break;
-            case EXERCISE_BICYCLE:
-            case EXERCISE_WALK:
-            case EXERCISE_RUN:
+            case EXERCISE_LOW:
+            case EXERCISE_MID:
+            case EXERCISE_HIGH:
             case EXERCISE_MANUAL:
             case EXERCISE_OTHER:
                 csvEntry.setExerciseTimeValue(entry.getValue());
