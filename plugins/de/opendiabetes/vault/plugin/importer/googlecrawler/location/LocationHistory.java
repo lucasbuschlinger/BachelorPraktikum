@@ -4,33 +4,104 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.maps.model.LatLng;
 import com.google.maps.model.PlacesSearchResult;
+import de.opendiabetes.vault.plugin.importer.googlecrawler.models.ConflictedLocationIdentifier;
+import de.opendiabetes.vault.plugin.importer.googlecrawler.models.ResolvedLocations;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.helper.Constants;
-import de.opendiabetes.vault.plugin.importer.googlecrawler.models.*;
+import de.opendiabetes.vault.plugin.importer.googlecrawler.models.Activity;
+import de.opendiabetes.vault.plugin.importer.googlecrawler.models.Coordinate;
+import de.opendiabetes.vault.plugin.importer.googlecrawler.models.HeartRate;
+import de.opendiabetes.vault.plugin.importer.googlecrawler.models.Location;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.plot.GoogleMapsPlot;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Comparator;
+import java.util.Collections;
 import java.util.stream.Collectors;
 
-public class LocationHistory {
+/**
+ * Manages the users locations, activity and heart rate history.
+ */
+public final class LocationHistory {
+
+    /**
+     * Default search radius for places queries.
+     */
+    private static final int DEFAULT_RADIUS = 50;
+
+    /**
+     * Maximum human possible heart rate.
+     */
+    private static final int MAXIMUM_HUMAN_HEART_RATE = 220;
+
+    /**
+     * The number of milliseconds a day lasts.
+     */
+    private static final int DAY_MILLISECONDS = 86400000;
+
+    /**
+     * Five minutes represented in a unix timestamp.
+     */
+    private static final int UNIX_TIME_FIVE_MINUTES = 300000;
+
+    /**
+     * Twenty minutes represented in a unix timestamp.
+     */
+    private static final int UNIX_TIME_TWENTY_MINUTES = 1200000;
+
+    /**
+     * Singleton instance.
+     */
     private static LocationHistory instance;
 
+    /**
+     * Location history of the user.
+     */
     private Map<Long, List<Coordinate>> locationHistory;
+
+    /**
+     * Activity history of the user.
+     */
     private Map<Long, List<Activity>> activityHistory;
+
+    /**
+     * Heart rate history of the user.
+     */
     private Map<Long, List<HeartRate>> heartRateHistory;
+
+    /**
+     * Training heart rate history of the user.
+     */
     private Map<Long, int[]> trainingHRHistory;
 
+    /**
+     * Conflicted locations of the current user.
+     */
     private transient Map<ConflictedLocationIdentifier, List<PlacesSearchResult>> conflictLocations;
 
+    /**
+     * Age of the user.
+     */
     private int age;
 
+    /**
+     * Constructor.
+     */
     private LocationHistory() {
         locationHistory = new HashMap<>();
         activityHistory = new HashMap<>();
         heartRateHistory = new HashMap<>();
         trainingHRHistory = new HashMap<>();
         conflictLocations = new HashMap<>();
-
 
         File file = new File(System.getProperty("user.home") + Constants.RESOLVED_LOCATION_PATH);
         if (file.exists() && !file.isDirectory()) {
@@ -42,10 +113,12 @@ public class LocationHistory {
                 e.printStackTrace();
             }
         }
-
-
     }
 
+    /**
+     * Returns the singleton instance.
+     * @return singleton instance
+     */
     public static LocationHistory getInstance() {
         if (LocationHistory.instance == null) {
             LocationHistory.instance = new LocationHistory();
@@ -54,88 +127,145 @@ public class LocationHistory {
         return LocationHistory.instance;
     }
 
-    public List<Coordinate> getLocationsPerDay(long day) {
-        day = normalizeDate(day);
-        if (locationHistory.get(day) != null)
-            return locationHistory.get(day);
-        else
+    /**
+     * Returns all location coordinates at the given day.
+     * @param day a valid day as unix timestamp
+     * @return the list of all location coordinates from the history
+     */
+    private List<Coordinate> getLocationsPerDay(final long day) {
+        long normalized = normalizeDate(day);
+        if (locationHistory.get(normalized) != null) {
+            return locationHistory.get(normalized);
+        } else {
             return null;
+        }
     }
 
-    public List<Coordinate> getLocationsForMultipleDays(long start, long end) {
+    /**
+     * Returns all location coordinates within the given timespan.
+     * @param start a valid start day as unix timestamp
+     * @param end a valid end day as unix timestamp
+     * @return the list of all location coordinates from the history
+     */
+    public List<Coordinate> getLocationsForMultipleDays(final long start, final long end) {
         List<Coordinate> returnLocations = new ArrayList<>();
-        start = normalizeDate(start);
-        end = normalizeDate(end);
+        long normalizedStart = normalizeDate(start);
+        long normalizeEnd = normalizeDate(end);
 
         do {
-            if (getLocationsPerDay(start) != null)
-                returnLocations.addAll(getLocationsPerDay(start));
-            start += 86400000;
-        } while (start <= end);
+            if (getLocationsPerDay(normalizedStart) != null) {
+                returnLocations.addAll(getLocationsPerDay(normalizedStart));
+            }
+            normalizedStart += DAY_MILLISECONDS;
+        } while (normalizedStart <= normalizeEnd);
 
         return returnLocations;
     }
 
-    public void addLocations(long day, List<Coordinate> locations) {
+    /**
+     * Adds locations to the history.
+     * @param day a valid day as unix timestamp
+     * @param locations a list of location coordinates to be added
+     */
+    public void addLocations(final long day, final List<Coordinate> locations) {
         this.locationHistory.put(normalizeDate(day), locations);
     }
 
-    public List<Activity> getActivitiesPerDay(long day) {
-        day = normalizeDate(day);
-        if (locationHistory.get(day) != null)
-            return activityHistory.get(day);
-        else
+    /**
+     * Returns all activities at the given day.
+     * @param day a valid day as unix timestamp
+     * @return the list of all activities from the history
+     */
+    private List<Activity> getActivitiesPerDay(final long day) {
+        long normalized = normalizeDate(day);
+        if (locationHistory.get(normalized) != null) {
+            return activityHistory.get(normalized);
+        } else {
             return null;
+        }
     }
 
-    public List<Activity> getActivitiesForMultipleDays(long start, long end) {
+    /**
+     * Returns all activities within the given timespan.
+     * @param start a valid start day as unix timestamp
+     * @param end a valid end day as unix timestamp
+     * @return the list of all activities from the history
+     */
+    public List<Activity> getActivitiesForMultipleDays(final long start, final long end) {
         List<Activity> returnActivities = new ArrayList<>();
-        start = normalizeDate(start);
-        end = normalizeDate(end);
+        long normalizedStart = normalizeDate(start);
+        long normalizedEnd = normalizeDate(end);
 
         do {
-            if (getActivitiesPerDay(start) != null)
-                returnActivities.addAll(getActivitiesPerDay(start));
-            start += 86400000;
-        } while (start <= end);
+            if (getActivitiesPerDay(normalizedStart) != null) {
+                returnActivities.addAll(getActivitiesPerDay(normalizedStart));
+            }
+            normalizedStart += DAY_MILLISECONDS;
+        } while (normalizedStart <= normalizedEnd);
 
         return returnActivities;
     }
 
-
-    public void addHeartRates(long day, List<HeartRate> heartRates) {
+    /**
+     * Adds heart rates to the history.
+     * @param day a valid day as unix timestamp
+     * @param heartRates a list of heart rates to be added
+     */
+    public void addHeartRates(final long day, final List<HeartRate> heartRates) {
         this.heartRateHistory.put(normalizeDate(day), heartRates);
         this.trainingHRHistory.put(normalizeDate(day), determinRestHeartRate(day));
     }
 
-    public List<HeartRate> getHeartRatesPerDay(long day) {
-        day = normalizeDate(day);
-        if (heartRateHistory.get(day) != null)
-            return heartRateHistory.get(day);
-        else
+    /**
+     * Returns all heart rates at the given day.
+     * @param day a valid day as unix timestamp
+     * @return the list of all heart rates from the history
+     */
+    private List<HeartRate> getHeartRatesPerDay(final long day) {
+        long normalized = normalizeDate(day);
+        if (heartRateHistory.get(normalized) != null) {
+            return heartRateHistory.get(normalized);
+        } else {
             return null;
+        }
     }
 
-    public List<HeartRate> getHeartRatesForMultipleDays(long start, long end) {
+    /**
+     * Returns all heart rates within the given timespan.
+     * @param start a valid start day as unix timestamp
+     * @param end a valid end day as unix timestamp
+     * @return the list of all heart rates from the history
+     */
+    public List<HeartRate> getHeartRatesForMultipleDays(final long start, final long end) {
         List<HeartRate> returnHeartRates = new ArrayList<>();
-        start = normalizeDate(start);
-        end = normalizeDate(end);
+        long normalizedStart = normalizeDate(start);
+        long normalizedEnd = normalizeDate(end);
 
         do {
-            if (getHeartRatesPerDay(start) != null)
-                returnHeartRates.addAll(getHeartRatesPerDay(start));
-            start += 86400000;
-        } while (start <= end);
+            if (getHeartRatesPerDay(normalizedStart) != null) {
+                returnHeartRates.addAll(getHeartRatesPerDay(normalizedStart));
+            }
+            normalizedStart += DAY_MILLISECONDS;
+        } while (normalizedStart <= normalizedEnd);
 
         return returnHeartRates;
     }
 
-
-    public void addActivities(long day, List<Activity> activities) {
+    /**
+     * Adds activities to the history.
+     * @param day a valid day as unix timestamp
+     * @param activities a list of activities to be added
+     */
+    public void addActivities(final long day, final List<Activity> activities) {
         this.activityHistory.put(normalizeDate(day), activities);
     }
 
-    private long normalizeDate(long day) {
+    /**
+     * Gets the start of the day for the given unix timestamp.
+     * @param day a valid unix timestamp
+     * @return a normalized date as unix timestamp
+     */
+    private long normalizeDate(final long day) {
         Calendar cal = new GregorianCalendar();
         cal.setTimeInMillis(day);
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -145,7 +275,12 @@ public class LocationHistory {
         return cal.getTimeInMillis();
     }
 
-    private int[] determinRestHeartRate(long day) {
+    /**
+     * Determines the resting heart rate at a given day.
+     * @param day a valid unix timestamp
+     * @return an integer array containing the resting, target and maximum heart rate
+     */
+    private int[] determinRestHeartRate(final long day) {
         int[] hr = new int[3];
         long time = -1;
         List<Activity> activities = getActivityHistory(day);
@@ -153,7 +288,11 @@ public class LocationHistory {
         for (Activity act : activities) {
             Calendar cal = new GregorianCalendar();
             cal.setTimeInMillis(act.getEndTime());
-            if ((act.getActivity() == 72 || act.getActivity() == 109 || act.getActivity() == 110 || act.getActivity() == 111 || act.getActivity() == 112)
+            if ((act.getActivity() == 72
+                    || act.getActivity() == 109
+                    || act.getActivity() == 110
+                    || act.getActivity() == 111
+                    || act.getActivity() == 112)
                     && cal.get(Calendar.HOUR) <= 12) {
                 time = act.getEndTime();
             }
@@ -166,8 +305,9 @@ public class LocationHistory {
             getHeartRateHistory(day).forEach(r -> rates.add(r.getRate()));
         } else {
             getHeartRateHistory(day).forEach(r -> {
-                if (r.getTimestamp() < wakeUpTime + 300000 && r.getTimestamp() > wakeUpTime - 300000)
+                if (r.getTimestamp() < wakeUpTime + UNIX_TIME_FIVE_MINUTES && r.getTimestamp() > wakeUpTime - UNIX_TIME_FIVE_MINUTES) {
                     rates.add(r.getRate());
+                }
             });
         }
 
@@ -184,25 +324,37 @@ public class LocationHistory {
             hr[Constants.REST_HR] = rates.get(pos);
         }
 
-        hr[Constants.MAX_HR] = 220 - age; //getHeartRateHistory(day).stream().max(Comparator.comparing(HeartRate::getRate)).get().getRate();
+        hr[Constants.MAX_HR] = MAXIMUM_HUMAN_HEART_RATE - age;
+        //getHeartRateHistory(day).stream().max(Comparator.comparing(HeartRate::getRate)).get().getRate();
         hr[Constants.TARGET_HR] = hr[Constants.MAX_HR] - hr[Constants.REST_HR];
 
         return hr;
     }
 
+    /**
+     * Populates the activity history by fetching the location names of coordinates
+     * from the Google Places API.
+     */
     public void refineLocations() {
         for (Map.Entry<Long, List<Activity>> entry : activityHistory.entrySet()) {
             List<Coordinate> coords = getLocationsPerDay(entry.getKey());
             for (Activity act : entry.getValue()) {
-                if (act.getActivity() == 3 || act.getActivity() == 4 || act.getActivity() == 72 || act.getActivity() == 109 || act.getActivity() == 110 || act.getActivity() == 111 || act.getActivity() == 45) {
+                if (act.getActivity() == 3
+                        || act.getActivity() == 4
+                        || act.getActivity() == 72
+                        || act.getActivity() == 109
+                        || act.getActivity() == 110
+                        || act.getActivity() == 111
+                        || act.getActivity() == 45) {
                     List<Coordinate> activityCoords = new ArrayList<>();
                     long startTime = act.getStartTime();
                     long endTime = act.getEndTime();
 
 
                     for (Coordinate c : coords) {
-                        if (c.getTimestamp() >= startTime && c.getTimestamp() <= endTime)
+                        if (c.getTimestamp() >= startTime && c.getTimestamp() <= endTime) {
                             activityCoords.add(c);
+                        }
                     }
 
                     if (activityCoords.size() > 0) {
@@ -224,9 +376,10 @@ public class LocationHistory {
                         final double lat = weightedLatitude / weight;
                         final double lng = weightedLongitude / weight;
 
-                        int searchRadius = 50;
-                        if (searchRadius < threshold)
+                        int searchRadius = DEFAULT_RADIUS;
+                        if (searchRadius < threshold) {
                             searchRadius = threshold;
+                        }
 
                         String place = GooglePlaces.getInstance().atOwnPlaces(lat, lng, searchRadius);
 
@@ -243,8 +396,14 @@ public class LocationHistory {
                                     } else {
                                         List<PlacesSearchResult> places = extractLocations(results);
                                         places.sort((PlacesSearchResult o1, PlacesSearchResult o2) -> {
-                                            double o1Distance = GooglePlaces.getInstance().calculateDistance(o1.geometry.location.lat, o1.geometry.location.lng, lat, lng);
-                                            double o2Distance = GooglePlaces.getInstance().calculateDistance(o2.geometry.location.lat, o2.geometry.location.lng, lat, lng);
+                                            double o1Distance = GooglePlaces.getInstance().calculateDistance(
+                                                    o1.geometry.location.lat,
+                                                    o1.geometry.location.lng,
+                                                    lat, lng);
+                                            double o2Distance = GooglePlaces.getInstance().calculateDistance(
+                                                    o2.geometry.location.lat,
+                                                    o2.geometry.location.lng,
+                                                    lat, lng);
                                             return Double.compare(o1Distance, o2Distance);
                                         });
 
@@ -254,30 +413,40 @@ public class LocationHistory {
                                         if (sportRelatedPlaces.size() == 1) {
                                             place = sportRelatedPlaces.get(0).name;
                                         } else {
-                                            Location location = checkForResolvedLocations(lat, lng, searchRadius*2);
+                                            Location location = checkForResolvedLocations(lat, lng, searchRadius * 2);
                                             if (location != null) {
                                                 place = location.name;
                                             } else if (sportRelatedPlaces.size() > 1) {
-                                                conflictLocations.put(new ConflictedLocationIdentifier(act.getStartTime(), new LatLng(lat, lng)), sportRelatedPlaces);
+                                                conflictLocations.put(new ConflictedLocationIdentifier(
+                                                        act.getStartTime(),
+                                                        new LatLng(lat, lng)),
+                                                        sportRelatedPlaces);
                                                 place = "CONFLICT";
                                             } else if (places.size() > 0) {
                                                 results = GooglePlaces.getInstance().getPlaces(lat, lng, searchRadius * 2);
                                                 places = extractLocations(results);
                                                 places.sort((PlacesSearchResult o1, PlacesSearchResult o2) -> {
-                                                    double o1Distance = GooglePlaces.getInstance().calculateDistance(o1.geometry.location.lat, o1.geometry.location.lng, lat, lng);
-                                                    double o2Distance = GooglePlaces.getInstance().calculateDistance(o2.geometry.location.lat, o2.geometry.location.lng, lat, lng);
+                                                    double o1Distance = GooglePlaces.getInstance().calculateDistance(
+                                                            o1.geometry.location.lat,
+                                                            o1.geometry.location.lng,
+                                                            lat, lng);
+                                                    double o2Distance = GooglePlaces.getInstance().calculateDistance(
+                                                            o2.geometry.location.lat,
+                                                            o2.geometry.location.lng,
+                                                            lat, lng);
                                                     return Double.compare(o1Distance, o2Distance);
                                                 });
 
-                                                conflictLocations.put(new ConflictedLocationIdentifier(act.getStartTime(), new LatLng(lat, lng)), places);
+                                                conflictLocations.put(new ConflictedLocationIdentifier(
+                                                        act.getStartTime(),
+                                                        new LatLng(lat, lng)),
+                                                        places);
 
                                                 place = "CONFLICT";
                                             } else {
                                                 place = "UNKNOWN";
                                             }
-
                                         }
-
                                     }
                                 } else {
                                     place = "UNKNOWN";
@@ -286,104 +455,143 @@ public class LocationHistory {
                         }
                         act.setLocation(place);
                     }
-
                     GoogleMapsPlot.getInstance().addLocationNames(act.getLocation());
                 }
             }
         }
     }
 
-    private Location checkForResolvedLocations(double lat, double lng, int searchRadius) {
+    /**
+     * Checks if the given location can be resolved automatically by defining
+     * the location and a search radius for querying the Google Places API.
+     * @param lat a valid latitude
+     * @param lng a valid longitude
+     * @param searchRadius a search radius in meters
+     * @return the resolved location, otherwise null if the location could not be resolved
+     */
+    private Location checkForResolvedLocations(final double lat, final double lng, final int searchRadius) {
         List<Location> locations = ResolvedLocations.getInstance().getLocations();
         if (!locations.isEmpty()) {
             for (Location loc : locations) {
-                if (GooglePlaces.getInstance().calculateDistance(loc.coordinate.lat, loc.coordinate.lng, lat, lng) <= searchRadius)
+                if (GooglePlaces.getInstance().calculateDistance(loc.coordinate.lat, loc.coordinate.lng, lat, lng) <= searchRadius) {
                     return loc;
+                }
             }
         }
 
         return null;
     }
 
-    private List<PlacesSearchResult> isGymOrSportClub(List<PlacesSearchResult> places) {
+    /**
+     * Checks if the given places are gyms or sports club by querying the Google Places API.
+     * @param places a list of places search results
+     * @return the list with search results and boolean value whether the result is a gym or sport club
+     */
+    private List<PlacesSearchResult> isGymOrSportClub(final List<PlacesSearchResult> places) {
         List<PlacesSearchResult> sportRelatedPlaces = new ArrayList<>();
 
         for (PlacesSearchResult sr : places) {
             boolean isSportRelated = false;
             for (String st : sr.types) {
-                if (st.equals("gym"))
+                if (st.equals("gym")) {
                     isSportRelated = true;
+                }
             }
 
-            if (isSportRelated)
+            if (isSportRelated) {
                 sportRelatedPlaces.add(sr);
+            }
         }
 
         for (PlacesSearchResult sr : places) {
-            if (sr.name.toLowerCase().contains("verein") || sr.name.toLowerCase().contains("club") || sr.name.toLowerCase().contains("bad"))
+            if (sr.name.toLowerCase().contains("verein")
+                    || sr.name.toLowerCase().contains("club")
+                    || sr.name.toLowerCase().contains("bad")) {
                 sportRelatedPlaces.add(sr);
+            }
         }
-
 
         return sportRelatedPlaces;
     }
 
-
-    private List<PlacesSearchResult> extractLocations(PlacesSearchResult[] places) {
+    /**
+     * Filters the real locations from the given places search results.
+     * @param places a list of places search results
+     * @return the filtered search results list
+     */
+    private List<PlacesSearchResult> extractLocations(final PlacesSearchResult[] places) {
         List<PlacesSearchResult> results = new ArrayList<>();
 
         for (PlacesSearchResult sr : places) {
             boolean isPolitical = false;
             for (String st : sr.types) {
-                if (st.toLowerCase().equals("political") || st.toLowerCase().equals("route") ||
-                        st.toLowerCase().equals("locality") || st.toLowerCase().equals("street_address"))
+                if (st.toLowerCase().equals("political")
+                        || st.toLowerCase().equals("route")
+                        || st.toLowerCase().equals("locality")
+                        || st.toLowerCase().equals("street_address")) {
                     isPolitical = true;
+                }
             }
 
-            if (!isPolitical)
+            if (!isPolitical) {
                 results.add(sr);
+            }
         }
 
         return results;
     }
 
+    /**
+     * Determines how intense the activity was by analyzing the heart comparing to previous data.
+     */
     public void determinActivityIntensity() {
         for (Map.Entry<Long, List<Activity>> entry : activityHistory.entrySet()) {
             long day = entry.getKey();
             for (Activity act : entry.getValue()) {
-                if (act.getEndTime() - act.getStartTime() >= 1200000) {
+                if (act.getEndTime() - act.getStartTime() >= UNIX_TIME_TWENTY_MINUTES) {
                     act.setHeartRate(getMinMaxAvgHeartRate(act.getStartTime(), act.getEndTime()));
                     if (act.getHeartRate()[Constants.MIN_HR] != -1) {
                         int[] trainingHR = trainingHRHistory.get(day);
+                        int targetHR = trainingHR[Constants.TARGET_HR];
+                        int restHR = trainingHR[Constants.REST_HR];
+                        int averageHR = act.getHeartRate()[Constants.AVG_HR];
 
-                        if ((0.6 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] <= act.getHeartRate()[Constants.AVG_HR] && (0.7 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] > act.getHeartRate()[Constants.AVG_HR])
+                        if ((0.6 * targetHR) + restHR <= averageHR && (0.7 * targetHR) + restHR > averageHR) {
                             act.setIntensity(1);
-                        else if ((0.7 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] <= act.getHeartRate()[Constants.AVG_HR] && (0.75 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] >= act.getHeartRate()[Constants.AVG_HR])
+                        } else if ((0.7 * targetHR) + restHR <= averageHR && (0.75 * targetHR) + restHR >= averageHR) {
                             act.setIntensity(2);
-                        else if ((0.75 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] < act.getHeartRate()[Constants.AVG_HR] && (0.84 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] >= act.getHeartRate()[Constants.AVG_HR])
+                        } else if ((0.75 * targetHR) + restHR < averageHR && (0.84 * targetHR) + restHR >= averageHR) {
                             act.setIntensity(3);
-                        else if ((0.84 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] < act.getHeartRate()[Constants.AVG_HR] && (0.88 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] >= act.getHeartRate()[Constants.AVG_HR])
+                        } else if ((0.84 * targetHR) + restHR < averageHR && (0.88 * targetHR) + restHR >= averageHR) {
                             act.setIntensity(4);
-                        else if ((0.88 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] < act.getHeartRate()[Constants.AVG_HR] && (0.92 * trainingHR[Constants.TARGET_HR]) + trainingHR[Constants.REST_HR] >= act.getHeartRate()[Constants.AVG_HR])
+                        } else if ((0.88 * targetHR) + restHR < averageHR && (0.92 * targetHR) + restHR >= averageHR) {
                             act.setIntensity(5);
-                        else
+                        } else {
                             act.setIntensity(0);
+                        }
                     }
                 }
             }
         }
     }
 
-    private int[] getMinMaxAvgHeartRate(long start, long end) {
+    /**
+     * Returns the minimum, maximum and average heart rate from
+     * the heart rate history between the given timestamps.
+     * @param start a valid start day as unix timestamp
+     * @param end a valid end day as unix timestamp
+     * @return an integer array containing the minimum, maximum and average heart rate
+     */
+    private int[] getMinMaxAvgHeartRate(final long start, final long end) {
         int[] heartRate = new int[]{-1, -1, -1};
         List<Integer> rates = new ArrayList<>();
 
         if (getHeartRateHistory(start) != null) {
             getHeartRateHistory(start).forEach(r -> {
-                if (r.getTimestamp() < start && r.getTimestamp() > end)
+                if (r.getTimestamp() < start && r.getTimestamp() > end) {
                     rates.add(r.getRate());
+                }
             });
-
 
             heartRate[Constants.MAX_HR] = rates.stream().max(Comparator.naturalOrder()).get();
             heartRate[Constants.MIN_HR] = rates.stream().min(Comparator.reverseOrder()).get();
@@ -393,15 +601,26 @@ public class LocationHistory {
         return heartRate;
     }
 
-    public void setAge(int age) {
+    /**
+     * Setter for the age param.
+     * @param age the users age
+     */
+    public void setAge(final int age) {
         this.age = age;
     }
 
+    /**
+     * Exports the activity location history to a json file.
+     */
     public void export() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String output = gson.toJson(this);
 
-        File file = new File("activity_location_history_" + activityHistory.keySet().toArray()[0] + "-" + activityHistory.keySet().toArray()[activityHistory.size() - 1] + ".json");
+        File file = new File("activity_location_history_"
+                + activityHistory.keySet().toArray()[0]
+                + "-"
+                + activityHistory.keySet().toArray()[activityHistory.size() - 1]
+                + ".json");
 
         try {
             FileWriter writer = new FileWriter(file, false);
@@ -412,14 +631,28 @@ public class LocationHistory {
         }
     }
 
-    public List<Activity> getActivityHistory(long day) {
+    /**
+     * Getter for the activity history at a specific day.
+     * @param day a valid day unix timestamp.
+     * @return the activities at the given day.
+     */
+    public List<Activity> getActivityHistory(final long day) {
         return activityHistory.get(normalizeDate(day));
     }
 
-    public List<HeartRate> getHeartRateHistory(long day) {
+    /**
+     * Getter for the hear rate history at a specific day.
+     * @param day a valid day unix timestamp.
+     * @return the heart rate at the given day.
+     */
+    public List<HeartRate> getHeartRateHistory(final long day) {
         return heartRateHistory.get(normalizeDate(day));
     }
 
+    /**
+     * Getter for the conflicting activities/locations.
+     * @return the conflicting locations.
+     */
     public Map<ConflictedLocationIdentifier, List<PlacesSearchResult>> getConflictedActivities() {
         return conflictLocations;
     }

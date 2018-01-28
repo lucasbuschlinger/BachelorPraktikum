@@ -16,34 +16,65 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Arrays;
+import java.util.ArrayList;
 
+/**
+ * Class showing the conflicted locations.
+ */
 public class ConflictViewController {
+    /**
+     * List view presenting the conflicted activities.
+     */
     @FXML
     private ListView conflictedActivitiesListView;
 
+    /**
+     * List view presenting the conflicted locations.
+     */
     @FXML
     private ListView conflictedLocationsListView;
 
+    /**
+     * Web view presenting the conflicted locations.
+     */
     @FXML
     private WebView conflictedLocationWebView;
 
+    /**
+     * Text field for conflicted locations.
+     */
     @FXML
     private TextField conflictedLocationTextField;
 
+    /**
+     * List of conflicted activities.
+     */
     private Map<ConflictedLocationIdentifier, List<PlacesSearchResult>> conflictedActivities;
 
+    /**
+     * Constructor.
+     */
     public ConflictViewController() {
     }
 
-
+    /**
+     * Initializes the view with conflicted activities.
+     */
     @FXML
     private void initialize() {
         conflictedActivities = LocationHistory.getInstance().getConflictedActivities();
         setConflictedActivitiesListView();
     }
 
+    /**
+     * Prepares the conflicted activities list view.
+     */
     private void setConflictedActivitiesListView() {
         if (!conflictedActivities.isEmpty()) {
             SimpleDateFormat timeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -56,17 +87,29 @@ public class ConflictViewController {
             conflictedActivitiesListView.setItems(FXCollections.observableList(values));
             conflictedActivitiesListView.getSelectionModel().selectFirst();
             onMouseClickedActivity(null);
-        }else{
+        } else {
             conflictedActivitiesListView.getItems().clear();
         }
     }
 
+    /**
+     * List holding the places search results.
+     */
     private List<PlacesSearchResult> places;
+
+    /**
+     * Selected activity key.
+     */
     private Object selectedActivityKey;
 
+    /**
+     * Event handler for mouse clicks.
+     * @param event - event sent by the mouse click
+     */
     @FXML
-    public void onMouseClickedActivity(MouseEvent event) {
-        selectedActivityKey = (conflictedActivities.keySet().toArray())[conflictedActivitiesListView.getSelectionModel().getSelectedIndex()];
+    private void onMouseClickedActivity(final MouseEvent event) {
+        selectedActivityKey = (conflictedActivities.keySet().toArray())[
+                conflictedActivitiesListView.getSelectionModel().getSelectedIndex()];
         places = conflictedActivities.get(selectedActivityKey);
 
         List<String> values = places.stream().map(p -> p.name).collect(Collectors.toList());
@@ -92,8 +135,12 @@ public class ConflictViewController {
         webEngine.load(urlBuilder.toString());
     }
 
+    /**
+     * Saves the selected locations to the resolved locations instance.
+     * @param event - event sent by the mouse click
+     */
     @FXML
-    public void saveSelectedLocation(MouseEvent event) {
+    public void saveSelectedLocation(final MouseEvent event) {
         if (!conflictedLocationsListView.getSelectionModel().isEmpty()) {
             Location loc = new Location();
             PlacesSearchResult sr = places.get(conflictedLocationsListView.getSelectionModel().getSelectedIndex());
@@ -111,8 +158,12 @@ public class ConflictViewController {
         }
     }
 
+    /**
+     * Saves the entered location to the resolved locations instance.
+     * @param event - event sent by the mouse click
+     */
     @FXML
-    public void saveCustomLabel(MouseEvent event) {
+    public void saveCustomLabel(final MouseEvent event) {
         if (!conflictedLocationTextField.getText().isEmpty()) {
             Location loc = new Location();
             loc.name = conflictedLocationTextField.getText();

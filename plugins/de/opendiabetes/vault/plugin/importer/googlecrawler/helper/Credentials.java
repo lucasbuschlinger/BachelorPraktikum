@@ -21,29 +21,75 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.List;
 
-public class Credentials {
+/**
+ * Class to authenticate against the Google services.
+ */
+public final class Credentials {
 
+    /**
+     * Singleton instance.
+     */
     private static Credentials instance;
+
+    /**
+     * The application name of the Google Application used.
+     */
     private static final String APPLICATION_NAME =
             "BachelorArbeit";
-    private static HttpTransport HTTP_TRANSPORT;
+
+    /**
+     * HttpTransport that holds the cookies etc. from the started connection.
+     */
+    private static HttpTransport httpTransport;
+
+    /**
+     * JsonFactory for parsing json objects needed by Google.
+     */
     private static final JsonFactory JSON_FACTORY =
             JacksonFactory.getDefaultInstance();
-    private static final List<String> SCOPES =
-            Arrays.asList("https://www.googleapis.com/auth/contacts.readonly", "https://www.googleapis.com/auth/plus.login", FitnessScopes.FITNESS_ACTIVITY_READ, FitnessScopes.FITNESS_BODY_READ, FitnessScopes.FITNESS_LOCATION_READ);
-    private static final java.io.File DATA_STORE_DIR = new java.io.File(
-            System.getProperty("user.home"), ".credentials/googleapis.de-nkpyck-googledatagatherer");
-    private static FileDataStoreFactory DATA_STORE_FACTORY;
 
+    /**
+     * Scopes which are requested at authentication.
+     */
+    private static final List<String> SCOPES =
+            Arrays.asList(
+                    "https://www.googleapis.com/auth/contacts.readonly",
+                    "https://www.googleapis.com/auth/plus.login",
+                    FitnessScopes.FITNESS_ACTIVITY_READ,
+                    FitnessScopes.FITNESS_BODY_READ,
+                    FitnessScopes.FITNESS_LOCATION_READ
+            );
+
+    /**
+     * File which holds the access tokens issued by Google after successful authentication.
+     */
+    private static final java.io.File DATA_STORE_DIR = new java.io.File(
+            System.getProperty("user.home"),
+            ".credentials/googleapis.de-nkpyck-googledatagatherer");
+
+    /**
+     * Data storage instance needed by Google.
+     */
+    private static FileDataStoreFactory dataStoreFactory;
+
+    /**
+     * Singleton instance.
+     */
     private static Credential credential;
 
-    private static String APIKey;
+    /**
+     * API Key used for Google Services.
+     */
+    private static String apiKey;
 
 
+    /**
+     * Constructor.
+     */
     private Credentials() {
         try {
-            HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
+            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -51,6 +97,10 @@ public class Credentials {
         }
     }
 
+    /**
+     * Getter for singleton instance.
+     * @return singleton credentials instance
+     */
     public static Credentials getInstance() {
         if (Credentials.instance == null) {
             Credentials.instance = new Credentials();
@@ -58,8 +108,12 @@ public class Credentials {
         return Credentials.instance;
     }
 
-
-    public void authorize(String path) throws IOException {
+    /**
+     * Authorizes the client against the Google services.
+     * @param path - path to the credentials file
+     * @throws IOException - thrown if the credentials file could not be read/written
+     */
+    public void authorize(final String path) throws IOException {
         File file = new File(Paths.get(path).toAbsolutePath().toString());
         // Load client secrets.
         Reader reader = new FileReader(file);
@@ -70,8 +124,8 @@ public class Credentials {
         // Build flow and trigger user authorization request.
         GoogleAuthorizationCodeFlow flow =
                 new GoogleAuthorizationCodeFlow.Builder(
-                        HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
-                        .setDataStoreFactory(DATA_STORE_FACTORY)
+                        httpTransport, JSON_FACTORY, clientSecrets, SCOPES)
+                        .setDataStoreFactory(dataStoreFactory)
                         .setAccessType("offline")
                         .build();
         credential = new AuthorizationCodeInstalledApp(
@@ -79,28 +133,52 @@ public class Credentials {
 
     }
 
+    /**
+     * Getter for http transport.
+     * @return the http transport
+     */
     public HttpTransport getHttpTransport() {
-        return HTTP_TRANSPORT;
+        return httpTransport;
     }
 
+    /**
+     * Getter for JsonFactory.
+     * @return the json factory.
+     */
     public JsonFactory getJsonFactory() {
         return JSON_FACTORY;
     }
 
+    /**
+     * Getter for the application name.
+     * @return the application name string
+     */
     public String getApplicationName() {
         return APPLICATION_NAME;
     }
 
+    /**
+     * Getter for the singleton instance.
+     * @return the singleton instance
+     */
     public Credential getCredential() {
         return credential;
     }
 
+    /**
+     * Getter for the API key.
+     * @return the api key for the google services
+     */
     public String getAPIKey() {
-        return APIKey;
+        return apiKey;
     }
 
-    public void setAPIkey(String APIkey) {
-        Credentials.APIKey = APIkey;
+    /**
+     * Setter for the API key.
+     * @param apiKey the API key used by the google services
+     */
+    public void setAPIkey(final String apiKey) {
+        Credentials.apiKey = apiKey;
     }
 }
 

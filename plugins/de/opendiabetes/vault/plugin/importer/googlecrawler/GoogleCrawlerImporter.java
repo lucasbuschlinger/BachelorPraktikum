@@ -16,7 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.importer.googlecrawler;
 
-
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.fitness.GoogleFitness;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.helper.Credentials;
@@ -56,16 +55,66 @@ public class GoogleCrawlerImporter extends Plugin {
     @Extension
     public static class GoogleFitCrawlerImporterImplementation extends AbstractImporter {
 
+        /**
+         * The minimum default year for gathering data.
+         */
+        private static final int DEFAULT_MIN_YEAR = 2014;
+
+        /**
+         * Path to the file holding the client credentials exported from google.
+         * See https://console.developers.google.com/apis/credentials
+         */
         private String clientSecretPath;
+
+        /**
+         * API Key provided by Google.
+         * See https://console.developers.google.com/apis/credentials
+         */
         private String apiKey;
+
+        /**
+         * Age to calculate the target heart rate.
+         */
         private int age;
+
+        /**
+         * Timeframe that should be looked at.
+         * Either a day dd.mm.yyyy or a longer
+         * period with dd.mm.yyyy-dd.mm.yyyy or write "all" to get all data
+         */
         private String timeframe;
+
+        /**
+         * Further search parameters for sports location,
+         * already included params are: verein, club, sport and bad.
+         */
         private String[] keywordSearchParams;
+
+        /**
+         * Export whole history as json to the current working directory.
+         */
         private boolean exportHistory;
 
+        /**
+         * Plot chosen time period, select a day with dd.mm.yyyy or a timeframe with dd.mm.yyyy-dd.mm.yyyy.
+         */
         private String plotTimeframe;
+
+        /**
+         * Export plot as png to the current working directory.
+         * Property "plotTimeframe" has to be set to use this.
+         */
         private boolean exportPlot;
+
+        /**
+         * View the plot in a separate window.
+         * Property "plotTimeframe" has to be set to use this.
+         */
         private boolean viewPlot;
+
+        /**
+         * View the map in a separate window.
+         */
         private boolean viewMap;
 
         /**
@@ -92,7 +141,7 @@ public class GoogleCrawlerImporter extends Plugin {
          * @param filePath The path to the import file.
          */
         @Override
-        public void setImportFilePath(String filePath) { /* not needed for now */ }
+        public void setImportFilePath(final String filePath) { /* not needed for now */ }
 
         /**
          * Imports the data from the file specified by @see Importer.setImportFilePath().
@@ -126,7 +175,7 @@ public class GoogleCrawlerImporter extends Plugin {
                     Calendar end = new GregorianCalendar();
 
                     if (timeframe.equals("all")) {
-                        start.set(2014, Calendar.JANUARY, 1, 0, 0, 0);
+                        start.set(DEFAULT_MIN_YEAR, Calendar.JANUARY, 1, 0, 0, 0);
                         start.set(Calendar.MILLISECOND, 0);
                         end = GregorianCalendar.getInstance();
 
@@ -136,7 +185,9 @@ public class GoogleCrawlerImporter extends Plugin {
                         String[] help = timeframe.split("-");
 
                         String[] startDate = help[0].split("\\.");
-                        start.set(Integer.parseInt(startDate[2]), Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[0]), 0, 0, 0);
+                        start.set(Integer.parseInt(startDate[2]),
+                                Integer.parseInt(startDate[1]) - 1,
+                                Integer.parseInt(startDate[0]), 0, 0, 0);
                         start.set(Calendar.MILLISECOND, 0);
 
                         String[] endDate = help[1].split("\\.");
@@ -155,18 +206,20 @@ public class GoogleCrawlerImporter extends Plugin {
                 }
 
 
-                if (exportHistory)
+                if (exportHistory) {
                     LocationHistory.getInstance().export();
-
+                }
 
                 if (plotTimeframe != null) {
                     Plotter plot = new Plotter(plotTimeframe);
 
-                    if (exportPlot)
+                    if (exportPlot) {
                         plot.export();
+                    }
 
-                    if (viewPlot)
+                    if (viewPlot) {
                         plot.viewPlot();
+                    }
 
                 }
 
@@ -175,8 +228,9 @@ public class GoogleCrawlerImporter extends Plugin {
                     GoogleMapsPlot.getInstance().openMap();
                 }
 
-                if (!LocationHistory.getInstance().getConflictedActivities().isEmpty())
+                if (!LocationHistory.getInstance().getConflictedActivities().isEmpty()) {
                     ConflictedLocations.main(new String[]{});
+                }
 
             } catch (Exception e) {
                 return false;
@@ -223,6 +277,4 @@ public class GoogleCrawlerImporter extends Plugin {
             return true;
         }
     }
-
-
 }
