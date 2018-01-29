@@ -24,7 +24,6 @@ import de.opendiabetes.vault.plugin.importer.FileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
-import sun.rmi.runtime.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -62,33 +61,44 @@ public class MiBandNotifyImporter extends Plugin {
         private final int defaultHeartRateUpperBound = 250;
         private final int defaultExerciseHeartThresholdMid = 90;
         private final int defaultExerciseHeartThresholdHigh = 130;
+        private final int defaultMaxTimeGapSeconds = 60;
+
+        private final int statusLoadedConfig = 25;
+        private final int statusReadJSON = 50;
+        private final int statusImportedEntries = 75;
+        private final int statusInterpretedEntries = 100;
 
 
-        private int heartRateLowerBound; //= 40;
-        private int heartRateUpperBound; //= 250;
-        private int exerciseHeartThresholdMid; // = 90;
-        private int exerciseHeartThresholdHigh; // = 130;
+        private int heartRateLowerBound;
+        private int heartRateUpperBound;
+        private int exerciseHeartThresholdMid;
+        private int exerciseHeartThresholdHigh;
+        private int maxTimeGapSeconds;
 
-        public MiBandNotifyImporterImplementation(){
+        /**
+         * Constructor.
+         * This also sets the default values for the thresholds between different kinds of exercises and heart rate bounds.
+         */
+        public MiBandNotifyImporterImplementation() {
             this.heartRateLowerBound = defaultHeartRateLowerBound;
             this.heartRateUpperBound = defaultHeartRateUpperBound;
             this.exerciseHeartThresholdMid = defaultExerciseHeartThresholdMid;
             this.exerciseHeartThresholdHigh = defaultExerciseHeartThresholdHigh;
+            this.maxTimeGapSeconds = defaultMaxTimeGapSeconds;
         }
 
         /**
-         * {@inheritDoc}
+         * Preprocessing not needed.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-
-        }
+        protected void preprocessingIfNeeded(final String filePath) { }
 
         /**
          * {@inheritDoc}
          */
         @Override
         protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
+            importedData = new ArrayList<>();
 
            Gson gson = new Gson();
 
@@ -96,28 +106,32 @@ public class MiBandNotifyImporter extends Plugin {
             try {
                 reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             } catch (UnsupportedEncodingException exception) {
-                System.out.println("Can not handle fileInputStream, unsupported encoding!");
+                System.out.println("Can not handle fileInputStream, unsupported encoding (non UTF-8)!");
                 return false;
             }
 
             // Reading the JSON file
             MiBandObjects data = gson.fromJson(reader, MiBandObjects.class);
+            this.notifyStatus(statusReadJSON, "Read JSON file.");
+            if (data.SleepIntervalData == null && data.HeartMonitorData == null && data.Workout == null) {
+                LOG.log(Level.SEVERE, "Got no data from JSON import!");
+                return false;
+            }
 
             // Seeing, whether the data contained heart rate related data
             if (data.HeartMonitorData != null) {
-                importedData = processHeartData(data);
-                return true;
+                importedData.addAll(processHeartData(data));
             }
             if (data.SleepIntervalData != null) {
-                importedData = processSleepData(data);
-                return true;
+                importedData.addAll(processSleepData(data));
             }
             if (data.Workout != null) {
-                importedData = processWorkoutData(data);
-                return true;
+                importedData.addAll(processWorkoutData(data));
             }
-            LOG.log(Level.SEVERE, "Got no data from JSON import.");
-            return false;
+            this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
+            importedData = interpretMiBand(importedData);
+            this.notifyStatus(statusInterpretedEntries, "Interpreted entries and closed gaps");
+            return true;
         }
 
         /**
@@ -127,25 +141,21 @@ public class MiBandNotifyImporter extends Plugin {
         public boolean loadConfiguration(final Properties configuration) {
             if (configuration.containsKey("heartRateLowerBound")) {
                 heartRateLowerBound = Integer.parseInt(configuration.getProperty("heartRateLowerBound"));
-                System.out.println(1);
             }
             if (configuration.containsKey("heartRatUpperBound")) {
                 heartRateUpperBound = Integer.parseInt(configuration.getProperty("heartRateUpperBound"));
-                System.out.println(2);
             }
             if (configuration.containsKey("exerciseHeartThresholdMid")) {
                 exerciseHeartThresholdMid = Integer.parseInt(configuration.getProperty("exerciseHeartThresholdMid"));
-                System.out.println(3);
             }
             if (configuration.containsKey("exerciseHeartThresholdHigh")) {
                 exerciseHeartThresholdHigh = Integer.parseInt(configuration.getProperty("exerciseHeartThresholdHigh"));
-                System.out.println(4);
             }
-            System.out.println(heartRateLowerBound);
-            System.out.println(heartRateUpperBound);
-            System.out.println(exerciseHeartThresholdMid);
-            System.out.println(exerciseHeartThresholdHigh);
+            if (configuration.containsKey("maxTimeGap")) {
+                maxTimeGapSeconds = Integer.parseInt(configuration.getProperty("maxTimeGap"));
+            }
             LOG.log(Level.INFO, "Successfully loaded configuration.");
+            this.notifyStatus(statusLoadedConfig, "Loaded configuration from properties file");
             return true;
         }
 
@@ -164,8 +174,9 @@ public class MiBandNotifyImporter extends Plugin {
                     Date timestamp = new Date(item.getTimestamp());
                     if (heartRate > heartRateLowerBound && heartRate < heartRateUpperBound) {
                         VaultEntry entry = new VaultEntry(VaultEntryType.HEART_RATE, timestamp, heartRate);
-                        //entry.setRawId(); TODO
                         entries.add(entry);
+                    } else {
+                        LOG.log(Level.INFO, String.format("Abnormal heart rate (%.1f BPM) while exercising, skipping entry.", heartRate));
                     }
                 }
             }
@@ -234,6 +245,37 @@ public class MiBandNotifyImporter extends Plugin {
                 entries.add(new VaultEntry(type, timestamp, duration, annotation));
             }
             return entries;
+        }
+
+        /**
+         * This interprets the MiBand data and fills significant gaps between entries by adding copies with different timestamps.
+         * The step that should be present between individual entries should not be larger than specified in {@link #maxTimeGapSeconds}.
+         *
+         * @param entries The imported entries which will get interpreted.
+         * @return The entries with filled gaps.
+         */
+        private List<VaultEntry> interpretMiBand(final List<VaultEntry> entries) {
+            List<VaultEntry> returnList = new ArrayList<>();
+            final int msPerSec = 1000;
+            int timeStep = maxTimeGapSeconds * msPerSec;
+            for (VaultEntry entry : entries) {
+                returnList.add(entry);
+                // No need to fill gaps with heart rate entries
+                if (entry.getType() == VaultEntryType.HEART_RATE) {
+                    continue;
+                }
+                double timespan = entry.getValue();
+                if (timespan > maxTimeGapSeconds) {
+                    VaultEntryType type = entry.getType();
+                    List<VaultEntryAnnotation> annotations = entry.getAnnotations();
+                    int newEntries = (int) (timespan / maxTimeGapSeconds);
+                    for (int i = 1; i < newEntries; i++) {
+                        Date newTimestamp = new Date(entry.getTimestamp().getTime() + i * timeStep);
+                        returnList.add(new VaultEntry(type, newTimestamp, timespan, annotations));
+                    }
+                }
+            }
+            return returnList;
         }
     }
 }

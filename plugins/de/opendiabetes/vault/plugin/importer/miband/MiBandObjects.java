@@ -40,44 +40,6 @@ public class MiBandObjects {
     public List<Workout> Workout;
 
     /*
-     * These are the containers for the actual data in the JSON objects used within MIBand data.
-     * The reason these containers have to be used is, that the JSON objects hold arrays of the actual data.
-     */
-
-    /**
-     * Container for {@link HeartMonitorData}.
-     */
-    public class HeartMonitorDataContainer {
-        /**
-         * This list holds all the entries from a MiBand heart rate logfile.
-         * These files are usually named something like logReportHeart*.bak.
-         */
-        public List<HeartMonitorData> HeartMonitorData;
-    }
-
-    /**
-     * Container for {@link SleepIntervalData}.
-     */
-    public class SleepIntervalDataContainer {
-        /**
-         * This list holds all the entries from a MiBand sleep interval logfile.
-         * These files are usually named something like logReportSleepInterval*.bak.
-         */
-        public List<SleepIntervalData> SleepIntervalData;
-    }
-
-    /**
-     * Container for {@link Workout} data.
-     */
-    public class WorkoutContainer {
-        /**
-         * This list holds all the entries from a MiBand workout logfile.
-         * These files are usually named something like logReportWorkout*.bak.
-         */
-        public List<Workout> Workout;
-    }
-
-    /*
      * The following are the actual data structures used in the MiBand data.
      * If further fields from these structures are needed one only has to implement accessors to it.
      */
@@ -200,7 +162,7 @@ public class MiBandObjects {
          * @return The timestamp of the entry.
          */
         public long getTimestamp() {
-            return Long.parseLong(endDateTime);
+            return Long.parseLong(startDateTime);
         }
 
         /**
@@ -299,7 +261,7 @@ public class MiBandObjects {
          * @return The timestamp of the entry.
          */
         public long getTimestamp() {
-            return Long.parseLong(endDateTime);
+            return Long.parseLong(startDateTime);
         }
 
         /**
