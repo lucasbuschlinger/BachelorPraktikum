@@ -8,51 +8,108 @@ import de.opendiabetes.vault.plugin.importer.googlecrawler.location.GooglePlaces
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Contact model.
+ */
 public class Contact {
+
+    /**
+     * Name of the contact.
+     */
     private String name;
+
+    /**
+     * List of addresses of the contact.
+     */
     private List<Address> address;
+
+    /**
+     * List of coordinates belonging to the address at the same index.
+     */
     private List<LatLng> coordinates;
 
-    public Contact(String name) {
+    /**
+     * Constructor.
+     * @param name the name of the contact
+     */
+    public Contact(final String name) {
         this.name = name;
     }
 
-    public Contact(String name, List<Address> address) {
+    /**
+     * Constructor.
+     * @param name the name of the contact
+     * @param address a list of addresses
+     */
+    public Contact(final String name, final List<Address> address) {
         this.name = name;
         this.address = address;
         this.coordinates = getCoordinatesToAddress(address);
     }
 
-    public Contact(String name, List<Address> address, List<LatLng> coordinates) {
+    /**
+     * Constructor.
+     * @param name the name of the contact
+     * @param address a list of addresses
+     * @param coordinates a list of coordinates belonging to the addresses
+     */
+    public Contact(final String name, final List<Address> address, final List<LatLng> coordinates) {
         this.name = name;
         this.address = address;
         this.coordinates = coordinates;
     }
 
-    private List<LatLng> getCoordinatesToAddress(List<Address> address) {
+    /**
+     * Returns the list of coordinates at which the list of addresses are located.
+     * @param address a list of addresses
+     * @return the list of coordinates
+     */
+    private List<LatLng> getCoordinatesToAddress(final List<Address> address) {
         return address.stream().map(a -> {
             GeocodingResult[] results = GooglePlaces.getInstance().addressToGPS(a.getFormattedValue());
             return new LatLng(results[0].geometry.location.lat, results[0].geometry.location.lng);
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Getter for the name of the contact.
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter for the list of addresses of the contact.
+     * @return a list of addresses
+     */
     public List<Address> getAddress() {
         return address;
     }
 
-    public Address getAddressById(int id){
+    /**
+     * Get a specific address by it's ID.
+     * @param id an ID
+     * @return the address with the given ID from the list of addresses
+     */
+    public Address getAddressById(final int id) {
         return address.get(id);
     }
 
+    /**
+     * Getter for the list of coordinates of the addresses of the contact.
+     * @return a list of coordinates
+     */
     public List<LatLng> getCoordinates() {
         return coordinates;
     }
 
-    public LatLng getCoordinateById(int id){
+    /**
+     * Get a specific coordinate pair by it's ID.
+     * @param id an ID
+     * @return the coordinate with the given ID from the list of coordinates
+     */
+    public LatLng getCoordinateById(final int id) {
         return coordinates.get(id);
     }
 }

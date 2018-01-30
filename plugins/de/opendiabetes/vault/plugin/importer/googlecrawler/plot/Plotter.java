@@ -23,19 +23,55 @@ import org.jfree.data.xy.XYIntervalSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.image.BufferedImage;
+import java.awt.Color;
 import java.io.FileOutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Collections;
+import java.util.Date;
 
+/**
+ * Plotter viewer.
+ */
 public class Plotter extends JFrame {
+
+    /**
+     * Last millisecond of a second.
+     */
+    private static final int LAST_MILLISECOND = 999;
+
+    /**
+     * Default height of the window.
+     */
+    private static final int WINDOW_HEIGHT = 600;
+
+
+    /**
+     * Default width of the window.
+     */
+    private static final int WINDOW_WIDTH = 1000;
+
+    /**
+     * Chart plotter instance.
+     */
     private JFreeChart chart;
+
+    /**
+     * Timeframe that will be plottted.
+     */
     private String timeframe;
 
-
+    /**
+     * Constructor.
+     * @param timeframe timeframe string that will be plotted.
+     */
     public Plotter(String timeframe) {
+
         super(timeframe);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.timeframe = timeframe;
@@ -47,22 +83,44 @@ public class Plotter extends JFrame {
             String[] help = timeframe.split("-");
 
             String[] startDate = help[0].split("\\.");
-            start.set(Integer.parseInt(startDate[2]), Integer.parseInt(startDate[1]) - 1, Integer.parseInt(startDate[0]), 0, 0, 0);
+            start.set(Integer.parseInt(startDate[2]),
+                    Integer.parseInt(startDate[1]) - 1,
+                    Integer.parseInt(startDate[0]),
+                    0,
+                    0,
+                    0);
             start.set(Calendar.MILLISECOND, 0);
 
             String[] endDate = help[1].split("\\.");
-            end.set(Integer.parseInt(endDate[2]), Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[0]), 23, 59, 59);
-            end.set(Calendar.MILLISECOND, 999);
+            end.set(Integer.parseInt(endDate[2]),
+                    Integer.parseInt(endDate[1]) - 1,
+                    Integer.parseInt(endDate[0]),
+                    23,
+                    59,
+                    59);
+            end.set(Calendar.MILLISECOND, LAST_MILLISECOND);
         } else {
             String[] date = timeframe.split("\\.");
-            start.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[0]), 0, 0, 0);
+            start.set(Integer.parseInt(date[2]),
+                    Integer.parseInt(date[1]) - 1,
+                    Integer.parseInt(date[0]),
+                    0,
+                    0,
+                    0);
             start.set(Calendar.MILLISECOND, 0);
 
-            end.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[0]), 23, 59, 59);
-            end.set(Calendar.MILLISECOND, 999);
+            end.set(Integer.parseInt(date[2]),
+                    Integer.parseInt(date[1]) - 1,
+                    Integer.parseInt(date[0]),
+                    23,
+                    59,
+                    59);
+            end.set(Calendar.MILLISECOND, LAST_MILLISECOND);
         }
 
-        List<Activity> activities = LocationHistory.getInstance().getActivitiesForMultipleDays(start.getTimeInMillis(), end.getTimeInMillis());
+        List<Activity> activities = LocationHistory
+                .getInstance()
+                .getActivitiesForMultipleDays(start.getTimeInMillis(), end.getTimeInMillis());
 
         int activityTypeCount = 0;
         List<Integer> seenActivityTypes = new ArrayList<>();
@@ -83,7 +141,7 @@ public class Plotter extends JFrame {
 
         XYIntervalSeriesCollection dataset = new XYIntervalSeriesCollection();
 
-        //Create series. Start and end times are used as y intervals, and the room is represented by the x value
+        // Create series. Start and end times are used as y intervals, and the room is represented by the x value
         XYIntervalSeries[] series = new XYIntervalSeries[activityTypeCount];
         for (int i = 0; i < activityTypeCount; i++) {
             series[i] = new XYIntervalSeries(seenActivityTypes.get(i));
@@ -92,19 +150,38 @@ public class Plotter extends JFrame {
 
         List<XYTextAnnotation> annotations = new ArrayList<>();
 
-        for (Activity act : activities) {//int k = 0; k < activities.size(); k++) {
+        for (Activity act : activities) { // int k = 0; k < activities.size(); k++) {
             int currentActivity = act.getActivity();
+            int activityType = seenActivityTypes.indexOf(currentActivity);
 
-            series[seenActivityTypes.indexOf(currentActivity)].add(seenActivityTypes.indexOf(currentActivity), seenActivityTypes.indexOf(currentActivity) - 0.2, seenActivityTypes.indexOf(currentActivity) + 0.2, act.getStartTime(), act.getStartTime(), act.getEndTime());
+            series[seenActivityTypes.indexOf(currentActivity)].add(
+                    activityType,
+                    activityType - 0.2,
+                    activityType + 0.2,
+                    act.getStartTime(),
+                    act.getStartTime(),
+                    act.getEndTime());
 
             if (!act.getLocation().equals("")) {
-                XYTextAnnotation mark = new XYTextAnnotation(act.getLocation().substring(0, Math.min(15, act.getLocation().length())), seenActivityTypes.indexOf(currentActivity), act.getStartTime() + ((act.getEndTime() - act.getStartTime()) / 2));//seenActivityTypes.indexOf(currentActivity), activities.get(k).getStartTime()+(activities.get(k).getEndTime()/2));
+                XYTextAnnotation mark = new XYTextAnnotation(
+                        act.getLocation().substring(0, Math.min(15, act.getLocation().length())),
+                        seenActivityTypes.indexOf(currentActivity),
+                        act.getStartTime() + ((act.getEndTime() - act.getStartTime()) / 2));
+                // seenActivityTypes.indexOf(currentActivity), activities.get(k).getStartTime()+(activities.get(k).getEndTime()/2));
                 mark.setPaint(Color.black);
                 annotations.add(mark);
             }
 
-            if (act.getIntensity() > -1 && (act.getActivity() != 3 || act.getActivity() != 72 || act.getActivity() != 109 || act.getActivity() != 110 || act.getActivity() != 111)) {
-                XYTextAnnotation mark = new XYTextAnnotation(String.valueOf(act.getIntensity()), seenActivityTypes.indexOf(currentActivity) - 0.25, act.getStartTime() + ((act.getEndTime() - act.getStartTime()) / 2));//seenActivityTypes.indexOf(currentActivity), activities.get(k).getStartTime()+(activities.get(k).getEndTime()/2));
+            if (act.getIntensity() > -1 && (act.getActivity() != 3
+                    || act.getActivity() != 72
+                    || act.getActivity() != 109
+                    || act.getActivity() != 110
+                    || act.getActivity() != 111)) {
+                XYTextAnnotation mark = new XYTextAnnotation(
+                        String.valueOf(act.getIntensity()),
+                        seenActivityTypes.indexOf(currentActivity) - 0.25,
+                        act.getStartTime() + ((act.getEndTime() - act.getStartTime()) / 2));
+                // seenActivityTypes.indexOf(currentActivity), activities.get(k).getStartTime()+(activities.get(k).getEndTime()/2));
                 mark.setPaint(Color.black);
                 annotations.add(mark);
             }
@@ -117,7 +194,8 @@ public class Plotter extends JFrame {
         renderer.setShadowVisible(false);
         renderer.setBarPainter(new StandardXYBarPainter());
 
-        XYPlot plot = new XYPlot();//dataset, new SymbolAxis("Activities", tmp), new DateAxis("Time"), renderer); //new SymbolAxis("Activities", tmp)
+        XYPlot plot = new XYPlot();
+        // dataset, new SymbolAxis("Activities", tmp), new DateAxis("Time"), renderer); //new SymbolAxis("Activities", tmp)
         plot.setOrientation(PlotOrientation.HORIZONTAL);
 
         plot.setDataset(0, dataset);
@@ -128,7 +206,9 @@ public class Plotter extends JFrame {
         plot.mapDatasetToRangeAxis(0, 0);
 
         // plot heart rate data
-        List<HeartRate> heartRates = LocationHistory.getInstance().getHeartRatesForMultipleDays(start.getTimeInMillis(), end.getTimeInMillis());
+        List<HeartRate> heartRates = LocationHistory
+                .getInstance()
+                .getHeartRatesForMultipleDays(start.getTimeInMillis(), end.getTimeInMillis());
         TimeSeries heartRateSeries = new TimeSeries("Heart rate");
         if (heartRates.size() != 0) {
             for (HeartRate hr : heartRates) {
@@ -143,16 +223,20 @@ public class Plotter extends JFrame {
             plot.mapDatasetToRangeAxis(1, 1);
         }
 
-        for (XYTextAnnotation an : annotations)
+        for (XYTextAnnotation an : annotations) {
             plot.addAnnotation(an);
+        }
 
         chart = new JFreeChart(plot);
         chart.removeLegend();
     }
 
+    /**
+     * Views the plot with the plotted data.
+     */
     public void viewPlot() {
         ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(1000, 600));
+        chartPanel.setPreferredSize(new java.awt.Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setContentPane(chartPanel);
 
         this.pack();
@@ -160,10 +244,17 @@ public class Plotter extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Exports the plot to a png file.
+     */
     public void export() {
         try {
-            BufferedImage chartImage = chart.createBufferedImage(1000, 600, null);
-            ImageIO.write(chartImage, "png", new FileOutputStream(System.getProperty("user.dir") + "/plot_" + timeframe + ".png"));
+            BufferedImage chartImage = chart.createBufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, null);
+            ImageIO.write(chartImage, "png", new FileOutputStream(
+                    System.getProperty("user.dir")
+                            + "/plot_"
+                            + timeframe
+                            + ".png"));
         } catch (Exception e) {
             System.err.println(e.toString());
         }

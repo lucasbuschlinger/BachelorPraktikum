@@ -415,7 +415,7 @@ public final class LocationHistory {
                                         } else {
                                             Location location = checkForResolvedLocations(lat, lng, searchRadius * 2);
                                             if (location != null) {
-                                                place = location.name;
+                                                place = location.getName();
                                             } else if (sportRelatedPlaces.size() > 1) {
                                                 conflictLocations.put(new ConflictedLocationIdentifier(
                                                         act.getStartTime(),
@@ -473,7 +473,7 @@ public final class LocationHistory {
         List<Location> locations = ResolvedLocations.getInstance().getLocations();
         if (!locations.isEmpty()) {
             for (Location loc : locations) {
-                if (GooglePlaces.getInstance().calculateDistance(loc.coordinate.lat, loc.coordinate.lng, lat, lng) <= searchRadius) {
+                if (GooglePlaces.getInstance().calculateDistance(loc.getCoordinate().lat, loc.getCoordinate().lng, lat, lng) <= searchRadius) {
                     return loc;
                 }
             }

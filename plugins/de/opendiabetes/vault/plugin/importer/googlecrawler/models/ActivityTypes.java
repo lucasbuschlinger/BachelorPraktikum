@@ -1,11 +1,25 @@
 package de.opendiabetes.vault.plugin.importer.googlecrawler.models;
 
-public class ActivityTypes {
+/**
+ * ActivityTypes model.
+ */
+public final class ActivityTypes {
+
+    /**
+     * Singleton instance.
+     */
     private static ActivityTypes instance;
 
+    /**
+     * Constructor.
+     */
     private ActivityTypes() {
     }
 
+    /**
+     * Returns the singleton instance.
+     * @return singleton instance of the model
+     */
     public static ActivityTypes getInstance() {
         if (ActivityTypes.instance == null) {
             ActivityTypes.instance = new ActivityTypes();
@@ -13,7 +27,12 @@ public class ActivityTypes {
         return ActivityTypes.instance;
     }
 
-    public String getReadableActivityType(int activity) {
+    /**
+     * Returns the human readable representation of the given activity identifier index.
+     * @param activity an activity identifier index
+     * @return the humand readable string of the activity type, otherwise "Unknown"
+     */
+    public String getReadableActivityType(final int activity) {
         switch (activity) {
             case 0:
                 return "In vehicle";
