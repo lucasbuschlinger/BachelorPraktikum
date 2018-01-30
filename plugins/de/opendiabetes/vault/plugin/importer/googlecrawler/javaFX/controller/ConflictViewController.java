@@ -80,7 +80,7 @@ public class ConflictViewController {
             SimpleDateFormat timeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             List<String> values = conflictedActivities.entrySet().stream().map(e -> {
                 Calendar cal = new GregorianCalendar();
-                cal.setTimeInMillis(e.getKey().timestamp);
+                cal.setTimeInMillis(e.getKey().getTimestamp());
                 return timeFormat.format(cal.getTime());
             }).collect(Collectors.toList());
 
@@ -144,8 +144,8 @@ public class ConflictViewController {
         if (!conflictedLocationsListView.getSelectionModel().isEmpty()) {
             Location loc = new Location();
             PlacesSearchResult sr = places.get(conflictedLocationsListView.getSelectionModel().getSelectedIndex());
-            loc.name = sr.name;
-            loc.coordinate = new LatLng(sr.geometry.location.lat, sr.geometry.location.lng);
+            loc.setName(sr.name);
+            loc.setCoordinate(new LatLng(sr.geometry.location.lat, sr.geometry.location.lng));
 
             ResolvedLocations.getInstance().addLocation(loc);
 
@@ -166,8 +166,8 @@ public class ConflictViewController {
     public void saveCustomLabel(final MouseEvent event) {
         if (!conflictedLocationTextField.getText().isEmpty()) {
             Location loc = new Location();
-            loc.name = conflictedLocationTextField.getText();
-            loc.coordinate = ((ConflictedLocationIdentifier) selectedActivityKey).coordinate;
+            loc.setName(conflictedLocationTextField.getText());
+            loc.setCoordinate(((ConflictedLocationIdentifier) selectedActivityKey).getCoordinate());
 
             ResolvedLocations.getInstance().addLocation(loc);
 
