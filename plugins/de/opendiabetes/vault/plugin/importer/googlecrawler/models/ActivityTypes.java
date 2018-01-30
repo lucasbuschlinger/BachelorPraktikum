@@ -5,6 +5,126 @@ package de.opendiabetes.vault.plugin.importer.googlecrawler.models;
  */
 public final class ActivityTypes {
 
+    public static final int IN_VEHICLE = 0;
+    public static final int BIKING = 1;
+    public static final int ON_FOOT = 2;
+    public static final int STILL = 3;
+    public static final int UNKNOWN = 4;
+    public static final int TILTING = 5;
+    public static final int WALKING = 7;
+    public static final int RUNNING = 8;
+    public static final int AEROBICS = 9;
+    public static final int BADMINTON = 10;
+    public static final int BASEBALL = 11;
+    public static final int BASKETBALL = 12;
+    public static final int BIATHLON = 13;
+    public static final int HANDBIKING = 14;
+    public static final int MOUNTAINBIKING = 15;
+    public static final int ROAD_BIKING = 16;
+    public static final int SPINNING = 17;
+    public static final int STATIONARY_BIKING = 18;
+    public static final int UTILITY_BIKING = 19;
+    public static final int BOXING = 20;
+    public static final int CALISTHENICS = 21;
+    public static final int CIRCUIT_TRAINING = 22;
+    public static final int CRICKET = 23;
+    public static final int DANCING = 24;
+    public static final int ELLIPTICAL = 25;
+    public static final int FENCING = 26;
+    public static final int AMERICAN_FOOTBALL = 27;
+    public static final int AUSTRALIAN_FOOTBALL = 28;
+    public static final int SOCCER = 29;
+    public static final int FRISBEE = 30;
+    public static final int GARDENING = 31;
+    public static final int GOLF = 32;
+    public static final int GYMNASTICS = 33;
+    public static final int HANDBALL = 34;
+    public static final int HIKING = 35;
+    public static final int HOCKEY = 36;
+    public static final int HORSEBACK_RIDING = 37;
+    public static final int HOUSEWORK = 38;
+    public static final int JUMPING_ROPE = 39;
+    public static final int KAYAKING = 40;
+    public static final int KETTLEBELL_TRAINING = 41;
+    public static final int KICKBOXING = 42;
+    public static final int KITESURFING = 43;
+    public static final int MARTIAL_ARTS = 44;
+    public static final int MEDITATION = 45;
+    public static final int MIXED_MARTIAL_ARTS = 46;
+    public static final int P90X_EXERCISES = 47;
+    public static final int PARAGLIDING = 48;
+    public static final int PILATES = 49;
+    public static final int POLO = 50;
+    public static final int RACQUETBALL = 51;
+    public static final int ROCK_CLIMBING = 52;
+    public static final int ROWING = 53;
+    public static final int ROWING_MACHINE = 54;
+    public static final int RUGBY = 55;
+    public static final int JOGGING = 56;
+    public static final int RUNNING_ON_SAND = 57;
+    public static final int RUNNING_ON_TREADMILL = 58;
+    public static final int SAILING = 59;
+    public static final int SCUBA_DIVING = 60;
+    public static final int SKATEBOARDING = 61;
+    public static final int SKATING = 62;
+    public static final int CROSS_SKATING = 63;
+    public static final int INLINE_SKATING = 64;
+    public static final int SKIING = 65;
+    public static final int BACKCOUNTRY_SKIING = 66;
+    public static final int CROSSCOUNTRY_SKIING = 67;
+    public static final int DOWNHILL_SKIING = 68;
+    public static final int KITE_SKIING = 69;
+    public static final int ROLLER_SKIING = 70;
+    public static final int SLEDDING = 71;
+    public static final int SLEEPING = 72;
+    public static final int SNOWBOARDING = 73;
+    public static final int SNOWMOBILE = 74;
+    public static final int SNOWSHOEING = 75;
+    public static final int SQUASH = 76;
+    public static final int STAIR_CLIMBING = 77;
+    public static final int STAIR_CLIMBING_MACHINE = 78;
+    public static final int STANDUP_PADDLEBOARDING = 79;
+    public static final int STRENGTH_TRAINING = 80;
+    public static final int SURFING = 81;
+    public static final int SWIMMING = 82;
+    public static final int SWIMMING_SWIMMING_POOL = 83;
+    public static final int SWIMMING_OPEN_WATER = 84;
+    public static final int TABLE_TENNIS = 85;
+    public static final int TEAM_SPORTS = 86;
+    public static final int TENNIS = 87;
+    public static final int TREADMILL = 88;
+    public static final int VOLLEYBALL = 89;
+    public static final int VOLLEYBALL_BEACH = 90;
+    public static final int VOLLEYBALL_INDOOR = 91;
+    public static final int WAKEBOARDING = 92;
+    public static final int WALKING_FITNESS = 93;
+    public static final int NORDING_WALKING = 94;
+    public static final int WALKING_TREADMILL = 95;
+    public static final int WATERPOLO = 96;
+    public static final int WEIGHTLIFTING = 97;
+    public static final int WHEELCHAIR = 98;
+    public static final int WINDSURFING = 99;
+    public static final int YOGA = 100;
+    public static final int ZUMBA = 101;
+    public static final int DIVING = 102;
+    public static final int ERGOMETER = 103;
+    public static final int ICE_SKATING = 104;
+    public static final int INDOOR_SKATING = 105;
+    public static final int CURLING = 106;
+    public static final int OTHER_UNCLASSIFIED = 108;
+    public static final int LIGHT_SLEEP = 109;
+    public static final int DEEP_SLEEP = 110;
+    public static final int REM_SLEEP = 111;
+    public static final int AWAKE_DURING_SLEEP = 112;
+    public static final int CROSSFIT = 113;
+    public static final int HIIT = 114;
+    public static final int INTERVAL_TRAINING = 115;
+    public static final int WALKING_STROLLER = 116;
+    public static final int ELEVATOR = 117;
+    public static final int ESCALATOR = 118;
+    public static final int ARCHERY = 119;
+    public static final int SOFTBALL = 120;
+
     /**
      * Singleton instance.
      */
@@ -34,243 +154,243 @@ public final class ActivityTypes {
      */
     public String getReadableActivityType(final int activity) {
         switch (activity) {
-            case 0:
+            case IN_VEHICLE:
                 return "In vehicle";
-            case 1:
+            case BIKING:
                 return "Biking";
-            case 2:
+            case ON_FOOT:
                 return "On foot";
-            case 3:
+            case STILL:
                 return "Still";
-            case 4:
+            case UNKNOWN:
                 return "Unknown";
-            case 5:
+            case TILTING:
                 return "Tilting";
-            case 7:
+            case WALKING:
                 return "Walking";
-            case 8:
+            case RUNNING:
                 return "Running";
-            case 9:
+            case AEROBICS:
                 return "Aerobics";
-            case 10:
+            case BADMINTON:
                 return "Badminton";
-            case 11:
+            case BASEBALL:
                 return "Baseball";
-            case 12:
+            case BASKETBALL:
                 return "Basketball";
-            case 13:
+            case BIATHLON:
                 return "Biathlon";
-            case 14:
+            case HANDBIKING:
                 return "Handbiking";
-            case 15:
+            case MOUNTAINBIKING:
                 return "Mountainbiking";
-            case 16:
+            case ROAD_BIKING:
                 return "Road biking";
-            case 17:
+            case SPINNING:
                 return "Spinning";
-            case 18:
+            case STATIONARY_BIKING:
                 return "Stationary biking";
-            case 19:
+            case UTILITY_BIKING:
                 return "Utility biking";
-            case 20:
+            case BOXING:
                 return "Boxing";
-            case 21:
+            case CALISTHENICS:
                 return "Calisthenics";
-            case 22:
+            case CIRCUIT_TRAINING:
                 return "Circuit training";
-            case 23:
+            case CRICKET:
                 return "Cricket";
-            case 24:
+            case DANCING:
                 return "Dancing";
-            case 25:
+            case ELLIPTICAL:
                 return "Elliptical";
-            case 26:
+            case FENCING:
                 return "Fencing";
-            case 27:
+            case AMERICAN_FOOTBALL:
                 return "American Football";
-            case 28:
+            case AUSTRALIAN_FOOTBALL:
                 return "Australian Football";
-            case 29:
+            case SOCCER:
                 return "Football (Soccer)";
-            case 30:
+            case FRISBEE:
                 return "Frisbee";
-            case 31:
+            case GARDENING:
                 return "Gardening";
-            case 32:
+            case GOLF:
                 return "Golf";
-            case 33:
+            case GYMNASTICS:
                 return "Gymnastics";
-            case 34:
+            case HANDBALL:
                 return "Handball";
-            case 35:
+            case HIKING:
                 return "Hiking";
-            case 36:
+            case HOCKEY:
                 return "Hockey";
-            case 37:
+            case HORSEBACK_RIDING:
                 return "Horseback riding";
-            case 38:
+            case HOUSEWORK:
                 return "Housework";
-            case 39:
+            case JUMPING_ROPE:
                 return "Jumping rope";
-            case 40:
+            case KAYAKING:
                 return "Kayaking";
-            case 41:
+            case KETTLEBELL_TRAINING:
                 return "Kettlebell training";
-            case 42:
+            case KICKBOXING:
                 return "Kickboxing";
-            case 43:
+            case KITESURFING:
                 return "Kitesurfing";
-            case 44:
+            case MARTIAL_ARTS:
                 return "Martial arts";
-            case 45:
+            case MEDITATION:
                 return "Meditation";
-            case 46:
+            case MIXED_MARTIAL_ARTS:
                 return "Mixed martial arts";
-            case 47:
+            case P90X_EXERCISES:
                 return "P90X exercises";
-            case 48:
+            case PARAGLIDING:
                 return "Paragliding";
-            case 49:
+            case PILATES:
                 return "Pilates";
-            case 50:
+            case POLO:
                 return "Polo";
-            case 51:
+            case RACQUETBALL:
                 return "Racquetball";
-            case 52:
+            case ROCK_CLIMBING:
                 return "Rock climbing";
-            case 53:
+            case ROWING:
                 return "Rowing";
-            case 54:
+            case ROWING_MACHINE:
                 return "Rowing machine";
-            case 55:
+            case RUGBY:
                 return "Rugby";
-            case 56:
+            case JOGGING:
                 return "Jogging";
-            case 57:
+            case RUNNING_ON_SAND:
                 return "Running on sand";
-            case 58:
+            case RUNNING_ON_TREADMILL:
                 return "Running (treadmill)";
-            case 59:
+            case SAILING:
                 return "Sailing";
-            case 60:
+            case SCUBA_DIVING:
                 return "Scuba diving";
-            case 61:
+            case SKATEBOARDING:
                 return "Skateboarding";
-            case 62:
+            case SKATING:
                 return "Skating";
-            case 63:
+            case CROSS_SKATING:
                 return "Cross skating";
-            case 64:
+            case INLINE_SKATING:
                 return "Inline skating (rollerblading)";
-            case 65:
+            case SKIING:
                 return "Skiing";
-            case 66:
+            case BACKCOUNTRY_SKIING:
                 return "Back-country skiing";
-            case 67:
+            case CROSSCOUNTRY_SKIING:
                 return "Cross-country skiing";
-            case 68:
+            case DOWNHILL_SKIING:
                 return "Downhill skiing";
-            case 69:
+            case KITE_SKIING:
                 return "Kite skiing";
-            case 70:
+            case ROLLER_SKIING:
                 return "Roller skiing";
-            case 71:
+            case SLEDDING:
                 return "Sledding";
-            case 72:
+            case SLEEPING:
                 return "Sleeping";
-            case 73:
+            case SNOWBOARDING:
                 return "Snowboarding";
-            case 74:
+            case SNOWMOBILE:
                 return "Snowmobile";
-            case 75:
+            case SNOWSHOEING:
                 return "Snowshoeing";
-            case 76:
+            case SQUASH:
                 return "Squash";
-            case 77:
+            case STAIR_CLIMBING:
                 return "Stair climbing";
-            case 78:
+            case STAIR_CLIMBING_MACHINE:
                 return "Stair-climbing machine";
-            case 79:
+            case STANDUP_PADDLEBOARDING:
                 return "Stand-up paddleboarding";
-            case 80:
+            case STRENGTH_TRAINING:
                 return "Strength training";
-            case 81:
+            case SURFING:
                 return "Surfing";
-            case 82:
+            case SWIMMING:
                 return "Swimming";
-            case 83:
+            case SWIMMING_SWIMMING_POOL:
                 return "Swimming (swimming pool)";
-            case 84:
+            case SWIMMING_OPEN_WATER:
                 return "Swimming (open water)";
-            case 85:
+            case TABLE_TENNIS:
                 return "Table tennis (ping pong)";
-            case 86:
+            case TEAM_SPORTS:
                 return "Team sports";
-            case 87:
+            case TENNIS:
                 return "Tennis";
-            case 88:
+            case TREADMILL:
                 return "Treadmill (walking or running)";
-            case 89:
+            case VOLLEYBALL:
                 return "Volleyball";
-            case 90:
+            case VOLLEYBALL_BEACH:
                 return "Volleyball (beach)";
-            case 91:
+            case VOLLEYBALL_INDOOR:
                 return "Volleyball (indoor)";
-            case 92:
+            case WAKEBOARDING:
                 return "Wakeboarding";
-            case 93:
+            case WALKING_FITNESS:
                 return "Walking (fitness)";
-            case 94:
+            case NORDING_WALKING:
                 return "Nording walking";
-            case 95:
+            case WALKING_TREADMILL:
                 return "Walking (treadmill)";
-            case 96:
+            case WATERPOLO:
                 return "Waterpolo";
-            case 97:
+            case WEIGHTLIFTING:
                 return "Weightlifting";
-            case 98:
+            case WHEELCHAIR:
                 return "Wheelchair";
-            case 99:
+            case WINDSURFING:
                 return "Windsurfing";
-            case 100:
+            case YOGA:
                 return "Yoga";
-            case 101:
+            case ZUMBA:
                 return "Zumba";
-            case 102:
+            case DIVING:
                 return "Diving";
-            case 103:
+            case ERGOMETER:
                 return "Ergometer";
-            case 104:
+            case ICE_SKATING:
                 return "Ice skating";
-            case 105:
+            case INDOOR_SKATING:
                 return "Indoor skating";
-            case 106:
+            case CURLING:
                 return "Curling";
-            case 108:
+            case OTHER_UNCLASSIFIED:
                 return "Other (unclassified fitness activity)";
-            case 109:
+            case LIGHT_SLEEP:
                 return "Light sleep";
-            case 110:
+            case DEEP_SLEEP:
                 return "Deep sleep";
-            case 111:
+            case REM_SLEEP:
                 return "REM sleep";
-            case 112:
+            case AWAKE_DURING_SLEEP:
                 return "Awake (during sleep cycle)";
-            case 113:
+            case CROSSFIT:
                 return "Crossfit";
-            case 114:
+            case HIIT:
                 return "HIIT";
-            case 115:
+            case INTERVAL_TRAINING:
                 return "Interval Training";
-            case 116:
+            case WALKING_STROLLER:
                 return "Walking (stroller)";
-            case 117:
+            case ELEVATOR:
                 return "Elevator";
-            case 118:
+            case ESCALATOR:
                 return "Escalator";
-            case 119:
+            case ARCHERY:
                 return "Archery";
-            case 120:
+            case SOFTBALL:
                 return "Softball";
             default:
                 return "Unknown";

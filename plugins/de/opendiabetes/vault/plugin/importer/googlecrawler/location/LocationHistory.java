@@ -11,6 +11,7 @@ import de.opendiabetes.vault.plugin.importer.googlecrawler.models.Activity;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.models.Coordinate;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.models.HeartRate;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.models.Location;
+import de.opendiabetes.vault.plugin.importer.googlecrawler.models.ActivityTypes;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.plot.GoogleMapsPlot;
 
 import java.io.File;
@@ -288,11 +289,11 @@ public final class LocationHistory {
         for (Activity act : activities) {
             Calendar cal = new GregorianCalendar();
             cal.setTimeInMillis(act.getEndTime());
-            if ((act.getActivity() == 72
-                    || act.getActivity() == 109
-                    || act.getActivity() == 110
-                    || act.getActivity() == 111
-                    || act.getActivity() == 112)
+            if ((act.getActivity() == ActivityTypes.SLEEPING
+                    || act.getActivity() == ActivityTypes.LIGHT_SLEEP
+                    || act.getActivity() == ActivityTypes.DEEP_SLEEP
+                    || act.getActivity() == ActivityTypes.REM_SLEEP
+                    || act.getActivity() == ActivityTypes.AWAKE_DURING_SLEEP)
                     && cal.get(Calendar.HOUR) <= 12) {
                 time = act.getEndTime();
             }
@@ -339,13 +340,13 @@ public final class LocationHistory {
         for (Map.Entry<Long, List<Activity>> entry : activityHistory.entrySet()) {
             List<Coordinate> coords = getLocationsPerDay(entry.getKey());
             for (Activity act : entry.getValue()) {
-                if (act.getActivity() == 3
-                        || act.getActivity() == 4
-                        || act.getActivity() == 72
-                        || act.getActivity() == 109
-                        || act.getActivity() == 110
-                        || act.getActivity() == 111
-                        || act.getActivity() == 45) {
+                if (act.getActivity() == ActivityTypes.STILL
+                        || act.getActivity() == ActivityTypes.UNKNOWN
+                        || act.getActivity() == ActivityTypes.SLEEPING
+                        || act.getActivity() == ActivityTypes.LIGHT_SLEEP
+                        || act.getActivity() == ActivityTypes.DEEP_SLEEP
+                        || act.getActivity() == ActivityTypes.REM_SLEEP
+                        || act.getActivity() == ActivityTypes.MEDITATION) {
                     List<Coordinate> activityCoords = new ArrayList<>();
                     long startTime = act.getStartTime();
                     long endTime = act.getEndTime();
@@ -472,8 +473,9 @@ public final class LocationHistory {
     private Location checkForResolvedLocations(final double lat, final double lng, final int searchRadius) {
         List<Location> locations = ResolvedLocations.getInstance().getLocations();
         if (!locations.isEmpty()) {
+            GooglePlaces instance = GooglePlaces.getInstance();
             for (Location loc : locations) {
-                if (GooglePlaces.getInstance().calculateDistance(loc.getCoordinate().lat, loc.getCoordinate().lng, lat, lng) <= searchRadius) {
+                if (instance.calculateDistance(loc.getCoordinate().lat, loc.getCoordinate().lng, lat, lng) <= searchRadius) {
                     return loc;
                 }
             }

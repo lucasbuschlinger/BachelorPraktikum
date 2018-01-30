@@ -57,6 +57,21 @@ public class Plotter extends JFrame {
     private static final int WINDOW_WIDTH = 1000;
 
     /**
+     * The last hour of a 24h format day.
+     */
+    private static final int DAY_LAST_HOUR = 23;
+
+    /**
+     * The last minute of an hour.
+     */
+    private static final int LAST_MINUTE = 59;
+
+    /**
+     * The last second of a minute.
+     */
+    private static final int LAST_SECOND = 59;
+
+    /**
      * Chart plotter instance.
      */
     private JFreeChart chart;
@@ -70,8 +85,7 @@ public class Plotter extends JFrame {
      * Constructor.
      * @param timeframe timeframe string that will be plotted.
      */
-    public Plotter(String timeframe) {
-
+    public Plotter(final String timeframe) {
         super(timeframe);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.timeframe = timeframe;
@@ -79,44 +93,33 @@ public class Plotter extends JFrame {
         GregorianCalendar start = new GregorianCalendar();
         GregorianCalendar end = new GregorianCalendar();
 
+        String[] startDate;
+        String[] endDate;
+
         if (timeframe.contains("-")) {
             String[] help = timeframe.split("-");
-
-            String[] startDate = help[0].split("\\.");
-            start.set(Integer.parseInt(startDate[2]),
-                    Integer.parseInt(startDate[1]) - 1,
-                    Integer.parseInt(startDate[0]),
-                    0,
-                    0,
-                    0);
-            start.set(Calendar.MILLISECOND, 0);
-
-            String[] endDate = help[1].split("\\.");
-            end.set(Integer.parseInt(endDate[2]),
-                    Integer.parseInt(endDate[1]) - 1,
-                    Integer.parseInt(endDate[0]),
-                    23,
-                    59,
-                    59);
-            end.set(Calendar.MILLISECOND, LAST_MILLISECOND);
+            startDate = help[0].split("\\.");
+            endDate = help[1].split("\\.");
         } else {
-            String[] date = timeframe.split("\\.");
-            start.set(Integer.parseInt(date[2]),
-                    Integer.parseInt(date[1]) - 1,
-                    Integer.parseInt(date[0]),
-                    0,
-                    0,
-                    0);
-            start.set(Calendar.MILLISECOND, 0);
-
-            end.set(Integer.parseInt(date[2]),
-                    Integer.parseInt(date[1]) - 1,
-                    Integer.parseInt(date[0]),
-                    23,
-                    59,
-                    59);
-            end.set(Calendar.MILLISECOND, LAST_MILLISECOND);
+            startDate = timeframe.split("\\.");
+            endDate = startDate;
         }
+
+        start.set(Integer.parseInt(startDate[2]),
+                Integer.parseInt(startDate[1]) - 1,
+                Integer.parseInt(startDate[0]),
+                0,
+                0,
+                0);
+        start.set(Calendar.MILLISECOND, 0);
+
+        end.set(Integer.parseInt(endDate[2]),
+                Integer.parseInt(endDate[1]) - 1,
+                Integer.parseInt(endDate[0]),
+                DAY_LAST_HOUR,
+                LAST_MINUTE,
+                LAST_SECOND);
+        end.set(Calendar.MILLISECOND, LAST_MILLISECOND);
 
         List<Activity> activities = LocationHistory
                 .getInstance()
@@ -173,10 +176,10 @@ public class Plotter extends JFrame {
             }
 
             if (act.getIntensity() > -1 && (act.getActivity() != 3
-                    || act.getActivity() != 72
-                    || act.getActivity() != 109
-                    || act.getActivity() != 110
-                    || act.getActivity() != 111)) {
+                    || act.getActivity() != ActivityTypes.SLEEPING
+                    || act.getActivity() != ActivityTypes.LIGHT_SLEEP
+                    || act.getActivity() != ActivityTypes.DEEP_SLEEP
+                    || act.getActivity() != ActivityTypes.REM_SLEEP)) {
                 XYTextAnnotation mark = new XYTextAnnotation(
                         String.valueOf(act.getIntensity()),
                         seenActivityTypes.indexOf(currentActivity) - 0.25,
