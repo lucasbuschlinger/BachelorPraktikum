@@ -61,7 +61,7 @@ public class MiBandNotifyImporter extends Plugin {
         private final int defaultHeartRateUpperBound = 250;
         private final int defaultExerciseHeartThresholdMid = 90;
         private final int defaultExerciseHeartThresholdHigh = 130;
-        private final int defaultMaxTimeGapSeconds = 60;
+        private final int defaultMaxTimeGapSeconds = 600;
 
         private final int statusLoadedConfig = 25;
         private final int statusReadJSON = 50;
@@ -257,23 +257,25 @@ public class MiBandNotifyImporter extends Plugin {
         private List<VaultEntry> interpretMiBand(final List<VaultEntry> entries) {
             List<VaultEntry> returnList = new ArrayList<>();
             final int msPerSec = 1000;
-            int timeStep = maxTimeGapSeconds * msPerSec;
-            for (VaultEntry entry : entries) {
-                returnList.add(entry);
+            int len = entries.size();
+            for (int i = 0; i < len - 1; i++) {
+                VaultEntry thisEntry = entries.get(i);
+                VaultEntry nextEntry = entries.get(i + 1);
                 // No need to fill gaps with heart rate entries
-                if (entry.getType() == VaultEntryType.HEART_RATE) {
+                if (thisEntry.getType() == VaultEntryType.HEART_RATE) {
+                    returnList.add(thisEntry);
                     continue;
                 }
-                double timespan = entry.getValue();
-                if (timespan > maxTimeGapSeconds) {
-                    VaultEntryType type = entry.getType();
-                    List<VaultEntryAnnotation> annotations = entry.getAnnotations();
-                    int newEntries = (int) (timespan / maxTimeGapSeconds);
-                    for (int i = 1; i < newEntries; i++) {
-                        Date newTimestamp = new Date(entry.getTimestamp().getTime() + i * timeStep);
-                        returnList.add(new VaultEntry(type, newTimestamp, timespan, annotations));
-                    }
+                double gap = ((nextEntry.getTimestamp().getTime() - thisEntry.getTimestamp().getTime()) / msPerSec) - thisEntry.getValue();
+                if (gap < 0) {
+                    continue;
                 }
+                if (thisEntry.getType().equals(nextEntry.getType()) && gap < maxTimeGapSeconds) {
+                    double newDuration = thisEntry.getValue() + gap + nextEntry.getValue();
+                    thisEntry = new VaultEntry(thisEntry.getType(), thisEntry.getTimestamp(), newDuration, thisEntry.getAnnotations());
+                    i++;
+                }
+                returnList.add(thisEntry);
             }
             return returnList;
         }
