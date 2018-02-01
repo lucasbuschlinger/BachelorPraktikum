@@ -57,22 +57,63 @@ public class MiBandNotifyImporter extends Plugin {
     @Extension
     public static class MiBandNotifyImporterImplementation extends FileImporter {
 
+        /**
+         * The default value for the lower bound of the heart rate.
+         */
         private final int defaultHeartRateLowerBound = 40;
+        /**
+         * The default value for upper bound for the heart rate.
+         */
         private final int defaultHeartRateUpperBound = 250;
+        /**
+         * The default value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_MID}.
+         */
         private final int defaultExerciseHeartThresholdMid = 90;
+        /**
+         * The default value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_HIGH}.
+         */
         private final int defaultExerciseHeartThresholdHigh = 130;
+        /**
+         * The default value for the time span in which entries will be joined together.
+         */
         private final int defaultMaxTimeGapSeconds = 600;
 
+        /**
+         * This status percentage when the config has been loaded.
+         */
         private final int statusLoadedConfig = 25;
+        /**
+         * This status percentage when the JSON file has been read.
+         */
         private final int statusReadJSON = 50;
+        /**
+         * This status percentage when the JSON entries have been imported to VaultEntries.
+         */
         private final int statusImportedEntries = 75;
+        /**
+         * This status percentage when the VaultEntries have been interpreted.
+         */
         private final int statusInterpretedEntries = 100;
 
-
+        /**
+         * The value for the lower bound of the heart rate.
+         */
         private int heartRateLowerBound;
+        /**
+         * The value for the upper bound of the heart rate.
+         */
         private int heartRateUpperBound;
+        /**
+         * The value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_MID}.
+         */
         private int exerciseHeartThresholdMid;
+        /**
+         * The value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_HIGH}.
+         */
         private int exerciseHeartThresholdHigh;
+        /**
+         * The value for the time span in which entries will be joined together.
+         */
         private int maxTimeGapSeconds;
 
         /**
@@ -98,7 +139,7 @@ public class MiBandNotifyImporter extends Plugin {
          */
         @Override
         protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            importedData = new ArrayList<>();
+            List<VaultEntry> imports = new ArrayList<>();
 
            Gson gson = new Gson();
 
@@ -113,24 +154,34 @@ public class MiBandNotifyImporter extends Plugin {
             // Reading the JSON file
             MiBandObjects data = gson.fromJson(reader, MiBandObjects.class);
             this.notifyStatus(statusReadJSON, "Read JSON file.");
-            if (data.SleepIntervalData == null && data.HeartMonitorData == null && data.Workout == null) {
+            if (data.SleepIntervalData == null && data.HeartMonitorData == null && data.Workout == null && data.StepsData == null
+                    && data.Weight == null) {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
                 return false;
             }
 
             // Seeing, whether the data contained heart rate related data
             if (data.HeartMonitorData != null) {
-                importedData.addAll(processHeartData(data));
+                imports = processHeartData(data);
+                this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
             }
             if (data.SleepIntervalData != null) {
-                importedData.addAll(processSleepData(data));
+                imports = processSleepData(data);
+                this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
+                imports = interpretMiBandSleep(imports);
             }
             if (data.Workout != null) {
-                importedData.addAll(processWorkoutData(data));
+                imports = processWorkoutData(data);
+                this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
             }
-            this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
-            importedData = interpretMiBand(importedData);
-            this.notifyStatus(statusInterpretedEntries, "Interpreted entries and closed gaps");
+            if (data.StepsData != null) {
+                imports = processStepsData(data);
+            }
+            if (data.Weight != null) {
+                imports = processWeightData(data);
+            }
+            this.notifyStatus(statusInterpretedEntries, "Interpreted MiBand data");
+            importedData = imports;
             return true;
         }
 
@@ -171,8 +222,8 @@ public class MiBandNotifyImporter extends Plugin {
             for (MiBandObjects.HeartMonitorData item : data.HeartMonitorData) {
                 if (!item.isHidden()) {
                     double heartRate = item.getHeartRate();
-                    Date timestamp = new Date(item.getTimestamp());
                     if (heartRate > heartRateLowerBound && heartRate < heartRateUpperBound) {
+                        Date timestamp = new Date(item.getTimestamp());
                         VaultEntry entry = new VaultEntry(VaultEntryType.HEART_RATE, timestamp, heartRate);
                         entries.add(entry);
                     } else {
@@ -248,24 +299,49 @@ public class MiBandNotifyImporter extends Plugin {
         }
 
         /**
+         * This method is used to convert the JSON/GSON object to {@link VaultEntry}.
+         * In particular this converts steps data.
+         *
+         * @param data The GSON/JSON data.
+         * @return The data as {@link VaultEntry}.
+         */
+        private List<VaultEntry> processStepsData(final MiBandObjects data) {
+            List<VaultEntry> entries = new ArrayList<>();
+            for (MiBandObjects.StepsData item : data.StepsData) {
+                entries.add(new VaultEntry(VaultEntryType.EXERCISE_OTHER, new Date(item.getTimestamp()), item.getSteps()));
+            }
+            return entries;
+        }
+
+        /**
+         * This method is used to convert the JSON/GSON object to {@link VaultEntry}.
+         * In particular this converts weight data.
+         *
+         * @param data The GSON/JSON data.
+         * @return The data as {@link VaultEntry}.
+         */
+        private List<VaultEntry> processWeightData(final MiBandObjects data) {
+            List<VaultEntry> entries = new ArrayList<>();
+            for (MiBandObjects.Weight item : data.Weight) {
+                entries.add(new VaultEntry(VaultEntryType.EXERCISE_OTHER, new Date((item.getTimestamp())), item.getWeight()));
+            }
+            return entries;
+        }
+
+        /**
          * This interprets the MiBand data and fills significant gaps between entries by adding copies with different timestamps.
          * The step that should be present between individual entries should not be larger than specified in {@link #maxTimeGapSeconds}.
          *
          * @param entries The imported entries which will get interpreted.
          * @return The entries with filled gaps.
          */
-        private List<VaultEntry> interpretMiBand(final List<VaultEntry> entries) {
+        private List<VaultEntry> interpretMiBandSleep(final List<VaultEntry> entries) {
             List<VaultEntry> returnList = new ArrayList<>();
             final int msPerSec = 1000;
             int len = entries.size();
             for (int i = 0; i < len - 1; i++) {
                 VaultEntry thisEntry = entries.get(i);
                 VaultEntry nextEntry = entries.get(i + 1);
-                // No need to fill gaps with heart rate entries
-                if (thisEntry.getType() == VaultEntryType.HEART_RATE) {
-                    returnList.add(thisEntry);
-                    continue;
-                }
                 double gap = ((nextEntry.getTimestamp().getTime() - thisEntry.getTimestamp().getTime()) / msPerSec) - thisEntry.getValue();
                 if (gap < 0) {
                     continue;

@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.vault.plugin.importer.miband;
 
+
 import java.util.List;
 
 /**
@@ -35,9 +36,17 @@ public class MiBandObjects {
      */
     public List<SleepIntervalData> SleepIntervalData;
     /**
-     * This object will hold the data if there was some of the {@link Workout} type
+     * This object will hold the data if there was some of the {@link Workout} type.
      */
     public List<Workout> Workout;
+    /**
+     * This object will hold the data if there was some of the {@link StepsData} type.
+     */
+    public List<StepsData> StepsData;
+    /**
+     * This object will hold the data if there was some of the {@link Weight} type.
+     */
+    public List<Weight> Weight;
 
     /*
      * The following are the actual data structures used in the MiBand data.
@@ -80,15 +89,6 @@ public class MiBandObjects {
          * The timestamp of the recorded heart rate.
          */
         private String timestamp;
-
-        /**
-         * Getter for the ID.
-         *
-         * @return Returns the ID from {@link #rush_id}.
-         */
-        public String getID() {
-            return rush_id;
-        }
 
         /**
          * This shows whether the entry is hidden.
@@ -146,15 +146,6 @@ public class MiBandObjects {
          * The type of the sleep interval.
          */
         private String type;
-
-        /**
-         * Getter for the ID.
-         *
-         * @return Returns the ID from {@link #rush_id}.
-         */
-        public String getID() {
-            return rush_id;
-        }
 
         /**
          * Getter for the timestamp, which is hereby defined by the end time of the entry.
@@ -247,15 +238,6 @@ public class MiBandObjects {
         private String xMinutesPause;
 
         /**
-         * Getter for the ID of the entry.
-         *
-         * @return The ID of the entry.
-         */
-        public String getID() {
-            return rush_id;
-        }
-
-        /**
          * Getter for the timestamp, which is hereby defined by the end time of the entry.
          *
          * @return The timestamp of the entry.
@@ -286,6 +268,114 @@ public class MiBandObjects {
          */
         public String getHeartAvg() {
             return heartAvg;
+        }
+    }
+
+    /**
+     * This class resembles the data structure within MiBand step logs.
+     */
+    public class StepsData {
+
+        /**
+         * The ID of the entry.
+         */
+        private String rush_id;
+        /**
+         * The version.
+         */
+        private int rush_version;
+        /**
+         * The timestamp of the data.
+         */
+        private String dateTime;
+        /**
+         * Indicates whether the entry is supposed to be hidden.
+         */
+        private String hidden;
+        /**
+         * Indicates whether the entry is the last for the day.
+         */
+        private String last;
+        /**
+         * Number of steps recorded in this entry.
+         */
+        private String steps;
+        /**
+         * Timestamp of when data has been synced with GoogleFit.
+         * Is 0 if it has not been synced.
+         */
+        private String syncedGFit;
+
+        /**
+         * Getter for the timestamp.
+         * Converts the String to a Long.
+         *
+         * @return The timestamp.
+         */
+        public long getTimestamp() {
+            return Long.parseLong(dateTime);
+        }
+
+        /**
+         * Getter for the steps.
+         * Converts the String to a Double.
+         *
+         * @return The number of steps recorded in this entry.
+         */
+        public int getSteps() {
+            return Integer.parseInt(steps);
+        }
+    }
+
+    /**
+     * This class resembles the data structure within MiBand weight logs.
+     */
+    public class Weight {
+
+        /**
+         * The ID of the entry.
+         */
+        private String rush_id;
+        /**
+         * The version.
+         */
+        private int rush_version;
+        /**
+         * A note for the entry.
+         */
+        private String note;
+        /**
+         * Timestamp of when data has been synced with GoogleFit.
+         * Is 0 if it has not been synced.
+         */
+        private String syncedGFit;
+        /**
+         * The timestamp of the entry.
+         */
+        private String timestamp;
+        /**
+         * The value of the entry.
+         */
+        private String value;
+
+        /**
+         * Getter for the timestamp.
+         * Converts the String to a Long.
+         *
+         * @return The timestamp.
+         */
+        public long getTimestamp() {
+            return Long.parseLong(timestamp);
+        }
+
+        /**
+         * Getter for the weight.
+         * Converts the String to a Double.
+         *
+         * @return The number of steps recorded in this entry.
+         */
+        public double getWeight() {
+            return Double.parseDouble(value);
         }
     }
 }
