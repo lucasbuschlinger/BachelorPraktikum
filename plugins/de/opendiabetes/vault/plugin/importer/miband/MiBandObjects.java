@@ -325,6 +325,24 @@ public class MiBandObjects {
         public int getSteps() {
             return Integer.parseInt(steps);
         }
+
+        /**
+         * This shows whether the entry is hidden.
+         *
+         * @return True if the entry is hidden, false otherwise.
+         */
+        public boolean isHidden() {
+            return Boolean.parseBoolean(hidden);
+        }
+
+        /**
+         * This shows whether the entry is the last for a given day.
+         *
+         * @return True if it's the last entry of the day, false otherwise.
+         */
+        public boolean isLast() {
+            return Boolean.parseBoolean(last);
+        }
     }
 
     /**

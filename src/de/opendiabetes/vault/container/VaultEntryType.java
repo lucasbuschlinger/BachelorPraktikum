@@ -206,6 +206,10 @@ public enum VaultEntryType {
      * Stress.
      */
     STRESS,
+    /**
+     * Weight.
+     */
+    WEIGHT,
     // Ketones
     /**
      * Blood ketones.

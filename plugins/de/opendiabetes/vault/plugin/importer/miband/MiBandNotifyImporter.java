@@ -60,40 +60,40 @@ public class MiBandNotifyImporter extends Plugin {
         /**
          * The default value for the lower bound of the heart rate.
          */
-        private final int defaultHeartRateLowerBound = 40;
+        private static final int DEFAULTHEARTRATELOWERBOUND = 40;
         /**
          * The default value for upper bound for the heart rate.
          */
-        private final int defaultHeartRateUpperBound = 250;
+        private static final int DEFAULTHEARTRATEUPPERBOUND = 250;
         /**
          * The default value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_MID}.
          */
-        private final int defaultExerciseHeartThresholdMid = 90;
+        private static final int DEFAULTEXERCISEHEARTTHRESHOLDMID = 90;
         /**
          * The default value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_HIGH}.
          */
-        private final int defaultExerciseHeartThresholdHigh = 130;
+        private static final int DEFAULTEXERCISEHEARTTHRESHOLDHIGH = 130;
         /**
          * The default value for the time span in which entries will be joined together.
          */
-        private final int defaultMaxTimeGapSeconds = 600;
+        private static final int DEFAULTMAXTIMEGAPSECONDS = 600;
 
         /**
          * This status percentage when the config has been loaded.
          */
-        private final int statusLoadedConfig = 25;
+        private static final int STATUSLOADEDCONFIG = 25;
         /**
          * This status percentage when the JSON file has been read.
          */
-        private final int statusReadJSON = 50;
+        private static final int STATUSREADJSON = 50;
         /**
          * This status percentage when the JSON entries have been imported to VaultEntries.
          */
-        private final int statusImportedEntries = 75;
+        private static final int STATUSIMPORTEDENTRIES = 75;
         /**
          * This status percentage when the VaultEntries have been interpreted.
          */
-        private final int statusInterpretedEntries = 100;
+        private static final int STATUSINTERPRETEDENTRIES = 100;
 
         /**
          * The value for the lower bound of the heart rate.
@@ -121,11 +121,11 @@ public class MiBandNotifyImporter extends Plugin {
          * This also sets the default values for the thresholds between different kinds of exercises and heart rate bounds.
          */
         public MiBandNotifyImporterImplementation() {
-            this.heartRateLowerBound = defaultHeartRateLowerBound;
-            this.heartRateUpperBound = defaultHeartRateUpperBound;
-            this.exerciseHeartThresholdMid = defaultExerciseHeartThresholdMid;
-            this.exerciseHeartThresholdHigh = defaultExerciseHeartThresholdHigh;
-            this.maxTimeGapSeconds = defaultMaxTimeGapSeconds;
+            this.heartRateLowerBound = DEFAULTHEARTRATELOWERBOUND;
+            this.heartRateUpperBound = DEFAULTHEARTRATEUPPERBOUND;
+            this.exerciseHeartThresholdMid = DEFAULTEXERCISEHEARTTHRESHOLDMID;
+            this.exerciseHeartThresholdHigh = DEFAULTEXERCISEHEARTTHRESHOLDHIGH;
+            this.maxTimeGapSeconds = DEFAULTMAXTIMEGAPSECONDS;
         }
 
         /**
@@ -153,7 +153,7 @@ public class MiBandNotifyImporter extends Plugin {
 
             // Reading the JSON file
             MiBandObjects data = gson.fromJson(reader, MiBandObjects.class);
-            this.notifyStatus(statusReadJSON, "Read JSON file.");
+            this.notifyStatus(STATUSREADJSON, "Read JSON file.");
             if (data.SleepIntervalData == null && data.HeartMonitorData == null && data.Workout == null && data.StepsData == null
                     && data.Weight == null) {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
@@ -163,16 +163,16 @@ public class MiBandNotifyImporter extends Plugin {
             // Seeing, whether the data contained heart rate related data
             if (data.HeartMonitorData != null) {
                 imports = processHeartData(data);
-                this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUSIMPORTEDENTRIES, "Successfully imported MiBand data to VaultEntries");
             }
             if (data.SleepIntervalData != null) {
                 imports = processSleepData(data);
-                this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUSIMPORTEDENTRIES, "Successfully imported MiBand data to VaultEntries");
                 imports = interpretMiBandSleep(imports);
             }
             if (data.Workout != null) {
                 imports = processWorkoutData(data);
-                this.notifyStatus(statusImportedEntries, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUSIMPORTEDENTRIES, "Successfully imported MiBand data to VaultEntries");
             }
             if (data.StepsData != null) {
                 imports = processStepsData(data);
@@ -180,7 +180,7 @@ public class MiBandNotifyImporter extends Plugin {
             if (data.Weight != null) {
                 imports = processWeightData(data);
             }
-            this.notifyStatus(statusInterpretedEntries, "Interpreted MiBand data");
+            this.notifyStatus(STATUSINTERPRETEDENTRIES, "Interpreted MiBand data");
             importedData = imports;
             return true;
         }
@@ -206,7 +206,7 @@ public class MiBandNotifyImporter extends Plugin {
                 maxTimeGapSeconds = Integer.parseInt(configuration.getProperty("maxTimeGap"));
             }
             LOG.log(Level.INFO, "Successfully loaded configuration.");
-            this.notifyStatus(statusLoadedConfig, "Loaded configuration from properties file");
+            this.notifyStatus(STATUSLOADEDCONFIG, "Loaded configuration from properties file");
             return true;
         }
 
@@ -308,7 +308,9 @@ public class MiBandNotifyImporter extends Plugin {
         private List<VaultEntry> processStepsData(final MiBandObjects data) {
             List<VaultEntry> entries = new ArrayList<>();
             for (MiBandObjects.StepsData item : data.StepsData) {
-                entries.add(new VaultEntry(VaultEntryType.EXERCISE_OTHER, new Date(item.getTimestamp()), item.getSteps()));
+                if (item.isLast()) {
+                    entries.add(new VaultEntry(VaultEntryType.EXERCISE_OTHER, new Date(item.getTimestamp()), item.getSteps()));
+                }
             }
             return entries;
         }
@@ -323,7 +325,7 @@ public class MiBandNotifyImporter extends Plugin {
         private List<VaultEntry> processWeightData(final MiBandObjects data) {
             List<VaultEntry> entries = new ArrayList<>();
             for (MiBandObjects.Weight item : data.Weight) {
-                entries.add(new VaultEntry(VaultEntryType.EXERCISE_OTHER, new Date((item.getTimestamp())), item.getWeight()));
+                entries.add(new VaultEntry(VaultEntryType.WEIGHT, new Date((item.getTimestamp())), item.getWeight()));
             }
             return entries;
         }
@@ -337,7 +339,7 @@ public class MiBandNotifyImporter extends Plugin {
          */
         private List<VaultEntry> interpretMiBandSleep(final List<VaultEntry> entries) {
             List<VaultEntry> returnList = new ArrayList<>();
-            final int msPerSec = 1000;
+            final double msPerSec = 1000;
             int len = entries.size();
             for (int i = 0; i < len - 1; i++) {
                 VaultEntry thisEntry = entries.get(i);
