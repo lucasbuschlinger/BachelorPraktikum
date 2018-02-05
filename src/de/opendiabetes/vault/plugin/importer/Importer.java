@@ -95,9 +95,9 @@ public interface Importer extends ExtensionPoint {
 
     /**
      *
-     * @return a html formatted text, that gets displayed to the user if he wants to know more about that plugin.
+     * @return a path to a file containing .md/html formatted text, that gets displayed to the user if he wants to know more about that plugin.
      */
-    String getHelp();
+    String getHelpFilePath();
 
     /**
      * Method to register listeners to the Plugins.

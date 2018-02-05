@@ -113,7 +113,7 @@ public class VaultCSVExporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        public String getHelp(){
+        public String getHelpFilePath(){
             //TODO write help
             return null;
         }
