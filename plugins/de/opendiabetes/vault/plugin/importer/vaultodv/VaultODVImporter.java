@@ -170,7 +170,8 @@ public class VaultODVImporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        public String getHelp(){
+        @Override
+        public String getHelpFilePath(){
             //TODO write help
             return null;
         }
