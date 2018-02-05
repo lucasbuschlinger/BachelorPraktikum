@@ -27,7 +27,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 /**
- * This defines a standard implementation how CSV data gets written.
+ * This defines a standard implementation for writing CSV data.
  *
  * @author Lucas Buschlinger
  */

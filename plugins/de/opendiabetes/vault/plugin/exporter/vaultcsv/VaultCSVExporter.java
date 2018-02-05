@@ -66,7 +66,7 @@ public class VaultCSVExporter extends Plugin {
             if (!configuration.containsKey("periodRestriction")
                     || configuration.getProperty("periodRestriction") == null
                     || configuration.getProperty("periodRestriction").length() == 0) {
-                LOG.log(Level.WARNING, "VaultCSVExporter configuration does not specify whether the data is period restricted");
+                LOG.log(Level.WARNING, "VaultCSVExporter configuration does not specify whether the data is period restricted.");
                 return false;
             }
             boolean restriction = parseBoolean(configuration.getProperty("periodRestriction"));
@@ -88,8 +88,8 @@ public class VaultCSVExporter extends Plugin {
                     dateFrom = dateFormat.parse(startDate);
                     dateTo = dateFormat.parse(endDate);
                 } catch (ParseException exception) {
-                    LOG.log(Level.SEVERE, "Either of the dates specified in the VaultCSVExporter config is malformed."
-                                            + " The expected format is dd/mm/yyyy.");
+                    LOG.log(Level.SEVERE, "Either of the dates specified in the VaultCSVExporter configuration is malformed."
+                                            + " The expected format is dd/MM/yyyy.");
                     return false;
                 }
 
@@ -102,7 +102,7 @@ public class VaultCSVExporter extends Plugin {
 
                 this.setExportPeriodFrom(dateFrom);
                 this.setExportPeriodTo(dateTo);
-                LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString());
+                LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString() + ".");
                 return true;
             } else {
                 LOG.log(Level.INFO, "Export data is not period restricted by VaultCSVExporter configuration.");

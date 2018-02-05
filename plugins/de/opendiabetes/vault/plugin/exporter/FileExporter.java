@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * This class defines the default structure how data gets exported to a file.
+ * This class defines the default structure for exporting data to a file.
  *
  * @author Lucas Buschlinger
  */
@@ -42,7 +42,7 @@ public abstract class FileExporter extends AbstractExporter {
      */
     private FileOutputStream fileOutputStream;
     /**
-     * Option whether the data to export is period restricted.
+     * Option which indicates whether the data to export is period restricted.
      * By default the export data is not period restricted.
      */
     private boolean isPeriodRestricted = false;
@@ -119,16 +119,16 @@ public abstract class FileExporter extends AbstractExporter {
     }
 
     /**
-     * Getter for the fileOutputStream for descending classes.
+     * Getter for the {@link #fileOutputStream} for inheriting classes.
      *
-     * @return The {@link #fileOutputStream}.
+     * @return The fileOutputStream.
      */
     protected FileOutputStream getFileOutputStream() {
         return fileOutputStream;
     }
 
     /**
-     * Getter for the period restriction flag.
+     * Getter for the period restriction flag {@link #isPeriodRestricted}.
      *
      * @return True if the data is period restricted, false otherwise.
      */
@@ -176,7 +176,7 @@ public abstract class FileExporter extends AbstractExporter {
     /**
      * Getter for the option {@link #exportPeriodTo}.
      *
-     * @return The date the data is period limited from.
+     * @return The date the data is period limited to.
      */
     protected Date getExportPeriodTo() {
         return exportPeriodTo;

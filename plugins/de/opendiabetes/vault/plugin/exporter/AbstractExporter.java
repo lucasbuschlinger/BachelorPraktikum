@@ -86,7 +86,7 @@ public abstract class AbstractExporter  implements  Exporter {
 
     /**
      * Notifies the registered {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener}s about progress.
-     * See {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener#onStatusCallback} to register listeners.
+     * See {@link #registerStatusCallback} to register listeners.
      *
      * @param progress Percentage of completion.
      * @param status Current status.

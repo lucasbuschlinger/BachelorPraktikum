@@ -82,7 +82,7 @@ public class OdvDbJsonExporter extends Plugin {
          */
         @Override
         public void setAdditional(final Object object) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Unpossible to set additional for OdvDbJsonExporter because "
+            LOG.log(Level.WARNING, "Impossible to set additional object for OdvDbJsonExporter because "
                     + "the exporter does not have any additional objects to overwrite.");
         }
 
@@ -104,7 +104,7 @@ public class OdvDbJsonExporter extends Plugin {
             if (!configuration.containsKey("periodRestriction")
                     || configuration.getProperty("periodRestriction") == null
                     || configuration.getProperty("periodRestriction").length() == 0) {
-                LOG.log(Level.WARNING, "OdvDbJsonExporter configuration does not specify whether the data is period restricted");
+                LOG.log(Level.WARNING, "OdvDbJsonExporter configuration does not specify whether the data is period restricted.");
                 return false;
             }
             boolean restriction = parseBoolean(configuration.getProperty("periodRestriction"));
@@ -126,8 +126,8 @@ public class OdvDbJsonExporter extends Plugin {
                     dateFrom = dateFormat.parse(startDate);
                     dateTo = dateFormat.parse(endDate);
                 } catch (ParseException exception) {
-                    LOG.log(Level.SEVERE, "Either of the dates specified in the OdvDbJsonExporter config is malformed."
-                            + " The expected format is dd/mm/yyyy.");
+                    LOG.log(Level.SEVERE, "Either of the dates specified in the OdvDbJsonExporter configuration is malformed."
+                            + " The expected format is dd/MM/yyyy.");
                     return false;
                 }
 
@@ -140,7 +140,7 @@ public class OdvDbJsonExporter extends Plugin {
 
                 this.setExportPeriodFrom(dateFrom);
                 this.setExportPeriodTo(dateTo);
-                LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString());
+                LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString() + ".");
                 return true;
             } else {
                 LOG.log(Level.INFO, "Export data is not period restricted by OdvDbJsonExporter configuration.");
