@@ -56,7 +56,7 @@ public class ODVDBJsonImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static class ODVDBJsonImporterImplementation extends FileImporter {
+    public static final class ODVDBJsonImporterImplementation extends FileImporter {
 
         /**
          * Empty preprocessing for ODVDB Json data, as it is not necessary for this type of data.
@@ -109,6 +109,14 @@ public class ODVDBJsonImporter extends Plugin {
         public boolean loadConfiguration(final Properties configuration) {
             LOG.log(Level.WARNING, "ODVDBJsonImporter does not support configuration.");
             return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
         }
     }
 }

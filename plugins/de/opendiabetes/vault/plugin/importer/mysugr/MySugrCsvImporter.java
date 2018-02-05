@@ -51,7 +51,7 @@ public class MySugrCsvImporter extends Plugin {
      * Actual implementation of the MySugrCsvImporter plugin.
      */
     @Extension
-    public static class MySugrCsvImporterImplementation extends CSVImporter {
+    public static final class MySugrCsvImporterImplementation extends CSVImporter {
 
         /**
          * The maximum number of lines to scan for a header.
@@ -296,6 +296,14 @@ public class MySugrCsvImporter extends Plugin {
         @Override
         public boolean loadConfiguration(final Properties configuration) {
             return super.loadConfiguration(configuration);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
         }
     }
 }

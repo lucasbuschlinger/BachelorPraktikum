@@ -73,7 +73,7 @@ public class VaultODVExporter extends Plugin {
      * Actual implementation of the VaultODV exporter plugin.
      */
     @Extension
-    public static class VaultODVExporterImplementation extends VaultExporter {
+    public static final class VaultODVExporterImplementation extends VaultExporter {
 
         /**
          * Writes the data to a CSV file and generates a signature hash.
@@ -184,6 +184,13 @@ public class VaultODVExporter extends Plugin {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
+        }
     }
 
 }

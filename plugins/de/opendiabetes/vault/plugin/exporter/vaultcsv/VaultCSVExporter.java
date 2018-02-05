@@ -49,7 +49,7 @@ public class VaultCSVExporter extends Plugin {
      * Actual implementation of the VaultCSV exporter plugin.
      */
     @Extension
-    public static class VaultCSVExporterImplementation extends VaultExporter {
+    public static final class VaultCSVExporterImplementation extends VaultExporter {
 
         /**
          * {@inheritDoc}
@@ -110,6 +110,12 @@ public class VaultCSVExporter extends Plugin {
             }
         }
 
-
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
+        }
     }
 }

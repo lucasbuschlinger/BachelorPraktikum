@@ -62,7 +62,7 @@ public class SourceCodeExporter extends Plugin {
      * Actual implementation of the SourceCode exporter plugin.
      */
     @Extension
-    public static class SourceCodeExporterImplementation extends VaultExporter {
+    public static final class SourceCodeExporterImplementation extends VaultExporter {
 
         /**
          * List to hold all the entries queried from the database in {@link #prepareData(List)}
@@ -248,6 +248,14 @@ public class SourceCodeExporter extends Plugin {
                 LOG.log(Level.INFO, "Export data is not period restricted by SourceCodeExporter configuration.");
                 return true;
             }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
         }
     }
 }

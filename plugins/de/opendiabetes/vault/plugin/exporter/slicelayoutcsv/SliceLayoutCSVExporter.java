@@ -55,7 +55,7 @@ public class SliceLayoutCSVExporter extends Plugin {
      * Actual implementation of the SliceLayoutCSVExporter.
      */
     @Extension
-    public static class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
+    public static final class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
 
         /**
          * The entries to be exported by the SliceLayoutCSVExporter plugins.
@@ -155,6 +155,14 @@ public class SliceLayoutCSVExporter extends Plugin {
                 LOG.log(Level.INFO, "Export data is not period restricted by SliceCSVExporter configuration.");
                 return true;
             }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
         }
     }
 }

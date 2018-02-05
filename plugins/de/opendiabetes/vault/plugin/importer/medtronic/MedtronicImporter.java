@@ -56,7 +56,7 @@ public class MedtronicImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static class MedtronicImporterImplementation extends CSVImporter {
+    public static final class MedtronicImporterImplementation extends CSVImporter {
 
         /**
          * Pattern to indicate amount.
@@ -560,6 +560,14 @@ public class MedtronicImporter extends Plugin {
             }
 
             return retVal;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
         }
     }
 

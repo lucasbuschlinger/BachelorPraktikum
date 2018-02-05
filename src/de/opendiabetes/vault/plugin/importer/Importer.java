@@ -94,6 +94,12 @@ public interface Importer extends ExtensionPoint {
     boolean loadConfiguration(Properties configuration);
 
     /**
+     *
+     * @return a html formatted text, that gets displayed to the user if he wants to know more about that plugin.
+     */
+    String getHelp();
+
+    /**
      * Method to register listeners to the Plugins.
      * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update.
      *

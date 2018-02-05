@@ -52,7 +52,7 @@ public class GoogleFitCSVImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static class GoogleFitCSVImporterImplementation extends CSVImporter {
+    public static final class GoogleFitCSVImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
@@ -128,6 +128,14 @@ public class GoogleFitCSVImporter extends Plugin {
         @Override
         public boolean loadConfiguration(final Properties configuration) {
             return super.loadConfiguration(configuration);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
         }
     }
 

@@ -53,7 +53,7 @@ public class SonySWR21Importer extends Plugin {
      * Actual implementation of the Sony SWR21 importer plugin.
      */
     @Extension
-    public static class SonySWR21ImporterImplementation extends CSVImporter {
+    public static final class SonySWR21ImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
@@ -199,6 +199,14 @@ public class SonySWR21Importer extends Plugin {
         @Override
         public boolean loadConfiguration(final Properties configuration) {
             return super.loadConfiguration(configuration);
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
         }
     }
 }

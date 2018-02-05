@@ -63,7 +63,7 @@ public class VaultODVImporter extends Plugin {
      * Actual implementation of the VaultODV importer plugin.
      */
     @Extension
-    public static class VaultODVImporterImplementation extends CSVImporter {
+    public static final class VaultODVImporterImplementation extends CSVImporter {
         /**
          * Constructor for a CSV validator.
          *
@@ -166,9 +166,13 @@ public class VaultODVImporter extends Plugin {
          */
         @Override
         protected void preprocessingIfNeeded(final String filePath) { }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelp(){
+            //TODO write help
+            return null;
+        }
     }
-
-
-
-
 }
