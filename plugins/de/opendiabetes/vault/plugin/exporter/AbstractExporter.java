@@ -16,10 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.exporter;
 
-import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.csv.ExportEntry;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +32,7 @@ public abstract class AbstractExporter  implements  Exporter {
     /**
      * List holding all StatusListeners registered to the exporter.
      */
-    private List<Exporter.StatusListener> listeners = new ArrayList<>();
+    private final List<Exporter.StatusListener> listeners = new ArrayList<>();
 
     /**
      * The path to the export file.
@@ -58,22 +54,6 @@ public abstract class AbstractExporter  implements  Exporter {
     public String getExportFilePath() {
         return exportFilePath;
     }
-
-    /**
-     * Writes the export data to the file.
-     *
-     * @param data The data to be written.
-     * @throws IOException Thrown if something goes wrong when writing the file.
-     */
-    protected abstract void writeToFile(List<ExportEntry> data) throws IOException;
-
-    /**
-     * Prepares data for the export by putting it into exportable containers.
-     *
-     * @param data The data to be prepared.
-     * @return The data in exportable containers.
-     */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
 
     /**
      * {@inheritDoc}
