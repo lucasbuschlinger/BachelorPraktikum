@@ -43,10 +43,7 @@ public class DiaryInterpreter extends VaultInterpreter {
 
 
     /**
-     * //TODO
-     *
-     * @param result
-     * @return
+     * {@inheritDoc}
      */
     @Override
     protected List<VaultEntry> interpret(final List<VaultEntry> result) {

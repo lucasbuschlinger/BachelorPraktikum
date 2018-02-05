@@ -21,6 +21,7 @@ import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicAnnotatedVaultEntry;
+import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicCSVValidator;
 import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
 import de.opendiabetes.vault.plugin.util.SlidingWindow;
 import de.opendiabetes.vault.plugin.util.SortVaultEntryByDate;
@@ -104,9 +105,9 @@ public class PumpInterpreter extends VaultInterpreter {
         List<VaultEntry> fillEvents = new ArrayList<>();
 
         // configure options        
-        if (myOptions.FillCanulaAsNewKatheder) {
+        if (myOptions.fillCanulaAsNewKatheder) {
             // ignore cooldown if option is disabled
-            cooldown = myOptions.FillCanulaCooldown * 60000;
+            cooldown = myOptions.fillCanulaCooldown * 60000;
         }
 
         // check if handle prefill is needed
@@ -157,7 +158,7 @@ public class PumpInterpreter extends VaultInterpreter {
             }
 
             // reverse cooldown for canula as ne katheder interpretation
-            if (myOptions.FillCanulaAsNewKatheder
+            if (myOptions.fillCanulaAsNewKatheder
                     && canulaFillAsPumpFillCandidate != null
                     && ((item.getTimestamp().getTime()
                     - canulaFillAsPumpFillCandidate.getTimestamp().getTime())
@@ -181,7 +182,7 @@ public class PumpInterpreter extends VaultInterpreter {
                         // yes --> must be fill canula
                         latestFillCanulaHandle = item;
                     }
-                } else if (myOptions.FillCanulaAsNewKatheder) {
+                } else if (myOptions.fillCanulaAsNewKatheder) {
                     // no prime event? --> new katheder (if enabled)
                     canulaFillAsPumpFillCandidate = new VaultEntry(VaultEntryType.PUMP_FILL_INTERPRETER,
                             item.getTimestamp(),
@@ -293,7 +294,7 @@ public class PumpInterpreter extends VaultInterpreter {
                     if (lastKnownBasalEntry == null) {
                         // still nothing found, search in DB
                         // query db
-                        Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * 5 * 60);// start 5 hours before with the search
+                        Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * 5 * 60); // start 5 hours before with the search
                         Date ts2 = data.get(0).getTimestamp(); // we search just until the current dataset starts
                         List<VaultEntry> dbBasalData = db.queryBasalBetween(ts1, ts2);
 
@@ -375,7 +376,7 @@ public class PumpInterpreter extends VaultInterpreter {
 
                     if (tmpItem != null) {
                         affectedHistoricElements.add(tmpItem);
-                    } else if ((basalItem.getRawType() == MedtronicCsvValidator.TYPE.BASAL_TMP_PERCENT
+                    } else if ((basalItem.getRawType() == MedtronicCSVValidator.TYPE.BASAL_TMP_PERCENT //TODO is this interpreter only for medtronic data
                             && basalItem.getValue() > 0)) {
                         LOG.log(Level.WARNING, "Could not calculate tmp basal, "
                                         + "because no profile elements are found\n{0}",

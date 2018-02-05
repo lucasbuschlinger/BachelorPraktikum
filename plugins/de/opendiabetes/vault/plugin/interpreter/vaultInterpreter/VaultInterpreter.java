@@ -156,7 +156,7 @@ public abstract class VaultInterpreter {
             db.putEntry(item);
         }
 
-        db.removeDublicates();
+        db.removeDuplicates();
     }
 
     /**
