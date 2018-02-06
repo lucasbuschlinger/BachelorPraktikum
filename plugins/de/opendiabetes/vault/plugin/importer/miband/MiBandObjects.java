@@ -172,9 +172,9 @@ public class MiBandObjects {
          * @return The duration of the sleep interval.
          */
         public double getDuration() {
-            final double millisecPerSec = 1000;
-            double start = Double.parseDouble(startDateTime) / millisecPerSec;
-            double end = Double.parseDouble(endDateTime) / millisecPerSec;
+            final double msPerMin = 60000;
+            double start = Double.parseDouble(startDateTime) / msPerMin;
+            double end = Double.parseDouble(endDateTime) / msPerMin;
             return end - start;
         }
 

@@ -248,8 +248,6 @@ public class MiBandNotifyImporter extends Plugin {
             for (MiBandObjects.SleepIntervalData item : data.SleepIntervalData) {
                 int typeInt = item.getType();
                 Date timestamp = new Date(item.getTimestamp());
-                List<VaultEntryAnnotation> annotation = new ArrayList<>();
-                annotation.add(new VaultEntryAnnotation(item.getHeartRateAvg(), VaultEntryAnnotation.TYPE.AVERAGE_HEART_RATE));
                 double duration = item.getDuration();
                 VaultEntryType type;
                 if (typeInt == lightSleep) {
@@ -260,7 +258,7 @@ public class MiBandNotifyImporter extends Plugin {
                     LOG.log(Level.INFO, "Unknown sleep type, skipping entry.");
                     continue;
                 }
-                entries.add(new VaultEntry(type, timestamp, duration, annotation));
+                entries.add(new VaultEntry(type, timestamp, duration));
             }
             return entries;
         }
@@ -339,19 +337,19 @@ public class MiBandNotifyImporter extends Plugin {
          */
         private List<VaultEntry> interpretMiBandSleep(final List<VaultEntry> entries) {
             List<VaultEntry> returnList = new ArrayList<>();
-            final double msPerSec = 1000;
+            final double msPerMin = 60000;
             int len = entries.size();
             for (int i = 0; i < len - 1; i++) {
                 VaultEntry thisEntry = entries.get(i);
                 VaultEntry nextEntry = entries.get(i + 1);
-                double gap = ((nextEntry.getTimestamp().getTime() - thisEntry.getTimestamp().getTime()) / msPerSec) - thisEntry.getValue();
+                double gap = ((nextEntry.getTimestamp().getTime() - thisEntry.getTimestamp().getTime()) / msPerMin) - thisEntry.getValue();
                 if (gap < 0) {
-                    continue;
+                    thisEntry.setType(VaultEntryType.STRESS);
                 }
                 if (thisEntry.getType().equals(nextEntry.getType()) && gap < maxTimeGapSeconds) {
-                    double newDuration = thisEntry.getValue() + gap + nextEntry.getValue();
-                    thisEntry = new VaultEntry(thisEntry.getType(), thisEntry.getTimestamp(), newDuration, thisEntry.getAnnotations());
-                    i++;
+                    //double newDuration = thisEntry.getValue() + gap + nextEntry.getValue();
+                    //thisEntry = new VaultEntry(thisEntry.getType(), thisEntry.getTimestamp(), newDuration, thisEntry.getAnnotations());
+                    //i++;
                 }
                 returnList.add(thisEntry);
             }
