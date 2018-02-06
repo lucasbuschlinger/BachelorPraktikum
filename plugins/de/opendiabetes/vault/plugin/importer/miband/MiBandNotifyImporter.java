@@ -60,40 +60,40 @@ public class MiBandNotifyImporter extends Plugin {
         /**
          * The default value for the lower bound of the heart rate.
          */
-        private static final int DEFAULTHEARTRATELOWERBOUND = 40;
+        private static final int DEFAULT_HEART_RATE_LOWER_BOUND = 40;
         /**
          * The default value for upper bound for the heart rate.
          */
-        private static final int DEFAULTHEARTRATEUPPERBOUND = 250;
+        private static final int DEFAULT_HEART_RATE_UPPER_BOUND = 250;
         /**
          * The default value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_MID}.
          */
-        private static final int DEFAULTEXERCISEHEARTTHRESHOLDMID = 90;
+        private static final int DEFAULT_EXERCISE_HEART_THRESHOLD_MID = 90;
         /**
          * The default value for the threshold from where an exercise will be classed as {@link VaultEntryType#EXERCISE_HIGH}.
          */
-        private static final int DEFAULTEXERCISEHEARTTHRESHOLDHIGH = 130;
+        private static final int DEFAULT_EXERCISE_HEART_THRESHOLD_HIGH = 130;
         /**
          * The default value for the time span in which entries will be joined together.
          */
-        private static final int DEFAULTMAXTIMEGAPSECONDS = 600;
+        private static final int DEFAULT_MAX_TIME_GAP_MINUTES = 10;
 
         /**
          * This status percentage when the config has been loaded.
          */
-        private static final int STATUSLOADEDCONFIG = 25;
+        private static final int STATUS_LOADED_CONFIG = 25;
         /**
          * This status percentage when the JSON file has been read.
          */
-        private static final int STATUSREADJSON = 50;
+        private static final int STATUS_READ_JSON = 50;
         /**
          * This status percentage when the JSON entries have been imported to VaultEntries.
          */
-        private static final int STATUSIMPORTEDENTRIES = 75;
+        private static final int STATUS_IMPORTED_ENTRIES = 75;
         /**
          * This status percentage when the VaultEntries have been interpreted.
          */
-        private static final int STATUSINTERPRETEDENTRIES = 100;
+        private static final int STATUS_INTERPRETED_ENTRIES = 100;
 
         /**
          * The value for the lower bound of the heart rate.
@@ -114,18 +114,18 @@ public class MiBandNotifyImporter extends Plugin {
         /**
          * The value for the time span in which entries will be joined together.
          */
-        private int maxTimeGapSeconds;
+        private int maxTimeGapMinutes;
 
         /**
          * Constructor.
          * This also sets the default values for the thresholds between different kinds of exercises and heart rate bounds.
          */
         public MiBandNotifyImporterImplementation() {
-            this.heartRateLowerBound = DEFAULTHEARTRATELOWERBOUND;
-            this.heartRateUpperBound = DEFAULTHEARTRATEUPPERBOUND;
-            this.exerciseHeartThresholdMid = DEFAULTEXERCISEHEARTTHRESHOLDMID;
-            this.exerciseHeartThresholdHigh = DEFAULTEXERCISEHEARTTHRESHOLDHIGH;
-            this.maxTimeGapSeconds = DEFAULTMAXTIMEGAPSECONDS;
+            this.heartRateLowerBound = DEFAULT_HEART_RATE_LOWER_BOUND;
+            this.heartRateUpperBound = DEFAULT_HEART_RATE_UPPER_BOUND;
+            this.exerciseHeartThresholdMid = DEFAULT_EXERCISE_HEART_THRESHOLD_MID;
+            this.exerciseHeartThresholdHigh = DEFAULT_EXERCISE_HEART_THRESHOLD_HIGH;
+            this.maxTimeGapMinutes = DEFAULT_MAX_TIME_GAP_MINUTES;
         }
 
         /**
@@ -153,7 +153,7 @@ public class MiBandNotifyImporter extends Plugin {
 
             // Reading the JSON file
             MiBandObjects data = gson.fromJson(reader, MiBandObjects.class);
-            this.notifyStatus(STATUSREADJSON, "Read JSON file.");
+            this.notifyStatus(STATUS_READ_JSON, "Read JSON file.");
             if (data.SleepIntervalData == null && data.HeartMonitorData == null && data.Workout == null && data.StepsData == null
                     && data.Weight == null) {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
@@ -163,16 +163,16 @@ public class MiBandNotifyImporter extends Plugin {
             // Seeing, whether the data contained heart rate related data
             if (data.HeartMonitorData != null) {
                 imports = processHeartData(data);
-                this.notifyStatus(STATUSIMPORTEDENTRIES, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
             }
             if (data.SleepIntervalData != null) {
                 imports = processSleepData(data);
-                this.notifyStatus(STATUSIMPORTEDENTRIES, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 imports = interpretMiBandSleep(imports);
             }
             if (data.Workout != null) {
                 imports = processWorkoutData(data);
-                this.notifyStatus(STATUSIMPORTEDENTRIES, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
             }
             if (data.StepsData != null) {
                 imports = processStepsData(data);
@@ -180,33 +180,8 @@ public class MiBandNotifyImporter extends Plugin {
             if (data.Weight != null) {
                 imports = processWeightData(data);
             }
-            this.notifyStatus(STATUSINTERPRETEDENTRIES, "Interpreted MiBand data");
+            this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
             importedData = imports;
-            return true;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            if (configuration.containsKey("heartRateLowerBound")) {
-                heartRateLowerBound = Integer.parseInt(configuration.getProperty("heartRateLowerBound"));
-            }
-            if (configuration.containsKey("heartRatUpperBound")) {
-                heartRateUpperBound = Integer.parseInt(configuration.getProperty("heartRateUpperBound"));
-            }
-            if (configuration.containsKey("exerciseHeartThresholdMid")) {
-                exerciseHeartThresholdMid = Integer.parseInt(configuration.getProperty("exerciseHeartThresholdMid"));
-            }
-            if (configuration.containsKey("exerciseHeartThresholdHigh")) {
-                exerciseHeartThresholdHigh = Integer.parseInt(configuration.getProperty("exerciseHeartThresholdHigh"));
-            }
-            if (configuration.containsKey("maxTimeGap")) {
-                maxTimeGapSeconds = Integer.parseInt(configuration.getProperty("maxTimeGap"));
-            }
-            LOG.log(Level.INFO, "Successfully loaded configuration.");
-            this.notifyStatus(STATUSLOADEDCONFIG, "Loaded configuration from properties file");
             return true;
         }
 
@@ -329,31 +304,59 @@ public class MiBandNotifyImporter extends Plugin {
         }
 
         /**
-         * This interprets the MiBand data and fills significant gaps between entries by adding copies with different timestamps.
-         * The step that should be present between individual entries should not be larger than specified in {@link #maxTimeGapSeconds}.
+         * This interprets the MiBand data by grouping together entries
+         * who's gap is less than the maximum defined in {@link #maxTimeGapMinutes}.
          *
          * @param entries The imported entries which will get interpreted.
-         * @return The entries with filled gaps.
+         * @return The list of the imported entries with filled gaps.
          */
         private List<VaultEntry> interpretMiBandSleep(final List<VaultEntry> entries) {
-            List<VaultEntry> returnList = new ArrayList<>();
             final double msPerMin = 60000;
-            int len = entries.size();
-            for (int i = 0; i < len - 1; i++) {
-                VaultEntry thisEntry = entries.get(i);
-                VaultEntry nextEntry = entries.get(i + 1);
+            List<VaultEntry> returnList = entries;
+            int i = 0;
+            int initialLength = entries.size();
+            while (i < returnList.size() - 1) {
+                VaultEntry thisEntry = returnList.get(i);
+                VaultEntry nextEntry = returnList.get(i + 1);
                 double gap = ((nextEntry.getTimestamp().getTime() - thisEntry.getTimestamp().getTime()) / msPerMin) - thisEntry.getValue();
                 if (gap < 0) {
-                    thisEntry.setType(VaultEntryType.STRESS);
+                    LOG.log(Level.INFO, "Detected entry which is later than the next, excluding it. Gap: " + gap);
+                    returnList.remove(i);
+                } else if (thisEntry.getType().equals(nextEntry.getType()) && gap < maxTimeGapMinutes) {
+                    double newDuration = thisEntry.getValue() + gap + nextEntry.getValue();
+                    thisEntry.setValue(newDuration);
+                    returnList.remove(i + 1);
+                } else {
+                    i++;
                 }
-                if (thisEntry.getType().equals(nextEntry.getType()) && gap < maxTimeGapSeconds) {
-                    //double newDuration = thisEntry.getValue() + gap + nextEntry.getValue();
-                    //thisEntry = new VaultEntry(thisEntry.getType(), thisEntry.getTimestamp(), newDuration, thisEntry.getAnnotations());
-                    //i++;
-                }
-                returnList.add(thisEntry);
             }
+            LOG.log(Level.INFO, "Removed entries: " + (initialLength - returnList.size()));
             return returnList;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean loadConfiguration(final Properties configuration) {
+            if (configuration.containsKey("heartRateLowerBound")) {
+                heartRateLowerBound = Integer.parseInt(configuration.getProperty("heartRateLowerBound"));
+            }
+            if (configuration.containsKey("heartRatUpperBound")) {
+                heartRateUpperBound = Integer.parseInt(configuration.getProperty("heartRateUpperBound"));
+            }
+            if (configuration.containsKey("exerciseHeartThresholdMid")) {
+                exerciseHeartThresholdMid = Integer.parseInt(configuration.getProperty("exerciseHeartThresholdMid"));
+            }
+            if (configuration.containsKey("exerciseHeartThresholdHigh")) {
+                exerciseHeartThresholdHigh = Integer.parseInt(configuration.getProperty("exerciseHeartThresholdHigh"));
+            }
+            if (configuration.containsKey("maxTimeGap")) {
+                maxTimeGapMinutes = Integer.parseInt(configuration.getProperty("maxTimeGap"));
+            }
+            LOG.log(Level.INFO, "Successfully loaded configuration.");
+            this.notifyStatus(STATUS_LOADED_CONFIG, "Loaded configuration from properties file");
+            return true;
         }
     }
 }
