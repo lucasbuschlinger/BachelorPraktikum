@@ -25,14 +25,21 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
+import org.pf4j.util.FileUtils;
 import sun.rmi.runtime.Log;
 
+import javax.sound.sampled.LineEvent;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,6 +88,14 @@ public class ODVExporter extends Plugin {
          * The properties which will get passed on to the exporters.
          */
         private Properties config;
+        /**
+         * The size of the buffers used to write to the files.
+         */
+        private final int bufferSize = 1024;
+        /**
+         * The temporary directory to use.
+         */
+        private final String tempDir = "temp/";
 
         /**
          * {@inheritDoc}
@@ -129,18 +144,13 @@ public class ODVExporter extends Plugin {
             }
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
 
-            String tempDir = System.getProperty("java.io.tempdir");
-
             try {
-                File file = new File(tempDir + "/ODVExporter");
+                File file = new File(tempDir); //tempDir + "/ODVExporter2");
                 file.mkdir();
             } catch (Exception exception) {
                 LOG.log(Level.SEVERE, "Could not create temporary folder");
                 return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
-
-            tempDir += "/ODVExporter";
-
 
             PluginManager manager = new DefaultPluginManager();
             manager.loadPlugins();
@@ -149,52 +159,140 @@ public class ODVExporter extends Plugin {
             List<Exporter> exporters = manager.getExtensions(Exporter.class);
 
             for (Exporter exporter : exporters) {
-                String name = exporter.getClass().getName();
-                if (exporter instanceof VaultExporter) {
-                    exporter.setAdditional(database);
+                String name = exporter.getClass().getName().replaceAll(".*\\$", "")
+                        .replace("Implementation", "");
+                if (name.contains("ODVExporter") || exportFiles.containsKey("name")) {
+                    continue;
                 }
-                String exportFile = tempDir + name;
+                try {
+                    exporter.setAdditional(database);
+                } catch (Exception ex) {
+                    LOG.log(Level.INFO, "Skipping exporter " + name + " as it does not export from the database");
+                    continue;
+                }
+
+                String exportFile = tempDir + name + ".export";
                 exporter.setExportFilePath(exportFile);
                 exporter.loadConfiguration(config);
+                /*
                 exporter.registerStatusCallback(new StatusListener() {
                     @Override
                     public void onStatusCallback(final int progress, final String status) {
                         notifyStatus(progress, name + ": " + status);
                     }
                 });
-                exporter.exportDataToFile(null);
+                */
+                try {
+                    exporter.exportDataToFile(null);
+                } catch (Exception ex) {
+                    LOG.log(Level.SEVERE, "Could not export with exporter: " + name + "Ex: " + ex);
+                    // return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+                }
                 exportFiles.put(name, exportFile);
             }
-            Iterator iterator = exportFiles.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry pair = (Map.Entry) iterator.next();
-                try {
-                    addToZipFile((String) pair.getValue(), zipOutputStream);
-                } catch (Exception exception) {
-                    LOG.log(Level.SEVERE, "Could not add file to ZIP");
-                    return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            String metaFile;
+            try {
+                metaFile = makeMetaFile(exportFiles);
+            } catch (IOException exception) {
+                LOG.log(Level.SEVERE, "Couldn't generate meta file for ZIP-archive");
+                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            }
+            // Adding all generated export files and the meta fil to the zip
+            try {
+                Iterator iterator = exportFiles.entrySet().iterator();
+                while (iterator.hasNext()) {
+                    Map.Entry pair = (Map.Entry) iterator.next();
+                    addFileToZip(pair.getValue().toString(), zipOutputStream);
                 }
+                addFileToZip(metaFile, zipOutputStream);
+            } catch (Exception exception) {
+                    LOG.log(Level.SEVERE, "Could not add file to ZIP " + exception);
+                    return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            }
+            try {
+                zipOutputStream.close();
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, "Couldn't close zipOutputStream " + ex);
+            }
+            try {
+                makeChecksum(exportFilePath);
+            } catch (Exception exception) {
+                LOG.log(Level.SEVERE, "Couldn't generate checksum for ZIP-archive");
+                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             return 0;
         }
 
-        private static void addToZipFile(String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
+        /**
+         * This method generate the checksum in form of an SHA-512 hash for the created ZIP-archive.
+         *
+         * @param fileName The name of the ZIP to generate the checksum for
+         * @throws IOException Thrown if the streams could not be opened for reading/writing the files.
+         * @throws NoSuchAlgorithmException Thrown if the SHA-512 hash is not available on the system.
+         */
+        private void makeChecksum(final String fileName) throws IOException, NoSuchAlgorithmException {
+            MessageDigest digest = MessageDigest.getInstance("SHA-512");
+            FileInputStream inputStream = new FileInputStream(fileName);
+            FileOutputStream outputStream = new FileOutputStream(fileName + "-checksum.txt");
 
-            System.out.println("Writing '" + fileName + "' to zip file");
+            byte[] dataBytes = new byte[bufferSize];
 
-            File file = new File(fileName);
-            FileInputStream fis = new FileInputStream(file);
-            ZipEntry zipEntry = new ZipEntry(fileName);
-            zos.putNextEntry(zipEntry);
-
-            byte[] bytes = new byte[1024];
-            int length;
-            while ((length = fis.read(bytes)) >= 0) {
-                zos.write(bytes, 0, length);
+            int nextRead = 0;
+            while ((nextRead = inputStream.read(dataBytes)) != -1) {
+                digest.update(dataBytes, 0, nextRead);
             }
 
-            zos.closeEntry();
-            fis.close();
+            String checksum = (new HexBinaryAdapter()).marshal(digest.digest());
+            // Writing the hex-digest to the file and closing the streams
+            outputStream.write(checksum.getBytes());
+            inputStream.close();
+            outputStream.close();
+        }
+
+        /**
+         * This adds the named file to the given {@link ZipOutputStream} as a {@link ZipEntry}.
+         *
+         * @param file The name of the file to be added.
+         * @param zipStream The zip to add the file to.
+         * @throws IOException Thrown if the file could not be added to the zip.
+         */
+        private void addFileToZip(final String file, final ZipOutputStream zipStream) throws IOException {
+            byte[] buffer = new byte[bufferSize];
+            ZipEntry zipEntry = new ZipEntry(file.replace("temp/", ""));
+            zipStream.putNextEntry(zipEntry);
+            File zipFile = new File(file);
+            FileInputStream in = new FileInputStream(zipFile);
+            int len;
+            while ((len = in.read(buffer)) > 0) {
+                zipStream.write(buffer, 0, len);
+            }
+            in.close();
+            zipStream.closeEntry();
+        }
+
+
+
+        /**
+         * This method generates the meta file for the ZIP-archive.
+         * In contains which files where generated by exporters.
+         *
+         * @param fileList The list of exported files generated by the available export plugins.
+         * @return The name of the generated meta file.
+         * @throws IOException Thrown if the file could not be created.
+         */
+        private String makeMetaFile(final Map<String, String> fileList) throws IOException {
+            final String metaFile = tempDir + "meta.info";
+            FileOutputStream outputStream = new FileOutputStream(metaFile);
+            Iterator iterator = fileList.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry pair = (Map.Entry) iterator.next();
+                String exporter = pair.getKey().toString();
+                String file = pair.getValue().toString().replace("temp/", "");
+                String line = exporter + "=" + file + "\n";
+                outputStream.write(line.getBytes());
+            }
+            outputStream.close();
+            return  metaFile;
         }
 
         /**
