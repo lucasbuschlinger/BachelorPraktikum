@@ -43,6 +43,11 @@ public class NonInterpreterTest {
         interpreter.interpret(null);
     }
 
+    /*
+    * run: sudo systemctl start mysql to start sql server
+    * run: mysqladmin -u root -p shutdown to stop sql server
+    * do not forget to apply stash "WIP on feature: /us23: /us23:" to change the neccessary changes in VaultDao to connect to db
+     */
     @Test
     public void importAndInterpretTest() throws IOException, SQLException {
         VaultDao.initializeDb();
