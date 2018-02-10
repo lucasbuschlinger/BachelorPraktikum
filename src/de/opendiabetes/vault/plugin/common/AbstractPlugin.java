@@ -25,7 +25,7 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin{
 
     /**
      * Method to notify the registered listeners about progress.
-     * See {@link de.opendiabetes.vault.plugin.importer.Importer.StatusListener#onStatusCallback} to register a listener.
+     * See {@link de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin.StatusListener#onStatusCallback} to register a listener.
      *
      * @param progress Percentage of completion.
      * @param status   Current status.

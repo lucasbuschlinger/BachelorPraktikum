@@ -16,9 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.common;
 
-import de.opendiabetes.vault.plugin.exporter.Exporter;
-import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
-
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -27,9 +24,9 @@ import java.util.logging.Logger;
  */
 public interface OpenDiabetesPlugin {
     /**
-     * Logger object of all interpreter. Logs all messages of the interpreters to a human readable file.
+     * Logger object of all Plugins. Logs all messages of the plugins to a human readable file.
      */
-    Logger LOG = Logger.getLogger(VaultInterpreter.class.getName());
+    Logger LOG = Logger.getLogger(OpenDiabetesPlugin.class.getName());
 
     /**
      *
@@ -53,7 +50,7 @@ public interface OpenDiabetesPlugin {
      */
     interface StatusListener {
         /**
-         * Is called multiple times on all listeners during the export process to notify them about the import progress.
+         * Is called multiple times on all listeners during processing to notify them about the current progress.
          *
          * @param progress Percentage of completion.
          * @param status   Current Status.
