@@ -16,164 +16,102 @@
  */
 package de.opendiabetes.vault.plugin.interpreter.vaultInterpreter;
 
-import de.opendiabetes.vault.container.RawEntry;
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.data.VaultDao;
-import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+import de.opendiabetes.vault.plugin.interpreter.Interpreter;
 import de.opendiabetes.vault.plugin.interpreter.InterpreterOptions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Properties;
 
 /**
  * @author OpenDiabetes
  */
-public abstract class VaultInterpreter {
-
+public abstract class VaultInterpreter extends AbstractPlugin implements Interpreter {
     /**
-     * //TODO javadoc
-     */
-    protected static final Logger LOG = Logger.getLogger(VaultInterpreter.class.getName());
-
-    /**
-     * //TODO javadoc
-     */
-    protected Importer importer;
-
-    /**
-     * //TODO javadoc
-     */
-    protected InterpreterOptions options;
-
-    /**
-     * //TODO javadoc
-     */
-    protected VaultDao db;
-
-
-    /**
-     * //TODO javadoc
      *
+     */
+    private InterpreterOptions options;
+    /**
+     * //TODO javadoc
+     */
+    private VaultDao db;
+
+    /**
+     * @return
+     */
+    protected InterpreterOptions getOptions() {
+        return options;
+    }
+
+    /**
      * @param importer
      * @param options
      * @param db
      */
-    public VaultInterpreter(final Importer importer, final InterpreterOptions options, final VaultDao db) {
-        this.importer = importer;
-        this.options = options;
+    @Override
+    public void init(final VaultDao db) {
         this.db = db;
     }
 
 
     /**
-     * //TODO javadoc
-     *
-     * @param result
      * @return
      */
-    private List<VaultEntry> dateFiltering(final List<VaultEntry> result) {
-        if (options.isImportPeriodRestricted) {
-            List<VaultEntry> retVal = new ArrayList<>();
-            for (VaultEntry item : result) {
-                if (item.getTimestamp().after(options.importPeriodFrom)
-                        && item.getTimestamp().before(options.importPeriodTo)) {
-                    retVal.add(item);
-                }
-            }
-            return retVal;
-        } else {
-            return result;
-        }
+    protected VaultDao getDb() {
+        return db;
     }
 
     /**
-     * //TODO javadoc
-     *
+     * @param configuration
      * @return
      */
-    public List<VaultEntry> importAndInterpretWithoutDb() {
-        // parse file
-        if (!importer.importData()) {
-            return null;
+    @Override
+    public boolean loadConfiguration(final Properties configuration) {
+        if (!configuration.containsKey("ImportPeriodRestricted")) {
+            return false;
+        }
+        String restriction = configuration.getProperty("ImportPeriodRestricted");
+        boolean isImportPeriodRestricted = false;
+        switch (restriction) {
+            case "True":
+            case "1":
+            case "y":
+            case "yes":
+            case "true":
+                isImportPeriodRestricted = true;
+                break;
+            case "False":
+            case "0":
+            case "n":
+            case "no":
+            case "false":
+                isImportPeriodRestricted = false;
+                break;
+            default:
+                return false;
+        }
+        if (!isImportPeriodRestricted) {
+            options = new InterpreterOptions(isImportPeriodRestricted, null, null);
+            return true;
         }
 
-        List<VaultEntry> result = importer.getImportedData();
-        if (result.isEmpty()) { // not null since importFile is called
-            return null;
+        if (!configuration.containsKey("importPeriodFrom") || !configuration.containsKey("importPeriodTo")) {
+            return false;
         }
-
-        // filter unwanted dates
-        result = dateFiltering(result);
-        // interpret stuff
-        result = interpret(result);
-        if (result == null) {
-            return null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        final Date importPeriodFrom;
+        final Date importPeriodTo;
+        try {
+            importPeriodFrom = dateFormat.parse(configuration.getProperty("importPeriodFrom"));
+            importPeriodTo = dateFormat.parse(configuration.getProperty("importPeriodTo"));
+        } catch (ParseException e) {
+            return false;
         }
+        options = new InterpreterOptions(isImportPeriodRestricted, importPeriodFrom, importPeriodTo);
+        return true;
 
-        for (RawEntry item : importer.getImportedRawData()) { // not null since importFile is called
-            item.setId(db.putRawEntry(item));
-        }
-
-        return result;
     }
-
-    /**
-     * //TODO javadoc
-     */
-    public void importAndInterpret() {
-        // parse file
-        if (!importer.importData()) {
-            return;
-        }
-
-        List<VaultEntry> result = importer.getImportedData();
-        if (result.isEmpty()) { // not null since importFile is called
-            return;
-        }
-
-        // filter unwanted dates
-        result = dateFiltering(result);
-        // interpret stuff
-        result = interpret(result);
-        if (result == null) {
-            return;
-        }
-
-        for (RawEntry item : importer.getImportedRawData()) { // not null since importFile is called
-            item.setId(db.putRawEntry(item));
-        }
-
-        // update DB
-        for (VaultEntry item : result) {
-            // update raw id (if there is a corresponding raw entry)
-            if (item.getRawId() > 0) {
-                RawEntry rawEntry = importer.getImportedRawData()
-                        .get((int) item.getRawId());
-                item.setRawId(rawEntry.getId());
-            }
-            // put in db
-            db.putEntry(item);
-        }
-
-        db.removeDuplicates();
-    }
-
-    /**
-     * //TODO javadoc
-     *
-     * @param result
-     * @return
-     */
-    protected abstract List<VaultEntry> interpret(List<VaultEntry> result);
-
-    /**
-     * //TODO javadoc
-     *
-     * @return
-     */
-    public Importer getImporter() {
-        return importer;
-    }
-
 }

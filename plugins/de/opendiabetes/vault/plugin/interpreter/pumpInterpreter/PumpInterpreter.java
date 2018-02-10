@@ -18,8 +18,6 @@ package de.opendiabetes.vault.plugin.interpreter.pumpInterpreter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.data.VaultDao;
-import de.opendiabetes.vault.plugin.importer.Importer;
 import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicAnnotatedVaultEntry;
 import de.opendiabetes.vault.plugin.importer.medtronic.MedtronicCSVValidator;
 import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
@@ -31,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,30 +37,37 @@ import java.util.logging.Logger;
  * @author mswin
  */
 public class PumpInterpreter extends VaultInterpreter {
+    /**
+     * Conversion factor from minutes to milliseconds.
+     */
+    private static final int MS_PER_MINUTE = 60000;
+
+    /**
+     * Conversion factor from hours to milliseconds.
+     */
+    private static final long HOUR_TO_MS = 3600000;
+
+    /**
+     * Conversion factor from hours to milliseconds.
+     */
+    private static final long HOUR_TO_MIN = 60;
 
     /**
      * //TODO javadoc
      */
-    private final PumpInterpreterOptions myOptions;
+    private boolean fillCanulaAsNewKatheder;
 
     /**
      * //TODO javadoc
-     *
-     * @param importer
-     * @param options
-     * @param db
      */
-    public PumpInterpreter(final Importer importer,
-                           final PumpInterpreterOptions options, final VaultDao db) {
-        super(importer, options, db);
-        myOptions = options;
-    }
+    private int fillCanulaCooldown;
+
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected List<VaultEntry> interpret(final List<VaultEntry> result) {
+    public List<VaultEntry> interpret(final List<VaultEntry> result) {
         List<VaultEntry> data = result;
 
         // sort by date
@@ -76,7 +82,7 @@ public class PumpInterpreter extends VaultInterpreter {
         data = fillCanulaInterpretation(data);
         Collections.sort(data, new SortVaultEntryByDate());
         LOG.finer("Start CGM Alert interpretation");
-        data = addCgmValueToCgmAltertOnMedtronicPumps(data);
+        data = addCgmValueToCgmAlertOnMedtronicPumps(data);
         Collections.sort(data, new SortVaultEntryByDate());
         LOG.finer("Start CGM elevation calculation");
         data = calculateCgmElevation(data);
@@ -105,22 +111,22 @@ public class PumpInterpreter extends VaultInterpreter {
         List<VaultEntry> fillEvents = new ArrayList<>();
 
         // configure options        
-        if (myOptions.fillCanulaAsNewKatheder) {
+        if (fillCanulaAsNewKatheder) {
             // ignore cooldown if option is disabled
-            cooldown = myOptions.fillCanulaCooldown * 60000;
+            cooldown = fillCanulaCooldown * MS_PER_MINUTE;
         }
 
         // check if handle prefill is needed
-        VaultEntry rewindFromDb = db.queryLatestEventBefore(importedData.get(0).getTimestamp(),
+        VaultEntry rewindFromDb = getDb().queryLatestEventBefore(importedData.get(0).getTimestamp(),
                 VaultEntryType.PUMP_REWIND);
-        VaultEntry primeFromDb = db.queryLatestEventBefore(importedData.get(0).getTimestamp(),
+        VaultEntry primeFromDb = getDb().queryLatestEventBefore(importedData.get(0).getTimestamp(),
                 VaultEntryType.PUMP_PRIME);
         if (rewindFromDb != null) {
             if (((primeFromDb != null
                     && rewindFromDb.getTimestamp().after(primeFromDb.getTimestamp()))
                     || primeFromDb == null)
                     && (importedData.get(0).getTimestamp().getTime()
-                    - rewindFromDb.getTimestamp().getTime()) < 10800000L) {
+                    - rewindFromDb.getTimestamp().getTime()) < 3 * HOUR_TO_MS) {
                 // rewind without prime has no fill event --> add as handle when its within 3 hours
                 rewindHandle = rewindFromDb;
 
@@ -158,7 +164,7 @@ public class PumpInterpreter extends VaultInterpreter {
             }
 
             // reverse cooldown for canula as ne katheder interpretation
-            if (myOptions.fillCanulaAsNewKatheder
+            if (fillCanulaAsNewKatheder
                     && canulaFillAsPumpFillCandidate != null
                     && ((item.getTimestamp().getTime()
                     - canulaFillAsPumpFillCandidate.getTimestamp().getTime())
@@ -182,7 +188,7 @@ public class PumpInterpreter extends VaultInterpreter {
                         // yes --> must be fill canula
                         latestFillCanulaHandle = item;
                     }
-                } else if (myOptions.fillCanulaAsNewKatheder) {
+                } else if (fillCanulaAsNewKatheder) {
                     // no prime event? --> new katheder (if enabled)
                     canulaFillAsPumpFillCandidate = new VaultEntry(VaultEntryType.PUMP_FILL_INTERPRETER,
                             item.getTimestamp(),
@@ -294,9 +300,9 @@ public class PumpInterpreter extends VaultInterpreter {
                     if (lastKnownBasalEntry == null) {
                         // still nothing found, search in DB
                         // query db
-                        Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * 5 * 60); // start 5 hours before with the search
+                        Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * 5 * HOUR_TO_MIN); // start 5 hours before with the search
                         Date ts2 = data.get(0).getTimestamp(); // we search just until the current dataset starts
-                        List<VaultEntry> dbBasalData = db.queryBasalBetween(ts1, ts2);
+                        List<VaultEntry> dbBasalData = getDb().queryBasalBetween(ts1, ts2);
 
                         // search for profile entry
                         for (VaultEntry basalEntry : dbBasalData) { // no interpreter basal items, since suspension will interrupt tmp basal
@@ -368,7 +374,7 @@ public class PumpInterpreter extends VaultInterpreter {
                 }
                 if (affectedHistoricElements.isEmpty()) {
                     // try to get it from DB
-                    VaultEntry tmpItem = db.queryLatestEventBefore(TimestampUtils.createCleanTimestamp(
+                    VaultEntry tmpItem = getDb().queryLatestEventBefore(TimestampUtils.createCleanTimestamp(
                             new Date(Math.round(
                                     basalItem.getTimestamp().getTime()
                                             - basalItem.getDuration()))),
@@ -472,7 +478,7 @@ public class PumpInterpreter extends VaultInterpreter {
      * @param data
      * @return
      */
-    private List<VaultEntry> addCgmValueToCgmAltertOnMedtronicPumps(final List<VaultEntry> data) {
+    private List<VaultEntry> addCgmValueToCgmAlertOnMedtronicPumps(final List<VaultEntry> data) {
         if (data == null || data.isEmpty()) {
             return data;
         }
@@ -527,5 +533,18 @@ public class PumpInterpreter extends VaultInterpreter {
         data.addAll(elevationItems);
 
         return data;
+    }
+
+    /**
+     * adds {@link this#fillCanulaAsNewKatheder} and {@link this#fillCanulaCooldown}
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean loadConfiguration(Properties configuration) {
+        if (!super.loadConfiguration(configuration)) return false;
+        if (!configuration.containsKey("fillCanulaAsNewKatheder") || !configuration.containsKey("fillCanulaCooldown")) return false;
+        fillCanulaAsNewKatheder = Boolean.parseBoolean(configuration.getProperty("fillCanulaAsNewKatheder"));
+        fillCanulaCooldown = Integer.parseInt(configuration.getProperty("fillCanulaCooldown"));
+        return true;
     }
 }

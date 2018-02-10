@@ -17,9 +17,6 @@
 package de.opendiabetes.vault.plugin.interpreter.diaryInterpreter;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.data.VaultDao;
-import de.opendiabetes.vault.plugin.importer.Importer;
-import de.opendiabetes.vault.plugin.interpreter.InterpreterOptions;
 import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
 
 import java.util.List;
@@ -30,24 +27,11 @@ import java.util.List;
 public class DiaryInterpreter extends VaultInterpreter {
 
     /**
-     * Constructor.
-     *
-     * @param importer the Importer to use??//TODO
-     * @param options  interpreter options
-     * @param db       the database to import to
-     */
-    public DiaryInterpreter(final Importer importer,
-                            final InterpreterOptions options, final VaultDao db) {
-        super(importer, options, db);
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     @Override
-    protected List<VaultEntry> interpret(final List<VaultEntry> result) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<VaultEntry> interpret(final List<VaultEntry> input) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

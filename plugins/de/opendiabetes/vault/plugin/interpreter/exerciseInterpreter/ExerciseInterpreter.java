@@ -19,8 +19,6 @@ package de.opendiabetes.vault.plugin.interpreter.exerciseInterpreter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.data.VaultDao;
-import de.opendiabetes.vault.plugin.importer.Importer;
 import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.SortVaultEntryByDate;
@@ -29,37 +27,35 @@ import de.opendiabetes.vault.plugin.util.TimestampUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
- * @author Jens
+ * @author OpenDiabetes
  */
 public class ExerciseInterpreter extends VaultInterpreter {
-
     /**
-     * //TODO javadoc
+     * Conversion factor from minutes to milliseconds.
      */
-    private final ExerciseInterpreterOptions myOptions;
+    private static final int MS_PER_MINUTE = 60000;
 
     /**
-     * //TODO javadoc
      *
-     * @param importer
-     * @param options
-     * @param db
      */
-    public ExerciseInterpreter(final Importer importer,
-                               final ExerciseInterpreterOptions options, final VaultDao db) {
-        super(importer, options, db);
-        myOptions = options;
-    }
+    private int activityThreshold;
+
+    /**
+     *
+     */
+    private int activitySliceThreshold;
+
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected List<VaultEntry> interpret(final List<VaultEntry> result) {
-        List<VaultEntry> data = result;
+    public List<VaultEntry> interpret(final List<VaultEntry> input) {
+        List<VaultEntry> data = input;
 
         // sort by date
         Collections.sort(data, new SortVaultEntryByDate());
@@ -84,7 +80,7 @@ public class ExerciseInterpreter extends VaultInterpreter {
             return data;
         }
         List<VaultEntry> retVal = new ArrayList<>();
-        List<VaultEntry> dbValues = db.queryExerciseBetween(
+        List<VaultEntry> dbValues = getDb().queryExerciseBetween(
                 data.get(0).getTimestamp(),
                 data.get(data.size() - 1).getTimestamp());
         VaultEntry lastExerciseItem = null;
@@ -106,8 +102,8 @@ public class ExerciseInterpreter extends VaultInterpreter {
                     } else if (Math.round(
                             (item.getTimestamp().getTime()
                                     - lastExerciseItem.getTimestamp().getTime())
-                                    / 60000)
-                            >= Math.round(myOptions.activitySliceThreshold
+                                    / MS_PER_MINUTE)
+                            >= Math.round(activitySliceThreshold
                             + lastExerciseItem.getValue())) {
                         // within a slice
                         lastExerciseItem.setValue(item.getValue() + lastExerciseItem.getValue()); // add time to value
@@ -138,13 +134,13 @@ public class ExerciseInterpreter extends VaultInterpreter {
                                             lastExerciseItem.getTimestamp().getTime(),
                                             Math.round(lastExerciseItem.getValue()));
                                     lastExerciseItem.setValue(lastExerciseItem.getValue()
-                                            + Math.round((durationInMilli / 60000)));
+                                            + Math.round((durationInMilli / MS_PER_MINUTE)));
                                 }
 
                                 annotations = mergeAnnotations(annotations, historyEntry.getAnnotations());
                             } else if (lastExerciseItem != null
                                     && historyEntry.getTimestamp().after(lastExerciseItem.getTimestamp())
-                                    && Math.round(historyEntry.getTimestamp().getTime() / 60000)
+                                    && Math.round(historyEntry.getTimestamp().getTime() / MS_PER_MINUTE)
                                     > Math.round(lastExerciseItem.getValue())) {
                                 // we passed the current time point --> stop searching
                                 break;
@@ -152,7 +148,7 @@ public class ExerciseInterpreter extends VaultInterpreter {
                         }
                         // save old slice
                         if (lastExerciseItem != null
-                                && lastExerciseItem.getValue() > myOptions.activityThreshold) {
+                                && lastExerciseItem.getValue() > activityThreshold) {
                             // define type
                             double walk = 0.0;
                             double run = 0.0;
@@ -206,9 +202,115 @@ public class ExerciseInterpreter extends VaultInterpreter {
 
                     }
                     break;
+                case BOLUS_NORMAL:
+                    break;
+                case BOLUS_SQUARE:
+                    break;
+                case BASAL_PROFILE:
+                    break;
+                case BASAL_MANUAL:
+                    break;
+                case BASAL_INTERPRETER:
+                    break;
                 case EXERCISE_MANUAL:
                     // add manula entrys without interpretation
                     retVal.add(item);
+                    break;
+                case GLUCOSE_CGM:
+                    break;
+                case GLUCOSE_CGM_RAW:
+                    break;
+                case GLUCOSE_CGM_ALERT:
+                    break;
+                case GLUCOSE_CGM_CALIBRATION:
+                    break;
+                case GLUCOSE_BG:
+                    break;
+                case GLUCOSE_BG_MANUAL:
+                    break;
+                case GLUCOSE_BOLUS_CALCULATION:
+                    break;
+                case GLUCOSE_ELEVATION_30:
+                    break;
+                case CGM_SENSOR_FINISHED:
+                    break;
+                case CGM_SENSOR_START:
+                    break;
+                case CGM_CONNECTION_ERROR:
+                    break;
+                case CGM_CALIBRATION_ERROR:
+                    break;
+                case CGM_TIME_SYNC:
+                    break;
+                case MEAL_BOLUS_CALCULATOR:
+                    break;
+                case MEAL_MANUAL:
+                    break;
+                case MEAL_DESCRIPTION:
+                    break;
+                case PUMP_REWIND:
+                    break;
+                case PUMP_PRIME:
+                    break;
+                case PUMP_FILL:
+                    break;
+                case PUMP_FILL_INTERPRETER:
+                    break;
+                case PUMP_NO_DELIVERY:
+                    break;
+                case PUMP_SUSPEND:
+                    break;
+                case PUMP_UNSUSPEND:
+                    break;
+                case PUMP_UNTRACKED_ERROR:
+                    break;
+                case PUMP_RESERVOIR_EMPTY:
+                    break;
+                case PUMP_TIME_SYNC:
+                    break;
+                case PUMP_AUTONOMOUS_SUSPEND:
+                    break;
+                case PUMP_CGM_PREDICTION:
+                    break;
+                case SLEEP_LIGHT:
+                    break;
+                case SLEEP_REM:
+                    break;
+                case SLEEP_DEEP:
+                    break;
+                case HEART_RATE:
+                    break;
+                case HEART_RATE_VARIABILITY:
+                    break;
+                case STRESS:
+                    break;
+                case KETONES_BLOOD:
+                    break;
+                case KETONES_URINE:
+                    break;
+                case KETONES_MANUAL:
+                    break;
+                case LOC_TRANSITION:
+                    break;
+                case LOC_HOME:
+                    break;
+                case LOC_WORK:
+                    break;
+                case LOC_FOOD:
+                    break;
+                case LOC_SPORTS:
+                    break;
+                case LOC_OTHER:
+                    break;
+                case BLOOD_PRESSURE:
+                    break;
+                case ML_CGM_PREDICTION:
+                    break;
+                case DM_INSULIN_SENSITIVITY:
+                    break;
+                case OTHER_ANNOTATION:
+                    break;
+                case Tag:
                     break;
                 default:
                     retVal.add(item);
@@ -217,7 +319,7 @@ public class ExerciseInterpreter extends VaultInterpreter {
 
         // add last unsliced item
         if (lastExerciseItem != null
-                && lastExerciseItem.getValue() > myOptions.activityThreshold) {
+                && lastExerciseItem.getValue() > activityThreshold) {
             retVal.add(lastExerciseItem);
         }
 
@@ -274,8 +376,8 @@ public class ExerciseInterpreter extends VaultInterpreter {
      */
     private boolean isHistoricElementWithinSlice(final VaultEntry item, final VaultEntry historyElement) {
         return item != null && historyElement != null // not null
-                && TimestampUtils.addMinutesToTimestamp(historyElement.getTimestamp(), -1 * myOptions.activitySliceThreshold).after(item.getTimestamp()) // starts after current item (with respect to slice threshold)
-                && TimestampUtils.addMinutesToTimestamp(item.getTimestamp(), Math.round(item.getValue() + myOptions.activitySliceThreshold)).after(historyElement.getTimestamp()); // starts befor item ends (with respect to slice threshold)
+                && TimestampUtils.addMinutesToTimestamp(historyElement.getTimestamp(), -1 * activitySliceThreshold).after(item.getTimestamp()) // starts after current item (with respect to slice threshold)
+                && TimestampUtils.addMinutesToTimestamp(item.getTimestamp(), Math.round(item.getValue() + activitySliceThreshold)).after(historyElement.getTimestamp()); // starts befor item ends (with respect to slice threshold)
     }
 
     /**
@@ -294,7 +396,7 @@ public class ExerciseInterpreter extends VaultInterpreter {
                     lastItem = item;
                 } else {
                     if (item.getTimestamp().getTime()
-                            - lastItem.getTimestamp().getTime() > 6300000) { // > 10.5 min
+                            - lastItem.getTimestamp().getTime() > 6300000) { // > 10.5 min //TODO ask jens should be 630000
                         // add entry with 0, 10 minutes after last timestamp
                         addData.add(new VaultEntry(VaultEntryType.STRESS,
                                 TimestampUtils.addMinutesToTimestamp(
@@ -321,5 +423,19 @@ public class ExerciseInterpreter extends VaultInterpreter {
         Collections.sort(data, new SortVaultEntryByDate());
 
         return data;
+    }
+
+    /**
+     *{@inheritDoc}
+     *
+     */
+    @Override
+    public boolean loadConfiguration(Properties configuration) {
+        if (!super.loadConfiguration(configuration)) return false;
+        if (!configuration.containsKey("activityThreshold") || !configuration.containsKey("activitySliceThreshold")) return false;
+
+        activityThreshold = Integer.parseInt(configuration.getProperty("activityThreshold"));
+        activitySliceThreshold = Integer.parseInt(configuration.getProperty("activitySliceThreshold"));
+        return true;
     }
 }

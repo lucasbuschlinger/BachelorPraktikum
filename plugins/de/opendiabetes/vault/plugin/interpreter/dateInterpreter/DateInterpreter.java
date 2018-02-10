@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Jens Heuschkel
+ * Copyright (C) 2017 OpenDiabetes
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,32 +14,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.interpreter.nonInterpreter;
+package de.opendiabetes.vault.plugin.interpreter.dateInterpreter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-/**
- * @author magnus
- */
-public class NonInterpreter extends VaultInterpreter {
+public class DateInterpreter extends VaultInterpreter {
     /**
-     * {@inheritDoc}
+     * @param input
+     * @return
      */
     @Override
-    public List<VaultEntry> interpret(final List<VaultEntry> result) {
-        return result;
-    }
+    public List<VaultEntry> interpret(final List<VaultEntry> input) {
+        if (getOptions().isImportPeriodRestricted) {
+            List<VaultEntry> retVal = new ArrayList<>();
+            for (VaultEntry item : input) {
+                if (item.getTimestamp().after(getOptions().importPeriodFrom)
+                        && item.getTimestamp().before(getOptions().importPeriodTo)) {
+                    retVal.add(item);
+                }
+            }
+            return retVal;
+        } else {
+            return input;
+        }
 
-    /**
-     * NonInterpreter does not need any configuration.
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean loadConfiguration(final Properties configuration) {
-        return true;
     }
 }

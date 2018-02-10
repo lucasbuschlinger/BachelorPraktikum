@@ -21,7 +21,7 @@ import java.util.Date;
 /**
  * @author OpenDiabetes
  */
-public abstract class InterpreterOptions {
+public class InterpreterOptions {
 
     /**
      * //TODO javadoc
