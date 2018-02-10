@@ -86,5 +86,7 @@ public class NonInterpreterTest {
         System.out.println("pump interpreter load configuration successful");
         Interpreter[] interpreters = new Interpreter[]{dateInterpreter, pumpInterpreter};
         manager.importAndInterpretWithoutDb(medImporter, Arrays.asList(interpreters)).forEach(x->System.out.println(x));
+        manager.importAndInterpret(medImporter, Arrays.asList(interpreters), db);
+        db.queryAllVaultEntries().forEach(x->System.out.println("db: "+x));
     }
 }
