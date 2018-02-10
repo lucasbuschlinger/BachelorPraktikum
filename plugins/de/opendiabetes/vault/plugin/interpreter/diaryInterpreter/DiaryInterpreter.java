@@ -17,21 +17,51 @@
 package de.opendiabetes.vault.plugin.interpreter.diaryInterpreter;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
+import de.opendiabetes.vault.plugin.interpreter.VaultInterpreter;
+import org.pf4j.Extension;
+import org.pf4j.Plugin;
+import org.pf4j.PluginWrapper;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
- * @author juehv
+ * Wrapper class for the DiaryInterpreter plugin.
+ *
+ * @author Magnus Gärtner
  */
-public class DiaryInterpreter extends VaultInterpreter {
+public class DiaryInterpreter extends Plugin {
 
     /**
-     * {@inheritDoc}
+     * Constructor for the PluginManager.
+     *
+     * @param wrapper The PluginWrapper.
      */
-    @Override
-    public List<VaultEntry> interpret(final List<VaultEntry> input) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public DiaryInterpreter(final PluginWrapper wrapper) {
+        super(wrapper);
     }
 
+    /**
+     * Actual implementation of the DiaryInterpreter plugin.
+     */
+    @Extension
+    public static class DiaryInterpreterImplementation extends VaultInterpreter {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<VaultEntry> interpret(final List<VaultEntry> input) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        /**
+         * @param configuration
+         * @return
+         */
+        @Override
+        public boolean loadConfiguration(final Properties configuration) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+    }
 }

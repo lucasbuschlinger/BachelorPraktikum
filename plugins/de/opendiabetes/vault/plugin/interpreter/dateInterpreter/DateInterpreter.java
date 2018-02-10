@@ -17,30 +17,100 @@
 package de.opendiabetes.vault.plugin.interpreter.dateInterpreter;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
+import de.opendiabetes.vault.plugin.interpreter.VaultInterpreter;
+import org.pf4j.Extension;
+import org.pf4j.Plugin;
+import org.pf4j.PluginWrapper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
-public class DateInterpreter extends VaultInterpreter {
+/**
+ * Wrapper class for the DateInterpreter plugin.
+ *
+ * @author Magnus Gärtner
+ */
+public class DateInterpreter extends Plugin {
+
     /**
-     * @param input
-     * @return
+     * Constructor for the PluginManager.
+     *
+     * @param wrapper The PluginWrapper.
      */
-    @Override
-    public List<VaultEntry> interpret(final List<VaultEntry> input) {
-        if (getOptions().isImportPeriodRestricted) {
-            List<VaultEntry> retVal = new ArrayList<>();
-            for (VaultEntry item : input) {
-                if (item.getTimestamp().after(getOptions().importPeriodFrom)
-                        && item.getTimestamp().before(getOptions().importPeriodTo)) {
-                    retVal.add(item);
+    public DateInterpreter(final PluginWrapper wrapper) {
+        super(wrapper);
+    }
+
+    /**
+     * Actual implementation of the DateInterpreter plugin.
+     */
+    @Extension
+    public static class DateInterpreterImplementation extends VaultInterpreter {
+
+        /**
+         *
+         */
+        private boolean isImportPeriodRestricted;
+
+        /**
+         * //TODO javadoc
+         */
+        private Date importPeriodFrom;
+
+        /**
+         * //TODO javadoc
+         */
+        private Date importPeriodTo;
+
+        /**
+         * @param input
+         * @return
+         */
+        @Override
+        public List<VaultEntry> interpret(final List<VaultEntry> input) {
+            if (isImportPeriodRestricted) {
+                List<VaultEntry> retVal = new ArrayList<>();
+                for (VaultEntry item : input) {
+                    if (item.getTimestamp().after(importPeriodFrom)
+                            && item.getTimestamp().before(importPeriodTo)) {
+                        retVal.add(item);
+                    }
                 }
+                return retVal;
+            } else {
+                return input;
             }
-            return retVal;
-        } else {
-            return input;
+
         }
 
+
+        /**
+         * @param configuration
+         * @return
+         */
+        @Override
+        public boolean loadConfiguration(final Properties configuration) {
+            if (!configuration.containsKey("ImportPeriodRestricted")) {
+                return false;
+            }
+            String restriction = configuration.getProperty("ImportPeriodRestricted");
+            isImportPeriodRestricted = Boolean.parseBoolean(restriction);
+
+            if (!isImportPeriodRestricted) return true;
+            if (!configuration.containsKey("importPeriodFrom") || !configuration.containsKey("importPeriodTo")) return false;
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                importPeriodFrom = dateFormat.parse(configuration.getProperty("importPeriodFrom"));
+                importPeriodTo = dateFormat.parse(configuration.getProperty("importPeriodTo"));
+            } catch (ParseException e) {
+                return false;
+            }
+            return true;
+        }
     }
 }

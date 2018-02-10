@@ -1,6 +1,6 @@
 package de.opendiabetes.tests.plugin.exporter;
 
-import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
+import de.opendiabetes.tests.plugin.util.TestUtil;
 import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
@@ -31,7 +31,7 @@ public class VaultCSVExporterTest {
      */
     @Test
     public void setGetPath() {
-        Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
+        Exporter vaultCSVExporter = TestUtil.getExporter("VaultCSVExporter");
         vaultCSVExporter.setExportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", vaultCSVExporter.getExportFilePath());
     }
@@ -41,7 +41,7 @@ public class VaultCSVExporterTest {
      */
     @Test
     public void setDatabase() {
-        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
+        Exporter vaultODVExporter = TestUtil.getExporter("VaultODVExporter");
         try {
             VaultDao.initializeDb();
         } catch (SQLException exception){
@@ -60,7 +60,7 @@ public class VaultCSVExporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
+        Exporter vaultCSVExporter = TestUtil.getExporter("VaultCSVExporter");
 
         //load properties from file
         Properties config = new Properties();

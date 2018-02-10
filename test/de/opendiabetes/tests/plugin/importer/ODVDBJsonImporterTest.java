@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
+import de.opendiabetes.tests.plugin.util.TestUtil;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,7 +63,7 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        Importer odvImporter = TestUtil.getImporter("ODVDBJsonImporter");
         System.out.println("TEST" + odvImporter.getClass());
         odvImporter.setImportFilePath("path/to/data");
         Assert.assertFalse(odvImporter.importData());
@@ -73,7 +74,7 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        Importer odvImporter = TestUtil.getImporter("ODVDBJsonImporter");
         odvImporter.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", odvImporter.getImportFilePath());
     }
@@ -83,7 +84,7 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        Importer odvImporter = TestUtil.getImporter("ODVDBJsonImporter");
         Handler handler = new Handler() {
             String logOut = "";
             int msgsReceived = 0;

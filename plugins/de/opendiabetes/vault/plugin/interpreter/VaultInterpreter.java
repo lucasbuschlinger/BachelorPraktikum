@@ -16,41 +16,34 @@
  */
 package de.opendiabetes.vault.plugin.interpreter;
 
-import java.util.Date;
+import de.opendiabetes.vault.data.VaultDao;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+
 
 /**
  * @author OpenDiabetes
  */
-public class InterpreterOptions {
+public abstract class VaultInterpreter extends AbstractPlugin implements Interpreter {
 
     /**
      * //TODO javadoc
      */
-    public final boolean isImportPeriodRestricted;
+    private VaultDao db;
 
     /**
-     * //TODO javadoc
+     * @param importer
+     * @param options
+     * @param db
      */
-    public final Date importPeriodFrom;
-
-    /**
-     * //TODO javadoc
-     */
-    public final Date importPeriodTo;
-
-    /**
-     * //TODO javadoc
-     *
-     * @param isImportPeriodRestricted
-     * @param importPeriodFrom
-     * @param importPeriodTo
-     */
-    public InterpreterOptions(final boolean isImportPeriodRestricted,
-                              final Date importPeriodFrom, final Date importPeriodTo) {
-        this.isImportPeriodRestricted = isImportPeriodRestricted;
-        this.importPeriodFrom = importPeriodFrom != null ? importPeriodFrom : new Date();
-        this.importPeriodTo = importPeriodTo != null ? importPeriodTo : new Date();
+    @Override
+    public void init(final VaultDao db) {
+        this.db = db;
     }
 
-
+    /**
+     * @return
+     */
+    protected VaultDao getDb() {
+        return db;
+    }
 }

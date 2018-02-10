@@ -381,6 +381,9 @@
             <fileset dir="${plugins_out}/exporter">
                 <exclude name="*.class"/>
             </fileset>
+            <fileset dir="${plugins_out}/interpreter">
+                <exclude name="*.class"/>
+            </fileset>
         </delete>
         <!--move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j2.properties"
               tofile="out/production/OpenDiabetes/log4j2.properties"/-->

@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
+import de.opendiabetes.tests.plugin.util.TestUtil;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,9 +25,6 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
-import java.util.Properties;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 /**
  * Tests for the SonySWR21Importer plugin.
@@ -62,7 +60,7 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer sonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
+        Importer sonySWR21Importer = TestUtil.getImporter("SonySWR21Importer");
         sonySWR21Importer.setImportFilePath("path/to/data");
         Assert.assertFalse(sonySWR21Importer.importData());
     }
@@ -72,7 +70,7 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer sonySWR21Importer = TestImporterUtil.getImporter("SonySWR21Importer");
+        Importer sonySWR21Importer = TestUtil.getImporter("SonySWR21Importer");
         sonySWR21Importer.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", sonySWR21Importer.getImportFilePath());
     }

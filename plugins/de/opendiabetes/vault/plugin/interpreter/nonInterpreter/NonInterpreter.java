@@ -17,29 +17,51 @@
 package de.opendiabetes.vault.plugin.interpreter.nonInterpreter;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.interpreter.vaultInterpreter.VaultInterpreter;
+import de.opendiabetes.vault.plugin.interpreter.VaultInterpreter;
+import org.pf4j.Extension;
+import org.pf4j.Plugin;
+import org.pf4j.PluginWrapper;
 
 import java.util.List;
 import java.util.Properties;
 
 /**
- * @author magnus
+ * Wrapper class for the NonInterpreter plugin.
+ *
+ * @author Magnus Gärtner
  */
-public class NonInterpreter extends VaultInterpreter {
+@Deprecated
+public class NonInterpreter extends Plugin {
+
     /**
-     * {@inheritDoc}
+     * Constructor for the PluginManager.
+     *
+     * @param wrapper The PluginWrapper.
      */
-    @Override
-    public List<VaultEntry> interpret(final List<VaultEntry> result) {
-        return result;
+    public NonInterpreter(final PluginWrapper wrapper) {
+        super(wrapper);
     }
 
     /**
-     * NonInterpreter does not need any configuration.
-     * {@inheritDoc}
+     * Actual implementation of the NonInterpreter plugin.
      */
-    @Override
-    public boolean loadConfiguration(final Properties configuration) {
-        return true;
+    @Extension
+    public static class NonInterpreterImplementation extends VaultInterpreter {
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<VaultEntry> interpret(final List<VaultEntry> result) {
+            return result;
+        }
+
+        /**
+         * NonInterpreter does not need any configuration.
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean loadConfiguration(final Properties configuration) {
+            return true;
+        }
     }
 }

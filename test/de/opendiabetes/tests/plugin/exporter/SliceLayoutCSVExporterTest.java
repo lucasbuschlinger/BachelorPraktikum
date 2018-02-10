@@ -1,6 +1,6 @@
 package de.opendiabetes.tests.plugin.exporter;
 
-import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
+import de.opendiabetes.tests.plugin.util.TestUtil;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class SliceLayoutCSVExporterTest {
      */
     @Test
     public void setGetPath() {
-        Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        Exporter SliceLayoutCSVExporter = TestUtil.getExporter("SliceLayoutCSVExporter");
         SliceLayoutCSVExporter.setExportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", SliceLayoutCSVExporter.getExportFilePath());
     }
@@ -39,7 +39,7 @@ public class SliceLayoutCSVExporterTest {
      */
     @Test
     public void setEntries() {
-        Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        Exporter sliceLayoutCSVExporter = TestUtil.getExporter("SliceLayoutCSVExporter");
         sliceLayoutCSVExporter.setAdditional(new ArrayList<>());
     }
 
@@ -48,7 +48,7 @@ public class SliceLayoutCSVExporterTest {
      */
     @Test(expected =  IllegalArgumentException.class)
     public void setAdditionalException() {
-        Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        Exporter sliceLayoutCSVExporter = TestUtil.getExporter("SliceLayoutCSVExporter");
         sliceLayoutCSVExporter.setAdditional(new Object());
     }
 
@@ -57,7 +57,7 @@ public class SliceLayoutCSVExporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        Exporter SliceLayoutCSVExporter = TestUtil.getExporter("SliceLayoutCSVExporter");
 
         //load properties from file
         Properties config = new Properties();
