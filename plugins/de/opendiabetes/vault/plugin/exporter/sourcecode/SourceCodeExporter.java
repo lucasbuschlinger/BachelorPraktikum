@@ -140,7 +140,7 @@ public class SourceCodeExporter extends Plugin {
          */
         protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
-            String filePath = null;
+            String filePath = getExportFilePath();
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
 
