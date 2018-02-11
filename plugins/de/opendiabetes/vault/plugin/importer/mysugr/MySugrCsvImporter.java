@@ -252,7 +252,7 @@ public class MySugrCsvImporter extends Plugin {
             if (!rawValue.isEmpty()) {
                 tmpEntry = new VaultEntry(VaultEntryType.MEAL_DESCRIPTION, timestamp,
                         VaultEntry.VALUE_UNUSED);
-                if (tmpEntry != null) {
+                if (tmpEntry != null) { //TODO this is always true, condition can be removed?
                     VaultEntryAnnotation mealDescription = new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.MEAL_Information);
                     mealDescription.setValue(rawValue);
                     tmpEntry.addAnnotation(mealDescription);
