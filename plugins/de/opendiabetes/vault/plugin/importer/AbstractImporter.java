@@ -46,7 +46,7 @@ public abstract class AbstractImporter implements Importer {
     /**
      * List of StatusListener which contains all listeners registered to the importer.
      */
-    private List<StatusListener> listeners = new ArrayList<StatusListener>();
+    private final List<StatusListener> listeners = new ArrayList<StatusListener>();
 
     /**
      * {@inheritDoc}
