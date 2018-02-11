@@ -84,41 +84,4 @@ public class VaultODVImporterTest {
         Assert.assertEquals("path/to/import/file", vaultODVImporter.getImportFilePath());
     }
 
-    /**
-     * Test to see whether load configuration returns the correct log.
-     */
-    @Test
-    public void printLogOnLoadConfiguration() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.startPlugin("VaultODVImporter");
-        Importer vaultODVImporter = manager.getExtensions(Importer.class).get(0);
-        Handler handler;
-
-        vaultODVImporter.LOG.addHandler(new Handler() {
-            String logOut = "";
-            int msgsReceived = 0;
-
-            @Override
-            public void publish(final LogRecord record) {
-                logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: VaultODVImporter does not support configuration."));
-                msgsReceived++;
-            }
-
-            @Override
-            public void flush() {
-            }
-
-            @Override
-            public void close() throws SecurityException {
-                Assert.assertTrue(msgsReceived > 0);
-            }
-        });
-        Assert.assertFalse(vaultODVImporter.loadConfiguration(new Properties()));
-        vaultODVImporter.LOG.getHandlers()[0].close();
-    }
-
-    //TODO add test for notifyMechanism
-
 }

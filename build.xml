@@ -92,8 +92,14 @@
 
     <!-- Project Libraries -->
 
-    <path id="library.log4j-1.2.16.classpath">
-        <pathelement location="${basedir}/lib/log4j-1.2.16.jar"/>
+    <path id="library.log4j2">
+        <pathelement location="${basedir}/lib/log4j-api-2.10.0.jar"/>
+        <pathelement location="${basedir}/lib/log4j-core-2.10.0.jar"/>
+        <pathelement location="${basedir}/lib/log4j-slf4j-impl-2.10.0.jar"/>
+    </path>
+
+    <path id="library.slf4j">
+        <pathelement location="${basedir}/lib/slf4j-api-1.7.5.jar"/>
     </path>
 
     <path id="library.ormlite-jdbc-5.0.classpath">
@@ -130,44 +136,7 @@
         <pathelement location="${basedir}/lib/pf4j-2.0.0.jar"/>
     </path>
 
-    <path id="library.slf4j-api-1.7.5.classpath">
-        <pathelement location="${basedir}/lib/slf4j-api-1.7.5.jar"/>
-    </path>
-
-    <path id="library.slf4j-log4j12-1.7.5.classpath">
-        <pathelement location="${basedir}/lib/slf4j-log4j12-1.7.5.jar"/>
-    </path>
-
-    <path id="library.slf4j-simple-1.6.6.classpath">
-        <pathelement location="${basedir}/lib/slf4j-simple-1.6.6.jar"/>
-    </path>
-
-
     <!-- Global Libraries -->
-
-    <path id="library.groovy-1.8.6.classpath">
-        <pathelement location="/usr/share/groovy/lib/ant-junit.jar"/>
-        <pathelement location="/usr/share/groovy/lib/ant-launcher.jar"/>
-        <pathelement location="/usr/share/groovy/lib/ant.jar"/>
-        <pathelement location="/usr/share/groovy/lib/antlr.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3-analysis.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3-tree.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3-util.jar"/>
-        <pathelement location="/usr/share/groovy/lib/asm3.jar"/>
-        <pathelement location="/usr/share/groovy/lib/bsf.jar"/>
-        <pathelement location="/usr/share/groovy/lib/commons-cli.jar"/>
-        <pathelement location="/usr/share/groovy/lib/commons-logging.jar"/>
-        <pathelement location="/usr/share/groovy/lib/groovy-1.8.6.jar"/>
-        <pathelement location="/usr/share/groovy/lib/ivy.jar"/>
-        <pathelement location="/usr/share/groovy/lib/jansi.jar"/>
-        <pathelement location="/usr/share/groovy/lib/jline.jar"/>
-        <pathelement location="/usr/share/groovy/lib/jsp-api.jar"/>
-        <pathelement location="/usr/share/groovy/lib/junit4.jar"/>
-        <pathelement location="/usr/share/groovy/lib/mockobjects-core.jar"/>
-        <pathelement location="/usr/share/groovy/lib/regexp.jar"/>
-        <pathelement location="/usr/share/groovy/lib/servlet-api.jar"/>
-        <pathelement location="/usr/share/groovy/lib/xstream.jar"/>
-    </path>
     <!-- Register Custom Compiler Taskdefs -->
     <property name="javac2.home" value="${idea.home}/lib"/>
     <path id="javac2.classpath">
@@ -203,13 +172,10 @@
     </path>
     <path id="opendiabetes.module.production.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.slf4j-simple-1.6.6.classpath"/>
-        <path refid="library.log4j-1.2.16.classpath"/>
-        <path refid="library.slf4j-api-1.7.5.classpath"/>
-        <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.log4j2"/>
+        <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.jsoup.classpath"/>
@@ -218,13 +184,10 @@
     </path>
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.slf4j-simple-1.6.6.classpath"/>
-        <path refid="library.log4j-1.2.16.classpath"/>
-        <path refid="library.slf4j-api-1.7.5.classpath"/>
-        <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.log4j2"/>
+        <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.jsoup.classpath"/>
@@ -234,13 +197,10 @@
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.slf4j-simple-1.6.6.classpath"/>
-        <path refid="library.log4j-1.2.16.classpath"/>
-        <path refid="library.slf4j-api-1.7.5.classpath"/>
-        <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.log4j2"/>
+        <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.jsoup.classpath"/>
@@ -250,13 +210,10 @@
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.groovy-1.8.6.classpath"/>
         <path refid="library.pf4j-2.0.0.classpath"/>
         <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.slf4j-simple-1.6.6.classpath"/>
-        <path refid="library.log4j-1.2.16.classpath"/>
-        <path refid="library.slf4j-api-1.7.5.classpath"/>
-        <path refid="library.slf4j-log4j12-1.7.5.classpath"/>
+        <path refid="library.log4j2"/>
+        <path refid="library.slf4j"/>
         <path refid="library.junit.classpath"/>
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.jsoup.classpath"/>
@@ -449,8 +406,8 @@
                 <exclude name="*.class"/>
             </fileset>
         </delete>
-        <move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j.properties"
-              tofile="out/production/OpenDiabetes/log4j.properties"/>
+        <!--move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j2.properties"
+              tofile="out/production/OpenDiabetes/log4j2.properties"/-->
     </target>
 
 

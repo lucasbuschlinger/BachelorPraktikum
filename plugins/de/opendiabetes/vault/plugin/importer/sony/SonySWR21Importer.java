@@ -21,17 +21,16 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.validator.SonySWR12Validator;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -60,7 +59,7 @@ public class SonySWR21Importer extends Plugin {
          * Constructor.
          */
         public SonySWR21ImporterImplementation() {
-            super(new SonySWR12Validator(), ',');
+            super(new SonySWR12Validator());
         }
 
         /**
@@ -80,8 +79,10 @@ public class SonySWR21Importer extends Plugin {
                 return null;
             }
 
-            Date timestamp = parseValidator.getTimestamp(creader);
-            if (timestamp == null) {
+            Date timestamp;
+            try {
+                timestamp = parseValidator.getTimestamp(creader);
+            } catch (ParseException exception) {
                 return null;
             }
 
@@ -139,7 +140,12 @@ public class SonySWR21Importer extends Plugin {
 
                         // calculate stress value
                         value2 -= uninitializedStressValue;
-                        double weight = value2 < 0 ? highWeight : lowWeight;
+                        double weight;
+                        if (value2 < 0) {
+                            weight = highWeight;
+                        } else {
+                            weight = lowWeight;
+                        }
 
                         double stressValue = baseStressValue - value2 * weight;
                         tmpEntry = new VaultEntry(
@@ -192,8 +198,7 @@ public class SonySWR21Importer extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "SonySWR21Importer does not support configuration.");
-            return false;
+            return super.loadConfiguration(configuration);
         }
     }
 }

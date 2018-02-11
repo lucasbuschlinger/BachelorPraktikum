@@ -20,16 +20,11 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.container.MedtronicAlertCodes;
-import de.opendiabetes.vault.plugin.container.MedtronicAnnotatedVaultEntry;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.validator.MedtronicCSVValidator;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,13 +119,12 @@ public class MedtronicImporter extends Plugin {
          * Constructor.
          */
         public MedtronicImporterImplementation() {
-            super(new MedtronicCSVValidator(), ',');
+            super(new MedtronicCSVValidator());
         }
 
 
         /**
          * Method to extract double entries from the import file.
-         * //TODO add an example
          *
          * @param timestamp The timestamp when the entry was generated.
          * @param type      The of the entry.
@@ -225,67 +219,16 @@ public class MedtronicImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            //check if delimiter is set in configuration
-            if (!configuration.containsKey("delimiter")
-                    || configuration.getProperty("delimiter") == null
-                    || configuration.getProperty("delimiter").length() == 0) {
-                LOG.log(Level.WARNING, "MedtronicImporter configuration does not specify a delimiter to use");
-                return false;
-            }
-
-            char delimiter = configuration.getProperty("delimiter").charAt(0);
-
-            //checking validity of delimiter
-            final String allowedDelimiters = ",;\t";
-            if (allowedDelimiters.indexOf(delimiter) == -1) {
-                LOG.log(Level.WARNING,
-                        "MedtronicImporter does not support delimiter: "
-                                + delimiter + " (" + configuration.getProperty("delimiter") + ")");
-                return false;
-            }
-
-            this.setDelimiter(delimiter);
-            return true;
+            return super.loadConfiguration(configuration);
         }
 
         /**
-         * Preprocessing for medtronic data.
+         * Unimplemented preprocessing method as no preprocessing is necessary for Medtronic data.
          *
-         * @param filePath Path to the import file.
+         * @param filePath Path to the file that would be preprocessed.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-            //TODO test for delimiter
-            CsvReader creader = null;
-            try {
-                // test for , delimiter
-                creader = new CsvReader(filePath, ',', Charset.forName("UTF-8"));
-                final int linesToSkip = 15;
-                for (int i = 0; i < linesToSkip; i++) { // just scan the first 15 lines for a valid header
-                    if (creader.readHeaders()) {
-                        if (getValidator().validateHeader(creader.getHeaders())) {
-                            // found valid header --> finish
-                            setDelimiter(',');
-                            creader.close();
-                            LOG.log(Level.FINE, "Use ',' as delimiter for Carelink CSV: {0}", filePath);
-                            return;
-                        }
-                    }
-                }
-                // if you end up here there was no valid header within the range
-                // try the other delimiter in normal operation
-                setDelimiter(';'); //TODO why is this enough to proceed processing?
-                LOG.log(Level.FINE, "Use ';' as delimiter for Carelink CSV: {0}", filePath);
-
-            } catch (IOException ex) {
-                LOG.log(Level.WARNING, "Error while parsing Careling CSV in delimiter check: "
-                        + filePath, ex);
-            } finally {
-                if (creader != null) {
-                    creader.close();
-                }
-            }
-        }
+        protected void preprocessingIfNeeded(final String filePath) { }
 
         /**
          * Parser for medtronic CSV Data.
@@ -313,12 +256,14 @@ public class MedtronicImporter extends Plugin {
             } catch (ParseException ex) {
                 // maybe old format without good timestamp
                 // try again with separated fields
-                timestamp = parseValidator.getManualTimestamp(creader);
+                try {
+                    timestamp = parseValidator.getManualTimestamp(creader);
+                } catch (ParseException exception) {
+                    LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
+                    return null;
+                }
             }
-            if (timestamp == null) { //decided not to remove this code as suggested by FindBugs
-                LOG.log(Level.FINER, "Ignoring record because it does not contain a timestamp");
-                return null;
-            }
+
             String rawValues = parseValidator.getRawValues(creader);
             VaultEntry tmpEntry;
 
@@ -448,9 +393,12 @@ public class MedtronicImporter extends Plugin {
                     if (tmpEntry != null) {
                         MedtronicAlertCodes codeObj = MedtronicAlertCodes.fromCode(
                                 (int) Math.round(tmpEntry.getValue()));
-                        String codeString = codeObj == MedtronicAlertCodes.UNKNOWN_ALERT
-                                ? String.valueOf(Math.round(tmpEntry.getValue()))
-                                : codeObj.toString();
+                        String codeString;
+                        if (codeObj == MedtronicAlertCodes.UNKNOWN_ALERT) {
+                            codeString = String.valueOf(Math.round(tmpEntry.getValue()));
+                        } else {
+                            codeString = codeObj.toString();
+                        }
 
                         switch (codeObj) {
                             case NO_DELIVERY:
@@ -460,7 +408,6 @@ public class MedtronicImporter extends Plugin {
                             case SUSPEND_BEFORE_LOW:
                                 VaultEntry extraTmpEntry = new VaultEntry(VaultEntryType.PUMP_AUTONOMOUS_SUSPEND, timestamp);
                                 retVal.add(extraTmpEntry);
-                                //TODO Fall through?
                             case LOW_WHEN_SUSPENDED:
                             case LOW:
                             case RISE_ALERT:

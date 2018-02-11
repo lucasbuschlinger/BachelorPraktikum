@@ -22,7 +22,6 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.importer.CSVImporter;
-import de.opendiabetes.vault.plugin.importer.validator.GoogleFitCSVValidator;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -32,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * Wrapper class for the GoogleFitCSVImporter plugin.
@@ -60,12 +58,16 @@ public class GoogleFitCSVImporter extends Plugin {
          * Constructor.
          */
         public GoogleFitCSVImporterImplementation() {
-            super(new GoogleFitCSVValidator(), ',');
+            super(new GoogleFitCSVValidator());
         }
 
-
+        /**
+         * Unimplemented preprocessing method as no preprocessing is necessary for GoogleFit CSV data.
+         *
+         * @param filePath Path to the file that would be preprocessed.
+         */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) { /*not needed yet*/ }
+        protected void preprocessingIfNeeded(final String filePath) { }
 
         /**
          * {@inheritDoc}
@@ -125,8 +127,7 @@ public class GoogleFitCSVImporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "GoogleFitCSVImporter does not support configuration.");
-            return false;
+            return super.loadConfiguration(configuration);
         }
     }
 

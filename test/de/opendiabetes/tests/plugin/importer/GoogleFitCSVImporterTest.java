@@ -82,37 +82,4 @@ public class GoogleFitCSVImporterTest {
         Assert.assertEquals("path/to/import/file", googleFitCSVImporter.getImportFilePath());
     }
 
-    /**
-     * Test to see whether load configuration returns the correct log.
-     */
-    @Test
-    public void printLogOnLoadConfiguration() {
-        Importer googleFitCSVImporter = TestImporterUtil.getImporter("GoogleFitCSVImporter");
-
-        googleFitCSVImporter.LOG.addHandler(new Handler() {
-            String logOut = "";
-            int msgsReceived = 0;
-
-            @Override
-            public void publish(final LogRecord record) {
-                logOut += record.getLevel().getName() + ": " + record.getMessage();
-                Assert.assertTrue(logOut.contains("WARNING: GoogleFitCSVImporter does not support configuration."));
-                msgsReceived++;
-            }
-
-            @Override
-            public void flush() {
-            }
-
-            @Override
-            public void close() throws SecurityException {
-                Assert.assertTrue(msgsReceived > 0);
-            }
-        });
-        Assert.assertFalse(googleFitCSVImporter.loadConfiguration(new Properties()));
-        googleFitCSVImporter.LOG.getHandlers()[0].close();
-    }
-
-    //TODO add test for notifyMechanism
-
 }

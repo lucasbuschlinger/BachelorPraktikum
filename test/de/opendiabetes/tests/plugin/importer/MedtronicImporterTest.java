@@ -24,6 +24,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -85,7 +86,7 @@ public class MedtronicImporterTest {
      * Test to see whether load configuration returns the correct log.
      */
     @Test
-    public void printLogOnLoadConfiguration() {
+    public void printLogOnLoadConfigurationCSVImporters() {
         Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
 
         //load properties from file
@@ -124,17 +125,26 @@ public class MedtronicImporterTest {
         config.setProperty("delimiter", "not a valid delimiter");
         Assert.assertFalse(medtronicImporter.loadConfiguration(config));
 
-        //not providing a value for delimiter
-        config = new Properties();
-        config.setProperty("another property", "value");
-        Assert.assertFalse(medtronicImporter.loadConfiguration(config));
-
 
         config.setProperty("delimiter", "");
         Assert.assertFalse(medtronicImporter.loadConfiguration(config));
 
     }
 
-    //TODO add test for notifyMechanism
+
+    /* To test the delimiter detection you need testdata
+     * that can not be checked in to github.
+     * You have to delete the lib folder from
+     * the plugin in order to get this test working.
+     */
+   /*
+    @Test
+    public void smartDelimiterDetectionTest() {
+        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
+        String dataPath = "/home/magnus/Downloads/CareLink-Export-1486459734778.csv";
+        medtronicImporter.setImportFilePath(dataPath);
+        medtronicImporter.importData();
+        return;
+    }*/
 
 }
