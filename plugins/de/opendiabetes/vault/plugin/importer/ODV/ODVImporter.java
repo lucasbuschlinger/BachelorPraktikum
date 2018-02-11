@@ -16,7 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.importer.ODV;
 
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.pf4j.DefaultPluginManager;
@@ -24,9 +23,7 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
-import sun.rmi.runtime.Log;
 
-import javax.swing.text.html.HTMLDocument;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,8 +32,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -109,14 +104,18 @@ public class ODVImporter extends Plugin {
         }
 
         /**
+         * This implementation imports the different files from the ZIP-archive which should be set in the {@link #importFilePath}.
+         * It does so by unzipping the archive and checking the integrity of the contained files.
+         * Files can only be imported if the therefore needed importer plugin is available, if not it gets omitted and reported.
          *
-         * @return
+         * @return True some data could imported successfully, false if none could be imported.
          */
         @Override
         public boolean importData() {
             Map<String, List<String>> metaInfo;
             Map<String, String> unimportedFiles = new HashMap<>();
             importedData = new ArrayList<>();
+            boolean result = false;
             String reasonNoPlugin = "No applicable importer plugin available for this file";
             String reasonChecksumFailed = "The integrity of the data could not be verified via the checksum";
             try {
@@ -135,7 +134,7 @@ public class ODVImporter extends Plugin {
             PluginManager manager = new DefaultPluginManager();
             manager.loadPlugins();
             manager.startPlugins();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Map.Entry metaEntry = (Map.Entry) iterator.next();
                 String plugin = (String) metaEntry.getKey();
                 ArrayList<String> furtherEntries = (ArrayList<String>) metaEntry.getValue();
@@ -156,8 +155,9 @@ public class ODVImporter extends Plugin {
                 importer.setImportFilePath(inputFilepath);
                 importer.importData();
                 importedData.addAll(importer.getImportedData());
+                result = true;
             }
-            return true;
+            return result;
         }
 
         /**
@@ -171,11 +171,13 @@ public class ODVImporter extends Plugin {
         }
 
         /**
+         * This method is used to check the integrity of the specified file by comparing it to the supplied checksum.
          *
-         * @param filePath Path to the import file. Used to derive the Path to the file containing the checksum.
-         * @param checksum bla
+         * @param filePath Path to the file to be checked.
+         * @param checksum The checksum to check the file against.
+         * @return True if the integrity could be verified successfully, false otherwise.
          */
-        public boolean verifyChecksum(final String filePath, final String checksum) {
+        private boolean verifyChecksum(final String filePath, final String checksum) {
             FileInputStream fileInputStream;
             try {
                 fileInputStream = new FileInputStream(filePath);
@@ -206,7 +208,7 @@ public class ODVImporter extends Plugin {
                 LOG.log(Level.SEVERE, "Checksum is not valid for the specified file");
                 return false;
             } else {
-                LOG.log(Level.INFO, "Checksum successfully verified");
+                LOG.log(Level.INFO, "Checksum successfully verified for: " + filePath);
             }
             try {
                 fileInputStream.close();
@@ -217,10 +219,11 @@ public class ODVImporter extends Plugin {
         }
 
         /**
+         * The methods unzips the contents of the specified zipFile to the specified directory.
          *
-         * @param zipFile bla
-         * @param outputDirectory bla
-         * @throws IOException bla
+         * @param zipFile The file to unzip.
+         * @param outputDirectory The directory where the files will be unzipped to.
+         * @throws IOException Thrown if reading or writing any of the files goes wrong.
          */
         private void unzipArchive(final String zipFile, final String outputDirectory) throws IOException {
             File outputFolder = new File(outputDirectory);
