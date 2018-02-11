@@ -54,7 +54,7 @@ public abstract class CSVImporter extends FileImporter {
     /**
      * {@inheritDoc}
      */
-    protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
+    public boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
         importedData = new ArrayList<>();
         importedRawData = new ArrayList<>();
         final int maxProgress = 100;

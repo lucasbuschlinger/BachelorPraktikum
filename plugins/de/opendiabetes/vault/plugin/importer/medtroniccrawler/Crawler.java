@@ -34,14 +34,12 @@ public class Crawler {
      * @param endDate - end date until when the csv file data should go.
      * @param userWorkingDirecotry - the director where the csv file should be downloaded to.
      * @param logger - a logger instance.
-     * @param configFilePath - file path to specific medtroniccrawler configuration.
      */
     public void generateDocument(final Map<String, String> loginCookies,
                                  final String startDate,
                                  final String endDate,
                                  final String userWorkingDirecotry,
-                                 final Logger logger,
-                                 final String configFilePath) {
+                                 final Logger logger) {
 
         logger.info("Inside class CrawlerClass");
         try {

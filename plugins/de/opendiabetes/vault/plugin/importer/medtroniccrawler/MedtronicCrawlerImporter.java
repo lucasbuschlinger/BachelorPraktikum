@@ -19,11 +19,12 @@ package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.Importer;
-import org.pf4j.Extension;
-import org.pf4j.Plugin;
-import org.pf4j.PluginWrapper;
+import org.pf4j.*;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -68,10 +69,53 @@ public class MedtronicCrawlerImporter extends Plugin {
             fh.setFormatter(new CrawlerLogFormatter());
             logger.setUseParentHandlers(false);
             logger.info("Command Line application started");
-            logger.info("Log is saved at location " + System.getProperty("user.home") + "under name CommandLine");
-            CommandLineArgumentParser cliParser = new CommandLineArgumentParser();
-            // this class is called to get all the different arguments and it's values
-            // cliParser.runDifferentArguments(args, logger); // This function will run program depending on flag/argument choosen
+
+            String username = "";
+            String password = "";
+
+            Authentication auth = new Authentication();
+            if (!auth.checkConnection(username, password, logger)) {
+                logger.info("username and password entered are incorrect");
+                return;
+            }
+            String lang = auth.getLanguage();
+
+            String fromDate = "";
+            String toDate = "";
+
+            try {
+                DateHelper dateHelper = new DateHelper(lang);
+                if (!dateHelper.getStartDate(fromDate, logger)) {
+                    logger.info("from date is incorrect");
+                    return;
+                }
+                logger.info("from date is correct");
+
+                if (!dateHelper.getEndDate(fromDate, toDate, logger)) {
+                    logger.info("End date is incorrect");
+                    return;
+                }
+
+                logger.info("End date is correct");
+            } catch (ParseException e) {
+                logger.info("Parse exception");
+                return;
+            }
+
+            Crawler crawler = new Crawler();
+
+            String userHomepath = System.getProperty("user.dir");
+            crawler.generateDocument(auth.getcookies(), fromDate, toDate, userHomepath, logger);
+
+            String path = userHomepath + File.separator + "careLink-Export";
+
+            PluginManager manager = new DefaultPluginManager(Paths.get("export"));
+            manager.loadPlugins();
+            manager.enablePlugin("MedtronicImporter");
+            manager.startPlugin("MedtronicImporter");
+            Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
+            medtronicImporter.setImportFilePath(path);
+            medtronicImporter.importData();
         }
 
 
