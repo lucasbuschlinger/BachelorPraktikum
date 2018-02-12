@@ -17,11 +17,10 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * This interface specifies the methods shared by all exporters.
@@ -30,13 +29,7 @@ import java.util.logging.Logger;
  *
  * @author Lucas Buschlinger
  */
-public interface Exporter extends ExtensionPoint {
-
-    /**
-     * Logger object of all exporters. Logs all messages of the exporters to a human readable file.
-     */
-    Logger LOG = Logger.getLogger(Exporter.class.getName());
-
+public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
     /**
      * Return codes for exporting data.
      */
@@ -117,33 +110,6 @@ public interface Exporter extends ExtensionPoint {
      */
     int exportDataToFile(List<VaultEntry> data);
 
-    /**
-     * Loads the configuration for the exporter plugin.
-     *
-     * @param configuration The configuration object.
-     * @return True if configuration can be loaded, false otherwise.
-     */
-    boolean loadConfiguration(Properties configuration);
 
-    /**
-     * Method to register listeners to the Plugins.
-     * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update.
-     *
-     * @param listener A listener.
-     */
-    void registerStatusCallback(StatusListener listener);
 
-    /**
-     * Interface which defines the methods called on a status update.
-     * Must be implemented by any listener of this plugin to handle the status update.
-     */
-    interface StatusListener {
-        /**
-         * Is called multiple times on all listeners during the export process to notify them about the import progress.
-         *
-         * @param progress Percentage of completion.
-         * @param status   Current Status.
-         */
-        void onStatusCallback(int progress, String status);
-    }
 }

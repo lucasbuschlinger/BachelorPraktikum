@@ -16,7 +16,12 @@
  */
 package de.opendiabetes.vault.plugin.exporter;
 
-import java.util.ArrayList;
+
+import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.container.csv.ExportEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -27,12 +32,7 @@ import java.util.List;
  *
  * @author Lucas Buschlinger
  */
-public abstract class AbstractExporter  implements  Exporter {
-
-    /**
-     * List holding all StatusListeners registered to the exporter.
-     */
-    private final List<Exporter.StatusListener> listeners = new ArrayList<>();
+public abstract class AbstractExporter extends AbstractPlugin implements  Exporter {
 
     /**
      * The path to the export file.
@@ -56,22 +56,19 @@ public abstract class AbstractExporter  implements  Exporter {
     }
 
     /**
-     * {@inheritDoc}
-     * @param listener A listener to be notified on a status update of the plugin.
+
+     * Writes the export data to the file.
+     *
+     * @param data The data to be written.
+     * @throws IOException Thrown if something goes wrong when writing the file.
      */
-    @Override
-    public void registerStatusCallback(final StatusListener listener) {
-        this.listeners.add(listener);
-    }
+    protected abstract void writeToFile(List<ExportEntry> data) throws IOException;
 
     /**
-     * Notifies the registered {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener}s about progress.
-     * See {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener#onStatusCallback} to register listeners.
+     * Prepares data for the export by putting it into exportable containers.
      *
-     * @param progress Percentage of completion.
-     * @param status Current status.
+     * @param data The data to be prepared.
+     * @return The data in exportable containers.
      */
-    protected void notifyStatus(final int progress, final String status) {
-        listeners.forEach(listener -> listener.onStatusCallback(progress, status));
-    }
+    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
 }

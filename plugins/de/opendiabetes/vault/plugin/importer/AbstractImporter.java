@@ -18,8 +18,8 @@ package de.opendiabetes.vault.plugin.importer;
 
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +31,7 @@ import java.util.List;
  * @author Magnus Gärtner
  * @author Lucas Buschlinger
  */
-public abstract class AbstractImporter implements Importer {
+public abstract class AbstractImporter extends AbstractPlugin implements Importer {
 
     /**
      * List of VaultEntry which contains the imported and processed data.
@@ -42,11 +42,6 @@ public abstract class AbstractImporter implements Importer {
      * List of RawEntry which contains the unprocessed data.
      */
     protected List<RawEntry> importedRawData;
-
-    /**
-     * List of StatusListener which contains all listeners registered to the importer.
-     */
-    private final List<StatusListener> listeners = new ArrayList<StatusListener>();
 
     /**
      * {@inheritDoc}
@@ -71,24 +66,4 @@ public abstract class AbstractImporter implements Importer {
         getImportedRawData().clear();
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param listener to be notified on a status update of the plugin.
-     */
-    @Override
-    public void registerStatusCallback(final StatusListener listener) {
-        this.listeners.add(listener);
-    }
-
-    /**
-     * Method to notify the registered listeners about progress.
-     * See {@link de.opendiabetes.vault.plugin.importer.Importer.StatusListener#onStatusCallback} to register a listener.
-     *
-     * @param progress Percentage of completion.
-     * @param status   Current status.
-     */
-    protected void notifyStatus(final int progress, final String status) {
-        listeners.forEach(listener -> listener.onStatusCallback(progress, status));
-    }
 }
