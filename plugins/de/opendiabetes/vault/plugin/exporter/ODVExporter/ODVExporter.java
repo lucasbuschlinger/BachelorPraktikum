@@ -19,16 +19,12 @@ package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
-import de.opendiabetes.vault.plugin.exporter.VaultExporter;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
-import org.pf4j.util.FileUtils;
-import sun.rmi.runtime.Log;
 
-import javax.sound.sampled.LineEvent;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,8 +32,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -91,11 +85,34 @@ public class ODVExporter extends Plugin {
         /**
          * The size of the buffers used to write to the files.
          */
-        private final int bufferSize = 1024;
+        private static final int BUFFER_SIZE = 1024;
         /**
          * The temporary directory to use.
          */
-        private final String tempDir = "temp/";
+        private String tempDir;
+        /**
+         * The default temporary directory to use.
+         */
+        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + File.separator + "ODVExporter";
+        /**
+         * Progress value indicating loading of configuration.
+         */
+        private static final int PROGRESS_LOADED_CONFIG = 33;
+        /**
+         * Progress value indicating all exporters were tried.
+         */
+        private static final int PROGRESS_ALL_EXPORTERS_DONE = 66;
+        /**
+         * Progress value indicating all generated files zipped up.
+         */
+        private static final int PROGRESS_ZIPPED_FILES = 100;
+
+        /**
+         * Constructor to set the default values.
+         */
+        public ODVExporterImplementation() {
+            this.tempDir = DEFAULT_TEMP_DIR;
+        }
 
         /**
          * {@inheritDoc}
@@ -135,33 +152,29 @@ public class ODVExporter extends Plugin {
         public int exportDataToFile(final List<VaultEntry> data) {
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
-            Map<String, String> exportFiles = new HashMap<>();
+            Map<String, List<String>> metaData = new HashMap<>();
             try {
                 fileOutputStream = new FileOutputStream(exportFilePath);
             } catch (FileNotFoundException exception) {
-                LOG.log(Level.SEVERE, "Could not create file at " + exportFilePath);
+                LOG.log(Level.SEVERE, "Could not open output stream " + exportFilePath);
                 return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
-
-            try {
-                File file = new File(tempDir); //tempDir + "/ODVExporter2");
-                file.mkdir();
-            } catch (Exception exception) {
-                LOG.log(Level.SEVERE, "Could not create temporary folder");
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            File file = new File(tempDir);
+            if (!file.exists()) {
+                if (!file.mkdir()) {
+                    LOG.log(Level.SEVERE, "Could not create temporary folder");
+                    return ReturnCode.RESULT_ERROR.getCode();
+                }
             }
-
             PluginManager manager = new DefaultPluginManager();
             manager.loadPlugins();
             manager.startPlugins();
-
             List<Exporter> exporters = manager.getExtensions(Exporter.class);
-
             for (Exporter exporter : exporters) {
                 String name = exporter.getClass().getName().replaceAll(".*\\$", "")
                         .replace("Implementation", "");
-                if (name.contains("ODVExporter") || exportFiles.containsKey("name")) {
+                if (name.contains("ODVExporter") || metaData.containsKey(name)) {
                     continue;
                 }
                 try {
@@ -170,43 +183,48 @@ public class ODVExporter extends Plugin {
                     LOG.log(Level.INFO, "Skipping exporter " + name + " as it does not export from the database");
                     continue;
                 }
-
-                String exportFile = tempDir + name + ".export";
+                List<String> thisEntryMetaData = new ArrayList<>();
+                String exportFile = tempDir + File.separator + name + ".export";
                 exporter.setExportFilePath(exportFile);
                 exporter.loadConfiguration(config);
-                /*
                 exporter.registerStatusCallback(new StatusListener() {
                     @Override
                     public void onStatusCallback(final int progress, final String status) {
                         notifyStatus(progress, name + ": " + status);
                     }
                 });
-                */
                 try {
                     exporter.exportDataToFile(null);
                 } catch (Exception ex) {
-                    LOG.log(Level.SEVERE, "Could not export with exporter: " + name + "Ex: " + ex);
-                    // return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+                    LOG.log(Level.WARNING, "Could not export with exporter: " + name);
+                    continue;
                 }
-                exportFiles.put(name, exportFile);
+                String checksum;
+                try {
+                    checksum = makeChecksum(exportFile);
+                } catch (Exception exception) {
+                    return ReturnCode.RESULT_ERROR.getCode();
+                }
+                thisEntryMetaData.add(exportFile);
+                thisEntryMetaData.add(checksum);
+                metaData.put(name, thisEntryMetaData);
             }
             String metaFile;
             try {
-                metaFile = makeMetaFile(exportFiles);
+                metaFile = makeMetaFile(metaData);
             } catch (IOException exception) {
-                LOG.log(Level.SEVERE, "Couldn't generate meta file for ZIP-archive");
                 return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
+            notifyStatus(PROGRESS_ALL_EXPORTERS_DONE, "Done exporting with all available exporters");
             // Adding all generated export files and the meta fil to the zip
             try {
-                Iterator iterator = exportFiles.entrySet().iterator();
+                Iterator iterator = metaData.entrySet().iterator();
                 while (iterator.hasNext()) {
                     Map.Entry pair = (Map.Entry) iterator.next();
-                    addFileToZip(pair.getValue().toString(), zipOutputStream);
+                    addFileToZip(((List<String>) pair.getValue()).get(0), zipOutputStream);
                 }
                 addFileToZip(metaFile, zipOutputStream);
             } catch (Exception exception) {
-                    LOG.log(Level.SEVERE, "Could not add file to ZIP " + exception);
                     return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             try {
@@ -214,39 +232,34 @@ public class ODVExporter extends Plugin {
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, "Couldn't close zipOutputStream " + ex);
             }
-            try {
-                makeChecksum(exportFilePath);
-            } catch (Exception exception) {
-                LOG.log(Level.SEVERE, "Couldn't generate checksum for ZIP-archive");
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
-            }
-            return 0;
+            notifyStatus(PROGRESS_ZIPPED_FILES, "All generated export files zipped");
+            return ReturnCode.RESULT_OK.getCode();
         }
 
         /**
          * This method generate the checksum in form of an SHA-512 hash for the created ZIP-archive.
          *
          * @param fileName The name of the ZIP to generate the checksum for
+         * @return The SHA-512 checksum of the file.
          * @throws IOException Thrown if the streams could not be opened for reading/writing the files.
          * @throws NoSuchAlgorithmException Thrown if the SHA-512 hash is not available on the system.
          */
-        private void makeChecksum(final String fileName) throws IOException, NoSuchAlgorithmException {
+        private String makeChecksum(final String fileName) throws IOException, NoSuchAlgorithmException {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
             FileInputStream inputStream = new FileInputStream(fileName);
-            FileOutputStream outputStream = new FileOutputStream(fileName + "-checksum.txt");
-
-            byte[] dataBytes = new byte[bufferSize];
-
-            int nextRead = 0;
-            while ((nextRead = inputStream.read(dataBytes)) != -1) {
-                digest.update(dataBytes, 0, nextRead);
+            byte[] dataBytes = new byte[BUFFER_SIZE];
+            int nextRead;
+            try {
+                while ((nextRead = inputStream.read(dataBytes)) != -1) {
+                    digest.update(dataBytes, 0, nextRead);
+                }
+            } catch (Exception exception) {
+                LOG.log(Level.SEVERE, "Could not generate checksum for file " + fileName);
+                throw exception;
+            } finally {
+                inputStream.close();
             }
-
-            String checksum = (new HexBinaryAdapter()).marshal(digest.digest());
-            // Writing the hex-digest to the file and closing the streams
-            outputStream.write(checksum.getBytes());
-            inputStream.close();
-            outputStream.close();
+            return (new HexBinaryAdapter()).marshal(digest.digest());
         }
 
         /**
@@ -257,41 +270,53 @@ public class ODVExporter extends Plugin {
          * @throws IOException Thrown if the file could not be added to the zip.
          */
         private void addFileToZip(final String file, final ZipOutputStream zipStream) throws IOException {
-            byte[] buffer = new byte[bufferSize];
-            ZipEntry zipEntry = new ZipEntry(file.replace("temp/", ""));
+            byte[] buffer = new byte[BUFFER_SIZE];
+            ZipEntry zipEntry = new ZipEntry(file.replace(tempDir + File.separator, ""));
             zipStream.putNextEntry(zipEntry);
             File zipFile = new File(file);
             FileInputStream in = new FileInputStream(zipFile);
-            int len;
-            while ((len = in.read(buffer)) > 0) {
-                zipStream.write(buffer, 0, len);
+            try {
+                int len;
+                while ((len = in.read(buffer)) > 0) {
+                    zipStream.write(buffer, 0, len);
+                }
+            } catch (IOException exception) {
+                LOG.log(Level.SEVERE, "Could not add file " + file + " to ZIP-archive");
+                throw exception;
+            } finally {
+                in.close();
+                zipStream.closeEntry();
             }
-            in.close();
-            zipStream.closeEntry();
         }
-
-
 
         /**
          * This method generates the meta file for the ZIP-archive.
          * In contains which files where generated by exporters.
          *
-         * @param fileList The list of exported files generated by the available export plugins.
+         * @param metaData The list of exporters that were used as well as the files they generated and their checksums.
          * @return The name of the generated meta file.
          * @throws IOException Thrown if the file could not be created.
          */
-        private String makeMetaFile(final Map<String, String> fileList) throws IOException {
-            final String metaFile = tempDir + "meta.info";
+        private String makeMetaFile(final Map<String, List<String>> metaData) throws IOException {
+            final String metaFile = tempDir + File.separator + "meta.info";
             FileOutputStream outputStream = new FileOutputStream(metaFile);
-            Iterator iterator = fileList.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry pair = (Map.Entry) iterator.next();
-                String exporter = pair.getKey().toString();
-                String file = pair.getValue().toString().replace("temp/", "");
-                String line = exporter + "=" + file + "\n";
-                outputStream.write(line.getBytes());
+            Iterator iterator = metaData.entrySet().iterator();
+            try {
+                while (iterator.hasNext()) {
+                    Map.Entry pair = (Map.Entry) iterator.next();
+                    String exporter = pair.getKey().toString();
+                    List<String> data = (List<String>) pair.getValue();
+                    String file = data.get(0).replace("temp/", "");
+                    String checksum = data.get(1);
+                    String line = exporter + "=" + file + "=" + checksum + "\n";
+                    outputStream.write(line.getBytes(Charset.forName("UTF-8")));
+                }
+            } catch (Exception exception) {
+                LOG.log(Level.SEVERE, "Couldn't generate meta file for ZIP-archive");
+                throw exception;
+            } finally {
+                outputStream.close();
             }
-            outputStream.close();
             return  metaFile;
         }
 
@@ -303,7 +328,16 @@ public class ODVExporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            config = configuration;
+            if (configuration == null) {
+                LOG.log(Level.WARNING, "No configuration given, assuming default values and no period restriction");
+                config = new Properties();
+            } else {
+                config = configuration;
+                if (configuration.containsKey("temporaryDirectory")) {
+                    tempDir = configuration.getProperty("temporaryDirectory");
+                }
+            }
+            notifyStatus(PROGRESS_LOADED_CONFIG, "Loaded configuration");
             return true;
         }
 
