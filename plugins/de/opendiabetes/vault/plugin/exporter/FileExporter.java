@@ -89,7 +89,7 @@ public abstract class FileExporter extends AbstractExporter {
         } catch (IOException exception) {
             LOG.log(Level.SEVERE, "Error writing odv csv file: {0}" + filePath, exception);
             return ReturnCode.RESULT_ERROR.getCode();
-        } finally { //TODO finally needed?
+        } finally { //finally is needed here!
             try {
                 fileOutputStream.close();
             } catch (IOException exception) {
