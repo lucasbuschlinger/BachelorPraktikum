@@ -24,7 +24,6 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
