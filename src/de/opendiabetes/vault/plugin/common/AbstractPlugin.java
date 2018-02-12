@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Class of which every Plugin should be a descendant, handles notify mechanism to {@link de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin.StatusListener}.
  */
-public abstract class AbstractPlugin implements  OpenDiabetesPlugin{
+public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
 
     /**
      * List of StatusListener which contains all listeners registered to the importer.

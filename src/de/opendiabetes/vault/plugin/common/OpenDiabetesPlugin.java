@@ -20,7 +20,8 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
- *@author magnus
+ * The most general Plugin Interface that all OpenDiabetes Plugins share.
+ * @author magnus
  */
 public interface OpenDiabetesPlugin {
     /**
@@ -29,9 +30,10 @@ public interface OpenDiabetesPlugin {
     Logger LOG = Logger.getLogger(OpenDiabetesPlugin.class.getName());
 
     /**
+     * Loads the configuration for the exporter plugin.
      *
-     * @param configuration
-     * @return
+     * @param configuration The configuration object.
+     * @return True if configuration can be loaded, false otherwise.
      */
     boolean loadConfiguration(Properties configuration);
 

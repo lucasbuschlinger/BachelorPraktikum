@@ -21,7 +21,6 @@ import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

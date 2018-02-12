@@ -21,8 +21,6 @@ import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * This interface specifies the methods shared by all exporters.
