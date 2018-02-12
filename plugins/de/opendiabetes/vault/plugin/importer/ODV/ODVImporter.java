@@ -18,6 +18,7 @@ package de.opendiabetes.vault.plugin.importer.ODV;
 
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
+import org.omg.IOP.Encoding;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -32,6 +33,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -67,25 +70,53 @@ public class ODVImporter extends Plugin {
     public static class ODVImporterImplementation extends AbstractImporter {
 
         /**
-         *
+         * The buffer size to be used.
          */
-        private String checksumFileIdentifier = "-checksum.txt";
+        private static final int BUFFER_SIZE = 1024;
         /**
-         *
+         * Progress percentage for showing that the configuration has been loaded.
          */
-        private final int bufferSize = 1024;
+        private static final int PROGRESS_CONFIG_LOADAD = 25;
         /**
-         *
+         * Progress percentage for showing that the file has been unzipped.
          */
-        private String tempDir = "temp";
+        private static final int PROGRESS_UNZIPPED = 50;
         /**
-         *
+         * Progress percentage for showing that all available files were imported.
          */
-        private String metaFile = "meta.info";
+        private static final int PROGRESS_AVAILABLE_IMPORTED = 100;
         /**
-         *
+         * Progress percentage for showing that there are files that were not imported.
+         */
+        private static final int PROGRESS_UNIMPORTED_FILES = -1;
+        /**
+         * The default temporary directory to be used.
+         */
+        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + File.separator + "ODVExporter";
+        /**
+         * The default name of the meta file.
+         */
+        private static final String DEFAULT_META_FILE = "meta.info";
+        /**
+         * The temporary directory to use.
+         */
+        private String tempDir;
+        /**
+         * The default name of the meta file.
+         */
+        private String metaFile;
+        /**
+         * The file to import the data from.
          */
         private String importFilePath;
+
+        /**
+         * Constructor used to set default values.
+         */
+        public ODVImporterImplementation() {
+            this.tempDir = DEFAULT_TEMP_DIR;
+            this.metaFile = DEFAULT_META_FILE;
+        }
 
         /**
          * {@inheritDoc}
@@ -124,6 +155,7 @@ public class ODVImporter extends Plugin {
                 LOG.log(Level.SEVERE, "Error while unzipping archive: " + importFilePath);
                 return false;
             }
+            notifyStatus(PROGRESS_UNZIPPED, "Unzipped the archive");
             try {
                  metaInfo = readMetaFile(tempDir + File.separator + metaFile);
             } catch (IOException exception) {
@@ -157,17 +189,27 @@ public class ODVImporter extends Plugin {
                 importedData.addAll(importer.getImportedData());
                 result = true;
             }
+            notifyStatus(PROGRESS_AVAILABLE_IMPORTED, "Imported all available data");
+            reportUnimported(unimportedFiles);
             return result;
         }
 
         /**
+         * This method loads the configuration and sets the values accordingly.
          *
-         * @param configuration the configuration object
-         * @return
+         * @param configuration The configuration object that hold all configurations.
+         * @return True if the configuration could be loaded, false otherwise.
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
-            return false;
+            if (configuration.containsKey("temporaryDirectory")) {
+                this.tempDir = configuration.getProperty("temporaryDirectory");
+            }
+            if (configuration.containsKey("metaFile")) {
+                this.metaFile = configuration.getProperty("metaFile");
+            }
+            this.notifyStatus(PROGRESS_CONFIG_LOADAD, "Loaded configuration");
+            return true;
         }
 
         /**
@@ -178,12 +220,20 @@ public class ODVImporter extends Plugin {
          * @return True if the integrity could be verified successfully, false otherwise.
          */
         private boolean verifyChecksum(final String filePath, final String checksum) {
-            FileInputStream fileInputStream;
+            FileInputStream fileInputStream = null;
             try {
                 fileInputStream = new FileInputStream(filePath);
             } catch (FileNotFoundException exception) {
                 LOG.log(Level.WARNING, "Could not find file, integrity could not be verified: " + filePath);
                 return false;
+            } finally {
+                if (fileInputStream != null) {
+                    try {
+                        fileInputStream.close();
+                    } catch (IOException exception) {
+                        LOG.log(Level.WARNING, "Could not close input stream");
+                    }
+                }
             }
             MessageDigest digest;
             try {
@@ -192,8 +242,8 @@ public class ODVImporter extends Plugin {
                 LOG.log(Level.WARNING, "Could not verify integrity, SHA-512 algorithm not available");
                 return false;
             }
-            byte[] dataBytes = new byte[bufferSize];
-            int nextRead = 0;
+            byte[] dataBytes = new byte[BUFFER_SIZE];
+            int nextRead;
             try {
                 while ((nextRead = fileInputStream.read(dataBytes)) != -1) {
                     digest.update(dataBytes, 0, nextRead);
@@ -205,7 +255,7 @@ public class ODVImporter extends Plugin {
 
             String generateChecksum = (new HexBinaryAdapter()).marshal(digest.digest());
             if (!generateChecksum.equalsIgnoreCase(checksum)) {
-                LOG.log(Level.SEVERE, "Checksum is not valid for the specified file");
+                LOG.log(Level.WARNING, "Checksum is not valid for the specified file");
                 return false;
             } else {
                 LOG.log(Level.INFO, "Checksum successfully verified for: " + filePath);
@@ -228,39 +278,58 @@ public class ODVImporter extends Plugin {
         private void unzipArchive(final String zipFile, final String outputDirectory) throws IOException {
             File outputFolder = new File(outputDirectory);
             if (!outputFolder.exists()) {
-                outputFolder.mkdir();
+                if (!outputFolder.mkdir()) {
+                    LOG.log(Level.SEVERE, "Could not create " + outputDirectory);
+                    throw new IOException("Could not create create directory: " + outputDirectory);
+                }
             }
             ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFile));
             ZipEntry entry = zipInputStream.getNextEntry();
-            byte[] buffer = new byte[bufferSize];
+            byte[] buffer = new byte[BUFFER_SIZE];
             while (entry != null) {
                 String fileName = entry.getName();
                 File extractedFile = new File(outputDirectory + File.separator + fileName);
-                FileOutputStream fileOutputStream = new FileOutputStream(extractedFile);
-
-                int length;
-                while ((length = zipInputStream.read(buffer)) > 0) {
-                    fileOutputStream.write(buffer, 0, length);
+                FileOutputStream fileOutputStream = null;
+                try {
+                    fileOutputStream = new FileOutputStream(extractedFile);
+                    int length;
+                    while ((length = zipInputStream.read(buffer)) > 0) {
+                        fileOutputStream.write(buffer, 0, length);
+                    }
+                } catch (FileNotFoundException exception) {
+                    LOG.log(Level.SEVERE, "Could not open file " + extractedFile);
+                    throw exception;
+                } finally {
+                    if (fileOutputStream != null) {
+                        fileOutputStream.close();
+                    }
+                    entry = zipInputStream.getNextEntry();
                 }
-                fileOutputStream.close();
-                entry = zipInputStream.getNextEntry();
-            }
 
+            }
             zipInputStream.closeEntry();
             zipInputStream.close();
             LOG.log(Level.INFO, "Successfully unzipped archive " + zipFile);
         }
 
         /**
+         * This method reads the meta file and creates a map holding the info contained in it.
+         * The info is:
+         * <ul>
+         *     <li>The name of the Importer to use</li>
+         *     <li>The file to import with the importer</li>
+         *     <li>The checksum of the file</li>
+         * </ul>
          *
-         * @param metaFile bla
-         * @return bla
-         * @throws IOException bla
+         * @param metaFile The meta file to be read
+         * @return A map containing all information.
+         * @throws IOException Thrown if the meta file can not be read.
          */
         private Map<String, List<String>> readMetaFile(final String metaFile) throws IOException {
             String line;
             Map<String, List<String>> result = new HashMap<>();
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(metaFile));
+            FileInputStream inputStream = new FileInputStream(metaFile);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             line = bufferedReader.readLine();
             while (line != null) {
                 String[] lineEntries = line.split("=");
@@ -271,9 +340,27 @@ public class ODVImporter extends Plugin {
                 result.put(importer, fileAndChecksum);
                 line = bufferedReader.readLine();
             }
+            bufferedReader.close();
+            inputStream.close();
             return result;
         }
 
+        /**
+         *  The reports all files that were not imported and the reason why.
+         *
+         * @param unimportedEntries Holds the information which file was omitted and why.
+         */
+        private void reportUnimported(final Map<String, String> unimportedEntries) {
+            StringBuilder stringBuilder = new StringBuilder();
+            for (Map.Entry<String, String> entry : unimportedEntries.entrySet()) {
+                stringBuilder.append("Could not import ");
+                stringBuilder.append(entry.getKey());
+                stringBuilder.append(". Reason: ");
+                stringBuilder.append(entry.getValue());
+                stringBuilder.append("\n");
+            }
+            notifyStatus(PROGRESS_UNIMPORTED_FILES, stringBuilder.toString());
+        }
     }
 
 }
