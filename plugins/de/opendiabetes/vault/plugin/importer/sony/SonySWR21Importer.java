@@ -30,7 +30,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -193,12 +192,5 @@ public class SonySWR21Importer extends Plugin {
         protected void preprocessingIfNeeded(final String filePath) {
         }
 
-        /**
-         *{@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
     }
 }

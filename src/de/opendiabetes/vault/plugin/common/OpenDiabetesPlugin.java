@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.vault.plugin.common;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -37,6 +38,10 @@ public interface OpenDiabetesPlugin {
      */
     boolean loadConfiguration(Properties configuration);
 
+    /**
+     * @return a list of plugin names that are known to be compatible with this plugin
+     */
+    List<String> getListOfCompatiblePluginIDs();
 
     /**
      * Method to register listeners to the Plugins.
