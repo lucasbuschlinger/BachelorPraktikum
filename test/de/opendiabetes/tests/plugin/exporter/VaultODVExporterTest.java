@@ -6,7 +6,6 @@ import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
-import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;

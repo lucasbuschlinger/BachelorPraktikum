@@ -52,21 +52,21 @@ public abstract class CSVImporter extends FileImporter {
         this.validator = csvValidator;
     }
 
+    /*HACK: uses filenameforlogging instead of fileInputStream*/
     /**
      * Method used to detect the valid delimiter by trying to validate the header using a given delimiter.
      *
-     * @param delimiter       the delimiter to use to read the file
-     * @param fileInputStream the file to read
+     * @param delimiter      the delimiters to use to read the file
+     * @param file the file to read
      * @param metaEntries     placeholder for future extensions
      * @return a CsvReader pointing to the headers, null if the headers could not be validated
      * @throws IOException if file reading goes wrong
      */
-    private CsvReader getValidatedCreader(final char delimiter, final InputStream fileInputStream, final List<String[]> metaEntries)
+    private CsvReader getValidatedCreader(final char delimiter, final String file, final List<String[]> metaEntries)
             throws IOException {
         // open file
-        CsvReader creader = new CsvReader(fileInputStream, delimiter, Charset.forName("UTF-8"));
+        CsvReader creader = new CsvReader(file, delimiter, Charset.forName("UTF-8"));
 
-        //validate header
         do {
             if (!creader.readHeaders()) {
                 LOG.log(Level.FINEST, "automatic delimiter detection detected invalid delimiter: " + delimiter);
@@ -98,14 +98,14 @@ public abstract class CSVImporter extends FileImporter {
                 LOG.log(Level.INFO, "using automatic delimiter detection");
                 char[] delimiterList = {',', ';', '\t'};
                 for (char delimiter : delimiterList) {
-                    creader = getValidatedCreader(delimiter, fileInputStream, metaEntries);
+                    creader = getValidatedCreader(delimiter, filenameForLogging, metaEntries);
                     if (null != creader) {
                         setDelimiter(delimiter);
                         break;
                     }
                 }
             } else { // use the delimiter that was set
-                creader = getValidatedCreader(getDelimiter(), fileInputStream, metaEntries);
+                creader = getValidatedCreader(getDelimiter(), filenameForLogging, metaEntries);
             }
             if (creader == null) { //header could not be validated
                 LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
@@ -207,7 +207,6 @@ public abstract class CSVImporter extends FileImporter {
                                 + "or remove the delimiter property to use automatic delimiter detection");
                 return false;
             }
-
         }
         return true;
     }
