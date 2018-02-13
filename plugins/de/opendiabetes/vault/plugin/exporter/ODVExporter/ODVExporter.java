@@ -71,10 +71,6 @@ public class ODVExporter extends Plugin {
          */
         private String exportFilePath;
         /**
-         * The database to export data from.
-         */
-        private VaultDao database;
-        /**
          * List holding all StatusListeners registered to the exporter.
          */
         private List<Exporter.StatusListener> listeners = new ArrayList<>();
@@ -131,21 +127,14 @@ public class ODVExporter extends Plugin {
         }
 
         /**
-         * This setter sets the database to export data from.
-         * The database is used by several exporters.
+         * Unused, thus unimplemented.
          *
-         * @param object The database to be set.
-         * @throws IllegalArgumentException Thrown if something different than a {@link de.opendiabetes.vault.data.VaultDao}
-         *                                  is supplied.
+         * @param entries Nothing here.
+         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
          */
         @Override
-        public void setAdditional(final Object object) throws IllegalArgumentException {
-            if (object instanceof VaultDao) {
-                database = (VaultDao) object;
-            } else {
-                throw new IllegalArgumentException("Can not set " + object.getClass().getName()
-                        + ", only VaultDao objects are applicable!");
-            }
+        public void setEntries(final List<?> entries) throws IllegalArgumentException {
+            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
         @Override
@@ -178,7 +167,7 @@ public class ODVExporter extends Plugin {
                     continue;
                 }
                 try {
-                    exporter.setAdditional(database);
+// TODO                    exporter.setAdditional(database);
                 } catch (Exception ex) {
                     LOG.log(Level.INFO, "Skipping exporter " + name + " as it does not export from the database");
                     continue;
