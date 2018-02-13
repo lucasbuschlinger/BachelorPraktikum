@@ -6,7 +6,13 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 
@@ -61,7 +67,10 @@ public class PlotterExporter extends Plugin {
          */
         private static boolean plotData(final String dataPath, final String outputPath) {
             try {
-                Process process = Runtime.getRuntime().exec(new String[]{"python", "ploty.py", "-f", dataPath, "-o", outputPath});
+                Path workPath = Paths.get(".");
+                String scriptPath = workPath.resolve("assets/plot.py").toAbsolutePath().normalize().toString();
+
+                Process process = Runtime.getRuntime().exec(new String[]{"python", scriptPath, "-f", dataPath, "-o", outputPath});
 
                 InputStream inputStream = process.getInputStream();
                 InputStream errorStream = process.getErrorStream();
@@ -70,15 +79,15 @@ public class PlotterExporter extends Plugin {
                 BufferedReader stdError = new BufferedReader(new InputStreamReader(errorStream));
 
                 // read the output from the command
-                String s = null;
-                while ((s = stdInput.readLine()) != null) {
-                    System.out.println(s);
+                String line = null;
+                while ((line = stdInput.readLine()) != null) {
+                    System.out.println(line);
                 }
 
                 // read any errors from the attempted command
                 int errorCounter = 0;
-                while ((s = stdError.readLine()) != null) {
-                    System.out.println(s);
+                while ((line = stdError.readLine()) != null) {
+                    System.out.println(line);
                     errorCounter++;
                 }
 
@@ -106,11 +115,11 @@ public class PlotterExporter extends Plugin {
                         InputStreamReader(process.getErrorStream()));
 
                 // read the output from the command
-                String s = null;
+                String line = null;
                 boolean installed = false;
-                while ((s = stdInput.readLine()) != null) {
-                    System.out.println(s);
-                    if (s.contains(check)) {
+                while ((line = stdInput.readLine()) != null) {
+                    System.out.println(line);
+                    if (line.contains(check)) {
                         installed = true;
                         break;
                     }
@@ -119,8 +128,8 @@ public class PlotterExporter extends Plugin {
                 if (!installed) {
                     // read any errors from the attempted command
                     System.out.println("Could not check command with errors:\n");
-                    while ((s = stdError.readLine()) != null) {
-                        System.out.println(s);
+                    while ((line = stdError.readLine()) != null) {
+                        System.out.println(line);
                     }
                     return false;
                 }
