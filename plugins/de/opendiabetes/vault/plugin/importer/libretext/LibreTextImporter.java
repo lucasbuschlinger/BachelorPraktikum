@@ -30,7 +30,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 
 /**
  * Wrapper class for the LibreTextImporter plugin.
@@ -66,13 +65,6 @@ public class LibreTextImporter extends Plugin {
             super(new LibreTextCSVValidator());
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
 
         /**
          * Parser for libre text based entries.
