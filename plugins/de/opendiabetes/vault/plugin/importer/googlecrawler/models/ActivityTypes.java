@@ -150,7 +150,7 @@ public final class ActivityTypes {
     /**
      * Returns the human readable representation of the given activity identifier index.
      * @param activity an activity identifier index
-     * @return the humand readable string of the activity type, otherwise "Unknown"
+     * @return the human readable string of the activity type, otherwise "Unknown"
      */
     public String getReadableActivityType(final int activity) {
         switch (activity) {

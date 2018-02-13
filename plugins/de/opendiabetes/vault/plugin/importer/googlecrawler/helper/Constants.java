@@ -36,7 +36,7 @@ public class Constants {
     public static final String RESOLVED_LOCATION_PATH = "/.credentials/googleapis.de-nkpyck-googledatagatherer/resolved_Locations.json";
 
     /**
-     * HTML which is preprended to maps.
+     * HTML which is prepended to maps.
      */
     public static final String MAPS_PRE =
             "<!DOCTYPE html>\n"

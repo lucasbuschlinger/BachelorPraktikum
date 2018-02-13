@@ -24,7 +24,7 @@ public final class GooglePeople {
     private static GooglePeople instance;
 
     /**
-     * Current logged in user profile.
+     * Current logged in user's profile.
      */
     private Person profile;
 
@@ -53,7 +53,7 @@ public final class GooglePeople {
     }
 
     /**
-     * Fetches the profile of the current logged in user.
+     * Fetches the profile of the currently logged in user.
      */
     private void getOwnProfile() {
         try {
@@ -104,7 +104,7 @@ public final class GooglePeople {
     }
 
     /**
-     * Getter for the current logged in user profile.
+     * Getter for the currently logged in user's profile.
      * @return a user profile
      */
     public Person getProfile() {

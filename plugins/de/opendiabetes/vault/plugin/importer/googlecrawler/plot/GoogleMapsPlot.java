@@ -55,7 +55,7 @@ public class GoogleMapsPlot {
     /**
      * Constructor.
      */
-    public GoogleMapsPlot() {
+    private GoogleMapsPlot() {
         locations = new ArrayList<>();
         locationNames = new ArrayList<>();
     }

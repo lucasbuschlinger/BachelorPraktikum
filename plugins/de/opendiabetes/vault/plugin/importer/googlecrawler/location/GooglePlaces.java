@@ -42,7 +42,7 @@ public class GooglePlaces {
     private static final int QUERY_RATE_LIMIT = 100;
 
     /**
-     * Default radius for places queries.
+     * Default radius for places queries, in meters.
      */
     private static final int DEFAULT_RADIUS = 50;
 
@@ -75,7 +75,7 @@ public class GooglePlaces {
     /**
      * Constructor.
      */
-    public GooglePlaces() {
+    private GooglePlaces() {
         ownAddresses = new ArrayList<>();
         construct(Credentials.getInstance().getAPIKey());
     }
@@ -115,7 +115,7 @@ public class GooglePlaces {
     /**
      * Converts the given address in a latitude and longitude pair.
      * @param address a query address
-     * @return a latitude and logitude pair
+     * @return a latitude and longitude pair
      */
     public GeocodingResult[] addressToGPS(final String address) {
         if (context == null) {
@@ -133,7 +133,7 @@ public class GooglePlaces {
     }
 
     /**
-     * Checks if at the given location (defined by latitude and longitude) a gym is located within the default radius meters.
+     * Checks if a gym is located within the default radius of the given location (defined by latitude and longitude).
      * @param latitude a valid latitude
      * @param longitude a valid longitude
      * @return boolean value indicating if the given location is a gym or not
@@ -204,7 +204,7 @@ public class GooglePlaces {
     /**
      * Retrieves the own addresses of the current user.
      */
-    public void getOwnAddresses() {
+    public void fetchOwnAddresses() {
         if (context != null) {
             Person me = GooglePeople.getInstance().getProfile();
 
@@ -221,14 +221,14 @@ public class GooglePlaces {
 
     /**
      * Returns the name of the place if the user is at one of his own addresses.
-     * @param lat a valid latitude
-     * @param lng a valid longitude
-     * @param acc a radius in meters
+     * @param latitude a valid latitude
+     * @param longitude a valid longitude
+     * @param accuracy a radius in meters
      * @return the name of the own address if the user is located there, otherwise "AWAY"
      */
-    public String atOwnPlaces(final double lat, final double lng, final int acc) {
+    public String atOwnPlaces(final double latitude, final double longitude, final int accuracy) {
         for (Contact ad : ownAddresses) {
-            if (calculateDistance(lat, lng, ad.getCoordinateById(0).lat, ad.getCoordinateById(0).lng) <= acc) {
+            if (calculateDistance(latitude, longitude, ad.getCoordinateById(0).lat, ad.getCoordinateById(0).lng) <= accuracy) {
                 GoogleMapsPlot.getInstance().addLocation(new LatLng(ad.getCoordinateById(0).lat, ad.getCoordinateById(0).lng));
                 return ad.getName();
             }
@@ -239,14 +239,14 @@ public class GooglePlaces {
 
     /**
      * Returns the places search results if there were places found.
-     * @param lat a valid latitude
-     * @param lng a valid longitude
-     * @param acc a radius in meters
+     * @param latitude a valid latitude
+     * @param longitude a valid longitude
+     * @param accuracy a radius in meters
      * @return the places search results or null if there was an error
      */
-    public PlacesSearchResult[] getPlaces(final double lat, final double lng, final int acc) {
+    public PlacesSearchResult[] getPlaces(final double latitude, final double longitude, final int accuracy) {
         try {
-            return PlacesApi.nearbySearchQuery(context, new LatLng(lat, lng)).radius(acc).await().results;
+            return PlacesApi.nearbySearchQuery(context, new LatLng(latitude, longitude)).radius(accuracy).await().results;
         } catch (ApiException | InterruptedException | IOException e) {
             e.printStackTrace();
         }
@@ -256,14 +256,14 @@ public class GooglePlaces {
 
     /**
      * Gets the names of the nearest food location at the given address.
-     * @param lat a valid latitude
-     * @param lng a valid longitude
+     * @param latitude a valid latitude
+     * @param longitude a valid longitude
      * @return the name of the nearest food location, if there were non found or if there was an error "AWAY"
      */
-    public String getFoodLocation(final double lat, final double lng) {
+    public String getFoodLocation(final double latitude, final double longitude) {
         try {
             PlacesSearchResult[] results = PlacesApi
-                    .nearbySearchQuery(context, new LatLng(lat, lng))
+                    .nearbySearchQuery(context, new LatLng(latitude, longitude))
                     .radius(DEFAULT_RADIUS)
                     .type(PlaceType.RESTAURANT, PlaceType.FOOD, PlaceType.CAFE, PlaceType.MEAL_TAKEAWAY)
                     .await().results;
@@ -278,17 +278,17 @@ public class GooglePlaces {
     }
 
     /**
-     * Returns the name of the contact if the current user is at one of his contacts locations with the given address.
-     * @param lat a valid latitude
-     * @param lng a valid longitude
+     * Returns the name of the contact if the current user is at one of his contacts' locations with the given address.
+     * @param latitude a valid latitude
+     * @param longitude a valid longitude
      * @param searchRadius a valid search radius in meters
-     * @return the name of the contact if within the given location, otherwise "AWAY"
+     * @return the name of the contact if within the search radius of the given location, otherwise "AWAY"
      */
-    public String isAtContact(final double lat, final double lng, final int searchRadius) {
+    public String isAtContact(final double latitude, final double longitude, final int searchRadius) {
         for (int i = 0; i < AddressBook.getInstance().size(); i++) {
             Contact ref = AddressBook.getInstance().getContactById(i);
             for (LatLng ll : ref.getCoordinates()) {
-                if (GooglePlaces.getInstance().calculateDistance(lat, lng, ll.lat, ll.lng) < searchRadius) {
+                if (GooglePlaces.getInstance().calculateDistance(latitude, longitude, ll.lat, ll.lng) < searchRadius) {
                     GoogleMapsPlot.getInstance().addLocation(new LatLng(ll.lat, ll.lng));
                     return ref.getName();
                 }
@@ -301,19 +301,19 @@ public class GooglePlaces {
 
     /**
      * Calculates the distance in meters between two given latitudes and longitudes.
-     * @param lat a valid latitude
-     * @param lng a valid longitude
+     * @param latitude a valid latitude
+     * @param longitude a valid longitude
      * @param latRef a valid latitude
-     * @param lngRef a valid longitude
+     * @param longitudeRef a valid longitude
      * @return the distance between the two locations in meters.
      */
-    public double calculateDistance(final double lat, final double lng, final double latRef, final double lngRef) {
+    public double calculateDistance(final double latitude, final double longitude, final double latRef, final double longitudeRef) {
         double latRefRadian = Math.toRadians(latRef);
 
-        double latOneRadian = Math.toRadians(lat);
+        double latOneRadian = Math.toRadians(latitude);
 
-        double deltaLat = Math.toRadians(lat - latRef);
-        double deltaLong = Math.toRadians(lng - lngRef);
+        double deltaLat = Math.toRadians(latitude - latRef);
+        double deltaLong = Math.toRadians(longitude - longitudeRef);
 
         double a = Math.sin(deltaLat / 2.0) * Math.sin(deltaLat / 2.0)
                 + Math.cos(latRefRadian) * Math.cos(latOneRadian)

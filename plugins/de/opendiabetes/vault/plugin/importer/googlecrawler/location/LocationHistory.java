@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 
 /**
- * Manages the users locations, activity and heart rate history.
+ * Manages the user's locations, activity and heart rate history.
  */
 public final class LocationHistory {
 
@@ -40,7 +40,7 @@ public final class LocationHistory {
     private static final int DEFAULT_RADIUS = 50;
 
     /**
-     * Maximum human possible heart rate.
+     * Maximum possible human heart rate.
      */
     private static final int MAXIMUM_HUMAN_HEART_RATE = 220;
 
@@ -123,7 +123,7 @@ public final class LocationHistory {
     public static LocationHistory getInstance() {
         if (LocationHistory.instance == null) {
             LocationHistory.instance = new LocationHistory();
-            GooglePlaces.getInstance().getOwnAddresses();
+            GooglePlaces.getInstance().fetchOwnAddresses();
         }
         return LocationHistory.instance;
     }
@@ -179,7 +179,7 @@ public final class LocationHistory {
      */
     private List<Activity> getActivitiesPerDay(final long day) {
         long normalized = normalizeDate(day);
-        if (locationHistory.get(normalized) != null) {
+        if (activityHistory.get(normalized) != null) {
             return activityHistory.get(normalized);
         } else {
             return null;
@@ -214,7 +214,7 @@ public final class LocationHistory {
      */
     public void addHeartRates(final long day, final List<HeartRate> heartRates) {
         this.heartRateHistory.put(normalizeDate(day), heartRates);
-        this.trainingHRHistory.put(normalizeDate(day), determinRestHeartRate(day));
+        this.trainingHRHistory.put(normalizeDate(day), determineRestHeartRate(day));
     }
 
     /**
@@ -281,7 +281,7 @@ public final class LocationHistory {
      * @param day a valid unix timestamp
      * @return an integer array containing the resting, target and maximum heart rate
      */
-    private int[] determinRestHeartRate(final long day) {
+    private int[] determineRestHeartRate(final long day) {
         int[] hr = new int[3];
         long time = -1;
         List<Activity> activities = getActivityHistory(day);
@@ -289,11 +289,11 @@ public final class LocationHistory {
         for (Activity act : activities) {
             Calendar cal = new GregorianCalendar();
             cal.setTimeInMillis(act.getEndTime());
-            if ((act.getActivity() == ActivityTypes.SLEEPING
-                    || act.getActivity() == ActivityTypes.LIGHT_SLEEP
-                    || act.getActivity() == ActivityTypes.DEEP_SLEEP
-                    || act.getActivity() == ActivityTypes.REM_SLEEP
-                    || act.getActivity() == ActivityTypes.AWAKE_DURING_SLEEP)
+            if ((act.getActivityId() == ActivityTypes.SLEEPING
+                    || act.getActivityId() == ActivityTypes.LIGHT_SLEEP
+                    || act.getActivityId() == ActivityTypes.DEEP_SLEEP
+                    || act.getActivityId() == ActivityTypes.REM_SLEEP
+                    || act.getActivityId() == ActivityTypes.AWAKE_DURING_SLEEP)
                     && cal.get(Calendar.HOUR) <= 12) {
                 time = act.getEndTime();
             }
@@ -340,13 +340,13 @@ public final class LocationHistory {
         for (Map.Entry<Long, List<Activity>> entry : activityHistory.entrySet()) {
             List<Coordinate> coords = getLocationsPerDay(entry.getKey());
             for (Activity act : entry.getValue()) {
-                if (act.getActivity() == ActivityTypes.STILL
-                        || act.getActivity() == ActivityTypes.UNKNOWN
-                        || act.getActivity() == ActivityTypes.SLEEPING
-                        || act.getActivity() == ActivityTypes.LIGHT_SLEEP
-                        || act.getActivity() == ActivityTypes.DEEP_SLEEP
-                        || act.getActivity() == ActivityTypes.REM_SLEEP
-                        || act.getActivity() == ActivityTypes.MEDITATION) {
+                if (act.getActivityId() == ActivityTypes.STILL
+                        || act.getActivityId() == ActivityTypes.UNKNOWN
+                        || act.getActivityId() == ActivityTypes.SLEEPING
+                        || act.getActivityId() == ActivityTypes.LIGHT_SLEEP
+                        || act.getActivityId() == ActivityTypes.DEEP_SLEEP
+                        || act.getActivityId() == ActivityTypes.REM_SLEEP
+                        || act.getActivityId() == ActivityTypes.MEDITATION) {
                     List<Coordinate> activityCoords = new ArrayList<>();
                     long startTime = act.getStartTime();
                     long endTime = act.getEndTime();
@@ -395,7 +395,7 @@ public final class LocationHistory {
                                     if (results.length == 1) {
                                         place = results[0].name;
                                     } else {
-                                        List<PlacesSearchResult> places = extractLocations(results);
+                                        List<PlacesSearchResult> places = extractRealLocations(results);
                                         places.sort((PlacesSearchResult o1, PlacesSearchResult o2) -> {
                                             double o1Distance = GooglePlaces.getInstance().calculateDistance(
                                                     o1.geometry.location.lat,
@@ -408,7 +408,7 @@ public final class LocationHistory {
                                             return Double.compare(o1Distance, o2Distance);
                                         });
 
-                                        List<PlacesSearchResult> sportRelatedPlaces = isGymOrSportClub(places);
+                                        List<PlacesSearchResult> sportRelatedPlaces = getGymOrSportClub(places);
                                         GoogleMapsPlot.getInstance().addLocation(new LatLng(lat, lng));
 
                                         if (sportRelatedPlaces.size() == 1) {
@@ -425,7 +425,7 @@ public final class LocationHistory {
                                                 place = "CONFLICT";
                                             } else if (places.size() > 0) {
                                                 results = GooglePlaces.getInstance().getPlaces(lat, lng, searchRadius * 2);
-                                                places = extractLocations(results);
+                                                places = extractRealLocations(results);
                                                 places.sort((PlacesSearchResult o1, PlacesSearchResult o2) -> {
                                                     double o1Distance = GooglePlaces.getInstance().calculateDistance(
                                                             o1.geometry.location.lat,
@@ -485,11 +485,11 @@ public final class LocationHistory {
     }
 
     /**
-     * Checks if the given places are gyms or sports club by querying the Google Places API.
+     * Checks if the given places are gyms or sports clubs by querying the Google Places API.
      * @param places a list of places search results
-     * @return the list with search results and boolean value whether the result is a gym or sport club
+     * @return the list of places search results containing only results that are gyms or sports clubs
      */
-    private List<PlacesSearchResult> isGymOrSportClub(final List<PlacesSearchResult> places) {
+    private List<PlacesSearchResult> getGymOrSportClub(final List<PlacesSearchResult> places) {
         List<PlacesSearchResult> sportRelatedPlaces = new ArrayList<>();
 
         for (PlacesSearchResult sr : places) {
@@ -521,7 +521,7 @@ public final class LocationHistory {
      * @param places a list of places search results
      * @return the filtered search results list
      */
-    private List<PlacesSearchResult> extractLocations(final PlacesSearchResult[] places) {
+    private List<PlacesSearchResult> extractRealLocations(final PlacesSearchResult[] places) {
         List<PlacesSearchResult> results = new ArrayList<>();
 
         for (PlacesSearchResult sr : places) {
@@ -544,9 +544,9 @@ public final class LocationHistory {
     }
 
     /**
-     * Determines how intense the activity was by analyzing the heart comparing to previous data.
+     * Determines how intense the activity was by comparing the heart rate to previous data.
      */
-    public void determinActivityIntensity() {
+    public void determineActivityIntensity() {
         for (Map.Entry<Long, List<Activity>> entry : activityHistory.entrySet()) {
             long day = entry.getKey();
             for (Activity act : entry.getValue()) {
@@ -590,7 +590,7 @@ public final class LocationHistory {
 
         if (getHeartRateHistory(start) != null) {
             getHeartRateHistory(start).forEach(r -> {
-                if (r.getTimestamp() < start && r.getTimestamp() > end) {
+                if (r.getTimestamp() >= start && r.getTimestamp() <= end) {
                     rates.add(r.getRate());
                 }
             });
@@ -605,7 +605,7 @@ public final class LocationHistory {
 
     /**
      * Setter for the age param.
-     * @param age the users age
+     * @param age the user's age
      */
     public void setAge(final int age) {
         this.age = age;
@@ -643,7 +643,7 @@ public final class LocationHistory {
     }
 
     /**
-     * Getter for the hear rate history at a specific day.
+     * Getter for the heart rate history at a specific day.
      * @param day a valid day unix timestamp.
      * @return the heart rate at the given day.
      */

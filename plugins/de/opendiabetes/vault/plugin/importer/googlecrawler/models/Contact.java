@@ -44,7 +44,7 @@ public class Contact {
     public Contact(final String name, final List<Address> address) {
         this.name = name;
         this.address = address;
-        this.coordinates = getCoordinatesToAddress(address);
+        this.coordinates = getCoordinatesOfAddress(address);
     }
 
     /**
@@ -64,7 +64,7 @@ public class Contact {
      * @param address a list of addresses
      * @return the list of coordinates
      */
-    private List<LatLng> getCoordinatesToAddress(final List<Address> address) {
+    private List<LatLng> getCoordinatesOfAddress(final List<Address> address) {
         return address.stream().map(a -> {
             GeocodingResult[] results = GooglePlaces.getInstance().addressToGPS(a.getFormattedValue());
             return new LatLng(results[0].geometry.location.lat, results[0].geometry.location.lng);
@@ -88,7 +88,7 @@ public class Contact {
     }
 
     /**
-     * Get a specific address by it's ID.
+     * Gets a specific address by its ID.
      * @param id an ID
      * @return the address with the given ID from the list of addresses
      */
@@ -105,7 +105,7 @@ public class Contact {
     }
 
     /**
-     * Get a specific coordinate pair by it's ID.
+     * Gets a specific coordinate pair by its ID.
      * @param id an ID
      * @return the coordinate with the given ID from the list of coordinates
      */

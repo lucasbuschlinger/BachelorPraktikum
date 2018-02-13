@@ -81,7 +81,7 @@ public final class AddressBook {
     }
 
     /**
-     * Gets a contact by it's ID.
+     * Gets a contact by its ID.
      * @param id the ID of the contact that should be returned
      * @return the contact with the given ID
      */
@@ -90,7 +90,7 @@ public final class AddressBook {
     }
 
     /**
-     * Gets a contact by it's name.
+     * Gets a contact by its name.
      * @param name the name of the contact that should be returned
      * @return the contact with the given name
      */

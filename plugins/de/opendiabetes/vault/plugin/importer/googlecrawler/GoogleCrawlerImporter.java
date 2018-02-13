@@ -202,7 +202,7 @@ public class GoogleCrawlerImporter extends Plugin {
                         end.set(Calendar.MILLISECOND, 0);
                     }
 
-                    GoogleFitness.getInstance().getData(start.getTimeInMillis(), end.getTimeInMillis());
+                    GoogleFitness.getInstance().fetchData(start.getTimeInMillis(), end.getTimeInMillis());
                 }
 
 

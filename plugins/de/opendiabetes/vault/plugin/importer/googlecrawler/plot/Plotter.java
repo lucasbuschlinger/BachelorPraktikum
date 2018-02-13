@@ -128,8 +128,8 @@ public class Plotter extends JFrame {
         int activityTypeCount = 0;
         List<Integer> seenActivityTypes = new ArrayList<>();
         for (int i = 0; i < activities.size(); i++) {
-            if (!seenActivityTypes.contains(activities.get(i).getActivity())) {
-                seenActivityTypes.add(activities.get(i).getActivity());
+            if (!seenActivityTypes.contains(activities.get(i).getActivityId())) {
+                seenActivityTypes.add(activities.get(i).getActivityId());
                 activityTypeCount++;
             }
         }
@@ -154,7 +154,7 @@ public class Plotter extends JFrame {
         List<XYTextAnnotation> annotations = new ArrayList<>();
 
         for (Activity act : activities) { // int k = 0; k < activities.size(); k++) {
-            int currentActivity = act.getActivity();
+            int currentActivity = act.getActivityId();
             int activityType = seenActivityTypes.indexOf(currentActivity);
 
             series[seenActivityTypes.indexOf(currentActivity)].add(
@@ -175,11 +175,11 @@ public class Plotter extends JFrame {
                 annotations.add(mark);
             }
 
-            if (act.getIntensity() > -1 && (act.getActivity() != 3
-                    || act.getActivity() != ActivityTypes.SLEEPING
-                    || act.getActivity() != ActivityTypes.LIGHT_SLEEP
-                    || act.getActivity() != ActivityTypes.DEEP_SLEEP
-                    || act.getActivity() != ActivityTypes.REM_SLEEP)) {
+            if (act.getIntensity() > -1 && (act.getActivityId() != 3
+                    || act.getActivityId() != ActivityTypes.SLEEPING
+                    || act.getActivityId() != ActivityTypes.LIGHT_SLEEP
+                    || act.getActivityId() != ActivityTypes.DEEP_SLEEP
+                    || act.getActivityId() != ActivityTypes.REM_SLEEP)) {
                 XYTextAnnotation mark = new XYTextAnnotation(
                         String.valueOf(act.getIntensity()),
                         seenActivityTypes.indexOf(currentActivity) - 0.25,

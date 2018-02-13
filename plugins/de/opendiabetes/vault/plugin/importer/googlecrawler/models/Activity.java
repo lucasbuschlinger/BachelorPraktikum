@@ -18,7 +18,7 @@ public class Activity {
     /**
      * Activity identifier index.
      */
-    private int activity;
+    private int activityId;
 
     /**
      * Intensity of the exercise activity.
@@ -44,7 +44,7 @@ public class Activity {
     public Activity(final long startTime, final long endTime, final int activity) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.activity = activity;
+        this.activityId = activity;
         this.intensity = -1;
         this.heartRate = new int[3];
     }
@@ -69,13 +69,13 @@ public class Activity {
      * Getter for the activity identifier index.
      * @return activity identifier index
      */
-    public int getActivity() {
-        return activity;
+    public int getActivityId() {
+        return activityId;
     }
 
     /**
      * Getter for location of the activity.
-     * @return location at which the acitvity occurred.
+     * @return location at which the activity occurred.
      */
     public String getLocation() {
         return location;
@@ -114,7 +114,7 @@ public class Activity {
     }
 
     /**
-     * Setter for the minimum, maximum and average of heart rates of the activity.
+     * Setter for the minimum, maximum and average heart rates of the activity.
      * @param heartRate an integer array containing the heart rates
      */
     public void setHeartRate(final int[] heartRate) {

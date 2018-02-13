@@ -100,24 +100,24 @@ public final class GoogleFitness {
      * @param start - beginning date of the data as a unix timestamp
      * @param end - end date of the data as a unix timestamp
      */
-    public void getData(final long start, final long end) {
+    public void fetchData(final long start, final long end) {
         long startIterator = start;
         while (startIterator <= end) {
-            getActivitiesPerDay(start);
-            getLocationsPerDay(start);
-            getHearRatePerDay(start);
+            fetchActivitiesPerDay(start);
+            fetchLocationsPerDay(start);
+            fetchHeartRatePerDay(start);
             startIterator += DAY_MILLISECONDS;
         }
 
         LocationHistory.getInstance().refineLocations();
-        LocationHistory.getInstance().determinActivityIntensity();
+        LocationHistory.getInstance().determineActivityIntensity();
     }
 
     /**
-     * Fetches all activity at a specific day.
+     * Fetches all activities at a specific day.
      * @param day - a date as unix timestamp
      */
-    private void getActivitiesPerDay(final long day) {
+    private void fetchActivitiesPerDay(final long day) {
         long[] startEnd = getStartEndDay(day);
 
         AggregateBy aggregate = new AggregateBy();
@@ -145,7 +145,7 @@ public final class GoogleFitness {
                 Activity currentActivity = activities.get(i);
                 Activity nextActivity = activities.get(i + 1);
 
-                if (currentActivity.getActivity() == nextActivity.getActivity()
+                if (currentActivity.getActivityId() == nextActivity.getActivityId()
                         && currentActivity.getEndTime() - nextActivity.getStartTime() <= UNIX_TIME_FIVE_MINUTES) {
                     currentActivity.setEndTime(nextActivity.getEndTime());
                     activities.remove(i + 1);
@@ -162,7 +162,7 @@ public final class GoogleFitness {
      * Fetches all locations at a specific day.
      * @param day - a date as unix timestamp
      */
-    private void getLocationsPerDay(final long day) {
+    private void fetchLocationsPerDay(final long day) {
         long[] startEnd = getStartEndDay(day);
 
         AggregateBy aggregate = new AggregateBy();
@@ -200,7 +200,7 @@ public final class GoogleFitness {
      * Fetches the heart rate at a specific day.
      * @param day - a date as unix timestamp
      */
-    private void getHearRatePerDay(final long day) {
+    private void fetchHeartRatePerDay(final long day) {
         long[] startEnd = getStartEndDay(day);
 
         AggregateBy aggregate = new AggregateBy();
@@ -234,7 +234,7 @@ public final class GoogleFitness {
     }
 
     /**
-     * Returns beginning and the end unix timestamp of the date which the given timestamp defines.
+     * Returns the beginning and the end unix timestamp of the date which the given timestamp defines.
      * @param day - a date as unix timestamp
      * @return the two unix timestamps
      */
