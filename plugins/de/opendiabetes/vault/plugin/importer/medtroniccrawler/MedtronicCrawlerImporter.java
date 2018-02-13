@@ -19,7 +19,11 @@ package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.Importer;
-import org.pf4j.*;
+import org.pf4j.Plugin;
+import org.pf4j.PluginWrapper;
+import org.pf4j.Extension;
+import org.pf4j.PluginManager;
+import org.pf4j.DefaultPluginManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,11 +109,11 @@ public class MedtronicCrawlerImporter extends Plugin {
             Crawler crawler = new Crawler();
 
             String userHomepath = System.getProperty("user.dir");
-            crawler.generateDocument(auth.getcookies(), fromDate, toDate, userHomepath, logger);
+            crawler.generateDocument(auth.getCookies(), fromDate, toDate, userHomepath, logger);
 
             String path = userHomepath + File.separator + "careLink-Export";
 
-            // TODO: change to dynamic path
+            // TODO change to dynamic path
             PluginManager manager = new DefaultPluginManager(Paths.get("export"));
             manager.loadPlugins();
             manager.enablePlugin("MedtronicImporter");

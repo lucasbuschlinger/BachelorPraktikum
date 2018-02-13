@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Handles the login detail page.
  */
-public class Authentication {
+public final class Authentication {
 
     /**
      * Holds the login cookies set by the webpage.
@@ -29,7 +29,7 @@ public class Authentication {
      *
      * @return the login cookies hashmap.
      */
-    Map<String, String> getcookies() {
+    Map<String, String> getCookies() {
         return this.loginCookies;
 
     }
