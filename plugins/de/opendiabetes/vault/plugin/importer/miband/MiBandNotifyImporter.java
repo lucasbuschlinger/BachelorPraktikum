@@ -55,7 +55,7 @@ public class MiBandNotifyImporter extends Plugin {
      * Actual implementation of the MiBandNotify importer plugin.
      */
     @Extension
-    public static class MiBandNotifyImporterImplementation extends FileImporter {
+    public static final class MiBandNotifyImporterImplementation extends FileImporter {
 
         /**
          * The default value for the lower bound of the heart rate.
@@ -174,9 +174,6 @@ public class MiBandNotifyImporter extends Plugin {
                 imports = processWorkoutData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
             }
-            if (data.StepsData != null) {
-                imports = processStepsData(data);
-            }
             if (data.Weight != null) {
                 imports = processWeightData(data);
             }
@@ -267,23 +264,6 @@ public class MiBandNotifyImporter extends Plugin {
                     type = VaultEntryType.EXERCISE_HIGH;
                 }
                 entries.add(new VaultEntry(type, timestamp, duration, annotation));
-            }
-            return entries;
-        }
-
-        /**
-         * This method is used to convert the JSON/GSON object to {@link VaultEntry}.
-         * In particular this converts steps data.
-         *
-         * @param data The GSON/JSON data.
-         * @return The data as {@link VaultEntry}.
-         */
-        private List<VaultEntry> processStepsData(final MiBandObjects data) {
-            List<VaultEntry> entries = new ArrayList<>();
-            for (MiBandObjects.StepsData item : data.StepsData) {
-                if (item.isLast()) {
-                    entries.add(new VaultEntry(VaultEntryType.EXERCISE_OTHER, new Date(item.getTimestamp()), item.getSteps()));
-                }
             }
             return entries;
         }
