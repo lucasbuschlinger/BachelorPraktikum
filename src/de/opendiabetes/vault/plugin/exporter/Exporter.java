@@ -17,11 +17,10 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * This interface specifies the methods shared by all exporters.
@@ -30,13 +29,7 @@ import java.util.logging.Logger;
  *
  * @author Lucas Buschlinger
  */
-public interface Exporter extends ExtensionPoint {
-
-    /**
-     * Logger object of all exporters. Logs all messages of the exporters to a human readable file.
-     */
-    Logger LOG = Logger.getLogger(Exporter.class.getName());
-
+public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
     /**
      * Return codes for exporting data.
      */
@@ -96,18 +89,14 @@ public interface Exporter extends ExtensionPoint {
     String getExportFilePath();
 
     /**
-     * Setter for an object used by the specific exporters.
-     * The implementation of this should only call a private setter method like
-     * {@link VaultExporter#setDatabase(de.opendiabetes.vault.data.VaultDao)}.
-     * in the exporters and pass the object to those.
+     * This method is used to set the entries to export.
+     * Should only be used with exporters that do not export from {@link VaultEntry}
+     * but something different like {@link de.opendiabetes.vault.container.SliceEntry}.
      *
-     * @param object The object to be set.
-     * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a
-     *                                     {@link de.opendiabetes.vault.data.VaultDao} object gets passed
-     *                                     to a {@link de.opendiabetes.vault.plugin.exporter.slicelayoutcsv.SliceLayoutCSVExporter} which
-     *                                     only takes a list of {@link de.opendiabetes.vault.container.SliceEntry}.
+     * @param entries The entries which will be exported by the respective exporter.
+     * @throws IllegalArgumentException Thrown if the wrong kind of entries were set.
      */
-    void setAdditional(Object object) throws IllegalArgumentException;
+    void setEntries(List<?> entries) throws IllegalArgumentException;
 
     /**
      * Exports the data to a file.
@@ -117,33 +106,6 @@ public interface Exporter extends ExtensionPoint {
      */
     int exportDataToFile(List<VaultEntry> data);
 
-    /**
-     * Loads the configuration for the exporter plugin.
-     *
-     * @param configuration The configuration object.
-     * @return True if configuration can be loaded, false otherwise.
-     */
-    boolean loadConfiguration(Properties configuration);
 
-    /**
-     * Method to register listeners to the Plugins.
-     * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update.
-     *
-     * @param listener A listener.
-     */
-    void registerStatusCallback(StatusListener listener);
 
-    /**
-     * Interface which defines the methods called on a status update.
-     * Must be implemented by any listener of this plugin to handle the status update.
-     */
-    interface StatusListener {
-        /**
-         * Is called multiple times on all listeners during the export process to notify them about the import progress.
-         *
-         * @param progress Percentage of completion.
-         * @param status   Current Status.
-         */
-        void onStatusCallback(int progress, String status);
-    }
 }

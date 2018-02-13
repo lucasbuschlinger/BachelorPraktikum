@@ -69,8 +69,8 @@ public class MySugrCsvImporter extends Plugin {
          * Extracts a VaultEntry with the data type double.
          *
          * @param timestamp The timestamp at which the entry occurred.
-         * @param type The type of the entry.
-         * @param rawValue The raw value of the entry.
+         * @param type      The type of the entry.
+         * @param rawValue  The raw value of the entry.
          * @param fullEntry The full entry.
          * @return VaultEntry The extracted double entry as a VaultEntry.
          */
@@ -82,7 +82,7 @@ public class MySugrCsvImporter extends Plugin {
                     return new VaultEntry(type, timestamp, value);
                 } catch (NumberFormatException ex) {
                     LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                            new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                            new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                 }
             }
             return null;
@@ -252,11 +252,9 @@ public class MySugrCsvImporter extends Plugin {
             if (!rawValue.isEmpty()) {
                 tmpEntry = new VaultEntry(VaultEntryType.MEAL_DESCRIPTION, timestamp,
                         VaultEntry.VALUE_UNUSED);
-                if (tmpEntry != null) { //TODO this is always true, condition can be removed?
-                    VaultEntryAnnotation mealDescription = new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.MEAL_Information);
-                    mealDescription.setValue(rawValue);
-                    tmpEntry.addAnnotation(mealDescription);
-                }
+                VaultEntryAnnotation mealDescription = new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.MEAL_Information);
+                mealDescription.setValue(rawValue);
+                tmpEntry.addAnnotation(mealDescription);
             }
 
             //TAG
@@ -283,15 +281,16 @@ public class MySugrCsvImporter extends Plugin {
         }
 
         /**
-         *Unimplemented preprocessing method as no preprocessing is necessary for MySugr CSV data.
+         * Unimplemented preprocessing method as no preprocessing is necessary for MySugr CSV data.
          *
          * @param filePath The file path of the file to pre process.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
+        protected void preprocessingIfNeeded(final String filePath) {
+        }
 
         /**
-         *{@inheritDoc}
+         * {@inheritDoc}
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {

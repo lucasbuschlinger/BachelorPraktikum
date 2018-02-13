@@ -76,7 +76,6 @@ public abstract class FileExporter extends AbstractExporter {
             LOG.log(Level.SEVERE, "Error accessing file for output stream", exception);
             return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
         }
-
         // create csv data
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
@@ -89,7 +88,7 @@ public abstract class FileExporter extends AbstractExporter {
         } catch (IOException exception) {
             LOG.log(Level.SEVERE, "Error writing odv csv file: {0}" + filePath, exception);
             return ReturnCode.RESULT_ERROR.getCode();
-        } finally { //TODO finally needed?
+        } finally { //finally is needed here!
             try {
                 fileOutputStream.close();
             } catch (IOException exception) {
