@@ -140,21 +140,16 @@ public class SourceCodeExporter extends Plugin {
          */
         protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
-            String filePath = null;
-
+            String filePath = getExportFilePath();
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
-
 
             writer.write("  public static List<VaultEntry> getStaticDataset() throws ParseException {\n");
             writer.write(getListInitCode());
-
             for (String entry : entries) {
                 writer.write(entry);
             }
-
             writer.write(getReturnStatementCode());
             writer.write("}");
-
             writer.flush();
             writer.close();
             fileOutputStream.close();
@@ -165,15 +160,13 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
-            List<VaultEntry> tmpValues = queryData();
+            List<VaultEntry> tmpValues = data;
             if (tmpValues == null || tmpValues.isEmpty()) {
                 return null;
             }
-
             for (VaultEntry value : tmpValues) {
                 entries.add(toListCode(value));
             }
-
             // Dirty hack again to overcome safety features
             ArrayList<ExportEntry> dummy = new ArrayList<>();
             dummy.add(new CsvEntry() {

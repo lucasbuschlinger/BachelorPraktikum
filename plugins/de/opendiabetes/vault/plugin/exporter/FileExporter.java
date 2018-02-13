@@ -76,7 +76,6 @@ public abstract class FileExporter extends AbstractExporter {
             LOG.log(Level.SEVERE, "Error accessing file for output stream", exception);
             return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
         }
-
         // create csv data
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {

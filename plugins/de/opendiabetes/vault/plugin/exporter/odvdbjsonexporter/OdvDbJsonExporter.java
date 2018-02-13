@@ -70,20 +70,14 @@ public class OdvDbJsonExporter extends Plugin {
         }
 
         /**
-         * Setter for an object used by the specific exporters.
-         * The implementation of this should only call a private setter method like
-         * {@link de.opendiabetes.vault.plugin.exporter.VaultExporter#setDatabase(VaultDao)}.
-         * in the exporters and pass the object to those.
+         * Unused, thus unimplemented.
          *
-         * @param object The object to be set.
-         * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a {@link VaultDao} object gets passed
-         *                                  to a {@link de.opendiabetes.vault.plugin.exporter.slicelayoutcsv.SliceLayoutCSVExporter} which
-         *                                  only takes a list of {@link de.opendiabetes.vault.container.SliceEntry}.
+         * @param entries Nothing here.
+         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
          */
         @Override
-        public void setAdditional(final Object object) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Unpossible to set additional for OdvDbJsonExporter because "
-                    + "the exporter does not have any additional objects to overwrite.");
+        public void setEntries(final List<?> entries) throws IllegalArgumentException {
+            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
         /**
