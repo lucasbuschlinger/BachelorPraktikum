@@ -160,13 +160,19 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
-            List<VaultEntry> tmpValues = data;
-            if (tmpValues == null || tmpValues.isEmpty()) {
+            if (data == null || data.isEmpty()) {
                 return null;
+            }
+            List<VaultEntry> tmpValues;
+            if (getIsPeriodRestricted()) {
+                tmpValues = filterPeriodRestriction(data);
+            } else {
+                tmpValues = data;
             }
             for (VaultEntry value : tmpValues) {
                 entries.add(toListCode(value));
             }
+
             // Dirty hack again to overcome safety features
             ArrayList<ExportEntry> dummy = new ArrayList<>();
             dummy.add(new CsvEntry() {

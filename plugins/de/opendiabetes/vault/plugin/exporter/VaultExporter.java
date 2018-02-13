@@ -33,20 +33,26 @@ public abstract class VaultExporter extends CSVFileExporter {
         final int startPrepareProgress = 33;
         final int prepareDoneProgress = 66;
 
-        List<ExportEntry> returnValues = new ArrayList<>();
-
-        List<VaultEntry> tmpValues = data;
-        if (tmpValues == null || tmpValues.isEmpty()) {
+        if (data == null || data.isEmpty()) {
             return null;
         }
 
+        List<ExportEntry> returnValues = new ArrayList<>();
+
+        List<VaultEntry> tmpData;
+        if (getIsPeriodRestricted()) {
+            tmpData = filterPeriodRestriction(data);
+        } else {
+            tmpData = data;
+        }
+
         // list is ordered by timestamp from database (or should be ordered otherwise)
-        Date fromTimestamp = tmpValues.get(0).getTimestamp();
-        Date toTimestamp = tmpValues.get(tmpValues.size() - 1).getTimestamp();
+        Date fromTimestamp = tmpData.get(0).getTimestamp();
+        Date toTimestamp = tmpData.get(tmpData.size() - 1).getTimestamp();
 
         this.notifyStatus(startPrepareProgress, "Preparing data for export");
 
-        if (!tmpValues.isEmpty()) {
+        if (!tmpData.isEmpty()) {
             int i = 0;
             delayBuffer = new ArrayList<>();
             while (!fromTimestamp.after(toTimestamp)) {
@@ -66,16 +72,16 @@ public abstract class VaultExporter extends CSVFileExporter {
                 }
 
                 // search and add vault entries for this time slot
-                VaultEntry tmpEntry = tmpValues.get(i);
+                VaultEntry tmpEntry = tmpData.get(i);
                 while (fromTimestamp.equals(tmpEntry.getTimestamp())) {
-                    if (i < tmpValues.size() - 1) {
+                    if (i < tmpData.size() - 1) {
                         i++;
                     } else {
                         i--;
                         break;
                     }
                     tmpCsvEntry = processVaultEntry(tmpCsvEntry, tmpEntry);
-                    tmpEntry = tmpValues.get(i);
+                    tmpEntry = tmpData.get(i);
                 }
 
                 // save entry if not empty

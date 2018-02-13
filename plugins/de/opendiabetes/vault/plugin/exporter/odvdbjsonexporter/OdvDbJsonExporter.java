@@ -65,7 +65,13 @@ public class OdvDbJsonExporter extends Plugin {
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
             List<ExportEntry> container = new ArrayList<>();
-            container.add(OdvDbJsonPseudoEntry.fromVaultEntryList(data));
+            List<VaultEntry> tempData;
+            if (getIsPeriodRestricted()) {
+               tempData = filterPeriodRestriction(data);
+            } else {
+                tempData = data;
+            }
+            container.add(OdvDbJsonPseudoEntry.fromVaultEntryList(tempData));
             return container;
         }
 
