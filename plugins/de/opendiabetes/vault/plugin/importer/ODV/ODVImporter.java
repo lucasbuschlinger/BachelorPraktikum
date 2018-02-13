@@ -18,7 +18,6 @@ package de.opendiabetes.vault.plugin.importer.ODV;
 
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
-import org.omg.IOP.Encoding;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -31,16 +30,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -92,7 +88,7 @@ public class ODVImporter extends Plugin {
         /**
          * The default temporary directory to be used.
          */
-        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + File.separator + "ODVExporter";
+        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + File.separator + "ODVImporter";
         /**
          * The default name of the meta file.
          */
@@ -143,7 +139,7 @@ public class ODVImporter extends Plugin {
          */
         @Override
         public boolean importData() {
-            Map<String, List<String>> metaInfo;
+            Map<String, MetaValues> metaInfo;
             Map<String, String> unimportedFiles = new HashMap<>();
             importedData = new ArrayList<>();
             boolean result = false;
@@ -169,22 +165,21 @@ public class ODVImporter extends Plugin {
             while (iterator.hasNext()) {
                 Map.Entry metaEntry = (Map.Entry) iterator.next();
                 String plugin = (String) metaEntry.getKey();
-                ArrayList<String> furtherEntries = (ArrayList<String>) metaEntry.getValue();
-                String inputFilepath = tempDir + File.separator + furtherEntries.get(0);
-                String fileChecksum = furtherEntries.get(1);
+                MetaValues metaValues = (MetaValues) metaEntry.getValue();
+                String importFile = tempDir + File.separator + metaValues.file;
                 Importer importer;
                 try {
                     importer = (Importer) manager.getExtensions(plugin).get(0);
                 } catch (Exception exception) {
-                    LOG.log(Level.WARNING, "No applicable Plugin available for " + plugin);
-                    unimportedFiles.put(inputFilepath, reasonNoPlugin);
+                    LOG.log(Level.WARNING, "No Plugin named {0} available ", plugin);
+                    unimportedFiles.put(importFile, reasonNoPlugin);
                     continue;
                 }
-                if (!verifyChecksum(inputFilepath, fileChecksum)) {
-                    unimportedFiles.put(inputFilepath, reasonChecksumFailed);
+                if (!verifyChecksum(importFile, metaValues.checksum)) {
+                    unimportedFiles.put(importFile, reasonChecksumFailed);
                     continue;
                 }
-                importer.setImportFilePath(inputFilepath);
+                importer.setImportFilePath(importFile);
                 importer.importData();
                 importedData.addAll(importer.getImportedData());
                 result = true;
@@ -220,20 +215,12 @@ public class ODVImporter extends Plugin {
          * @return True if the integrity could be verified successfully, false otherwise.
          */
         private boolean verifyChecksum(final String filePath, final String checksum) {
-            FileInputStream fileInputStream = null;
+            FileInputStream fileInputStream;
             try {
                 fileInputStream = new FileInputStream(filePath);
             } catch (FileNotFoundException exception) {
                 LOG.log(Level.WARNING, "Could not find file, integrity could not be verified: " + filePath);
                 return false;
-            } finally {
-                if (fileInputStream != null) {
-                    try {
-                        fileInputStream.close();
-                    } catch (IOException exception) {
-                        LOG.log(Level.WARNING, "Could not close input stream");
-                    }
-                }
             }
             MessageDigest digest;
             try {
@@ -325,19 +312,19 @@ public class ODVImporter extends Plugin {
          * @return A map containing all information.
          * @throws IOException Thrown if the meta file can not be read.
          */
-        private Map<String, List<String>> readMetaFile(final String metaFile) throws IOException {
+        private Map<String, MetaValues> readMetaFile(final String metaFile) throws IOException {
             String line;
-            Map<String, List<String>> result = new HashMap<>();
+            Map<String, MetaValues> result = new HashMap<>();
             FileInputStream inputStream = new FileInputStream(metaFile);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
             line = bufferedReader.readLine();
             while (line != null) {
                 String[] lineEntries = line.split("=");
                 String importer = lineEntries[0];
-                List<String> fileAndChecksum = new ArrayList<>();
-                fileAndChecksum.add(lineEntries[1]);
-                fileAndChecksum.add(lineEntries[2]);
-                result.put(importer, fileAndChecksum);
+                MetaValues metaValues = new MetaValues();
+                metaValues.file = lineEntries[1];
+                metaValues.checksum = lineEntries[2];
+                result.put(importer, metaValues);
                 line = bufferedReader.readLine();
             }
             bufferedReader.close();
@@ -360,6 +347,21 @@ public class ODVImporter extends Plugin {
                 stringBuilder.append("\n");
             }
             notifyStatus(PROGRESS_UNIMPORTED_FILES, stringBuilder.toString());
+        }
+
+        /**
+        * This class encapsulates the values used in the meta data.
+        * Namely the file that the exporters generated as well as its checksum.
+        */
+        private static class MetaValues {
+        /**
+        * This name of the file generated an exporter.
+        */
+         private String file;
+        /**
+        * The checksum for the file generated by an exporter.
+        */
+        private String checksum;
         }
     }
 
