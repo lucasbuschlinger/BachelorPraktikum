@@ -1,13 +1,24 @@
 package de.opendiabetes.vault.plugin.common;
 
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
- * Class of which every Plugin should be a descendant, handles notify mechanism to {@link de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin.StatusListener}.
+ * Class of which every Plugin should be a descendant,
+ * handles notify mechanism to {@link de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin.StatusListener}.
  */
 public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
 
+    /**
+     * List containing all compatible plugins that are listed in this plugins config.
+     * The data of this field is returned by {@link this#getListOfCompatiblePluginIDs()}
+     * and used in {@link OpenDiabetesPluginManager#computeCompatibilityMap()} to list compatibilities among plugins.
+     */
+    private List<String> compatiblePlugins = new ArrayList<>();
     /**
      * List of StatusListener which contains all listeners registered to the importer.
      */
@@ -32,5 +43,27 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
      */
     protected void notifyStatus(final int progress, final String status) {
         listeners.forEach(listener -> listener.onStatusCallback(progress, status));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<String> getListOfCompatiblePluginIDs() {
+        return compatiblePlugins;
+    }
+
+    /**
+     * {@inheritDoc}
+     * Tries to load the list of compatible plugins.
+     * @param configuration The configuration object.
+     * @return always true
+     */
+    @Override
+    public boolean loadConfiguration(final Properties configuration) {
+        if (configuration.containsKey("compatiblePlugins")) {
+            this.compatiblePlugins.addAll(Arrays.asList(configuration.getProperty("compatiblePlugins").split("\\s*,\\s*")));
+        }
+        return true;
     }
 }
