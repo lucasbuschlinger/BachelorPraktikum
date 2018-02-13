@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
@@ -91,6 +90,10 @@ public class ODVExporter extends Plugin {
          */
         private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + File.separator + "ODVExporter";
         /**
+         * The compression level used with the ZIP-archive.
+         */
+        private static final int COMPRESSION_LEVEL = 9;
+        /**
          * Progress value indicating loading of configuration.
          */
         private static final int PROGRESS_LOADED_CONFIG = 33;
@@ -141,7 +144,7 @@ public class ODVExporter extends Plugin {
         public int exportDataToFile(final List<VaultEntry> data) {
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
-            Map<String, List<String>> metaData = new HashMap<>();
+            Map<String, MetaValues> metaData = new HashMap<>();
             try {
                 fileOutputStream = new FileOutputStream(exportFilePath);
             } catch (FileNotFoundException exception) {
@@ -149,6 +152,8 @@ public class ODVExporter extends Plugin {
                 return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
+            zipOutputStream.setMethod(ZipOutputStream.DEFLATED);
+            zipOutputStream.setLevel(COMPRESSION_LEVEL);
             File file = new File(tempDir);
             if (!file.exists()) {
                 if (!file.mkdir()) {
@@ -166,13 +171,7 @@ public class ODVExporter extends Plugin {
                 if (name.contains("ODVExporter") || metaData.containsKey(name)) {
                     continue;
                 }
-                try {
-// TODO                    exporter.setAdditional(database);
-                } catch (Exception ex) {
-                    LOG.log(Level.INFO, "Skipping exporter " + name + " as it does not export from the database");
-                    continue;
-                }
-                List<String> thisEntryMetaData = new ArrayList<>();
+                MetaValues thisEntryMetaData = new MetaValues();
                 String exportFile = tempDir + File.separator + name + ".export";
                 exporter.setExportFilePath(exportFile);
                 exporter.loadConfiguration(config);
@@ -183,7 +182,7 @@ public class ODVExporter extends Plugin {
                     }
                 });
                 try {
-                    exporter.exportDataToFile(null);
+                    exporter.exportDataToFile(data);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;
@@ -194,8 +193,8 @@ public class ODVExporter extends Plugin {
                 } catch (Exception exception) {
                     return ReturnCode.RESULT_ERROR.getCode();
                 }
-                thisEntryMetaData.add(exportFile);
-                thisEntryMetaData.add(checksum);
+                thisEntryMetaData.setFile(exportFile);
+                thisEntryMetaData.setChecksum(checksum);
                 metaData.put(name, thisEntryMetaData);
             }
             String metaFile;
@@ -209,8 +208,9 @@ public class ODVExporter extends Plugin {
             try {
                 Iterator iterator = metaData.entrySet().iterator();
                 while (iterator.hasNext()) {
-                    Map.Entry pair = (Map.Entry) iterator.next();
-                    addFileToZip(((List<String>) pair.getValue()).get(0), zipOutputStream);
+                    Map.Entry metaEntry = (Map.Entry) iterator.next();
+                    MetaValues metaValues = (MetaValues) metaEntry.getValue();
+                    addFileToZip(metaValues.getFile(), zipOutputStream);
                 }
                 addFileToZip(metaFile, zipOutputStream);
             } catch (Exception exception) {
@@ -286,7 +286,7 @@ public class ODVExporter extends Plugin {
          * @return The name of the generated meta file.
          * @throws IOException Thrown if the file could not be created.
          */
-        private String makeMetaFile(final Map<String, List<String>> metaData) throws IOException {
+        private String makeMetaFile(final Map<String, MetaValues> metaData) throws IOException {
             final String metaFile = tempDir + File.separator + "meta.info";
             FileOutputStream outputStream = new FileOutputStream(metaFile);
             Iterator iterator = metaData.entrySet().iterator();
@@ -294,9 +294,9 @@ public class ODVExporter extends Plugin {
                 while (iterator.hasNext()) {
                     Map.Entry pair = (Map.Entry) iterator.next();
                     String exporter = pair.getKey().toString();
-                    List<String> data = (List<String>) pair.getValue();
-                    String file = data.get(0).replace("temp/", "");
-                    String checksum = data.get(1);
+                    MetaValues data = (MetaValues) pair.getValue();
+                    String file = data.getFile().replace("temp/", "");
+                    String checksum = data.getChecksum();
                     String line = exporter + "=" + file + "=" + checksum + "\n";
                     outputStream.write(line.getBytes(Charset.forName("UTF-8")));
                 }
@@ -310,7 +310,7 @@ public class ODVExporter extends Plugin {
         }
 
         /**
-         * This does not really load the configuration in some way but rather stores it to pass it on to the called exporters.
+         * This loads the config for this plugin and also stores it to be passed on to the individual importers.
          *
          * @param configuration The configuration object.
          * @return True if the configuration has been stored.
@@ -347,6 +347,57 @@ public class ODVExporter extends Plugin {
          */
         private void notifyStatus(final int progress, final String status) {
             listeners.forEach(listener -> listener.onStatusCallback(progress, status));
+        }
+
+        /**
+         * This class encapsules the values used in the meta data.
+         * Namely the file that the exporters generated as well as its checksum.
+         */
+        private class MetaValues {
+            /**
+             * This name of the file generated an exporter.
+             */
+            private String file;
+            /**
+             * The checksum for the file generated by an exporter.
+             */
+            private String checksum;
+
+            /**
+             * Getter for the file name.
+             *
+             * @return The name of the file.
+             */
+            public String getFile() {
+                return file;
+            }
+
+            /**
+             * Getter for the checksum of the file.
+             *
+             * @return The checksum of the file.
+             */
+            public String getChecksum() {
+                return checksum;
+            }
+
+            /**
+             * Setter for the name of the file.
+             *
+             * @param file The name of the file.
+             */
+            public void setFile(final String file) {
+                this.file = file;
+            }
+
+            /**
+             * Setter for the checksum of the file.
+             *
+             * @param checksum The checksum of the file.
+             */
+            public void setChecksum(final String checksum) {
+                this.checksum = checksum;
+            }
         }
     }
 }
