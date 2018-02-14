@@ -62,29 +62,6 @@ public class SliceLayoutCSVExporter extends Plugin {
          */
         private List<SliceEntry> entries;
 
-        /**
-         * Setter for the {@link SliceLayoutCSVExporterImplementation#entries}.
-         *
-         * @param entries The entries to be set.
-         */
-        private void setEntries(final List<SliceEntry> entries) {
-            this.entries = entries;
-        }
-
-        /**
-         * This implementation sets the list of {@link SliceEntry} to be exported.
-         *
-         * @param object The list of {@link SliceEntry} to be set.
-         * @throws IllegalArgumentException Thrown if the object passed is not an instance of {@link List}.
-         */
-        @Override
-        public void setAdditional(final Object object) {
-            if (object instanceof List) {
-                setEntries((List<SliceEntry>) object);
-            } else {
-                throw new IllegalArgumentException("Wrong argument given, only objects of type List<SliceEntry> are applicable!");
-            }
-        }
 
         /**
          * {@inheritDoc}
@@ -96,6 +73,26 @@ public class SliceLayoutCSVExporter extends Plugin {
                 retVal.add(new SliceCsVEntry(item));
             }
             return retVal;
+        }
+
+        /**
+         * This sets the List of {@link SliceEntry} which will be exported by this exporter.
+         *
+         * @param entries The entries which will be exported by the SliceLayoutCSVExporter.
+         * @throws IllegalArgumentException Thrown if the entries of the supplied list are not of type {@link SliceEntry}
+         */
+        @Override
+        public void setEntries(final List<?> entries) throws IllegalArgumentException {
+            if (entries != null && !entries.isEmpty()) {
+                if (entries.get(0) instanceof SliceEntry) {
+                    this.entries = (List<SliceEntry>) entries;
+                } else {
+                    LOG.log(Level.SEVERE, "Entries are not of type SliceEntry");
+                    throw new IllegalArgumentException("Entries are not of type SliceEntry");
+                }
+            } else {
+                LOG.log(Level.SEVERE, "No data supplied to be set");
+            }
         }
 
         /**

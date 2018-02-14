@@ -53,17 +53,17 @@ public enum VaultEntryType {
      */
     EXERCISE_OTHER,
     /**
-     * Walking.
+     * Low demanding exercise.
      */
-    EXERCISE_WALK,
+    EXERCISE_LOW,
     /**
-     * Cycling.
+     * Medium demanding exercise.
      */
-    EXERCISE_BICYCLE,
+    EXERCISE_MID,
     /**
-     * Running.
+     * Highly demanding exercise.
      */
-    EXERCISE_RUN,
+    EXERCISE_HIGH,
     // Glucose
     /**
      * Continuous glucose monitoring glucose value.
@@ -206,6 +206,10 @@ public enum VaultEntryType {
      * Stress.
      */
     STRESS,
+    /**
+     * Weight.
+     */
+    WEIGHT,
     // Ketones
     /**
      * Blood ketones.

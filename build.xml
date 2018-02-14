@@ -343,6 +343,10 @@
         <mkdir dir="plugins_out/classes"/>
         <mkdir dir="plugins_out/lib"/>
         <mkdir dir="export"/>
+        <mkdir dir="plugins_out/assets"/>
+        <copy todir="plugins_out/assets" quiet="true" failonerror="false">
+            <fileset dir="${plugin.src.path}/assets"/>
+        </copy>
         <copydir src="lib" dest="plugins_out/lib"/>
         <copyfile src="${plugin.src.path}/plugin.properties"
                   dest="plugins_out/plugin.properties"/>

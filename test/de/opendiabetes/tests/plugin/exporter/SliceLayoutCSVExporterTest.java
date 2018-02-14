@@ -1,6 +1,7 @@
 package de.opendiabetes.tests.plugin.exporter;
 
 import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
+import de.opendiabetes.vault.container.SliceEntry;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -40,7 +41,7 @@ public class SliceLayoutCSVExporterTest {
     @Test
     public void setEntries() {
         Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
-        sliceLayoutCSVExporter.setAdditional(new ArrayList<>());
+        sliceLayoutCSVExporter.setEntries(new ArrayList<SliceEntry>());
     }
 
     /**
@@ -49,7 +50,7 @@ public class SliceLayoutCSVExporterTest {
     @Test(expected =  IllegalArgumentException.class)
     public void setAdditionalException() {
         Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
-        sliceLayoutCSVExporter.setAdditional(new Object());
+        sliceLayoutCSVExporter.setEntries(new ArrayList<SliceEntry>());
     }
 
     /**

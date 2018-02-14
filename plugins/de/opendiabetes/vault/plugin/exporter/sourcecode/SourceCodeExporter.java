@@ -140,21 +140,16 @@ public class SourceCodeExporter extends Plugin {
          */
         protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
-            String filePath = null;
-
+            String filePath = getExportFilePath();
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
-
 
             writer.write("  public static List<VaultEntry> getStaticDataset() throws ParseException {\n");
             writer.write(getListInitCode());
-
             for (String entry : entries) {
                 writer.write(entry);
             }
-
             writer.write(getReturnStatementCode());
             writer.write("}");
-
             writer.flush();
             writer.close();
             fileOutputStream.close();
@@ -165,11 +160,15 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
-            List<VaultEntry> tmpValues = queryData();
-            if (tmpValues == null || tmpValues.isEmpty()) {
+            if (data == null || data.isEmpty()) {
                 return null;
             }
-
+            List<VaultEntry> tmpValues;
+            if (getIsPeriodRestricted()) {
+                tmpValues = filterPeriodRestriction(data);
+            } else {
+                tmpValues = data;
+            }
             for (VaultEntry value : tmpValues) {
                 entries.add(toListCode(value));
             }
