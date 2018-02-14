@@ -45,12 +45,5 @@ public class VaultCSVExporter extends Plugin {
     @Extension
     public static class VaultCSVExporterImplementation extends VaultExporter {
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
     }
 }

@@ -201,7 +201,7 @@ public class PlotterExporter extends Plugin {
          * @return True if configuration can be loaded, false otherwise.
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public boolean loadPluginSpecificConfiguration(final Properties configuration) {
 
             this.notifyStatus(0, "Loading configuration");
 

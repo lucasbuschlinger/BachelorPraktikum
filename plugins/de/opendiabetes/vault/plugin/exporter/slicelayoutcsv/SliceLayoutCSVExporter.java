@@ -90,13 +90,5 @@ public class SliceLayoutCSVExporter extends Plugin {
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
-
     }
 }

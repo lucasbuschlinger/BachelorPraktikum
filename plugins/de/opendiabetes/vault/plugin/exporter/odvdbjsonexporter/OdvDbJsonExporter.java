@@ -81,12 +81,5 @@ public class OdvDbJsonExporter extends Plugin {
             LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
     }
 }

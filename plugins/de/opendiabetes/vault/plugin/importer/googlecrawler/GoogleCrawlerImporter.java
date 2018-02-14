@@ -242,7 +242,7 @@ public class GoogleCrawlerImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration.containsKey("clientSecretPath")) {
                 clientSecretPath = configuration.getProperty("clientSecretPath");
             }

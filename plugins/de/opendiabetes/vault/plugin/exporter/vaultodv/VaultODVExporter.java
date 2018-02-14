@@ -120,14 +120,6 @@ public class VaultODVExporter extends Plugin {
             fileOutputStream.close();
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
-
     }
 
 }

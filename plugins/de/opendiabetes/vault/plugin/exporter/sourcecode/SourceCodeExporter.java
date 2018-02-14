@@ -185,14 +185,6 @@ public class SourceCodeExporter extends Plugin {
             return dummy;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
-
     }
 }
 

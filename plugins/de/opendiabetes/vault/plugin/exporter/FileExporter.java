@@ -149,7 +149,7 @@ public abstract class FileExporter extends AbstractExporter {
      * @return True if the configuration could be set successfully, false otherwise.
      */
     @Override
-    public boolean loadConfiguration(final Properties configuration) {
+    public boolean loadPluginSpecificConfiguration(final Properties configuration) {
         // Status update constant
         final int loadConfigProgress = 0;
         // Format of dates which must be used.
