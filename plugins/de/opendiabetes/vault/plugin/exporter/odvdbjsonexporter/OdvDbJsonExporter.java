@@ -65,7 +65,13 @@ public class OdvDbJsonExporter extends Plugin {
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
             List<ExportEntry> container = new ArrayList<>();
-            container.add(OdvDbJsonPseudoEntry.fromVaultEntryList(data));
+            List<VaultEntry> tempData;
+            if (getIsPeriodRestricted()) {
+               tempData = filterPeriodRestriction(data);
+            } else {
+                tempData = data;
+            }
+            container.add(OdvDbJsonPseudoEntry.fromVaultEntryList(tempData));
             return container;
         }
 
@@ -88,6 +94,9 @@ public class OdvDbJsonExporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            if (!super.loadConfiguration(configuration)) {
+                return false;
+            }
             // Status update constant
             final int loadConfigProgress = 0;
             // Format of dates which must be used.

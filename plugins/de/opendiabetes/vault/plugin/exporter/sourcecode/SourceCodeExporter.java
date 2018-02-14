@@ -69,6 +69,7 @@ public class SourceCodeExporter extends Plugin {
          * and written on {@link #writeToFile(List)}.
          */
         private final List<String> entries = new ArrayList<>();
+
         /**
          * Method to get the ListInitCode.
          *
@@ -161,24 +162,30 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
-            List<VaultEntry> tmpValues = data;
-            if (tmpValues == null || tmpValues.isEmpty()) {
+            if (data == null || data.isEmpty()) {
                 return null;
+            }
+            List<VaultEntry> tmpValues;
+            if (getIsPeriodRestricted()) {
+                tmpValues = filterPeriodRestriction(data);
+            } else {
+                tmpValues = data;
             }
             for (VaultEntry value : tmpValues) {
                 entries.add(toListCode(value));
             }
+
             // Dirty hack again to overcome safety features
             ArrayList<ExportEntry> dummy = new ArrayList<>();
             dummy.add(new CsvEntry() {
                 @Override
                 public String[] toCsvRecord() {
-                    return new String[]{};
+                    return new String[] {};
                 }
 
                 @Override
                 public String[] getCsvHeaderRecord() {
-                    return new String[]{};
+                    return new String[] {};
                 }
             });
 
@@ -190,6 +197,9 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            if (!super.loadConfiguration(configuration)) {
+                return false;
+            }
             // Status update constant
             final int loadConfigProgress = 0;
             // Format of dates which must be used.

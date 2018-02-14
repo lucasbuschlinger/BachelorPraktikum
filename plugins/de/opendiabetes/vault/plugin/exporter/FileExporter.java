@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -191,5 +192,25 @@ public abstract class FileExporter extends AbstractExporter {
      */
     protected Date getExportPeriodTo() {
         return exportPeriodTo;
+    }
+
+    /**
+     * This filters the data if the options indicate a period restriction on the data.
+     *
+     * @param data The data to filter.
+     * @return The filtered data.
+     */
+    protected List<VaultEntry> filterPeriodRestriction(final List<VaultEntry> data) {
+        List<VaultEntry> tempData = new ArrayList<>();
+        Date begin = getExportPeriodFrom();
+        Date end = getExportPeriodTo();
+        for (VaultEntry entry : data) {
+            Date timestamp = entry.getTimestamp();
+            if (timestamp.before(begin) || timestamp.after(end)) {
+                continue;
+            }
+            tempData.add(entry);
+        }
+        return tempData;
     }
 }
