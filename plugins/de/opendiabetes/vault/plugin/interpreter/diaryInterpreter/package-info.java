@@ -1,0 +1,1 @@
+package de.opendiabetes.vault.plugin.interpreter.diaryInterpreter;
