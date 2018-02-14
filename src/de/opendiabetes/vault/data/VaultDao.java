@@ -63,7 +63,7 @@ public final class VaultDao {
     /**
      * The instance of the Database Access Object used herein.
      */
-    private static VaultDao INSTANCE = null;
+    private static VaultDao instance = null;
 
     /**
      * The {@link ConnectionSource} used herein.
@@ -86,30 +86,30 @@ public final class VaultDao {
     }
 
     /**
-     * Getter for the {@link #INSTANCE} of the database.
+     * Getter for the {@link #instance} of the database.
      * If the database has not been initialized by calling {@link #initializeDb()} this will terminate the execution.
      *
      * @return The instance of the Vault Database Access Object, provided it has been initialized by {@link #initializeDb()}.
      */
     public static VaultDao getInstance() {
-        if (INSTANCE == null) {
+        if (instance == null) {
             LOG.severe("Database is not initialized. Call VaultDao.initializeDb first!");
             System.exit(-1);
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**
-     * Closes the connection to the database and thus finalizes the Vault Database Access Object {@link #INSTANCE}.
+     * Closes the connection to the database and thus finalizes the Vault Database Access Object {@link #instance}.
      *
      * @throws IOException Thrown if the connection to the database can not be closed.
      */
     public static void finalizeDb() throws IOException {
-        INSTANCE.connectionSource.close();
+        instance.connectionSource.close();
     }
 
     /**
-     * Initializes the connection to the database and sets up the Vault Database Access Object {@link #INSTANCE}.
+     * Initializes the connection to the database and sets up the Vault Database Access Object {@link #instance}.
      *
      * @throws SQLException Thrown if the database can not be successfully initialized.
      */
@@ -122,8 +122,8 @@ public final class VaultDao {
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY,
                 Log.Level.INFO.toString());
 
-        INSTANCE = new VaultDao();
-        INSTANCE.initDb();
+        instance = new VaultDao();
+        instance.initDb();
     }
 
     /**
@@ -150,20 +150,20 @@ public final class VaultDao {
 //        TableUtils.createTableIfNotExists(connectionSource, SliceEntry.class);
     }
 
-    /**
-     * Puts {@link VaultEntry}s into the database.
-     *
-     * @param entry The {@link VaultEntry} to be put into the database.
-     * @return The ID of respective entry or {@link #RESULT_ERROR}.
-     */
-    public long putEntry(final VaultEntry entry) {
-        try {
-            return vaultDao.createIfNotExists(entry).getId();
-        } catch (SQLException exception) {
-            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
-            return RESULT_ERROR;
-        }
-    }
+//        /**
+//     * Puts {@link VaultEntry}s into the database.
+//     *
+//     * @param entry The {@link VaultEntry} to be put into the database.
+//     * @return The ID of respective entry or {@link #RESULT_ERROR}.
+//     */
+//    public long putEntry(final VaultEntry entry) {
+//        try {
+//            return vaultDao.createIfNotExists(entry).getId();
+//        } catch (SQLException exception) {
+//           LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
+//            return RESULT_ERROR;
+//        }
+//    }
 
 //    /**
 //     * Puts {@link RawEntry}s into the database.
