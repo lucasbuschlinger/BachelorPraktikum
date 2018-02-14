@@ -41,7 +41,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * Not implemented yet.
  * Only a dummy class for the importer.
- * TODO: might be superseded by the ODVExporter, will have to discuss with Jens about removal
+ * TO_DO might be superseded by the ODVExporter, will have to discuss with Jens about removal
  */
 public class VaultODVExporter extends Plugin {
 
