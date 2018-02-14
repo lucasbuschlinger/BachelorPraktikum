@@ -37,25 +37,6 @@ public class VaultCSVExporterTest {
     }
 
     /**
-     * Test to see whether the needed database can be set.
-     */
-    @Test
-    public void setDatabase() {
-        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
-        try {
-            VaultDao.initializeDb();
-        } catch (SQLException exception){
-            Assert.fail("Initialization of the VaultDao database went wrong.");
-        }
-        vaultODVExporter.setAdditional(VaultDao.getInstance());
-        try {
-            VaultDao.finalizeDb();
-        } catch (IOException exception) {
-            // Do nothing, uninteresting.
-        }
-    }
-
-    /**
      * Test to see whether load configuration returns the correct log.
      */
     @Test
