@@ -34,22 +34,22 @@ public abstract class VaultInterpreter extends AbstractPlugin implements Interpr
      * The data access object {@link VaultDao} used by the interpreter.
      * 
      */
-    private VaultDao db;
+    private VaultDao database;
 
     /**
      * Initializes the database by setting its field to the given argument.
-     * @param db the database to be set
+     * @param database the database to be set
      */
     @Override
     public void init(final VaultDao db) {
-        this.db = db;
+        this.database = db;
     }
 
     /**
      * Getter for the database.
      * @return the database
      */
-    protected VaultDao getDb() {
-        return db;
+    protected VaultDao getDatabase() {
+        return database;
     }
 }

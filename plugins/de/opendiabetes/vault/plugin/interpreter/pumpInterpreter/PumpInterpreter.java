@@ -137,9 +137,9 @@ public class PumpInterpreter extends Plugin {
             }
 
             // check if handle prefill is needed
-            VaultEntry rewindFromDb = getDb().queryLatestEventBefore(importedData.get(0).getTimestamp(),
+            VaultEntry rewindFromDb = getDatabase().queryLatestEventBefore(importedData.get(0).getTimestamp(),
                     VaultEntryType.PUMP_REWIND);
-            VaultEntry primeFromDb = getDb().queryLatestEventBefore(importedData.get(0).getTimestamp(),
+            VaultEntry primeFromDb = getDatabase().queryLatestEventBefore(importedData.get(0).getTimestamp(),
                     VaultEntryType.PUMP_PRIME);
             if (rewindFromDb != null) {
                 if (((primeFromDb != null
@@ -322,7 +322,7 @@ public class PumpInterpreter extends Plugin {
                             // query db
                             Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * 5 * HOUR_TO_MIN); // start 5 hours before with the search
                             Date ts2 = data.get(0).getTimestamp(); // we search just until the current dataset starts
-                            List<VaultEntry> dbBasalData = getDb().queryBasalBetween(ts1, ts2);
+                            List<VaultEntry> dbBasalData = getDatabase().queryBasalBetween(ts1, ts2);
 
                             // search for profile entry
                             for (VaultEntry basalEntry : dbBasalData) { // no interpreter basal items, since suspension will interrupt tmp basal
@@ -394,7 +394,7 @@ public class PumpInterpreter extends Plugin {
                     }
                     if (affectedHistoricElements.isEmpty()) {
                         // try to get it from DB
-                        VaultEntry tmpItem = getDb().queryLatestEventBefore(TimestampUtils.createCleanTimestamp(
+                        VaultEntry tmpItem = getDatabase().queryLatestEventBefore(TimestampUtils.createCleanTimestamp(
                                 new Date(Math.round(
                                         basalItem.getTimestamp().getTime()
                                                 - basalItem.getDuration()))),

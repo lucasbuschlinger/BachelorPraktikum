@@ -59,13 +59,15 @@ public class ExerciseInterpreter extends Plugin {
          */
         private static final int MS_PER_MINUTE = 60000;
 
+        
+        // TODO rephrase the comment below?
         /**
-         *
+         * The activity threshold that needs to be exceeded in order to add an entry to the list of return values during interpretation.
          */
         private int activityThreshold;
 
         /**
-         *
+         * The maximum duration of a slice, in minutes.
          */
         private int activitySliceThreshold;
 
@@ -81,7 +83,7 @@ public class ExerciseInterpreter extends Plugin {
             Collections.sort(data, new SortVaultEntryByDate());
 
             LOG.finer("Start activity data interpretation");
-            data = filterActititys(data);
+            data = filterActivities(data);
             data = interpretStress(data);
 
             LOG.finer("Tracker data interpretation finished");
@@ -95,12 +97,12 @@ public class ExerciseInterpreter extends Plugin {
          * @param data
          * @return
          */
-        private List<VaultEntry> filterActititys(final List<VaultEntry> data) {
+        private List<VaultEntry> filterActivities(final List<VaultEntry> data) {
             if (data == null || data.isEmpty()) {
                 return data;
             }
             List<VaultEntry> retVal = new ArrayList<>();
-            List<VaultEntry> dbValues = getDb().queryExerciseBetween(
+            List<VaultEntry> dbValues = getDatabase().queryExerciseBetween(
                     data.get(0).getTimestamp(),
                     data.get(data.size() - 1).getTimestamp());
             VaultEntry lastExerciseItem = null;
@@ -131,7 +133,7 @@ public class ExerciseInterpreter extends Plugin {
                             // update annotations
                             annotations = mergeAnnotations(annotations, item.getAnnotations());
                         } else {
-                            // new slice --> precess current slice and reset
+                            // new slice --> process current slice and reset
 
                             // check db for existing entries
                             for (VaultEntry historyEntry : dbValues) {
@@ -231,7 +233,7 @@ public class ExerciseInterpreter extends Plugin {
                     case BASAL_INTERPRETER:
                         break;
                     case EXERCISE_MANUAL:
-                        // add manual entrys without interpretation
+                        // add manual entries without interpretation
                         retVal.add(item);
                         break;
                     case GLUCOSE_CGM:
@@ -345,30 +347,34 @@ public class ExerciseInterpreter extends Plugin {
         }
 
         /**
-         * //TODO javadoc
+         * Merges two lists of annotations. If an annotation is only contained in one of the lists passed as argument,
+         * it will be added to the result list with its original value. If the same annotation exists in both original lists,
+         * the resulting list will contain the annotation once and its value will be the sum of the values of 
+         * each of the original annotations.
+         * and 
          *
-         * @param currentAnnotations
-         * @param additionalAnnotations
-         * @return
+         * @param currentAnnotations the first list to be merged
+         * @param additionalAnnotations the second list to be merged
+         * @return the merged list
          */
         private List<VaultEntryAnnotation> mergeAnnotations(final List<VaultEntryAnnotation> currentAnnotations,
                                                             final List<VaultEntryAnnotation> additionalAnnotations) {
             if (currentAnnotations == null || additionalAnnotations == null) {
                 return currentAnnotations;
             }
-            for (VaultEntryAnnotation itemAnnoation : additionalAnnotations) {
+            for (VaultEntryAnnotation itemAnnotation : additionalAnnotations) {
                 boolean merged = false;
-                for (VaultEntryAnnotation seenAnnotaion : currentAnnotations) {
-                    if (itemAnnoation.toString().equalsIgnoreCase(seenAnnotaion.toString())) {
+                for (VaultEntryAnnotation seenAnnotation : currentAnnotations) {
+                    if (itemAnnotation.toString().equalsIgnoreCase(seenAnnotation.toString())) {
                         try {
-                            if (!itemAnnoation.getValue().isEmpty()
-                                    && !seenAnnotaion.getValue().isEmpty()) { // merge two values
-                                seenAnnotaion.setValue(EasyFormatter.formatDouble(
-                                        Double.parseDouble(seenAnnotaion.getValue())
-                                                + Double.parseDouble(itemAnnoation.getValue())));
-                            } else if (!itemAnnoation.getValue().isEmpty()
-                                    && seenAnnotaion.getValue().isEmpty()) { // add value
-                                seenAnnotaion.setValue(itemAnnoation.getValue());
+                            if (!itemAnnotation.getValue().isEmpty()
+                                    && !seenAnnotation.getValue().isEmpty()) { // merge two values
+                                seenAnnotation.setValue(EasyFormatter.formatDouble(
+                                        Double.parseDouble(seenAnnotation.getValue())
+                                                + Double.parseDouble(itemAnnotation.getValue())));
+                            } else if (!itemAnnotation.getValue().isEmpty()
+                                    && seenAnnotation.getValue().isEmpty()) { // add value
+                                seenAnnotation.setValue(itemAnnotation.getValue());
                             }
 
                         } catch (NumberFormatException ex) {
@@ -379,30 +385,30 @@ public class ExerciseInterpreter extends Plugin {
                     }
                 }
                 if (!merged) {
-                    currentAnnotations.add(itemAnnoation);
+                    currentAnnotations.add(itemAnnotation);
                 }
             }
             return currentAnnotations;
         }
 
         /**
-         * //TODO javadoc
+         * Checks if two vault entries are within the same slice.
          *
-         * @param item
-         * @param historyElement
-         * @return
+         * @param item the first entry
+         * @param historyElement the second entry
+         * @return true if both entries are in the same slice, false otherwise
          */
         private boolean isHistoricElementWithinSlice(final VaultEntry item, final VaultEntry historyElement) {
             return item != null && historyElement != null // not null
                     && TimestampUtils.addMinutesToTimestamp(historyElement.getTimestamp(), -1 * activitySliceThreshold).after(item.getTimestamp()) // starts after current item (with respect to slice threshold)
-                    && TimestampUtils.addMinutesToTimestamp(item.getTimestamp(), Math.round(item.getValue() + activitySliceThreshold)).after(historyElement.getTimestamp()); // starts befor item ends (with respect to slice threshold)
+                    && TimestampUtils.addMinutesToTimestamp(item.getTimestamp(), Math.round(item.getValue() + activitySliceThreshold)).after(historyElement.getTimestamp()); // starts before item ends (with respect to slice threshold)
         }
 
         /**
-         * //TODO javadoc
+         * Creates a new List of {@link VaultEntry}s containing only entries whose VaultEntryType is stress related
          *
-         * @param data
-         * @return
+         * @param data the list of entries
+         * @return the
          */
         private List<VaultEntry> interpretStress(final List<VaultEntry> data) {
             List<VaultEntry> addData = new ArrayList<>();
@@ -444,6 +450,7 @@ public class ExerciseInterpreter extends Plugin {
         }
 
         /**
+         * Loads the configuration and tries to set activity-related options that are needed to use this interpreter.
          * {@inheritDoc}
          */
         @Override
