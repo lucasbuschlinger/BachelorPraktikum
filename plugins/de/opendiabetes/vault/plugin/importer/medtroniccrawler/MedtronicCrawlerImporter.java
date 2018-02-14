@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
@@ -196,6 +198,30 @@ public class MedtronicCrawlerImporter extends Plugin {
         @Override
         public boolean loadConfiguration(final Properties configuration) {
             return false;
+        }
+
+        /**
+         * @return a path to a file containing .md/html formatted text,
+         * that gets displayed to the user if he wants to know more about that plugin.
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO not implemented yet
+            return null;
+        }
+
+        /**
+         * Takes the list of compatible plugins from a configuration file and returns it.
+         *
+         * @return a list of plugin names that are known to be compatible with this plugin
+         * @see {@link AbstractPlugin#loadConfiguration(Properties)} {@link AbstractPlugin#getListOfCompatiblePluginIDs()}
+         * for an implementation.
+         */
+        @Override
+        public List<String> getListOfCompatiblePluginIDs() {
+            List<String> pluginIds = new ArrayList<>();
+            pluginIds.add("MedtronicImporter");
+            return pluginIds;
         }
 
         /**
