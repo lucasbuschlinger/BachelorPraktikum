@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +49,7 @@ public class OpenDiabetesPluginManager {
     private Path configurationPath;
 
     /**
-     * internal plugin manager provided by pf4j.
+     * Internal plugin manager provided by pf4j.
      */
     private DefaultPluginManager pf4jManager;
 
@@ -57,7 +59,7 @@ public class OpenDiabetesPluginManager {
     private Map<String, Set<String>> compatibilityMap = new HashMap<>();
 
     /**
-     * map holding all loaded plugins.
+     * Map holding all loaded plugins.
      */
     private Map<String, OpenDiabetesPlugin> plugins = new HashMap<>();
 
@@ -87,7 +89,7 @@ public class OpenDiabetesPluginManager {
 
     /**
      * Initialises {@link this#compatibilityMap} from all compatibility lists of the plugins.
-     * Make sure that load config was called on the plugins before,
+     * Make sure that {@link OpenDiabetesPlugin#loadConfiguration(Properties)} was called on the plugins before,
      * otherwise {@link OpenDiabetesPlugin#getListOfCompatiblePluginIDs()} will return an empty list.
      */
     private void computeCompatibilityMap() {
@@ -95,7 +97,7 @@ public class OpenDiabetesPluginManager {
             String pluginString = pluginToString(plugin);
             List<String> filteredCompatibility = plugin.getListOfCompatiblePluginIDs()
                     .stream()
-                    .filter(y -> pf4jManager.getExtensions(y).size() != 0) //list only compatible plugins that are available
+                    .filter(pluginID -> pf4jManager.getExtensions(pluginID).size() != 0) //list only compatible plugins that are available
                     .collect(Collectors.toList());
             Set<String> compatibilitySet = compatibilityMap.get(pluginString);
             if (compatibilitySet == null) { //create set if it does not exist
@@ -116,11 +118,11 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
+     * Returns the path to the root folder of the desired plugin where it was loaded from.
      * @param plugin the plugin whos base path is returned
      * @return the base path of the plugin
      */
     private String getPluginBasePath(final OpenDiabetesPlugin plugin) {
-        //return plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         return pf4jManager.getPlugin(pluginToString(plugin)).getPluginPath().toString();
     }
 
@@ -161,7 +163,6 @@ public class OpenDiabetesPluginManager {
             plugin.loadConfiguration(config);
         } catch (IOException e) {
             e.printStackTrace();
-            //Assert.fail("path to configuration not found");
         } finally {
             try {
                 if (input != null) {
@@ -175,8 +176,10 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
-     * @param type the type of Plugins you want to recieve (eg Importer.class, Exporter.class, ...)
-     * @param <T>  The type of Plugins specified by type
+     * Returns all available plugins of the desired type, for example you get a list of all Importer plugins
+     * by typing getPluginsOfType(Importer.class)
+     * @param type the type of plugins you want to recieve (eg Importer.class, Exporter.class, ...)
+     * @param <T>  The type of plugins specified by type
      * @return a list of all available Plugins of the specified type
      */
     public <T extends OpenDiabetesPlugin> List<T> getPluginsOfType(final Class<T> type) {
@@ -185,6 +188,23 @@ public class OpenDiabetesPluginManager {
                 .filter(plugin -> type.isInstance(plugin))
                 .map(plugin -> (T) plugin)
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Returns all pluginIDs of available plugins that have the specified type.
+     * @see {@link this#getPluginsOfType(Class)}
+     * @param type the type of plugins you want the ids from
+     * @return a list of all pluginIDs that correspond to a available plugin of the specified type
+     */
+    public List<String> getPluginIDsOfType(final Class type){
+        List<String> result = new ArrayList<>();
+        BiConsumer<String, OpenDiabetesPlugin> filteredAdd = (id, plugin) ->
+        {
+            if (type.isInstance(plugin)){ result.add(id); }
+        };
+        this.plugins.forEach(filteredAdd);
+        return  result;
     }
 
     /**
@@ -198,6 +218,7 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
+     * Takes a list of plugins and returns a list of corresponding plugins.
      * @param plugins a list of Plugins
      * @return a list of the names of the Plugins
      */
@@ -206,6 +227,7 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
+     * Takes a list of plugin IDs and returns a list of corresponding plugins.S
      * @param pluginIDs a list of plugin IDs
      * @return a set of the plugins
      */
@@ -217,6 +239,7 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
+     * Takes a pluginID and the class of the corresponding plugin and returns the corresponding plugin.
      * @param type     the class of the plugin
      * @param pluginID the name of the plugin
      * @param <T>      the type of the plugin specified in type
