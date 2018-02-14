@@ -26,10 +26,15 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
+
+import static java.lang.Boolean.parseBoolean;
 
 /**
  * This class defines the default structure how data gets exported to a file.
@@ -129,6 +134,77 @@ public abstract class FileExporter extends AbstractExporter {
      */
     protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
 
+    /**
+     * Most generic loading of configurations of exporter plugins.
+     * They usually have the following three properties:
+     * <ul>
+     *     <li>isPeriodRestricted - Indicates whether the data that is to be exported shall be filtered by a time period. <br>
+     *                              Naturally requires that the dates are set accordingly</li>
+     *     <li>isPeriodRestrictedFrom - The start date of the date restriction, expected date format is dd/MM/yyyy</li>
+     *     <li>isPeriodRestrictedTo   - The end date of the date restriction, expected date format is dd/MM/yyyy</li>
+     * </ul>
+     * If it is necessary to set special properties for any given plugin this may be done within the plugins actual implementation.
+     *
+     * @param configuration The configuration to be set.
+     * @return True if the configuration could be set successfully, false otherwise.
+     */
+    @Override
+    public boolean loadPluginSpecificConfiguration(final Properties configuration) {
+        // Status update constant
+        final int loadConfigProgress = 0;
+        // Format of dates which must be used.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+        this.notifyStatus(loadConfigProgress, "Loading configuration");
+
+        if (!configuration.containsKey("periodRestriction")
+                || configuration.getProperty("periodRestriction") == null
+                || configuration.getProperty("periodRestriction").length() == 0) {
+            LOG.log(Level.WARNING, "The exporter's configuration does not specify whether the data is period restricted, "
+                    + "defaulting to no period restriction");
+            setIsPeriodRestricted(false);
+            return true;
+        }
+        boolean restriction = parseBoolean(configuration.getProperty("periodRestriction"));
+        this.setIsPeriodRestricted(restriction);
+
+        // Only necessary to look for dates if data is period restricted
+        if (restriction) {
+            Date dateFrom;
+            Date dateTo;
+            String startDate = configuration.getProperty("periodRestrictionFrom");
+            String endDate = configuration.getProperty("periodRestrictionTo");
+            if (startDate == null || endDate == null) {
+                LOG.log(Level.SEVERE, "The exporter's configuration specified a period restriction on the data but no correct"
+                        + " dates were specified.");
+                return false;
+            }
+            // Parsing to actual dates
+            try {
+                dateFrom = dateFormat.parse(startDate);
+                dateTo = dateFormat.parse(endDate);
+            } catch (ParseException exception) {
+                LOG.log(Level.SEVERE, "Either of the dates specified in the exporter's configuration is malformed."
+                        + " The expected format is dd/mm/yyyy.");
+                return false;
+            }
+
+            // Check whether the start time lies before the end time
+            if (dateFrom.after(dateTo)) {
+                LOG.log(Level.WARNING, "The date the data is period restricted from lies after the date it is restricted to,"
+                        + " check order.");
+                return false;
+            }
+
+            this.setExportPeriodFrom(dateFrom);
+            this.setExportPeriodTo(dateTo);
+            LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString());
+            return true;
+        } else {
+            LOG.log(Level.INFO, "Export data is not period restricted by the exporter's configuration.");
+            return true;
+        }
+    }
 
     /**
      * Getter for the fileOutputStream for descending classes.

@@ -317,7 +317,7 @@ public class MiBandNotifyImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration.containsKey("heartRateLowerBound")) {
                 heartRateLowerBound = Integer.parseInt(configuration.getProperty("heartRateLowerBound"));
             }

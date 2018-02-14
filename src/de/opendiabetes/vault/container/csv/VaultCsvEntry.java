@@ -1006,8 +1006,7 @@ public class VaultCsvEntry extends CsvEntry {
         }
         if (weight > UNINITIALIZED_DOUBLE) {
             csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, weight).replaceAll(",", ""));
-        }
-        else {
+        } else {
             csvRecord.add("");
         }
 
