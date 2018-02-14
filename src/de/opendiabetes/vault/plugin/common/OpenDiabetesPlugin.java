@@ -31,7 +31,7 @@ public interface OpenDiabetesPlugin {
     Logger LOG = Logger.getLogger(OpenDiabetesPlugin.class.getName());
 
     /**
-     * Loads the configuration for the exporter plugin.
+     * Loads the configuration for the given plugin.
      *
      * @param configuration The configuration object.
      * @return True if configuration can be loaded, false otherwise.

@@ -33,6 +33,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -88,7 +89,8 @@ public class ODVDBJsonImporter extends Plugin {
                 return false;
             }
             // import
-            Type listType = new TypeToken<ArrayList<VaultEntry>>() { }.getType();
+            Type listType = new TypeToken<ArrayList<VaultEntry>>() {
+            }.getType();
             List<VaultEntry> importDb = gson.fromJson(reader, listType);
 
             if (importDb != null && !importDb.isEmpty()) {
@@ -98,6 +100,14 @@ public class ODVDBJsonImporter extends Plugin {
             }
             LOG.log(Level.SEVERE, "Got no data from json import.");
             return false;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean loadPluginSpecificConfiguration(final Properties configuration) {
+            return true;
         }
 
         /**

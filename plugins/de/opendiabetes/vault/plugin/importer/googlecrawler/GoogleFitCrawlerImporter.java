@@ -33,18 +33,18 @@ import java.util.GregorianCalendar;
 import java.util.Properties;
 
 /**
- * Wrapper class for the GoogleCrawlerImporter plugin.
+ * Wrapper class for the GoogleFitCrawlerImporter plugin.
  *
  * @author ocastx
  */
-public class GoogleCrawlerImporter extends Plugin {
+public class GoogleFitCrawlerImporter extends Plugin {
 
     /**
      * Constructor for the PluginManager.
      *
      * @param wrapper The PluginWrapper.
      */
-    public GoogleCrawlerImporter(final PluginWrapper wrapper) {
+    public GoogleFitCrawlerImporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
@@ -242,7 +242,7 @@ public class GoogleCrawlerImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration.containsKey("clientSecretPath")) {
                 clientSecretPath = configuration.getProperty("clientSecretPath");
             }

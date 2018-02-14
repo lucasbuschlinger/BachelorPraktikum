@@ -196,7 +196,7 @@ public class ODVImporter extends Plugin {
          * @return True if the configuration could be loaded, false otherwise.
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration.containsKey("temporaryDirectory")) {
                 this.tempDir = configuration.getProperty("temporaryDirectory");
             }

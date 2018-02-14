@@ -1,7 +1,6 @@
 package de.opendiabetes.tests.plugin.exporter;
 
 import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
-import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.pf4j.PluginManager;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class VaultODVExporterTest {

@@ -62,10 +62,17 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
      * @return always true
      */
     @Override
-    public boolean loadConfiguration(final Properties configuration) {
+    public final boolean loadConfiguration(final Properties configuration) {
         if (configuration.containsKey("compatiblePlugins")) {
             this.compatiblePlugins.addAll(Arrays.asList(configuration.getProperty("compatiblePlugins").split("\\s*,\\s*")));
         }
-        return true;
+        return loadPluginSpecificConfiguration(configuration);
     }
+
+    /**
+     * Template method to load plugin specific configurations from the config file.
+     * @param configuration The configuration object.
+     * @return wheter a valid configuration could be read from the config file
+     */
+    protected abstract boolean loadPluginSpecificConfiguration(Properties configuration);
 }

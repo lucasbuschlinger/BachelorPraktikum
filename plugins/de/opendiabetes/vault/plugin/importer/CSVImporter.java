@@ -194,10 +194,7 @@ public abstract class CSVImporter extends FileImporter {
      * {@inheritDoc}
      */
     @Override
-    public boolean loadConfiguration(final Properties configuration) {
-        if (!super.loadConfiguration(configuration)) {
-            return false;
-        }
+    public boolean loadPluginSpecificConfiguration(final Properties configuration) {
         if (configuration.containsKey("delimiter")) {
             String delimiter = configuration.getProperty("delimiter");
             if (delimiter != null && delimiter.length() == 1) {
