@@ -33,7 +33,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -84,13 +83,12 @@ public class ODVDBJsonImporter extends Plugin {
             BufferedReader reader;
             try {
                 reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException ex) {
-                LOG.log(Level.SEVERE, "Can not handel fileInputStream, wrong encoding!");
+            } catch (UnsupportedEncodingException exception) {
+                LOG.log(Level.SEVERE, "Can not handle fileInputStream, wrong encoding!");
                 return false;
             }
             // import
-            Type listType = new TypeToken<ArrayList<VaultEntry>>() {
-            }.getType();
+            Type listType = new TypeToken<ArrayList<VaultEntry>>() { }.getType();
             List<VaultEntry> importDb = gson.fromJson(reader, listType);
 
             if (importDb != null && !importDb.isEmpty()) {
@@ -102,13 +100,5 @@ public class ODVDBJsonImporter extends Plugin {
             return false;
         }
 
-        /**
-         *{@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "ODVDBJsonImporter does not support configuration.");
-            return false;
-        }
     }
 }

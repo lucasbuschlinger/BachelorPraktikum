@@ -63,6 +63,7 @@ public class SourceCodeExporter extends Plugin {
          * and written on {@link #writeToFile(List)}.
          */
         private final List<String> entries = new ArrayList<>();
+
         /**
          * Method to get the ListInitCode.
          *
@@ -172,12 +173,12 @@ public class SourceCodeExporter extends Plugin {
             dummy.add(new CsvEntry() {
                 @Override
                 public String[] toCsvRecord() {
-                    return new String[]{};
+                    return new String[] {};
                 }
 
                 @Override
                 public String[] getCsvHeaderRecord() {
-                    return new String[]{};
+                    return new String[] {};
                 }
             });
 
