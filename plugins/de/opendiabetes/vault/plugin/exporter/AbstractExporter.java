@@ -16,11 +16,12 @@
  */
 package de.opendiabetes.vault.plugin.exporter;
 
+
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,12 +32,7 @@ import java.util.List;
  *
  * @author Lucas Buschlinger
  */
-public abstract class AbstractExporter  implements  Exporter {
-
-    /**
-     * List holding all StatusListeners registered to the exporter.
-     */
-    private List<Exporter.StatusListener> listeners = new ArrayList<>();
+public abstract class AbstractExporter extends AbstractPlugin implements  Exporter {
 
     /**
      * The path to the export file.
@@ -60,6 +56,7 @@ public abstract class AbstractExporter  implements  Exporter {
     }
 
     /**
+
      * Writes the export data to the file.
      *
      * @param data The data to be written.
@@ -74,24 +71,4 @@ public abstract class AbstractExporter  implements  Exporter {
      * @return The data in exportable containers.
      */
     protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
-
-    /**
-     * {@inheritDoc}
-     * @param listener A listener to be notified on a status update of the plugin.
-     */
-    @Override
-    public void registerStatusCallback(final StatusListener listener) {
-        this.listeners.add(listener);
-    }
-
-    /**
-     * Notifies the registered {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener}s about progress.
-     * See {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener#onStatusCallback} to register listeners.
-     *
-     * @param progress Percentage of completion.
-     * @param status Current status.
-     */
-    protected void notifyStatus(final int progress, final String status) {
-        listeners.forEach(listener -> listener.onStatusCallback(progress, status));
-    }
 }
