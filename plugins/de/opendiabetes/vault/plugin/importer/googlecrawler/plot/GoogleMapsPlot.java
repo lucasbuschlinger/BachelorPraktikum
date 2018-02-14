@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Google maps plotter.
  */
-public class GoogleMapsPlot {
+public final class GoogleMapsPlot {
 
     /**
      * Default location multiplicator viewing coordinates.

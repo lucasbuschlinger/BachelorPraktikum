@@ -66,7 +66,7 @@ public final class GooglePeople {
     }
 
     /**
-     * Fetches the list of all profiles from the current logged in user and passes them into the address book controller.
+     * Fetches the list of all profiles from the currently logged in user and passes them into the address book controller.
      */
     public void getAllProfiles() {
         try {

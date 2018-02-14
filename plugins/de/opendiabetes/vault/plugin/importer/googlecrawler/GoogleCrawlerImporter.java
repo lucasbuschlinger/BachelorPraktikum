@@ -20,7 +20,6 @@ import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.fitness.GoogleFitness;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.helper.Credentials;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.javaFX.views.ConflictedLocations;
-import de.opendiabetes.vault.plugin.importer.googlecrawler.location.GooglePlaces;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.location.LocationHistory;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.people.GooglePeople;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.plot.GoogleMapsPlot;
