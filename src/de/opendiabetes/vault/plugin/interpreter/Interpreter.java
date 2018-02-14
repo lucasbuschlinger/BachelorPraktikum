@@ -30,9 +30,9 @@ public interface Interpreter extends ExtensionPoint, OpenDiabetesPlugin {
 
     /**
      * This method initilizes the database.
-     * @param db The database
+     * @param database The database
      */
-    void init(VaultDao db);
+    void init(VaultDao database);
 
     /**
      * This method interprets the input.
