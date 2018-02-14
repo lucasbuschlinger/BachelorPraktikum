@@ -56,7 +56,7 @@ public class ODVDBJsonImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static class ODVDBJsonImporterImplementation extends FileImporter {
+    public static final class ODVDBJsonImporterImplementation extends FileImporter {
 
         /**
          * Empty preprocessing for ODVDB Json data, as it is not necessary for this type of data.
@@ -84,8 +84,8 @@ public class ODVDBJsonImporter extends Plugin {
             BufferedReader reader;
             try {
                 reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException ex) {
-                LOG.log(Level.SEVERE, "Can not handel fileInputStream, wrong encoding!");
+            } catch (UnsupportedEncodingException exception) {
+                LOG.log(Level.SEVERE, "Can not handle fileInputStream, wrong encoding!");
                 return false;
             }
             // import
@@ -103,12 +103,20 @@ public class ODVDBJsonImporter extends Plugin {
         }
 
         /**
-         *{@inheritDoc}
+         * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "ODVDBJsonImporter does not support configuration.");
-            return false;
+        public boolean loadPluginSpecificConfiguration(final Properties configuration) {
+            return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
         }
     }
 }

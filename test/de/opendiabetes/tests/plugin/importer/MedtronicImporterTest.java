@@ -16,7 +16,6 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.tests.plugin.util.TestUtil;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -77,7 +76,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer medtronicImporter = TestUtil.getImporter("MedtronicImporter");
+        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
         medtronicImporter.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", medtronicImporter.getImportFilePath());
     }
@@ -87,7 +86,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfigurationCSVImporters() {
-        Importer medtronicImporter = TestUtil.getImporter("MedtronicImporter");
+        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
 
         //load properties from file
         Properties config = new Properties();
@@ -140,7 +139,7 @@ public class MedtronicImporterTest {
    /*
     @Test
     public void smartDelimiterDetectionTest() {
-        Importer medtronicImporter = TestUtil.getImporter("MedtronicImporter");
+        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
         String dataPath = "/home/magnus/Downloads/CareLink-Export-1486459734778.csv";
         medtronicImporter.setImportFilePath(dataPath);
         medtronicImporter.importData();

@@ -16,12 +16,12 @@
  */
 package de.opendiabetes.vault.plugin.exporter;
 
+
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,6 +56,7 @@ public abstract class AbstractExporter extends AbstractPlugin implements  Export
     }
 
     /**
+
      * Writes the export data to the file.
      *
      * @param data The data to be written.

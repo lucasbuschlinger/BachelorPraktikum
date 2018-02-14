@@ -30,7 +30,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -53,7 +52,7 @@ public class SonySWR21Importer extends Plugin {
      * Actual implementation of the Sony SWR21 importer plugin.
      */
     @Extension
-    public static class SonySWR21ImporterImplementation extends CSVImporter {
+    public static final class SonySWR21ImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
@@ -157,7 +156,7 @@ public class SonySWR21Importer extends Plugin {
                     break;
                 case RUN:
                     tmpEntry = new VaultEntry(
-                            VaultEntryType.EXERCISE_RUN,
+                            VaultEntryType.EXERCISE_OTHER,
                             timestamp,
                             durationInMinutes);
                     tmpEntry.addAnnotation(new VaultEntryAnnotation(
@@ -166,7 +165,7 @@ public class SonySWR21Importer extends Plugin {
                     break;
                 case WALK:
                     tmpEntry = new VaultEntry(
-                            VaultEntryType.EXERCISE_WALK,
+                            VaultEntryType.EXERCISE_OTHER,
                             timestamp,
                             durationInMinutes);
                     tmpEntry.addAnnotation(new VaultEntryAnnotation(
@@ -194,11 +193,12 @@ public class SonySWR21Importer extends Plugin {
         }
 
         /**
-         *{@inheritDoc}
+         * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
         }
     }
 }

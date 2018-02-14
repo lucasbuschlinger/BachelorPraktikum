@@ -148,6 +148,11 @@ public class VaultCsvEntry extends CsvEntry {
      */
     private List<String> otherAnnotation = new ArrayList<>();
 
+    /**
+     * The weight.
+     */
+    private double weight = UNINITIALIZED_DOUBLE;
+
 
     /**
      * Getter for entry's {@link #timestamp}.
@@ -717,6 +722,24 @@ public class VaultCsvEntry extends CsvEntry {
     }
 
     /**
+     * Getter for the {@link #weight}.
+     *
+     * @return The weight recorded in the entry.
+     */
+    public double getWeight() {
+        return weight;
+    }
+
+    /**
+     * Setter for the {@link #weight}.
+     *
+     * @param weight The weight recoreded in the entry.
+     */
+    public void setWeight(final double weight) {
+        this.weight = weight;
+    }
+
+    /**
      * Checks whether the entry is empty.
      *
      * @return True if the VaultCSVEntry is empty, false otherwise.
@@ -747,7 +770,8 @@ public class VaultCsvEntry extends CsvEntry {
                 && mlCgmValue == UNINITIALIZED_DOUBLE
                 && mlAnnotation.isEmpty()
                 && insulinSensitivityFactor == UNINITIALIZED_DOUBLE
-                && otherAnnotation.isEmpty();
+                && otherAnnotation.isEmpty()
+                && weight == UNINITIALIZED_DOUBLE;
     }
 
     /**
@@ -980,6 +1004,11 @@ public class VaultCsvEntry extends CsvEntry {
         } else {
             csvRecord.add("");
         }
+        if (weight > UNINITIALIZED_DOUBLE) {
+            csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, weight).replaceAll(",", ""));
+        } else {
+            csvRecord.add("");
+        }
 
         return csvRecord.toArray(new String[] {});
     }
@@ -1036,7 +1065,8 @@ public class VaultCsvEntry extends CsvEntry {
                 "mlCgmValue",
                 "mlAnnotation",
                 "insulinSensitivityFactor",
-                "otherAnnotation"
+                "otherAnnotation",
+                "weight"
         };
     }
 
@@ -1056,7 +1086,7 @@ public class VaultCsvEntry extends CsvEntry {
                 + stressBalanceValue + ", heartRateVariabilityValue=" + heartRateVariabilityValue + ", stressValue=" + stressValue
                 + ", sleepValue=" + sleepValue + ", sleepAnnotation=" + sleepAnnotation + ", locationAnnotation=" + locationAnnotation
                 + ", mlCgmValue=" + mlCgmValue + ", mlAnnotation=" + mlAnnotation + ", insulinSensitivityFactor=" + insulinSensitivityFactor
-                + ", otherAnnotation=" + otherAnnotation + '}';
+                + ", otherAnnotation=" + otherAnnotation + ", weight=" + weight + '}';
     }
 
 }

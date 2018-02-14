@@ -21,8 +21,6 @@ import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
 
 /**
  * This interface specifies the methods shared by all exporters.
@@ -91,18 +89,14 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
     String getExportFilePath();
 
     /**
-     * Setter for an object used by the specific exporters.
-     * The implementation of this should only call a private setter method like
-     * {@link VaultExporter#setDatabase(de.opendiabetes.vault.data.VaultDao)}.
-     * in the exporters and pass the object to those.
+     * This method is used to set the entries to export.
+     * Should only be used with exporters that do not export from {@link VaultEntry}
+     * but something different like {@link de.opendiabetes.vault.container.SliceEntry}.
      *
-     * @param object The object to be set.
-     * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a
-     *                                     {@link de.opendiabetes.vault.data.VaultDao} object gets passed
-     *                                     to a {@link de.opendiabetes.vault.plugin.exporter.slicelayoutcsv.SliceLayoutCSVExporter} which
-     *                                     only takes a list of {@link de.opendiabetes.vault.container.SliceEntry}.
+     * @param entries The entries which will be exported by the respective exporter.
+     * @throws IllegalArgumentException Thrown if the wrong kind of entries were set.
      */
-    void setAdditional(Object object) throws IllegalArgumentException;
+    void setEntries(List<?> entries) throws IllegalArgumentException;
 
     /**
      * Exports the data to a file.
@@ -111,7 +105,4 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
      * @return The return code as specified in {@link ReturnCode}.
      */
     int exportDataToFile(List<VaultEntry> data);
-
-
-
 }

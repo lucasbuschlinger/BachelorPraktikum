@@ -1,6 +1,5 @@
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.tests.plugin.util.TestUtil;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,7 +54,7 @@ public class LibreTextImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer libreTextImporter = TestUtil.getImporter("LibreTextImporter");
+        Importer libreTextImporter = TestImporterUtil.getImporter("LibreTextImporter");
         libreTextImporter.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", libreTextImporter.getImportFilePath());
         Assert.assertFalse(libreTextImporter.importData());

@@ -35,7 +35,6 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -63,7 +62,7 @@ public class VaultODVImporter extends Plugin {
      * Actual implementation of the VaultODV importer plugin.
      */
     @Extension
-    public static class VaultODVImporterImplementation extends CSVImporter {
+    public static final class VaultODVImporterImplementation extends CSVImporter {
         /**
          * Constructor for a CSV validator.
          *
@@ -140,14 +139,6 @@ public class VaultODVImporter extends Plugin {
         }
 
         /**
-         *{@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
-
-        /**
          * Parser for VaultODV Data which throws an UnsupportedOperationException, because not needed.
          *
          * @param csvReader Reader for CSV files.
@@ -166,9 +157,14 @@ public class VaultODVImporter extends Plugin {
          */
         @Override
         protected void preprocessingIfNeeded(final String filePath) { }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
-
-
-
-
 }

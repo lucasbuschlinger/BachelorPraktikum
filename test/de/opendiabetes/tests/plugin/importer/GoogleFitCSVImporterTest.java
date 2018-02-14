@@ -16,7 +16,6 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.tests.plugin.util.TestUtil;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +24,6 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
-
 
 /**
  * Tests for the GoogleFitCSVImporter plugin.
@@ -75,7 +73,7 @@ public class GoogleFitCSVImporterTest {
      */
     @Test
     public void setGetPath() {
-        Importer googleFitCSVImporter = TestUtil.getImporter("GoogleFitCSVImporter");
+        Importer googleFitCSVImporter = TestImporterUtil.getImporter("GoogleFitCSVImporter");
         googleFitCSVImporter.setImportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", googleFitCSVImporter.getImportFilePath());
     }

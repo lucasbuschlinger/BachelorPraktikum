@@ -1,7 +1,6 @@
 package de.opendiabetes.tests.plugin.exporter;
 
-import de.opendiabetes.tests.plugin.util.TestUtil;
-import de.opendiabetes.vault.data.VaultDao;
+import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +10,6 @@ import org.pf4j.PluginManager;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class VaultODVExporterTest {
@@ -30,23 +28,9 @@ public class VaultODVExporterTest {
      */
     @Test
     public void setGetPath() {
-        Exporter vaultODVExporter = TestUtil.getExporter("VaultODVExporter");
+        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
         vaultODVExporter.setExportFilePath("path/to/import/file");
         Assert.assertEquals("path/to/import/file", vaultODVExporter.getExportFilePath());
-    }
-
-    /**
-     * Test to see whether the needed database can be set.
-     */
-    @Test
-    public void setDatabase() {
-        Exporter vaultODVExporter = TestUtil.getExporter("VaultODVExporter");
-        try {
-            VaultDao.initializeDb();
-        } catch (SQLException exception){
-            Assert.fail("Initialization of the VaultDao database went wrong.");
-        }
-        vaultODVExporter.setAdditional(VaultDao.getInstance());
     }
 
     /**
@@ -54,7 +38,7 @@ public class VaultODVExporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Exporter vaultODVExporter = TestUtil.getExporter("VaultODVExporter");
+        Exporter vaultODVExporter = TestImporterUtil.getExporter("VaultODVExporter");
 
         //load properties from file
         Properties config = new Properties();
