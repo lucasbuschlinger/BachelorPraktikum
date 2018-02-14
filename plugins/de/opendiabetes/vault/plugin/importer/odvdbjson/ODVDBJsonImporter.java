@@ -55,7 +55,7 @@ public class ODVDBJsonImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static class ODVDBJsonImporterImplementation extends FileImporter {
+    public static final class ODVDBJsonImporterImplementation extends FileImporter {
 
         /**
          * Empty preprocessing for ODVDB Json data, as it is not necessary for this type of data.
@@ -100,5 +100,13 @@ public class ODVDBJsonImporter extends Plugin {
             return false;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 }
