@@ -45,7 +45,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * Wrapper class for the VaultODVExporter plugin.
+ * Wrapper class for the ODVExporter plugin.
  *
  * @author Lucas Buschlinger
  */
