@@ -34,6 +34,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -73,6 +74,12 @@ public class ODVExporter extends Plugin {
          * List holding all StatusListeners registered to the exporter.
          */
         private final List<Exporter.StatusListener> listeners = new ArrayList<>();
+        /**
+         * List containing all compatible plugins that are listed in this plugins config.
+         * The data of this field is returned by {@link this#getListOfCompatiblePluginIDs()}
+         * and used to list compatibilities among plugins.
+         */
+        private final List<String> compatiblePlugins = new ArrayList<>();
         /**
          * The properties which will get passed on to the exporters.
          */
@@ -326,8 +333,19 @@ public class ODVExporter extends Plugin {
                     tempDir = configuration.getProperty("temporaryDirectory");
                 }
             }
+            if (configuration.containsKey("compatiblePlugins")) {
+                this.compatiblePlugins.addAll(Arrays.asList(configuration.getProperty("compatiblePlugins").split("\\s*,\\s*")));
+            }
             notifyStatus(PROGRESS_LOADED_CONFIG, "Loaded configuration");
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<String> getListOfCompatiblePluginIDs() {
+            return this.compatiblePlugins;
         }
 
         /**
