@@ -561,11 +561,23 @@ public class PumpInterpreter extends Plugin {
         }
 
         /**
-         * Adds {@link this#fillCanulaAsNewKatheder} and {@link this#fillCanulaCooldown}.
-         * {@inheritDoc}
+         * @return a path to a file containing .md/html formatted text,
+         * that gets displayed to the user if he wants to know more about that plugin.
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public String getHelpFilePath() {
+            //TODO implement
+            return null;
+        }
+
+        /**
+         * Template method to load plugin specific configurations from the config file.
+         *
+         * @param configuration The configuration object.
+         * @return wheter a valid configuration could be read from the config file
+         */
+        @Override
+        protected boolean loadPluginSpecificConfiguration(Properties configuration) {
             try {
                 outputFilterSize = Double.parseDouble(configuration.getProperty("outputFilterSize", "5"));
             } catch (NumberFormatException e) {
@@ -577,7 +589,7 @@ public class PumpInterpreter extends Plugin {
                 fillCanulaAsNewKatheder = Boolean.parseBoolean(configuration.getProperty("fillCanulaAsNewKatheder"));
                 fillCanulaCooldown = Integer.parseInt(configuration.getProperty("fillCanulaCooldown"));
             } catch (NumberFormatException e) {
-              return  false;
+                return  false;
             }
             return true;
         }

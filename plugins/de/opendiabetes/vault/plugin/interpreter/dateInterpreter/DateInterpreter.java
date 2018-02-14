@@ -88,13 +88,23 @@ public class DateInterpreter extends Plugin {
 
         }
 
-
         /**
-         * Loads the configuration and tries to set time-period-related options that are needed to use this interpreter.
-         * {@inheritDoc}
+         * @return a path to a file containing .md/html formatted text,
+         * that gets displayed to the user if he wants to know more about that plugin.
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public String getHelpFilePath() {
+            return null;
+        }
+
+        /**
+         * Template method to load plugin specific configurations from the config file.
+         *
+         * @param configuration The configuration object.
+         * @return wheter a valid configuration could be read from the config file
+         */
+        @Override
+        protected boolean loadPluginSpecificConfiguration(Properties configuration) {
             if (!configuration.containsKey("ImportPeriodRestricted")) {
                 return false;
             }

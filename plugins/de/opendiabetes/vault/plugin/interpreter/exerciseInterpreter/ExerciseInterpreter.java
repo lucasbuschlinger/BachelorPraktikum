@@ -111,9 +111,9 @@ public class ExerciseInterpreter extends Plugin {
 
             for (VaultEntry item : data) {
                 switch (item.getType()) {
-                    case EXERCISE_BICYCLE:
-                    case EXERCISE_RUN:
-                    case EXERCISE_WALK:
+                    case EXERCISE_LOW:
+                    case EXERCISE_MID:
+                    case EXERCISE_HIGH:
                     case EXERCISE_OTHER:
                         // google activity type > tracker activity type
                         if (lastExerciseItem == null) {
@@ -202,7 +202,8 @@ public class ExerciseInterpreter extends Plugin {
                                         }
                                     }
                                 }
-                                // get type with biggest share
+                                //TODO Discuss with Jens EntryTypes
+                                /*// get type with biggest share
                                 if (bike > run && bike > walk && bike > other) {
                                     lastExerciseItem.setType(VaultEntryType.EXERCISE_BICYCLE);
                                 } else if (run > bike && run > walk && run > other) {
@@ -213,6 +214,7 @@ public class ExerciseInterpreter extends Plugin {
                                     lastExerciseItem.setType(VaultEntryType.EXERCISE_OTHER);
                                 }
                                 retVal.add(lastExerciseItem);
+                                */
                             }
 
                             //  setup for new slice search
@@ -449,12 +451,15 @@ public class ExerciseInterpreter extends Plugin {
             return data;
         }
 
+
         /**
-         * Loads the configuration and tries to set activity-related options that are needed to use this interpreter.
-         * {@inheritDoc}
+         * Template method to load plugin specific configurations from the config file.
+         *
+         * @param configuration The configuration object.
+         * @return wheter a valid configuration could be read from the config file
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        protected boolean loadPluginSpecificConfiguration(Properties configuration) {
             if (!configuration.containsKey("activityThreshold") || !configuration.containsKey("activitySliceThreshold")) {
                 return false;
             }
@@ -462,6 +467,16 @@ public class ExerciseInterpreter extends Plugin {
             activityThreshold = Integer.parseInt(configuration.getProperty("activityThreshold"));
             activitySliceThreshold = Integer.parseInt(configuration.getProperty("activitySliceThreshold"));
             return true;
+        }
+
+        /**
+         * @return a path to a file containing .md/html formatted text,
+         * that gets displayed to the user if he wants to know more about that plugin.
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO implement
+            return null;
         }
     }
 }

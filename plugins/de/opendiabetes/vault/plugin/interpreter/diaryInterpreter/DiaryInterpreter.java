@@ -57,11 +57,23 @@ public class DiaryInterpreter extends Plugin {
         }
 
         /**
-         * Not supported yet.
-         * {@inheritDoc}
+         * @return a path to a file containing .md/html formatted text,
+         * that gets displayed to the user if he wants to know more about that plugin.
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        public String getHelpFilePath() {
+            //TODO implement
+            return null;
+        }
+
+        /**
+         * Template method to load plugin specific configurations from the config file.
+         *
+         * @param configuration The configuration object.
+         * @return wheter a valid configuration could be read from the config file
+         */
+        @Override
+        protected boolean loadPluginSpecificConfiguration(Properties configuration) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
