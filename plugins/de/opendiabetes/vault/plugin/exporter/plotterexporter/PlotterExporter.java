@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -61,17 +59,19 @@ public class PlotterExporter extends Plugin {
         private PlotFormats plotFormat;
 
         /**
+         * Path to the plotting script.
+         */
+        private String scriptPath;
+
+        /**
          * Runs the plot script.
          * @param dataPath path to the data that should be plotted
          * @param outputPath path where the plot should be written to
          * @return boolean value indicating whether the command was successful or not
          */
-        private static boolean plotData(final String dataPath, final String outputPath) {
+        private boolean plotData(final String dataPath, final String outputPath) {
             try {
-                Path workPath = Paths.get(".");
-                String scriptPath = workPath.resolve("assets/plot.py").toAbsolutePath().normalize().toString();
-
-                Process process = Runtime.getRuntime().exec(new String[]{"python", scriptPath, "-f", dataPath, "-o", outputPath});
+                Process process = Runtime.getRuntime().exec(new String[]{"python", this.scriptPath, "-f", dataPath, "-o", outputPath});
 
                 InputStream inputStream = process.getInputStream();
                 InputStream errorStream = process.getErrorStream();
@@ -212,6 +212,13 @@ public class PlotterExporter extends Plugin {
             } else {
                 // Default is always "image"
                 plotFormat = PlotFormats.IMAGE;
+            }
+
+            this.scriptPath = configuration.getProperty("scriptPath");
+
+            if (this.scriptPath == null || this.scriptPath.isEmpty()) {
+                LOG.log(Level.SEVERE, "Script path not defined");
+                return false;
             }
 
             return true;
