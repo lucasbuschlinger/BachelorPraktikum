@@ -166,9 +166,9 @@ public class GoogleCrawlerImporter extends Plugin {
                 LocationHistory.getInstance().setAge(age);
                 GooglePeople.getInstance().getAllProfiles();
 
-                if (keywordSearchParams != null) {
-                    GooglePlaces.getInstance().setKeywordSearchParams(keywordSearchParams);
-                }
+                // if (keywordSearchParams != null) {
+                //    GooglePlaces.getInstance().setKeywordSearchParams(keywordSearchParams);
+                // }
 
                 if (timeframe != null) {
                     Calendar start = new GregorianCalendar();
@@ -256,9 +256,9 @@ public class GoogleCrawlerImporter extends Plugin {
             if (configuration.containsKey("timeframe")) {
                 timeframe = configuration.getProperty("timeframe");
             }
-            if (configuration.containsKey("keywordSearchParams")) {
-                keywordSearchParams = configuration.getProperty("keywordSearchParams").split(",");
-            }
+            // if (configuration.containsKey("keywordSearchParams")) {
+            //    keywordSearchParams = configuration.getProperty("keywordSearchParams").split(",");
+            // }
             if (configuration.containsKey("exportHistory")) {
                 exportHistory = Boolean.parseBoolean(configuration.getProperty("exportHistory"));
             }
