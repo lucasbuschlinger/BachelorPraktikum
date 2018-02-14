@@ -52,23 +52,24 @@ public class DateInterpreter extends Plugin {
     public static class DateInterpreterImplementation extends VaultInterpreter {
 
         /**
-         *
+         * Option which indicates whether the import is period restricted.
          */
         private boolean isImportPeriodRestricted;
 
         /**
-         * //TODO javadoc
+         * The date which the import is period restricted from.
          */
         private Date importPeriodFrom;
 
         /**
-         * //TODO javadoc
+         * The date which the import is period restricted to.
          */
         private Date importPeriodTo;
 
         /**
-         * @param input
-         * @return
+         * Interprets the given List of VaultEntry and returns a List of VaultEntry containing only entries 
+         * from the specified period of time.
+         * {@inheritDoc}
          */
         @Override
         public List<VaultEntry> interpret(final List<VaultEntry> input) {
@@ -89,8 +90,8 @@ public class DateInterpreter extends Plugin {
 
 
         /**
-         * @param configuration
-         * @return
+         * Loads the configuration and tries to set time-period-related options that are needed to use this interpreter.
+         * {@inheritDoc}
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {

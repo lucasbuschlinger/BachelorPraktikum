@@ -30,8 +30,8 @@ public interface OpenDiabetesPlugin {
 
     /**
      *
-     * @param configuration
-     * @return
+     * @param configuration the configuration object
+     * @return true if the configuration was loaded successfully, false otherwise
      */
     boolean loadConfiguration(Properties configuration);
 

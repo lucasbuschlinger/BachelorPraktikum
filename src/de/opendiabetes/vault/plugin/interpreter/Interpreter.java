@@ -36,8 +36,8 @@ public interface Interpreter extends ExtensionPoint, OpenDiabetesPlugin {
 
     /**
      *
-     * @param input
-     * @return
+     * @param input the list to be interpreted
+     * @return the interpreted list
      */
     List<VaultEntry> interpret(List<VaultEntry> input);
 }

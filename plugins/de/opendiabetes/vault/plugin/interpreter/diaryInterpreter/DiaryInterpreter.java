@@ -48,6 +48,7 @@ public class DiaryInterpreter extends Plugin {
     public static class DiaryInterpreterImplementation extends VaultInterpreter {
 
         /**
+         * Not supported yet.
          * {@inheritDoc}
          */
         @Override
@@ -56,8 +57,8 @@ public class DiaryInterpreter extends Plugin {
         }
 
         /**
-         * @param configuration
-         * @return
+         * Not supported yet.
+         * {@inheritDoc}
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
