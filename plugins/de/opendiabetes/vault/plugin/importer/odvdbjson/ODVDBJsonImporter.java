@@ -84,13 +84,12 @@ public class ODVDBJsonImporter extends Plugin {
             BufferedReader reader;
             try {
                 reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException ex) {
-                LOG.log(Level.SEVERE, "Can not handel fileInputStream, wrong encoding!");
+            } catch (UnsupportedEncodingException exception) {
+                LOG.log(Level.SEVERE, "Can not handle fileInputStream, wrong encoding!");
                 return false;
             }
             // import
-            Type listType = new TypeToken<ArrayList<VaultEntry>>() {
-            }.getType();
+            Type listType = new TypeToken<ArrayList<VaultEntry>>() { }.getType();
             List<VaultEntry> importDb = gson.fromJson(reader, listType);
 
             if (importDb != null && !importDb.isEmpty()) {
