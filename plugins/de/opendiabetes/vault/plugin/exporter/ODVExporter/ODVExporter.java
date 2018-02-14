@@ -147,6 +147,9 @@ public class ODVExporter extends Plugin {
             LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public int exportDataToFile(final List<VaultEntry> data) {
             FileOutputStream fileOutputStream;
@@ -338,6 +341,15 @@ public class ODVExporter extends Plugin {
             }
             notifyStatus(PROGRESS_LOADED_CONFIG, "Loaded configuration");
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //still missing
+            return null;
         }
 
         /**
