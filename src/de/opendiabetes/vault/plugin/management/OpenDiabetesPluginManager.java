@@ -119,6 +119,7 @@ public class OpenDiabetesPluginManager {
 
     /**
      * Returns the path to the root folder of the desired plugin where it was loaded from.
+     *
      * @param plugin the plugin whos base path is returned
      * @return the base path of the plugin
      */
@@ -127,10 +128,12 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
+     * Takes a plugin and returns all pluginIDs that correspond to an available, compatible plugin.
+     *
      * @param plugin the plugin that is compatible with all the plugins returned
      * @return a list of all plugins that are compatible with the provided one
      */
-    public Set<String> getCompatiblePlugins(final OpenDiabetesPlugin plugin) {
+    public Set<String> getCompatiblePluginIDs(final OpenDiabetesPlugin plugin) {
         return compatibilityMap.get(pluginToString(plugin));
     }
 
@@ -177,7 +180,8 @@ public class OpenDiabetesPluginManager {
 
     /**
      * Returns all available plugins of the desired type, for example you get a list of all Importer plugins
-     * by typing getPluginsOfType(Importer.class)
+     * by typing getPluginsOfType(Importer.class).
+     *
      * @param type the type of plugins you want to recieve (eg Importer.class, Exporter.class, ...)
      * @param <T>  The type of plugins specified by type
      * @return a list of all available Plugins of the specified type
@@ -193,18 +197,20 @@ public class OpenDiabetesPluginManager {
 
     /**
      * Returns all pluginIDs of available plugins that have the specified type.
-     * @see {@link this#getPluginsOfType(Class)}
+     *
      * @param type the type of plugins you want the ids from
      * @return a list of all pluginIDs that correspond to a available plugin of the specified type
+     * @see {@link this#getPluginsOfType(Class)}
      */
-    public List<String> getPluginIDsOfType(final Class type){
+    public List<String> getPluginIDsOfType(final Class type) {
         List<String> result = new ArrayList<>();
-        BiConsumer<String, OpenDiabetesPlugin> filteredAdd = (id, plugin) ->
-        {
-            if (type.isInstance(plugin)){ result.add(id); }
+        BiConsumer<String, OpenDiabetesPlugin> filteredAdd = (id, plugin) -> {
+            if (type.isInstance(plugin)) {
+                result.add(id);
+            }
         };
         this.plugins.forEach(filteredAdd);
-        return  result;
+        return result;
     }
 
     /**
@@ -219,6 +225,7 @@ public class OpenDiabetesPluginManager {
 
     /**
      * Takes a list of plugins and returns a list of corresponding plugins.
+     *
      * @param plugins a list of Plugins
      * @return a list of the names of the Plugins
      */
@@ -227,7 +234,8 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
-     * Takes a list of plugin IDs and returns a list of corresponding plugins.S
+     * Takes a list of plugin IDs and returns a list of corresponding plugins.
+     *
      * @param pluginIDs a list of plugin IDs
      * @return a set of the plugins
      */
@@ -240,6 +248,7 @@ public class OpenDiabetesPluginManager {
 
     /**
      * Takes a pluginID and the class of the corresponding plugin and returns the corresponding plugin.
+     *
      * @param type     the class of the plugin
      * @param pluginID the name of the plugin
      * @param <T>      the type of the plugin specified in type

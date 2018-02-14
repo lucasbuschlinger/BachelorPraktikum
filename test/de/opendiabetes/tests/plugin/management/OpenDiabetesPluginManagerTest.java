@@ -32,6 +32,6 @@ public class OpenDiabetesPluginManagerTest {
         OpenDiabetesPluginManager m = new OpenDiabetesPluginManager();
         m.getPluginsOfType(OpenDiabetesPlugin.class).forEach(plugin ->
         System.out.println(m.pluginToString(plugin) + ": " + Arrays.toString(
-                 m.getCompatiblePlugins(plugin).toArray())));
+                 m.getCompatiblePluginIDs(plugin).toArray())));
     }
 }
