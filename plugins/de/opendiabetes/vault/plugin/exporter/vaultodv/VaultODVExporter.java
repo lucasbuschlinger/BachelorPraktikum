@@ -50,15 +50,6 @@ import static java.lang.Boolean.parseBoolean;
 public class VaultODVExporter extends Plugin {
 
     /**
-     * Constructor for the {@link org.pf4j.PluginManager}.
-     *
-     * @param wrapper The {@link org.pf4j.PluginWrapper}.
-     */
-    public VaultODVExporter(final PluginWrapper wrapper) {
-        super(wrapper);
-    }
-
-    /**
      * Name of the data file inside the ZIP archive.
      * Also used for recognition by the {@link de.opendiabetes.vault.plugin.importer.vaultodv.VaultODVImporter}.
      */
@@ -68,6 +59,14 @@ public class VaultODVExporter extends Plugin {
      * Also used for recognition by the {@link de.opendiabetes.vault.plugin.importer.vaultodv.VaultODVImporter}.
      */
     public static final String SIGNATURE_ZIP_ENTRY = "sig.txt";
+    /**
+     * Constructor for the {@link org.pf4j.PluginManager}.
+     *
+     * @param wrapper The {@link org.pf4j.PluginWrapper}.
+     */
+    public VaultODVExporter(final PluginWrapper wrapper) {
+        super(wrapper);
+    }
 
     /**
      * Actual implementation of the VaultODV exporter plugin.
@@ -130,6 +129,9 @@ public class VaultODVExporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            if (!super.loadConfiguration(configuration)) {
+                return false;
+            }
             // Status update constant
             final int loadConfigProgress = 0;
             // Format of dates which must be used.
