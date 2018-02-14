@@ -139,47 +139,46 @@ public class MiBandNotifyImporter extends Plugin {
          */
         @Override
         protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            List<VaultEntry> imports = new ArrayList<>();
-
-           Gson gson = new Gson();
+            Gson gson = new Gson();
 
             BufferedReader reader;
             try {
                 reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             } catch (UnsupportedEncodingException exception) {
-                System.out.println("Can not handle fileInputStream, unsupported encoding (non UTF-8)!");
+                LOG.log(Level.SEVERE, "Can not handle fileInputStream, unsupported encoding (non UTF-8)!");
                 return false;
             }
 
             // Reading the JSON file
             MiBandObjects data = gson.fromJson(reader, MiBandObjects.class);
             this.notifyStatus(STATUS_READ_JSON, "Read JSON file.");
-            if (data.SleepIntervalData == null && data.HeartMonitorData == null && data.Workout == null && data.StepsData == null
-                    && data.Weight == null) {
-                LOG.log(Level.SEVERE, "Got no data from JSON import!");
-                return false;
-            }
 
             // Seeing, whether the data contained heart rate related data
             if (data.HeartMonitorData != null) {
-                imports = processHeartData(data);
+                importedData = processHeartData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
-            }
-            if (data.SleepIntervalData != null) {
-                imports = processSleepData(data);
+                this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
+                return true;
+            } else if (data.SleepIntervalData != null) {
+                importedData = processSleepData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
-                imports = interpretMiBandSleep(imports);
-            }
-            if (data.Workout != null) {
-                imports = processWorkoutData(data);
+                importedData = interpretMiBandSleep(importedData);
+                this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
+                return true;
+            } else if (data.Workout != null) {
+                importedData = processWorkoutData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
+                return true;
+            } else if (data.Weight != null) {
+                importedData = processWeightData(data);
+                this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
+                this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
+                return true;
+            } else {
+                LOG.log(Level.SEVERE, "Got no data from JSON import!");
+                return false;
             }
-            if (data.Weight != null) {
-                imports = processWeightData(data);
-            }
-            this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-            importedData = imports;
-            return true;
         }
 
         /**
@@ -310,7 +309,7 @@ public class MiBandNotifyImporter extends Plugin {
                     i++;
                 }
             }
-            LOG.log(Level.INFO, "Removed entries: " + (initialLength - returnList.size()));
+            LOG.log(Level.INFO, "Removed entries due to merge: " + (initialLength - returnList.size()));
             return returnList;
         }
 
@@ -322,7 +321,7 @@ public class MiBandNotifyImporter extends Plugin {
             if (configuration.containsKey("heartRateLowerBound")) {
                 heartRateLowerBound = Integer.parseInt(configuration.getProperty("heartRateLowerBound"));
             }
-            if (configuration.containsKey("heartRatUpperBound")) {
+            if (configuration.containsKey("heartRateUpperBound")) {
                 heartRateUpperBound = Integer.parseInt(configuration.getProperty("heartRateUpperBound"));
             }
             if (configuration.containsKey("exerciseHeartThresholdMid")) {

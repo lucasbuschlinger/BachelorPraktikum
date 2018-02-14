@@ -28,11 +28,11 @@ import java.util.List;
 public class MiBandObjects {
 
     /**
-     * This object will hold the data if there was some of the {@link HeartMonitorData} monitor type.
+     * This object will hold the data if there was some of the {@link HeartMonitorData} type.
      */
     public List<HeartMonitorData> HeartMonitorData;
     /**
-     * This object will hold the data if there was some of the {@link SleepIntervalData} interval type.
+     * This object will hold the data if there was some of the {@link SleepIntervalData} type.
      */
     public List<SleepIntervalData> SleepIntervalData;
     /**
@@ -78,11 +78,11 @@ public class MiBandObjects {
          */
         private String isActivityValue;
         /**
-         * Indicatior whether this heart rate has been recorded during a workout.
+         * Indicator whether this heart rate has been recorded during a workout.
          */
         private String isWorkout;
         /**
-         * Timestamp when the data has been synced with GoogleFit.
+         * Timestamp when the data has been synchronized with GoogleFit.
          */
         private String syncedGFit;
         /**
@@ -255,9 +255,9 @@ public class MiBandObjects {
          * @return The duration of the workout entry.
          */
         public double getDuration() {
-            final double millisecPerSec = 1000;
-            double start = Double.parseDouble(startDateTime) / millisecPerSec;
-            double end = Double.parseDouble(endDateTime) / millisecPerSec;
+            final double msPerMin = 60000;
+            double start = Double.parseDouble(startDateTime) / msPerMin;
+            double end = Double.parseDouble(endDateTime) / msPerMin;
             return end - start;
         }
 
