@@ -30,6 +30,7 @@ import org.pf4j.PluginWrapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Wrapper class for the GoogleFitCSVImporter plugin.
@@ -119,14 +120,6 @@ public class GoogleFitCSVImporter extends Plugin {
             }
 
             return retVal;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
         }
 
         /**

@@ -292,14 +292,6 @@ public class MySugrCsvImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
         public String getHelpFilePath() {
             //TODO write help
             return null;

@@ -101,15 +101,6 @@ public class ODVDBJsonImporter extends Plugin {
         }
 
         /**
-         *{@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            LOG.log(Level.WARNING, "ODVDBJsonImporter does not support configuration.");
-            return false;
-        }
-
-        /**
          * {@inheritDoc}
          */
         @Override

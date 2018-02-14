@@ -193,14 +193,6 @@ public class SonySWR21Importer extends Plugin {
         }
 
         /**
-         *{@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
-
-        /**
          * {@inheritDoc}
          */
         @Override
