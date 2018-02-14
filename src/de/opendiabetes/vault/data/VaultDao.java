@@ -26,6 +26,7 @@ import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
@@ -150,20 +151,20 @@ public final class VaultDao {
 //        TableUtils.createTableIfNotExists(connectionSource, SliceEntry.class);
     }
 
-    /**
-     * Puts {@link VaultEntry}s into the database.
-     *
-     * @param entry The {@link VaultEntry} to be put into the database.
-     * @return The ID of respective entry or {@link #RESULT_ERROR}.
-     */
-    public long putEntry(final VaultEntry entry) {
-        try {
-            return vaultDao.createIfNotExists(entry).getId();
-        } catch (SQLException exception) {
-            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
-            return RESULT_ERROR;
-        }
-    }
+//        /**
+//     * Puts {@link VaultEntry}s into the database.
+//     *
+//     * @param entry The {@link VaultEntry} to be put into the database.
+//     * @return The ID of respective entry or {@link #RESULT_ERROR}.
+//     */
+//    public long putEntry(final VaultEntry entry) {
+//        try {
+//            return vaultDao.createIfNotExists(entry).getId();
+//        } catch (SQLException exception) {
+//           LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
+//            return RESULT_ERROR;
+//        }
+//    }
 
 //    /**
 //     * Puts {@link RawEntry}s into the database.
