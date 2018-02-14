@@ -32,13 +32,13 @@ public class Crawler {
      * @param loginCookies - the login cookies to be sent.
      * @param startDate - start date from when the csv file data should begin.
      * @param endDate - end date until when the csv file data should go.
-     * @param userWorkingDirecotry - the director where the csv file should be downloaded to.
+     * @param userWorkingDirectory - the directory where the csv file should be downloaded to.
      * @param logger - a logger instance.
      */
     public void generateDocument(final Map<String, String> loginCookies,
                                  final String startDate,
                                  final String endDate,
-                                 final String userWorkingDirecotry,
+                                 final String userWorkingDirectory,
                                  final Logger logger) {
 
         logger.info("Inside class CrawlerClass");
@@ -57,13 +57,13 @@ public class Crawler {
                     .data("datePicker1", endDate) // End date
                     /*.header("X-Requested-With", "XMLHttpRequest")*/.method(Connection.Method.GET).execute();
 
-            String outputFolder = userWorkingDirecotry + File.separator + "careLink-Export";
+            String outputFolder = userWorkingDirectory + File.separator + "careLink-Export";
 
             PrintWriter printWriter = new PrintWriter(new File(outputFolder + (new Date().getTime()) + ".csv"));
             printWriter.write(reportDocument.body());
             printWriter.close();
             System.out.println("Export Sucessfull!");
-            System.out.println("File will be saved to location " + userWorkingDirecotry + " with name: " + "\"careLink-Export"
+            System.out.println("File will be saved to location " + userWorkingDirectory + " with name: " + "\"careLink-Export"
                     + (new Date().getTime()) + ".csv\"");
             logger.info("Export Sucessfull!");
 

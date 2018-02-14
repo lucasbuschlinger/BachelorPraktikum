@@ -43,7 +43,7 @@ public final class Authentication {
      * @return a boolean value indicating if the credentials are correct.
      */
     Boolean checkConnection(final String username, final String password, final Logger logger) {
-        // check if login credentials are correct or nots
+        // check if login credentials are correct or not
         try {
             logger.info("Inside class checkConnection");
 

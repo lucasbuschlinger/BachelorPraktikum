@@ -27,12 +27,12 @@ public class DateHelper {
     private Date formattedEnteredStartDate;
 
     /**
-     * A date formation error message.
+     * A date formatting error message.
      */
     private String dateFormatErrorMessage;
 
     /**
-     * A todays date error message.
+     * A today's date error message.
      */
     private String todaysDateErrorMessage;
 
@@ -52,8 +52,8 @@ public class DateHelper {
         if (lang.equals("de")) {
             dateFormat = "dd.MM.yyyy";
             validStartDate = new SimpleDateFormat(dateFormat).parse("01.01.1998");
-            dateFormatErrorMessage = "Date should be in Format of DD/MM/YYYY  Example: 13.03.2017";
-            todaysDateErrorMessage = "You can only enter Start date between 01/01/1998 and Today's Date!!";
+            dateFormatErrorMessage = "Date should be in Format of DD.MM.YYYY  Example: 13.03.2017";
+            todaysDateErrorMessage = "You can only enter Start date between 01.01.1998 and Today's Date!!";
         } else if (lang.equals("en")) {
             dateFormat = "dd/MM/yyyy";
             validStartDate = new SimpleDateFormat(dateFormat).parse("01/01/1998");
@@ -73,7 +73,7 @@ public class DateHelper {
      * 4. Start date and end date shall not be greater than Today's date.
      * 5. Start date and end date should be valid.
      *
-     * This class and it's function satisfies above conditions for dates
+     * This class and its function satisfies above conditions for dates
      *
      * @param fromDate - the fromDate to be validated
      * @param logger - a logger instance
