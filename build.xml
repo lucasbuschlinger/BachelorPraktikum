@@ -372,8 +372,11 @@
             <fileset dir="${plugin.src.path}/assets"/>
         </copy>
         <copydir src="lib" dest="plugins_out/lib"/>
-        <copyfile src="${plugin.src.path}/plugin.properties"
-                  dest="plugins_out/plugin.properties"/>
+        <copy todir="plugins_out" quiet="true" failonerror="false">
+            <fileset dir="${plugin.src.path}">
+                <include name="*.properties"/>
+            </fileset>
+        </copy>
         <javac srcdir="${plugin.src.path}" destdir="plugins_out/classes"
                classpathref="opendiabetes.module.classpath"/>
         <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip"
