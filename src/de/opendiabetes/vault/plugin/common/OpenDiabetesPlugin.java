@@ -39,7 +39,8 @@ public interface OpenDiabetesPlugin {
 
     /**
      *
-     * @return a path to a file containing .md/html formatted text, that gets displayed to the user if he wants to know more about that plugin.
+     * @return a path to a file containing .md/html formatted text,
+     * that gets displayed to the user if he wants to know more about that plugin.
      */
     String getHelpFilePath();
 

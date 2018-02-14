@@ -151,7 +151,7 @@ public class OdvDbJsonExporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        public String getHelpFilePath(){
+        public String getHelpFilePath() {
             //TODO write help
             return null;
         }

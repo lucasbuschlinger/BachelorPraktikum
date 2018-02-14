@@ -301,7 +301,7 @@ public class MySugrCsvImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public String getHelpFilePath(){
+        public String getHelpFilePath() {
             //TODO write help
             return null;
         }
