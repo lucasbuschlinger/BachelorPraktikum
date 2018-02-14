@@ -3,7 +3,7 @@ package de.opendiabetes.vault.plugin.importer.googlecrawler.helper;
 /**
  * Constants needed for the Google crawler.
  */
-public class Constants {
+public final class Constants {
 
     /**
      * Index for resting heart rate.
@@ -99,4 +99,8 @@ public class Constants {
                     +  "</body>\n"
                     + "</html>";
 
+    /**
+     * Constructor.
+     */
+    private Constants() { }
 }

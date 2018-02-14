@@ -289,12 +289,11 @@ public final class LocationHistory {
         for (Activity act : activities) {
             Calendar cal = new GregorianCalendar();
             cal.setTimeInMillis(act.getEndTime());
-            if ((act.getActivityId() == ActivityTypes.SLEEPING
+            if (act.getActivityId() == ActivityTypes.SLEEPING
                     || act.getActivityId() == ActivityTypes.LIGHT_SLEEP
                     || act.getActivityId() == ActivityTypes.DEEP_SLEEP
                     || act.getActivityId() == ActivityTypes.REM_SLEEP
-                    || act.getActivityId() == ActivityTypes.AWAKE_DURING_SLEEP)
-                    && cal.get(Calendar.HOUR) <= 12) {
+                    || act.getActivityId() == ActivityTypes.AWAKE_DURING_SLEEP) {
                 time = act.getEndTime();
             }
         }
@@ -500,13 +499,8 @@ public final class LocationHistory {
                 }
             }
 
-            if (isSportRelated) {
-                sportRelatedPlaces.add(sr);
-            }
-        }
-
-        for (PlacesSearchResult sr : places) {
-            if (sr.name.toLowerCase().contains("verein")
+            if (isSportRelated
+                    || sr.name.toLowerCase().contains("verein")
                     || sr.name.toLowerCase().contains("club")
                     || sr.name.toLowerCase().contains("bad")) {
                 sportRelatedPlaces.add(sr);

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Retrieves data from the Google Places API.
  */
-public class GooglePlaces {
+public final class GooglePlaces {
 
     /**
      * Singleton instance.
@@ -51,10 +51,10 @@ public class GooglePlaces {
      */
     private GeoApiContext context;
 
-    /**
-     * Search query template.
-     */
-    private String keywordSearch = "(verein) OR (sport) OR (bad)";
+    // /**
+    // * Search query template.
+    // */
+    // private String keywordSearch = "(verein) OR (sport) OR (bad)";
 
     /**
      * List of addresses of the current user.
@@ -90,27 +90,27 @@ public class GooglePlaces {
                 .build();
     }
 
-    /**
-     * Converts the given latitude and longitude to a Geocoding address.
-     * @param latitude a valid latitude
-     * @param longitude a valid longitude
-     * @return the resolved address
-     */
-    public GeocodingResult[] gpsToAddress(final double latitude, final double longitude) {
-        if (context == null) {
-            return null;
-        }
-
-        try {
-            return GeocodingApi.reverseGeocode(context, new LatLng(latitude,
-                    longitude)).await();
-
-        } catch (ApiException | InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+//    /**
+//     * Converts the given latitude and longitude to a Geocoding address.
+//     * @param latitude a valid latitude
+//     * @param longitude a valid longitude
+//     * @return the resolved address
+//     */
+//    public GeocodingResult[] gpsToAddress(final double latitude, final double longitude) {
+//        if (context == null) {
+//            return null;
+//        }
+//
+//        try {
+//            return GeocodingApi.reverseGeocode(context, new LatLng(latitude,
+//                    longitude)).await();
+//
+//        } catch (ApiException | InterruptedException | IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return null;
+//    }
 
     /**
      * Converts the given address in a latitude and longitude pair.
@@ -153,53 +153,53 @@ public class GooglePlaces {
         return false;
     }
 
-    /**
-     * Setter for the query keyword search params.
-     * @param keywordSearchParams valid search params that will be appended to the query
-     */
-    public void setKeywordSearchParams(final String[] keywordSearchParams) {
-        for (String param : keywordSearchParams) {
-            keywordSearch = keywordSearch + " OR (" + param.toLowerCase() + ")";
-        }
-    }
-
-    /**
-     * Searches the context with the previously set keyword search params
-     * and the given location (latitude, longitude) and radius (accuracy).
-     * @param latitude a valid latitude
-     * @param longitude a valid longitude
-     * @param accuracy a radius in meters
-     * @return The name of the result if there was a place found with the given query params, otherwise "AWAY"
-     */
-    public String keywordSearch(final double latitude, final double longitude, final int accuracy) {
-        try {
-            PlacesSearchResult[] results = PlacesApi
-                    .nearbySearchQuery(context, new LatLng(latitude, longitude))
-                    .radius(accuracy)
-                    .keyword(keywordSearch)
-                    .await().results;
-            if (results.length == 1) {
-                return results[0].name;
-            } else {
-                for (PlacesSearchResult sr : results) {
-                    boolean isPolitical = false;
-                    for (String st : sr.types) {
-                        if (st.equals("political")) {
-                            isPolitical = true;
-                        }
-                    }
-
-                    if (!isPolitical) {
-                        return sr.name;
-                    }
-                }
-            }
-        } catch (ApiException | InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
-
-        return "AWAY";
-    }
+//    /**
+//     * Setter for the query keyword search params.
+//     * @param keywordSearchParams valid search params that will be appended to the query
+//     */
+//    public void setKeywordSearchParams(final String[] keywordSearchParams) {
+//        for (String param : keywordSearchParams) {
+//            keywordSearch = keywordSearch + " OR (" + param.toLowerCase() + ")";
+//        }
+//    }
+//
+//    /**
+//     * Searches the context with the previously set keyword search params
+//     * and the given location (latitude, longitude) and radius (accuracy).
+//     * @param latitude a valid latitude
+//     * @param longitude a valid longitude
+//     * @param accuracy a radius in meters
+//     * @return The name of the result if there was a place found with the given query params, otherwise "AWAY"
+//     */
+//    public String keywordSearch(final double latitude, final double longitude, final int accuracy) {
+//        try {
+//            PlacesSearchResult[] results = PlacesApi
+//                    .nearbySearchQuery(context, new LatLng(latitude, longitude))
+//                    .radius(accuracy)
+//                    .keyword(keywordSearch)
+//                    .await().results;
+//            if (results.length == 1) {
+//                return results[0].name;
+//            } else {
+//                for (PlacesSearchResult sr : results) {
+//                    boolean isPolitical = false;
+//                    for (String st : sr.types) {
+//                        if (st.equals("political")) {
+//                            isPolitical = true;
+//                        }
+//                    }
+//
+//                    if (!isPolitical) {
+//                        return sr.name;
+//                    }
+//                }
+//            }
+//        } catch (ApiException | InterruptedException | IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return "AWAY";
+//    }
 
     /**
      * Retrieves the own addresses of the current user.
