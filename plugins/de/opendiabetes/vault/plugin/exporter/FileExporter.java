@@ -202,15 +202,15 @@ public abstract class FileExporter extends AbstractExporter {
      */
     protected List<VaultEntry> filterPeriodRestriction(final List<VaultEntry> data) {
         List<VaultEntry> tempData = new ArrayList<>();
-            Date begin = getExportPeriodFrom();
-            Date end = getExportPeriodTo();
-            for (VaultEntry entry : data) {
-                Date timestamp = entry.getTimestamp();
-                if (timestamp.before(begin) || timestamp.after(end)) {
+        Date begin = getExportPeriodFrom();
+        Date end = getExportPeriodTo();
+        for (VaultEntry entry : data) {
+            Date timestamp = entry.getTimestamp();
+            if (timestamp.before(begin) || timestamp.after(end)) {
                 continue;
             }
             tempData.add(entry);
-       }
+        }
         return tempData;
     }
 }
