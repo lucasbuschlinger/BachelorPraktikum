@@ -460,7 +460,7 @@ public class ExerciseInterpreter extends Plugin {
          * @return wheter a valid configuration could be read from the config file
          */
         @Override
-        protected boolean loadPluginSpecificConfiguration(Properties configuration) {
+        protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (!configuration.containsKey("activityThreshold") || !configuration.containsKey("activitySliceThreshold")) {
                 return false;
             }

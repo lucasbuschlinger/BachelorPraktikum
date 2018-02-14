@@ -73,7 +73,7 @@ public class DiaryInterpreter extends Plugin {
          * @return wheter a valid configuration could be read from the config file
          */
         @Override
-        protected boolean loadPluginSpecificConfiguration(Properties configuration) {
+        protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }

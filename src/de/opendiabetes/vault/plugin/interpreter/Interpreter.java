@@ -29,13 +29,13 @@ import java.util.List;
 public interface Interpreter extends ExtensionPoint, OpenDiabetesPlugin {
 
     /**
-     *
-     * @param db
+     * This method initilizes the database.
+     * @param db The database
      */
     void init(VaultDao db);
 
     /**
-     *
+     * This method interprets the input.
      * @param input the list to be interpreted
      * @return the interpreted list
      */

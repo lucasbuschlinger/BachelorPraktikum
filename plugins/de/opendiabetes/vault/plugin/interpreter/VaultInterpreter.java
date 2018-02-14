@@ -18,18 +18,15 @@ package de.opendiabetes.vault.plugin.interpreter;
 
 import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
-import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 
 /**
  * Abstract interpreter, implements the Interpreter interface.
  * All actual interpreter plugins are descendants of this class.
  * Supplies a Logger {@link OpenDiabetesPlugin#LOG }.
  * Handles status listeners {@link AbstractPlugin#listeners}.
- * 
  * @author OpenDiabetes
  */
 public abstract class VaultInterpreter extends AbstractPlugin implements Interpreter {
-
     /**
      * The data access object {@link VaultDao} used by the interpreter.
      * 
@@ -42,7 +39,7 @@ public abstract class VaultInterpreter extends AbstractPlugin implements Interpr
      */
     @Override
     public void init(final VaultDao db) {
-        this.database = db;
+        this.database = database;
     }
 
     /**
