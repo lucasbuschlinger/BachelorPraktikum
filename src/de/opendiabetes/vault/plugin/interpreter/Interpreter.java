@@ -24,7 +24,7 @@ import org.pf4j.ExtensionPoint;
 import java.util.List;
 
 /**
- *
+ * This interface defines the basic methods used by the interpreter plugins.
  */
 public interface Interpreter extends ExtensionPoint, OpenDiabetesPlugin {
 
