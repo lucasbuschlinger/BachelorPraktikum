@@ -200,6 +200,9 @@
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.google.classpath"/>
         <path refid="library.jfree-chart.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -211,6 +214,9 @@
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.google.classpath"/>
         <path refid="library.jfree-chart.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
@@ -223,6 +229,9 @@
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.google.classpath"/>
         <path refid="library.jfree-chart.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
@@ -235,6 +244,9 @@
         <path refid="library.ant-junit.classpath"/>
         <path refid="library.google.classpath"/>
         <path refid="library.jfree-chart.classpath"/>
+        <path refid="library.jsoup.classpath"/>
+        <path refid="library.openqa-selenium.classpath"/>
+        <path refid="library.commons-cli.classpath"/>
     </path>
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
