@@ -57,6 +57,12 @@ public class PumpInterpreter extends Plugin {
      */
     @Extension
     public static class PumpInterpreterImplementation extends VaultInterpreter {
+
+        /**
+         * The size of the slidingWindow output filter
+         */
+        private double outputFilterSize = 5;
+
         /**
          * Conversion factor from minutes to milliseconds.
          */
@@ -537,8 +543,7 @@ public class PumpInterpreter extends Plugin {
             if (data == null || data.isEmpty()) {
                 return data;
             }
-            //TODO add filter size to config
-            SlidingWindow sw = new SlidingWindow(30, VaultEntryType.GLUCOSE_CGM, 5.0);
+            SlidingWindow sw = new SlidingWindow(30, VaultEntryType.GLUCOSE_CGM, outputFilterSize);
             List<VaultEntry> elevationItems = new ArrayList<>();
 
             for (VaultEntry item : data) {
@@ -556,16 +561,24 @@ public class PumpInterpreter extends Plugin {
         }
 
         /**
-         * adds {@link this#fillCanulaAsNewKatheder} and {@link this#fillCanulaCooldown}
+         * Adds {@link this#fillCanulaAsNewKatheder} and {@link this#fillCanulaCooldown}.
          * {@inheritDoc}
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            try {
+                outputFilterSize = Double.parseDouble(configuration.getProperty("outputFilterSize", "5"));
+            } catch (NumberFormatException e) {
+            }
             if (!configuration.containsKey("fillCanulaAsNewKatheder") || !configuration.containsKey("fillCanulaCooldown")) {
                 return false;
             }
-            fillCanulaAsNewKatheder = Boolean.parseBoolean(configuration.getProperty("fillCanulaAsNewKatheder"));
-            fillCanulaCooldown = Integer.parseInt(configuration.getProperty("fillCanulaCooldown"));
+            try {
+                fillCanulaAsNewKatheder = Boolean.parseBoolean(configuration.getProperty("fillCanulaAsNewKatheder"));
+                fillCanulaCooldown = Integer.parseInt(configuration.getProperty("fillCanulaCooldown"));
+            } catch (NumberFormatException e) {
+              return  false;
+            }
             return true;
         }
     }
