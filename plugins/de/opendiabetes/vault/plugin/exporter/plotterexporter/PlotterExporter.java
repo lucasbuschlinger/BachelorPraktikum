@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Wrapper class for the PlotterExporter plugin.
@@ -81,19 +82,19 @@ public class PlotterExporter extends Plugin {
                 // read the output from the command
                 String line = null;
                 while ((line = stdInput.readLine()) != null) {
-                    System.out.println(line);
+                    LOG.log(Level.INFO, line);
                 }
 
                 // read any errors from the attempted command
                 int errorCounter = 0;
                 while ((line = stdError.readLine()) != null) {
-                    System.out.println(line);
+                    LOG.log(Level.SEVERE, line);
                     errorCounter++;
                 }
 
                 return (errorCounter == 0);
             } catch (IOException e) {
-                System.out.println("Error while executing command");
+                LOG.log(Level.SEVERE, "Error while executing command");
                 return false;
             }
         }
@@ -118,7 +119,7 @@ public class PlotterExporter extends Plugin {
                 String line = null;
                 boolean installed = false;
                 while ((line = stdInput.readLine()) != null) {
-                    System.out.println(line);
+                    LOG.log(Level.INFO, line);
                     if (line.contains(check)) {
                         installed = true;
                         break;
@@ -127,16 +128,16 @@ public class PlotterExporter extends Plugin {
 
                 if (!installed) {
                     // read any errors from the attempted command
-                    System.out.println("Could not check command with errors:\n");
+                    LOG.log(Level.SEVERE, "Could not check command with errors:\n");
                     while ((line = stdError.readLine()) != null) {
-                        System.out.println(line);
+                        LOG.log(Level.SEVERE, line);
                     }
                     return false;
                 }
 
                 return true;
             } catch (IOException e) {
-                System.out.println("Error while checking for command " + check);
+                LOG.log(Level.SEVERE, "Error while checking for command " + check);
                 return false;
             }
         }
@@ -183,13 +184,13 @@ public class PlotterExporter extends Plugin {
 
             super.writeToFile(csvEntries);
             if (!plotData(this.getExportFilePath(), plotPath)) {
-                System.out.println("Failed to plot data");
+                LOG.log(Level.SEVERE, "Failed to plot data");
             }
 
 
             File file = new File(this.getExportFilePath());
             if (!file.delete()) {
-                System.out.println("Failed to delete export file");
+                LOG.log(Level.SEVERE, "Failed to delete export file");
             }
         }
 
@@ -213,7 +214,7 @@ public class PlotterExporter extends Plugin {
                 plotFormat = PlotFormats.IMAGE;
             }
 
-            return false;
+            return true;
         }
     }
 }
