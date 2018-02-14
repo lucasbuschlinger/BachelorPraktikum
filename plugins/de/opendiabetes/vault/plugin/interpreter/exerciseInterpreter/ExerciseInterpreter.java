@@ -59,8 +59,7 @@ public class ExerciseInterpreter extends Plugin {
          */
         private static final int MS_PER_MINUTE = 60000;
 
-        
-        // TODO rephrase the comment below?
+
         /**
          * The activity threshold that needs to be exceeded in order to add an entry to the list of return values during interpretation.
          */
@@ -92,10 +91,10 @@ public class ExerciseInterpreter extends Plugin {
         }
 
         /**
-         * //TODO javadoc
+         * This method filters the activities.
          *
-         * @param data
-         * @return
+         * @param data The data to which the additional info shall be added.
+         * @return The data after filtering
          */
         private List<VaultEntry> filterActivities(final List<VaultEntry> data) {
             if (data == null || data.isEmpty()) {
@@ -351,9 +350,9 @@ public class ExerciseInterpreter extends Plugin {
         /**
          * Merges two lists of annotations. If an annotation is only contained in one of the lists passed as argument,
          * it will be added to the result list with its original value. If the same annotation exists in both original lists,
-         * the resulting list will contain the annotation once and its value will be the sum of the values of 
+         * the resulting list will contain the annotation once and its value will be the sum of the values of
          * each of the original annotations.
-         * and 
+         * and
          *
          * @param currentAnnotations the first list to be merged
          * @param additionalAnnotations the second list to be merged
@@ -407,7 +406,7 @@ public class ExerciseInterpreter extends Plugin {
         }
 
         /**
-         * Creates a new List of {@link VaultEntry}s containing only entries whose VaultEntryType is stress related
+         * Creates a new List of {@link VaultEntry}s containing only entries whose VaultEntryType is stress related.
          *
          * @param data the list of entries
          * @return the
@@ -415,6 +414,8 @@ public class ExerciseInterpreter extends Plugin {
         private List<VaultEntry> interpretStress(final List<VaultEntry> data) {
             List<VaultEntry> addData = new ArrayList<>();
             VaultEntry lastItem = null;
+            final int boundary = 6300000;
+            final int minutes = 10;
             for (VaultEntry item : data) {
                 if (item.getType() == VaultEntryType.STRESS) {
                     if (lastItem == null) {
@@ -422,11 +423,11 @@ public class ExerciseInterpreter extends Plugin {
                         lastItem = item;
                     } else {
                         if (item.getTimestamp().getTime()
-                                - lastItem.getTimestamp().getTime() > 6300000) { // > 10.5 min //TODO ask jens should be 630000
+                                - lastItem.getTimestamp().getTime() > boundary) { // > 10.5 min //TODO ask jens should be 630000
                             // add entry with 0, 10 minutes after last timestamp
                             addData.add(new VaultEntry(VaultEntryType.STRESS,
                                     TimestampUtils.addMinutesToTimestamp(
-                                            lastItem.getTimestamp(), 10), 0));
+                                            lastItem.getTimestamp(), minutes), 0));
                         }
 
                         lastItem = item;
@@ -438,11 +439,11 @@ public class ExerciseInterpreter extends Plugin {
             // check last item again
             if (lastItem != null
                     && data.get(data.size() - 1).getTimestamp().getTime()
-                    - lastItem.getTimestamp().getTime() > 6300000) { // > 10.5 min
+                    - lastItem.getTimestamp().getTime() > boundary) { // > 10.5 min
                 // add entry with 0
                 addData.add(new VaultEntry(VaultEntryType.STRESS,
                         TimestampUtils.addMinutesToTimestamp(
-                                lastItem.getTimestamp(), 10), 0));
+                                lastItem.getTimestamp(), minutes), 0));
             }
 
             data.addAll(addData);

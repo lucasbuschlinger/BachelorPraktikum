@@ -59,9 +59,14 @@ public class PumpInterpreter extends Plugin {
     public static class PumpInterpreterImplementation extends VaultInterpreter {
 
         /**
-         * The size of the slidingWindow output filter
+         * The size of the slidingWindow output filter.
          */
-        private double outputFilterSize = 5;
+        private static final double DEFAULT_OUTPUTFILTER_SIZE = 5;
+
+        /**
+         * The size of the slidingWindow output filter.
+         */
+        private double outputFilterSize = DEFAULT_OUTPUTFILTER_SIZE;
 
         /**
          * Conversion factor from minutes to milliseconds.
@@ -79,12 +84,12 @@ public class PumpInterpreter extends Plugin {
         private static final long HOUR_TO_MIN = 60;
 
         /**
-         * //TODO javadoc
+         * Boolean to say whether the canula has to be filled as a new Katheder.
          */
         private boolean fillCanulaAsNewKatheder;
 
         /**
-         * //TODO javadoc
+         * The time the Canula needs to cool down in minutes.
          */
         private int fillCanulaCooldown;
 
@@ -119,10 +124,10 @@ public class PumpInterpreter extends Plugin {
         }
 
         /**
-         * //TODO javadoc
+         * This method tries to filter events for those which correlate with the filling of the canula.
          *
-         * @param importedData
-         * @return
+         * @param importedData The data to which the additional info shall be added.
+         * @return The data with the additional info
          */
         private List<VaultEntry> fillCanulaInterpretation(final List<VaultEntry> importedData) {
             if (importedData == null || importedData.isEmpty()) {
@@ -148,11 +153,12 @@ public class PumpInterpreter extends Plugin {
             VaultEntry primeFromDb = getDatabase().queryLatestEventBefore(importedData.get(0).getTimestamp(),
                     VaultEntryType.PUMP_PRIME);
             if (rewindFromDb != null) {
+                final int addAsHandlWhitinTime = 3;
                 if (((primeFromDb != null
                         && rewindFromDb.getTimestamp().after(primeFromDb.getTimestamp()))
                         || primeFromDb == null)
                         && (importedData.get(0).getTimestamp().getTime()
-                        - rewindFromDb.getTimestamp().getTime()) < 3 * HOUR_TO_MS) {
+                        - rewindFromDb.getTimestamp().getTime()) < addAsHandlWhitinTime * HOUR_TO_MS) {
                     // rewind without prime has no fill event --> add as handle when its within 3 hours
                     rewindHandle = rewindFromDb;
 
@@ -245,10 +251,10 @@ public class PumpInterpreter extends Plugin {
         }
 
         /**
-         * //TODO javadoc
+         * This tries to consider entries as suspended events when there is no basal value.
          *
-         * @param data
-         * @return
+         * @param data The data to which the additional info shall be added.
+         * @return The data with the additional info
          */
         private List<VaultEntry> considerSuspendAsBasalOff(final List<VaultEntry> data) {
             // suspends will stop basal rate --> add basal 0 point
@@ -326,7 +332,8 @@ public class PumpInterpreter extends Plugin {
                         if (lastKnownBasalEntry == null) {
                             // still nothing found, search in DB
                             // query db
-                            Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * 5 * HOUR_TO_MIN); // start 5 hours before with the search
+                            final int startingTimeBeforeSearch = 5;
+                            Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * startingTimeBeforeSearch * HOUR_TO_MIN); // start 5 hours before with the search
                             Date ts2 = data.get(0).getTimestamp(); // we search just until the current dataset starts
                             List<VaultEntry> dbBasalData = getDatabase().queryBasalBetween(ts1, ts2);
 
@@ -359,10 +366,10 @@ public class PumpInterpreter extends Plugin {
         }
 
         /**
-         * //TODO javadoc
+         * This applies temporal basal event to the data.
          *
-         * @param data
-         * @return
+         * @param data The data to which the additional info shall be added.
+         * @return The data with the additional info
          */
         private List<VaultEntry> applyTempBasalEvents(final List<VaultEntry> data) {
             // if tmp basal ocures, real basal rate must be calculated
@@ -428,13 +435,14 @@ public class PumpInterpreter extends Plugin {
 
                             // calculate basal value
                             double newBasalValue = 0;
+                            final double percentage = 0.01;
                             // first item need special treatment, since we need to use the start
                             // timestamp of the tmp basal rate, not the timestamp of the profile item
                             if (basalItem.getValue() > 0 && !affectedHistoricElements.isEmpty()) {
                                 double currentBasalValue = affectedHistoricElements.get(
                                         affectedHistoricElements.size() - 1).getValue();
                                 newBasalValue = currentBasalValue
-                                        * basalItem.getValue() * 0.01;
+                                        * basalItem.getValue() * percentage;
                             }
                             // add item
                             basalEvents.add(new VaultEntry(
@@ -448,7 +456,7 @@ public class PumpInterpreter extends Plugin {
                                     double currentBasalValue = affectedHistoricElements.get(i)
                                             .getValue();
                                     newBasalValue = currentBasalValue
-                                            * basalItem.getValue() * 0.01;
+                                            * basalItem.getValue() * percentage;
                                     basalEvents.add(new VaultEntry(
                                             VaultEntryType.BASAL_MANUAL,
                                             affectedHistoricElements.get(i).getTimestamp(),
@@ -499,10 +507,10 @@ public class PumpInterpreter extends Plugin {
 
 
         /**
-         * //TODO javadoc
+         * This method adds the blood glucose measured by CGM to entries which indicate an pump alert.
          *
-         * @param data
-         * @return
+         * @param data The data to which the additional info shall be added.
+         * @return The data with the additional info
          */
         private List<VaultEntry> addCgmValueToCgmAlertOnMedtronicPumps(final List<VaultEntry> data) {
             if (data == null || data.isEmpty()) {
@@ -519,7 +527,8 @@ public class PumpInterpreter extends Plugin {
                         if (lastCgmValue > 0) {
                             item.setValue(lastCgmValue);
                         } else {
-                            item.setValue(100);
+                            final int setIfNoCGMValue = 100;
+                            item.setValue(setIfNoCGMValue);
                             LOG.log(Level.WARNING, "No CGM Value available for Alert: {0}", item.toString());
                         }
                         break;
@@ -534,16 +543,17 @@ public class PumpInterpreter extends Plugin {
 
 
         /**
-         * //TODO javadoc
+         * This method is used to calculate the blood glucose elevation in data recorded by CGM.
          *
-         * @param data
-         * @return
+         * @param data The data to calculate the elevation on.
+         * @return The data with added CGM elevation.
          */
         private List<VaultEntry> calculateCgmElevation(final List<VaultEntry> data) {
             if (data == null || data.isEmpty()) {
                 return data;
             }
-            SlidingWindow sw = new SlidingWindow(30, VaultEntryType.GLUCOSE_CGM, outputFilterSize);
+            final int windowSize = 30;
+            SlidingWindow sw = new SlidingWindow(windowSize, VaultEntryType.GLUCOSE_CGM, outputFilterSize);
             List<VaultEntry> elevationItems = new ArrayList<>();
 
             for (VaultEntry item : data) {

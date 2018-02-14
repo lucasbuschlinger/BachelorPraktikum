@@ -67,7 +67,7 @@ public class DateInterpreter extends Plugin {
         private Date importPeriodTo;
 
         /**
-         * Interprets the given List of VaultEntry and returns a List of VaultEntry containing only entries 
+         * Interprets the given List of VaultEntry and returns a List of VaultEntry containing only entries
          * from the specified period of time.
          * {@inheritDoc}
          */
@@ -111,8 +111,12 @@ public class DateInterpreter extends Plugin {
             String restriction = configuration.getProperty("ImportPeriodRestricted");
             isImportPeriodRestricted = Boolean.parseBoolean(restriction);
 
-            if (!isImportPeriodRestricted) return true;
-            if (!configuration.containsKey("importPeriodFrom") || !configuration.containsKey("importPeriodTo")) return false;
+            if (!isImportPeriodRestricted) {
+                return true;
+            }
+            if (!configuration.containsKey("importPeriodFrom") || !configuration.containsKey("importPeriodTo")) {
+                return false;
+            }
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             try {
