@@ -150,20 +150,20 @@ public final class VaultDao {
 //        TableUtils.createTableIfNotExists(connectionSource, SliceEntry.class);
     }
 
-//    /**
-//     * Puts {@link VaultEntry}s into the database.
-//     *
-//     * @param entry The {@link VaultEntry} to be put into the database.
-//     * @return The ID of respective entry or {@link #RESULT_ERROR}.
-//     */
-//    public long putEntry(final VaultEntry entry) {
-//        try {
-//            return vaultDao.createIfNotExists(entry).getId();
-//        } catch (SQLException exception) {
-//            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
-//            return RESULT_ERROR;
-//        }
-//    }
+    /**
+     * Puts {@link VaultEntry}s into the database.
+     *
+     * @param entry The {@link VaultEntry} to be put into the database.
+     * @return The ID of respective entry or {@link #RESULT_ERROR}.
+     */
+    public long putEntry(final VaultEntry entry) {
+        try {
+            return vaultDao.createIfNotExists(entry).getId();
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
+            return RESULT_ERROR;
+        }
+    }
 
 //    /**
 //     * Puts {@link RawEntry}s into the database.
