@@ -587,7 +587,7 @@ public class PumpInterpreter extends Plugin {
          * @return wheter a valid configuration could be read from the config file
          */
         @Override
-        protected boolean loadPluginSpecificConfiguration(Properties configuration) {
+        protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             try {
                 outputFilterSize = Double.parseDouble(configuration.getProperty("outputFilterSize", "5"));
             } catch (NumberFormatException e) {
