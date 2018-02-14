@@ -136,9 +136,9 @@ public abstract class FileExporter extends AbstractExporter {
 
     /**
      * Most generic loading of configurations of exporter plugins.
-     * The usually have the following three properties:
+     * They usually have the following three properties:
      * <ul>
-     *     <li>isPeriodRestricted - Indicates whether the data that is to be exporter shall be filtered for a time period. <br>
+     *     <li>isPeriodRestricted - Indicates whether the data that is to be exported shall be filtered by a time period. <br>
      *                              Naturally requires that the dates are set accordingly</li>
      *     <li>isPeriodRestrictedFrom - The start date of the date restriction, expected date format is dd/MM/yyyy</li>
      *     <li>isPeriodRestrictedTo   - The end date of the date restriction, expected date format is dd/MM/yyyy</li>
