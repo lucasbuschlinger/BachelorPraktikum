@@ -50,7 +50,7 @@ public class SliceLayoutCSVExporter extends Plugin {
      * Actual implementation of the SliceLayoutCSVExporter.
      */
     @Extension
-    public static class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
+    public static final class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
 
         /**
          * The entries to be exported by the SliceLayoutCSVExporter plugins.
@@ -90,5 +90,74 @@ public class SliceLayoutCSVExporter extends Plugin {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean loadConfiguration(final Properties configuration) {
+            if (!super.loadConfiguration(configuration)) {
+                return false;
+            }
+            // Status update constant
+            final int loadConfigProgress = 0;
+            // Format of dates which must be used.
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+            this.notifyStatus(loadConfigProgress, "Loading configuration");
+
+            if (!configuration.containsKey("periodRestriction")
+                    || configuration.getProperty("periodRestriction") == null
+                    || configuration.getProperty("periodRestriction").length() == 0) {
+                LOG.log(Level.WARNING, "SliceCSVExporter configuration does not specify whether the data is period restricted");
+                return false;
+            }
+            boolean restriction = parseBoolean(configuration.getProperty("periodRestriction"));
+            this.setIsPeriodRestricted(restriction);
+
+            // Only necessary to look for dates if data is period restricted
+            if (restriction) {
+                Date dateFrom;
+                Date dateTo;
+                String startDate = configuration.getProperty("periodRestrictionFrom");
+                String endDate = configuration.getProperty("periodRestrictionTo");
+                if (startDate == null || endDate == null) {
+                    LOG.log(Level.SEVERE, "SliceCSVExporter configuration specified a period restriction on the data but no correct"
+                            + " dates were specified.");
+                    return false;
+                }
+                // Parsing to actual dates
+                try {
+                    dateFrom = dateFormat.parse(startDate);
+                    dateTo = dateFormat.parse(endDate);
+                } catch (ParseException exception) {
+                    LOG.log(Level.SEVERE, "Either of the dates specified in the SliceCSVExporter config is malformed."
+                            + " The expected format is dd/mm/yyyy.");
+                    return false;
+                }
+
+                // Check whether the start time lies before the end time
+                if (dateFrom.after(dateTo)) {
+                    LOG.log(Level.WARNING, "The date the data is period restricted from lies after the date it is restricted to,"
+                            + " check order.");
+                    return false;
+                }
+
+                this.setExportPeriodFrom(dateFrom);
+                this.setExportPeriodTo(dateTo);
+                LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString());
+                return true;
+            } else {
+                LOG.log(Level.INFO, "Export data is not period restricted by SliceCSVExporter configuration.");
+                return true;
+            }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 }

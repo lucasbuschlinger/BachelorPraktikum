@@ -337,5 +337,13 @@ public class MiBandNotifyImporter extends Plugin {
             this.notifyStatus(STATUS_LOADED_CONFIG, "Loaded configuration from properties file");
             return true;
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 }

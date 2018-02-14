@@ -30,6 +30,7 @@ import org.pf4j.PluginWrapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Wrapper class for the GoogleFitCSVImporter plugin.
@@ -51,7 +52,7 @@ public class GoogleFitCSVImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static class GoogleFitCSVImporterImplementation extends CSVImporter {
+    public static final class GoogleFitCSVImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
@@ -121,6 +122,14 @@ public class GoogleFitCSVImporter extends Plugin {
             return retVal;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 
 

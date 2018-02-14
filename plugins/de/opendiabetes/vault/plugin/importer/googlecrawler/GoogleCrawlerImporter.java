@@ -52,7 +52,7 @@ public class GoogleCrawlerImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static class GoogleFitCrawlerImporterImplementation extends AbstractImporter {
+    public static final class GoogleFitCrawlerImporterImplementation extends AbstractImporter {
 
         /**
          * The minimum default year for gathering data.
@@ -274,6 +274,15 @@ public class GoogleCrawlerImporter extends Plugin {
                 viewMap = Boolean.parseBoolean(configuration.getProperty("viewMap"));
             }
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
         }
     }
 }
