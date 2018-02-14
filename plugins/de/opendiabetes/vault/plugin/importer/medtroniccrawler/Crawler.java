@@ -59,7 +59,7 @@ public class Crawler {
 
             String outputFolder = userWorkingDirectory + File.separator + "careLink-Export";
 
-            PrintWriter printWriter = new PrintWriter(new File(outputFolder + (new Date().getTime()) + ".csv"));
+            PrintWriter printWriter = new PrintWriter(new File(outputFolder + (new Date().getTime()) + ".csv"), "UTF-8");
             printWriter.write(reportDocument.body());
             printWriter.close();
             System.out.println("Export Sucessfull!");

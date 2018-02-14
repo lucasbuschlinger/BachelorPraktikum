@@ -14,7 +14,7 @@ public class DateHelper {
     /**
      * The date format for the current localisation.
      */
-    private static String dateFormat;
+    private String dateFormat;
 
     /**
      * The valid start date.
