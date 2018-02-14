@@ -29,7 +29,6 @@ import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 public abstract class VaultInterpreter extends AbstractPlugin implements Interpreter {
     /**
      * The data access object {@link VaultDao} used by the interpreter.
-     * 
      */
     private VaultDao database;
 
@@ -38,7 +37,7 @@ public abstract class VaultInterpreter extends AbstractPlugin implements Interpr
      * @param database the database to be set
      */
     @Override
-    public void init(final VaultDao db) {
+    public void init(final VaultDao database) {
         this.database = database;
     }
 
