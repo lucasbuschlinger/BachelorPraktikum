@@ -35,7 +35,7 @@ public class PlotterExporter extends Plugin {
      * Actual implementation of the PlotterExporter.
      */
     @Extension
-    public static class PlotterExporterImplementation extends VaultExporter {
+    public static final class PlotterExporterImplementation extends VaultExporter {
 
         /**
          * Supported plot formats.
@@ -222,6 +222,14 @@ public class PlotterExporter extends Plugin {
             }
 
             return true;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
         }
     }
 }

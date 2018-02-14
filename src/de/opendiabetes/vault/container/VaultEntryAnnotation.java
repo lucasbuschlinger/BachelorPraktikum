@@ -220,6 +220,10 @@ public class VaultEntryAnnotation implements Serializable {
          */
         EXERCISE_AUTOMATIC_OTHER,
         /**
+         * The average heart rate during the exercise.
+         */
+        AVERAGE_HEART_RATE,
+        /**
          * The pump error code.
          */
         PUMP_ERROR_CODE,

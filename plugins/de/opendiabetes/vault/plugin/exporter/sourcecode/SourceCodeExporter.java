@@ -62,13 +62,14 @@ public class SourceCodeExporter extends Plugin {
      * Actual implementation of the SourceCode exporter plugin.
      */
     @Extension
-    public static class SourceCodeExporterImplementation extends VaultExporter {
+    public static final class SourceCodeExporterImplementation extends VaultExporter {
 
         /**
          * List to hold all the entries queried from the database in {@link #prepareData(List)}
          * and written on {@link #writeToFile(List)}.
          */
         private final List<String> entries = new ArrayList<>();
+
         /**
          * Method to get the ListInitCode.
          *
@@ -141,6 +142,7 @@ public class SourceCodeExporter extends Plugin {
         protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
             String filePath = getExportFilePath();
+
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
 
             writer.write("  public static List<VaultEntry> getStaticDataset() throws ParseException {\n");
@@ -178,12 +180,12 @@ public class SourceCodeExporter extends Plugin {
             dummy.add(new CsvEntry() {
                 @Override
                 public String[] toCsvRecord() {
-                    return new String[]{};
+                    return new String[] {};
                 }
 
                 @Override
                 public String[] getCsvHeaderRecord() {
-                    return new String[]{};
+                    return new String[] {};
                 }
             });
 
@@ -195,6 +197,9 @@ public class SourceCodeExporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            if (!super.loadConfiguration(configuration)) {
+                return false;
+            }
             // Status update constant
             final int loadConfigProgress = 0;
             // Format of dates which must be used.
@@ -248,9 +253,13 @@ public class SourceCodeExporter extends Plugin {
                 return true;
             }
         }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 }
-
-
-
-

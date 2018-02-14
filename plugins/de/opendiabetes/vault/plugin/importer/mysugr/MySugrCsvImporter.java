@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -51,7 +50,7 @@ public class MySugrCsvImporter extends Plugin {
      * Actual implementation of the MySugrCsvImporter plugin.
      */
     @Extension
-    public static class MySugrCsvImporterImplementation extends CSVImporter {
+    public static final class MySugrCsvImporterImplementation extends CSVImporter {
 
         /**
          * The maximum number of lines to scan for a header.
@@ -293,8 +292,9 @@ public class MySugrCsvImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
         }
     }
 }

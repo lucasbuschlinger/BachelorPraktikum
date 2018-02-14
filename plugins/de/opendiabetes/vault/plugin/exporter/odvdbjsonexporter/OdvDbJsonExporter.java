@@ -54,7 +54,7 @@ public class OdvDbJsonExporter extends Plugin {
      * Actual implementation of the OdvDbJsonExporter.
      */
     @Extension
-    public static class OdvDbJsonExporterImplementation extends FileExporter {
+    public static final class OdvDbJsonExporterImplementation extends FileExporter {
 
         /**
          * Prepares data for the export by putting it into exportable containers.
@@ -94,6 +94,9 @@ public class OdvDbJsonExporter extends Plugin {
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            if (!super.loadConfiguration(configuration)) {
+                return false;
+            }
             // Status update constant
             final int loadConfigProgress = 0;
             // Format of dates which must be used.
@@ -146,6 +149,14 @@ public class OdvDbJsonExporter extends Plugin {
                 LOG.log(Level.INFO, "Export data is not period restricted by OdvDbJsonExporter configuration.");
                 return true;
             }
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
         }
     }
 }

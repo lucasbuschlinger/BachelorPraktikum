@@ -6,7 +6,9 @@ import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
+import sun.rmi.runtime.Log;
 
+import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -201,9 +203,9 @@ public abstract class VaultExporter extends CSVFileExporter {
             case MEAL_MANUAL:
                 csvEntry.setMealValue(entry.getValue());
                 break;
-            case EXERCISE_BICYCLE:
-            case EXERCISE_WALK:
-            case EXERCISE_RUN:
+            case EXERCISE_LOW:
+            case EXERCISE_MID:
+            case EXERCISE_HIGH:
             case EXERCISE_MANUAL:
             case EXERCISE_OTHER:
                 csvEntry.setExerciseTimeValue(entry.getValue());
@@ -265,6 +267,9 @@ public abstract class VaultExporter extends CSVFileExporter {
             case OTHER_ANNOTATION:
                 // will be handled by annotations
                 break;
+            case WEIGHT:
+                csvEntry.setWeight(entry.getValue());
+                break;
             default:
                 LOG.severe("TYPE ASSERTION ERROR!");
                 throw new AssertionError();
@@ -301,6 +306,10 @@ public abstract class VaultExporter extends CSVFileExporter {
                         break;
                     case USER_TEXT:
                         csvEntry.addOtherAnnotation(annotation.toStringWithValue());
+                        break;
+                    case AVERAGE_HEART_RATE:
+                        csvEntry.addSleepAnnotation(annotation.toStringWithValue());
+                        break;
                     default:
                         LOG.severe("ANNOTATION ASSERTION ERROR!");
                         throw new AssertionError();

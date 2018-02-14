@@ -49,13 +49,16 @@ public class VaultCSVExporter extends Plugin {
      * Actual implementation of the VaultCSV exporter plugin.
      */
     @Extension
-    public static class VaultCSVExporterImplementation extends VaultExporter {
+    public static final class VaultCSVExporterImplementation extends VaultExporter {
 
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean loadConfiguration(final Properties configuration) {
+            if (!super.loadConfiguration(configuration)) {
+                return false;
+            }
             // Status update constant
             final int loadConfigProgress = 0;
             // Format of dates which must be used.
@@ -89,7 +92,7 @@ public class VaultCSVExporter extends Plugin {
                     dateTo = dateFormat.parse(endDate);
                 } catch (ParseException exception) {
                     LOG.log(Level.SEVERE, "Either of the dates specified in the VaultCSVExporter config is malformed."
-                                            + " The expected format is dd/mm/yyyy.");
+                            + " The expected format is dd/mm/yyyy.");
                     return false;
                 }
 
@@ -110,6 +113,12 @@ public class VaultCSVExporter extends Plugin {
             }
         }
 
-
+        /**
+         * {@inheritDoc}
+         */
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 }

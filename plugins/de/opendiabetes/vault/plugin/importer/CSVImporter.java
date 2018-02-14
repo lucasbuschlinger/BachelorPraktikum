@@ -53,12 +53,13 @@ public abstract class CSVImporter extends FileImporter {
     }
 
     /*HACK: uses filenameforlogging instead of fileInputStream*/
+
     /**
      * Method used to detect the valid delimiter by trying to validate the header using a given delimiter.
      *
-     * @param delimiter      the delimiters to use to read the file
-     * @param file the file to read
-     * @param metaEntries     placeholder for future extensions
+     * @param delimiter   the delimiters to use to read the file
+     * @param file        the file to read
+     * @param metaEntries placeholder for future extensions
      * @return a CsvReader pointing to the headers, null if the headers could not be validated
      * @throws IOException if file reading goes wrong
      */
@@ -89,7 +90,7 @@ public abstract class CSVImporter extends FileImporter {
         final int maxProgress = 100;
 
         //This list is used as a placeholder for future extensions
-         List<String[]> metaEntries = new ArrayList<>();
+        List<String[]> metaEntries = new ArrayList<>();
 
         this.notifyStatus(0, "Reading Header");
         try {
@@ -194,6 +195,9 @@ public abstract class CSVImporter extends FileImporter {
      */
     @Override
     public boolean loadConfiguration(final Properties configuration) {
+        if (!super.loadConfiguration(configuration)) {
+            return false;
+        }
         if (configuration.containsKey("delimiter")) {
             String delimiter = configuration.getProperty("delimiter");
             if (delimiter != null && delimiter.length() == 1) {

@@ -105,7 +105,4 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
      * @return The return code as specified in {@link ReturnCode}.
      */
     int exportDataToFile(List<VaultEntry> data);
-
-
-
 }
