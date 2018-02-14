@@ -135,6 +135,7 @@ public class SourceCodeExporter extends Plugin {
         protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
             String filePath = getExportFilePath();
+
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
 
             writer.write("  public static List<VaultEntry> getStaticDataset() throws ParseException {\n");
@@ -193,7 +194,3 @@ public class SourceCodeExporter extends Plugin {
         }
     }
 }
-
-
-
-
