@@ -52,7 +52,7 @@ public class SonySWR21Importer extends Plugin {
      * Actual implementation of the Sony SWR21 importer plugin.
      */
     @Extension
-    public static class SonySWR21ImporterImplementation extends CSVImporter {
+    public static final class SonySWR21ImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
@@ -156,7 +156,7 @@ public class SonySWR21Importer extends Plugin {
                     break;
                 case RUN:
                     tmpEntry = new VaultEntry(
-                            VaultEntryType.EXERCISE_RUN,
+                            VaultEntryType.EXERCISE_OTHER,
                             timestamp,
                             durationInMinutes);
                     tmpEntry.addAnnotation(new VaultEntryAnnotation(
@@ -165,7 +165,7 @@ public class SonySWR21Importer extends Plugin {
                     break;
                 case WALK:
                     tmpEntry = new VaultEntry(
-                            VaultEntryType.EXERCISE_WALK,
+                            VaultEntryType.EXERCISE_OTHER,
                             timestamp,
                             durationInMinutes);
                     tmpEntry.addAnnotation(new VaultEntryAnnotation(
@@ -192,5 +192,13 @@ public class SonySWR21Importer extends Plugin {
         protected void preprocessingIfNeeded(final String filePath) {
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 }

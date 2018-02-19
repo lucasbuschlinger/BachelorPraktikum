@@ -1,6 +1,5 @@
 package de.opendiabetes.vault.plugin.common;
 
-import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +15,7 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
     /**
      * List containing all compatible plugins that are listed in this plugins config.
      * The data of this field is returned by {@link this#getListOfCompatiblePluginIDs()}
-     * and used in {@link OpenDiabetesPluginManager#computeCompatibilityMap()} to list compatibilities among plugins.
+     * and used to list compatibilities among plugins.
      */
     private List<String> compatiblePlugins = new ArrayList<>();
     /**
@@ -46,6 +45,9 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
     }
 
     /**
+     * Uses the properties file specified in {@link OpenDiabetesPlugin#loadConfiguration(Properties)}
+     * and returns the list mapped by the key "compatiblePlugins".
+     * @see {@link this#loadConfiguration(Properties)}
      * {@inheritDoc}
      */
     @Override
@@ -60,10 +62,17 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
      * @return always true
      */
     @Override
-    public boolean loadConfiguration(final Properties configuration) {
+    public final boolean loadConfiguration(final Properties configuration) {
         if (configuration.containsKey("compatiblePlugins")) {
             this.compatiblePlugins.addAll(Arrays.asList(configuration.getProperty("compatiblePlugins").split("\\s*,\\s*")));
         }
-        return true;
+        return loadPluginSpecificConfiguration(configuration);
     }
+
+    /**
+     * Template method to load plugin specific configurations from the config file.
+     * @param configuration The configuration object.
+     * @return wheter a valid configuration could be read from the config file
+     */
+    protected abstract boolean loadPluginSpecificConfiguration(Properties configuration);
 }

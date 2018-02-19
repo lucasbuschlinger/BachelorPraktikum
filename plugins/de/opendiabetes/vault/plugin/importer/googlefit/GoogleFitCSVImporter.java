@@ -51,7 +51,7 @@ public class GoogleFitCSVImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static class GoogleFitCSVImporterImplementation extends CSVImporter {
+    public static final class GoogleFitCSVImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
@@ -93,24 +93,24 @@ public class GoogleFitCSVImporter extends Plugin {
             Date timestamp = new Date(parseValidator.getStartTime(creader, getImportFilePath()));
             double durationInMinutes = Math.round((runTime + bikeTime + walkTime) / msPerMin);
             double maxSpeed = parseValidator.getMaxSpeedValue(creader);
-
+            // TODO: Correct exercise type
             // estimate the activity within this slot
             if (runTime > bikeTime && runTime > walkTime) {
-                newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_RUN,
+                newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_OTHER,
                         timestamp, durationInMinutes);
                 newVaultEntry.setValue2(maxSpeed);
                 newVaultEntry.addAnnotation((new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.EXERCISE_GoogleRun))
                         .setValue(EasyFormatter.formatDouble(durationInMinutes)));
                 retVal.add(newVaultEntry);
             } else if (bikeTime > runTime && bikeTime > walkTime) {
-                newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_BICYCLE,
+                newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_OTHER,
                         timestamp, durationInMinutes);
                 newVaultEntry.setValue2(maxSpeed);
                 newVaultEntry.addAnnotation((new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.EXERCISE_GoogleBicycle))
                         .setValue(EasyFormatter.formatDouble(durationInMinutes)));
                 retVal.add(newVaultEntry);
             } else {
-                newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_WALK,
+                newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_OTHER,
                         timestamp, durationInMinutes);
                 newVaultEntry.setValue2(maxSpeed);
                 newVaultEntry.addAnnotation((new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.EXERCISE_GoogleWalk))
@@ -121,6 +121,14 @@ public class GoogleFitCSVImporter extends Plugin {
             return retVal;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 
 

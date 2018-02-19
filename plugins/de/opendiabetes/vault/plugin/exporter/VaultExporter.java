@@ -4,10 +4,11 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.VaultCsvEntry;
-import de.opendiabetes.vault.data.VaultDao;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
+import sun.rmi.runtime.Log;
 
+import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,58 +22,6 @@ public abstract class VaultExporter extends CSVFileExporter {
      * Buffer for the entries before they get exported.
      */
     private List<VaultEntry> delayBuffer = new ArrayList<>();
-    /**
-     * The {@link de.opendiabetes.vault.data.VaultDao} database to export from.
-     */
-    private VaultDao database;
-
-    /**
-     * Setter for the {@link VaultExporter#database}.
-     *
-     * @param database The database to be set.
-     */
-    private void setDatabase(final VaultDao database) {
-        this.database = database;
-    }
-
-    /**
-     * This variant of setAdditional sets the database used by the {@link VaultExporter}s.
-     *
-     * @param object The database to be set.
-     * @throws IllegalArgumentException Thrown if the object passed is not an instance of {@link VaultDao}.
-     */
-    @Override
-    public void setAdditional(final Object object) throws IllegalArgumentException {
-        if (object instanceof VaultDao) {
-            setDatabase((VaultDao) object);
-        } else {
-            throw new IllegalArgumentException("Wrong argument given, only objects of type VaultDao are applicable!");
-        }
-    }
-
-    /**
-     * Queries the data from the Vault database.
-     *
-     * @return The queried data.
-     */
-    protected List<VaultEntry> queryData() {
-        List<VaultEntry> entries;
-
-        try {
-            // query entries
-            if (this.getIsPeriodRestricted()) {
-                entries = database.queryVaultEntriesBetween(this.getExportPeriodFrom(),
-                        this.getExportPeriodTo());
-            } else {
-                entries = database.queryAllVaultEntries();
-            }
-
-            return entries;
-        } catch (NullPointerException exception) {
-            LOG.log(Level.SEVERE, "No database to query data from!" + exception);
-            return null;
-        }
-    }
 
     /**
      * Prepares data queried from the database for export.
@@ -83,26 +32,29 @@ public abstract class VaultExporter extends CSVFileExporter {
     @Override
     protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
         // Status update constants
-        final int queryDataProgress = 20;
-        final int startPrepareProgress = 40;
-        final int prepareDoneProgress = 60;
+        final int startPrepareProgress = 33;
+        final int prepareDoneProgress = 66;
 
-        List<ExportEntry> returnValues = new ArrayList<>();
-
-        this.notifyStatus(queryDataProgress, "Querying data");
-
-        List<VaultEntry> tmpValues = queryData();
-        if (tmpValues == null || tmpValues.isEmpty()) {
+        if (data == null || data.isEmpty()) {
             return null;
         }
 
+        List<ExportEntry> returnValues = new ArrayList<>();
+
+        List<VaultEntry> tmpData;
+        if (getIsPeriodRestricted()) {
+            tmpData = filterPeriodRestriction(data);
+        } else {
+            tmpData = data;
+        }
+
         // list is ordered by timestamp from database (or should be ordered otherwise)
-        Date fromTimestamp = tmpValues.get(0).getTimestamp();
-        Date toTimestamp = tmpValues.get(tmpValues.size() - 1).getTimestamp();
+        Date fromTimestamp = tmpData.get(0).getTimestamp();
+        Date toTimestamp = tmpData.get(tmpData.size() - 1).getTimestamp();
 
         this.notifyStatus(startPrepareProgress, "Preparing data for export");
 
-        if (!tmpValues.isEmpty()) {
+        if (!tmpData.isEmpty()) {
             int i = 0;
             delayBuffer = new ArrayList<>();
             while (!fromTimestamp.after(toTimestamp)) {
@@ -122,16 +74,16 @@ public abstract class VaultExporter extends CSVFileExporter {
                 }
 
                 // search and add vault entries for this time slot
-                VaultEntry tmpEntry = tmpValues.get(i);
+                VaultEntry tmpEntry = tmpData.get(i);
                 while (fromTimestamp.equals(tmpEntry.getTimestamp())) {
-                    if (i < tmpValues.size() - 1) {
+                    if (i < tmpData.size() - 1) {
                         i++;
                     } else {
                         i--;
                         break;
                     }
                     tmpCsvEntry = processVaultEntry(tmpCsvEntry, tmpEntry);
-                    tmpEntry = tmpValues.get(i);
+                    tmpEntry = tmpData.get(i);
                 }
 
                 // save entry if not empty
@@ -151,7 +103,7 @@ public abstract class VaultExporter extends CSVFileExporter {
     }
 
     /**
-     * Processes the VaultEntries retrieved by {@link #queryData()}.
+     * Processes the VaultEntries.
      *
      * @param csvEntry The {@link VaultCsvEntry} to process the data to.
      * @param entry The {@link VaultEntry} to process.
@@ -251,9 +203,9 @@ public abstract class VaultExporter extends CSVFileExporter {
             case MEAL_MANUAL:
                 csvEntry.setMealValue(entry.getValue());
                 break;
-            case EXERCISE_BICYCLE:
-            case EXERCISE_WALK:
-            case EXERCISE_RUN:
+            case EXERCISE_LOW:
+            case EXERCISE_MID:
+            case EXERCISE_HIGH:
             case EXERCISE_MANUAL:
             case EXERCISE_OTHER:
                 csvEntry.setExerciseTimeValue(entry.getValue());
@@ -315,6 +267,9 @@ public abstract class VaultExporter extends CSVFileExporter {
             case OTHER_ANNOTATION:
                 // will be handled by annotations
                 break;
+            case WEIGHT:
+                csvEntry.setWeight(entry.getValue());
+                break;
             default:
                 LOG.severe("TYPE ASSERTION ERROR!");
                 throw new AssertionError();
@@ -351,6 +306,10 @@ public abstract class VaultExporter extends CSVFileExporter {
                         break;
                     case USER_TEXT:
                         csvEntry.addOtherAnnotation(annotation.toStringWithValue());
+                        break;
+                    case AVERAGE_HEART_RATE:
+                        csvEntry.addSleepAnnotation(annotation.toStringWithValue());
+                        break;
                     default:
                         LOG.severe("ANNOTATION ASSERTION ERROR!");
                         throw new AssertionError();
@@ -358,5 +317,16 @@ public abstract class VaultExporter extends CSVFileExporter {
             }
         }
         return csvEntry;
+    }
+
+    /**
+     * Unused, thus unimplemented.
+     *
+     * @param entries Nothing here.
+     * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
+     */
+    @Override
+    public void setEntries(final List<?> entries) throws IllegalArgumentException {
+        LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
     }
 }

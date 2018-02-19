@@ -24,15 +24,9 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
-
-import static java.lang.Boolean.parseBoolean;
 
 /**
  * Wrapper class for the OdvDbJsonExporter plugin.
@@ -54,7 +48,7 @@ public class OdvDbJsonExporter extends Plugin {
      * Actual implementation of the OdvDbJsonExporter.
      */
     @Extension
-    public static class OdvDbJsonExporterImplementation extends FileExporter {
+    public static final class OdvDbJsonExporterImplementation extends FileExporter {
 
         /**
          * Prepares data for the export by putting it into exportable containers.
@@ -65,90 +59,33 @@ public class OdvDbJsonExporter extends Plugin {
         @Override
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
             List<ExportEntry> container = new ArrayList<>();
-            container.add(OdvDbJsonPseudoEntry.fromVaultEntryList(data));
+            List<VaultEntry> tempData;
+            if (getIsPeriodRestricted()) {
+               tempData = filterPeriodRestriction(data);
+            } else {
+                tempData = data;
+            }
+            container.add(OdvDbJsonPseudoEntry.fromVaultEntryList(tempData));
             return container;
         }
 
         /**
-         * Setter for an object used by the specific exporters.
-         * The implementation of this should only call a private setter method like
-         * {@link de.opendiabetes.vault.plugin.exporter.VaultExporter#setDatabase(VaultDao)}.
-         * in the exporters and pass the object to those.
+         * Unused, thus unimplemented.
          *
-         * @param object The object to be set.
-         * @throws IllegalArgumentException Thrown if a wrong object gets passed (for example if a {@link VaultDao} object gets passed
-         *                                  to a {@link de.opendiabetes.vault.plugin.exporter.slicelayoutcsv.SliceLayoutCSVExporter} which
-         *                                  only takes a list of {@link de.opendiabetes.vault.container.SliceEntry}.
+         * @param entries Nothing here.
+         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
          */
         @Override
-        public void setAdditional(final Object object) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Unpossible to set additional for OdvDbJsonExporter because "
-                    + "the exporter does not have any additional objects to overwrite.");
+        public void setEntries(final List<?> entries) throws IllegalArgumentException {
+            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
         /**
-         * Loads the configuration for the exporter plugin.
-         *
-         * @param configuration The configuration object.
-         * @return True if configuration can be loaded, false otherwise.
+         * {@inheritDoc}
          */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            if (!super.loadConfiguration(configuration)) {
-                return false;
-            }
-            // Status update constant
-            final int loadConfigProgress = 0;
-            // Format of dates which must be used.
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-            this.notifyStatus(loadConfigProgress, "Loading configuration");
-
-            if (!configuration.containsKey("periodRestriction")
-                    || configuration.getProperty("periodRestriction") == null
-                    || configuration.getProperty("periodRestriction").length() == 0) {
-                LOG.log(Level.WARNING, "OdvDbJsonExporter configuration does not specify whether the data is period restricted");
-                return false;
-            }
-            boolean restriction = parseBoolean(configuration.getProperty("periodRestriction"));
-            this.setIsPeriodRestricted(restriction);
-
-            // Only necessary to look for dates if data is period restricted
-            if (restriction) {
-                Date dateFrom;
-                Date dateTo;
-                String startDate = configuration.getProperty("periodRestrictionFrom");
-                String endDate = configuration.getProperty("periodRestrictionTo");
-                if (startDate == null || endDate == null) {
-                    LOG.log(Level.SEVERE, "OdvDbJsonExporter configuration specified a period restriction on the data but no correct"
-                            + " dates were specified.");
-                    return false;
-                }
-                // Parsing to actual dates
-                try {
-                    dateFrom = dateFormat.parse(startDate);
-                    dateTo = dateFormat.parse(endDate);
-                } catch (ParseException exception) {
-                    LOG.log(Level.SEVERE, "Either of the dates specified in the OdvDbJsonExporter config is malformed."
-                            + " The expected format is dd/mm/yyyy.");
-                    return false;
-                }
-
-                // Check whether the start time lies before the end time
-                if (dateFrom.after(dateTo)) {
-                    LOG.log(Level.WARNING, "The date the data is period restricted from lies after the date it is restricted to,"
-                            + " check order.");
-                    return false;
-                }
-
-                this.setExportPeriodFrom(dateFrom);
-                this.setExportPeriodTo(dateTo);
-                LOG.log(Level.INFO, "Data is period restricted from " + dateFrom.toString() + " to " + dateTo.toString());
-                return true;
-            } else {
-                LOG.log(Level.INFO, "Export data is not period restricted by OdvDbJsonExporter configuration.");
-                return true;
-            }
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
         }
     }
 }

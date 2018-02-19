@@ -51,7 +51,7 @@ public class LibreTextImporter extends Plugin {
      * Actual implementation of the LibreText importer plugin.
      */
     @Extension
-    public static class LibreTextImporterImplementation extends CSVImporter {
+    public static final class LibreTextImporterImplementation extends CSVImporter {
 
         /**
          * Time format used in LibreText data.
@@ -123,5 +123,14 @@ public class LibreTextImporter extends Plugin {
          */
         @Override
         protected void preprocessingIfNeeded(final String filePath) { }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String getHelpFilePath() {
+            //TODO write help
+            return null;
+        }
     }
 }

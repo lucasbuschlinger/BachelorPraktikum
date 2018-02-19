@@ -31,7 +31,7 @@ public interface OpenDiabetesPlugin {
     Logger LOG = Logger.getLogger(OpenDiabetesPlugin.class.getName());
 
     /**
-     * Loads the configuration for the exporter plugin.
+     * Loads the configuration for the given plugin.
      *
      * @param configuration The configuration object.
      * @return True if configuration can be loaded, false otherwise.
@@ -39,6 +39,15 @@ public interface OpenDiabetesPlugin {
     boolean loadConfiguration(Properties configuration);
 
     /**
+     *
+     * @return a path to a file containing .md/html formatted text,
+     * that gets displayed to the user if he wants to know more about that plugin.
+     */
+    String getHelpFilePath();
+    /**
+     * Takes the list of compatible plugins from a configuration file and returns it.
+     * @see {@link AbstractPlugin#loadConfiguration(Properties)} {@link AbstractPlugin#getListOfCompatiblePluginIDs()}
+     * for an implementation.
      * @return a list of plugin names that are known to be compatible with this plugin
      */
     List<String> getListOfCompatiblePluginIDs();
