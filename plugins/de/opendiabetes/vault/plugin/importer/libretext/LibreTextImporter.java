@@ -54,11 +54,6 @@ public class LibreTextImporter extends Plugin {
     public static final class LibreTextImporterImplementation extends CSVImporter {
 
         /**
-         * Time format used in LibreText data.
-         */
-        private static final String TIME_FORMAT_LIBRE_DE = "yyyy.MM.dd HH:mm";
-
-        /**
          * Constructor for a CSV validator.
          */
         public LibreTextImporterImplementation() {
@@ -107,6 +102,13 @@ public class LibreTextImporter extends Plugin {
                 case BLOOD_GLUCOSE:
                     value = parseValidator.getBloodGlucose(reader);
                     tempEntry = new VaultEntry(VaultEntryType.GLUCOSE_BG, timestamp, value);
+                    break;
+                case TIME_CHANGED:
+                    tempEntry = new VaultEntry(VaultEntryType.CGM_TIME_SYNC, timestamp);
+                    break;
+                case CARBOHYDRATES:
+                    value = parseValidator.getCarbohydrates(reader);
+                    tempEntry = new VaultEntry(VaultEntryType.MEAL_MANUAL, timestamp, value);
                     break;
                  default:
                     return null;
