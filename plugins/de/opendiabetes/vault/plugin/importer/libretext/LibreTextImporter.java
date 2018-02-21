@@ -104,12 +104,17 @@ public class LibreTextImporter extends Plugin {
                     tempEntry = new VaultEntry(VaultEntryType.GLUCOSE_BG, timestamp, value);
                     break;
                 case TIME_CHANGED:
-                    tempEntry = new VaultEntry(VaultEntryType.CGM_TIME_SYNC, timestamp);
+                    timestamp = parseValidator.getTimeSync(reader);
+                    tempEntry = new VaultEntry(VaultEntryType.CGM_TIME_SYNC, timestamp, VaultEntry.VALUE_UNUSED);
                     break;
                 case CARBOHYDRATES:
                     value = parseValidator.getCarbohydrates(reader);
                     tempEntry = new VaultEntry(VaultEntryType.MEAL_MANUAL, timestamp, value);
                     break;
+                //case BOLUS_NORMAL:
+                //   value = parseValidator.getBolusNormal(reader);
+                //    tempEntry = new VaultEntry(VaultEntryType.BOLUS_NORMAL, timestamp, value);
+                //    break;
                  default:
                     return null;
             }

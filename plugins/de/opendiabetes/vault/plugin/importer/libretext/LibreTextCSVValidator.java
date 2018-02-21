@@ -356,6 +356,10 @@ public class LibreTextCSVValidator extends CSVValidator {
          * Indicates that the value is the timestamp.
          */
         TIME_CHANGED(6);
+//        /**
+//        * Indicates that the value is that of a bolus normal.
+//        */
+//        BOLUS_NORMAL(TODO);
 
         /**
          * The numeric representation of the types of data.
