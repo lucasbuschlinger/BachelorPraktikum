@@ -159,6 +159,7 @@ public class ODVExporter extends Plugin {
                 fileOutputStream = new FileOutputStream(exportFilePath);
             } catch (FileNotFoundException exception) {
                 LOG.log(Level.SEVERE, "Could not open output stream " + exportFilePath);
+                this.notifyStatus(-1, "An error occurred while creating file " + exportFilePath + ".");
                 return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
@@ -168,6 +169,7 @@ public class ODVExporter extends Plugin {
             if (!file.exists()) {
                 if (!file.mkdir()) {
                     LOG.log(Level.SEVERE, "Could not create temporary folder");
+                    this.notifyStatus(-1, "Could not create temporary folder.");
                     return ReturnCode.RESULT_ERROR.getCode();
                 }
             }
@@ -201,7 +203,8 @@ public class ODVExporter extends Plugin {
                 try {
                     checksum = makeChecksum(exportFile);
                 } catch (Exception exception) {
-                    return ReturnCode.RESULT_ERROR.getCode();
+                    this.notifyStatus(-1, "An error occurred while creating the files' checksums.");
+                	return ReturnCode.RESULT_ERROR.getCode();
                 }
                 thisEntryMetaData.file = exportFile;
                 thisEntryMetaData.checksum = checksum;
@@ -211,7 +214,8 @@ public class ODVExporter extends Plugin {
             try {
                 metaFile = makeMetaFile(metaData);
             } catch (IOException exception) {
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+                this.notifyStatus(-1, "An error occurred while creating a meta file.");
+            	return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             notifyStatus(PROGRESS_ALL_EXPORTERS_DONE, "Done exporting with all available exporters");
             // Adding all generated export files and the meta file to the zip
@@ -224,7 +228,8 @@ public class ODVExporter extends Plugin {
                 }
                 addFileToZip(metaFile, zipOutputStream);
             } catch (Exception exception) {
-                    return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+                this.notifyStatus(-1, "An error occurred while accessing a file.");
+            	return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             try {
                 zipOutputStream.close();

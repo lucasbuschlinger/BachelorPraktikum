@@ -110,6 +110,7 @@ public abstract class CSVImporter extends FileImporter {
             }
             if (creader == null) { //header could not be validated
                 LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
+                this.notifyStatus(-1, "Could not find a valid header in file " + filenameForLogging + ".");
                 return false;
             }
             // read entries

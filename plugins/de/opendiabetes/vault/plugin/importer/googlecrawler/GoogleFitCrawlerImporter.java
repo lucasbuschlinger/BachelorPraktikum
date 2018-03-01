@@ -232,7 +232,8 @@ public class GoogleFitCrawlerImporter extends Plugin {
                 }
 
             } catch (Exception e) {
-                return false;
+                this.notifyStatus(-1, "An error occurred while importing data.");
+            	return false;
             }
 
             return true;

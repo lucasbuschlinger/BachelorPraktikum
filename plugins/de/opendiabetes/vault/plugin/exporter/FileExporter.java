@@ -74,18 +74,21 @@ public abstract class FileExporter extends AbstractExporter {
         File checkFile = new File(filePath);
         if (checkFile.exists()
                 && (!checkFile.isFile() || !checkFile.canWrite())) {
-            return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
+        	return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
         }
         try {
             fileOutputStream = new FileOutputStream(checkFile);
         } catch (FileNotFoundException exception) {
             LOG.log(Level.SEVERE, "Error accessing file for output stream", exception);
+            this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
             return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
         }
         // create csv data
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
-            return ReturnCode.RESULT_NO_DATA.getCode();
+            this.notifyStatus(-1, "Could not find data to export.");
+        	return ReturnCode.RESULT_NO_DATA.getCode();
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
@@ -93,6 +96,7 @@ public abstract class FileExporter extends AbstractExporter {
             writeToFile(exportData);
         } catch (IOException exception) {
             LOG.log(Level.SEVERE, "Error writing odv csv file: {0}" + filePath, exception);
+            this.notifyStatus(-1, "An error occurred while writing the odv csv file.");
             return ReturnCode.RESULT_ERROR.getCode();
         } finally { //finally is needed here!
             try {

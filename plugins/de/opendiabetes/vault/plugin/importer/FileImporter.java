@@ -61,6 +61,7 @@ public abstract class FileImporter extends AbstractImporter {
     public boolean importData() {
         if (null == importFilePath) {
             LOG.log(Level.WARNING, "No path specified from where to import data.");
+            this.notifyStatus(-1, "No path specified from where to import data.");
             return false;
         }
         preprocessingIfNeeded(importFilePath);
@@ -73,6 +74,7 @@ public abstract class FileImporter extends AbstractImporter {
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
                     + importFilePath, ex);
+            this.notifyStatus(-1, "Could not find file " + importFilePath + ".");
             return false;
         } finally {
             if (inputStream != null) {
