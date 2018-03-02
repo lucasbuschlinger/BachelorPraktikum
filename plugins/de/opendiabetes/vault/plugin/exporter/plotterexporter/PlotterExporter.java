@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -23,13 +24,18 @@ import java.util.logging.Level;
 public class PlotterExporter extends Plugin {
 
     /**
+     * Path of the plugin directory.
+     */
+    private static Path pluginPath = null;
+
+    /**
      * Constructor for the {@link org.pf4j.PluginManager}.
      *
      * @param wrapper The {@link org.pf4j.PluginWrapper}.
      */
     public PlotterExporter(final PluginWrapper wrapper) {
         super(wrapper);
-        this.wrapper = wrapper;
+        pluginPath = this.wrapper.getPluginPath().toAbsolutePath();
     }
 
     /**
@@ -72,7 +78,7 @@ public class PlotterExporter extends Plugin {
         /**
          * Path to the plotting script.
          */
-        private String scriptPath;
+        private String scriptPath = PlotterExporter.pluginPath.resolve("assets/plot.py").toString();
 
         /**
          * Path to the plotted data.
@@ -236,13 +242,6 @@ public class PlotterExporter extends Plugin {
             } else {
                 // Default is always "image"
                 plotFormat = PlotFormats.IMAGE;
-            }
-
-            this.scriptPath = configuration.getProperty("scriptPath");
-
-            if (this.scriptPath == null || this.scriptPath.isEmpty()) {
-                LOG.log(Level.SEVERE, "Script path not defined");
-                return false;
             }
 
             return true;
