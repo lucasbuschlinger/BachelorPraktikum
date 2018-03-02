@@ -109,10 +109,10 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             Crawler crawler = new Crawler();
 
-            String userHomepath = System.getProperty("user.dir");
-            crawler.generateDocument(auth.getCookies(), fromDate, toDate, userHomepath, logger);
+            String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler";
+            crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath, logger);
 
-            String path = userHomepath + File.separator + "careLink-Export";
+            String path = exportPath + File.separator + "careLink-Export";
 
             // TODO change to dynamic path
             PluginManager manager = new DefaultPluginManager(Paths.get("export"));
