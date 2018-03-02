@@ -29,6 +29,7 @@ public class PlotterExporter extends Plugin {
      */
     public PlotterExporter(final PluginWrapper wrapper) {
         super(wrapper);
+        this.wrapper = wrapper;
     }
 
     /**
@@ -36,6 +37,16 @@ public class PlotterExporter extends Plugin {
      */
     @Extension
     public static final class PlotterExporterImplementation extends VaultExporter {
+
+        /**
+         * The default temporary directory to use.
+         */
+        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + "PlotterExporter";
+
+        /**
+         * The default temporary filename to use.
+         */
+        private static final String DEFAULT_TEMP_FILENAME = "export.csv";
 
         /**
          * Supported plot formats.
@@ -62,6 +73,11 @@ public class PlotterExporter extends Plugin {
          * Path to the plotting script.
          */
         private String scriptPath;
+
+        /**
+         * Path to the plotted data.
+         */
+        private String exportPath;
 
         /**
          * Runs the plot script.
@@ -172,10 +188,8 @@ public class PlotterExporter extends Plugin {
                 throw new IOException("Cannot plot data because python was not found");
             }
 
-            String plotPath = "plot.jpg";
             if (plotFormat == PlotFormats.PDF) {
                 boolean latex = isLaTeXInstalled();
-                plotPath = "plot.pdf";
 
                 if (!latex) {
                     throw new IOException("Cannot plot data to pdf file because pdflatex was not found");
@@ -183,15 +197,25 @@ public class PlotterExporter extends Plugin {
             }
 
             super.writeToFile(csvEntries);
-            if (!plotData(this.getExportFilePath(), plotPath)) {
+            if (!plotData(this.getExportFilePath(), this.exportPath)) {
                 LOG.log(Level.SEVERE, "Failed to plot data");
             }
 
 
             File file = new File(this.getExportFilePath());
             if (!file.delete()) {
-                LOG.log(Level.SEVERE, "Failed to delete export file");
+                LOG.log(Level.SEVERE, "Failed to delete temp export file");
             }
+        }
+
+        /**
+         * The given export path will be overwritten with a temporary file path.
+         * @param exportPath Path where the plot will be written to.
+         */
+        @Override
+        public void setExportFilePath(final String exportPath) {
+            this.exportPath = exportPath;
+            super.setExportFilePath(DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME);
         }
 
         /**
