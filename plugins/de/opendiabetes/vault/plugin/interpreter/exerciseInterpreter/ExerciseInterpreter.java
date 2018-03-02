@@ -139,7 +139,7 @@ public class ExerciseInterpreter extends Plugin {
                                 if (isHistoricElementWithinSlice(lastExerciseItem, historyEntry)) { // is within duration
                                     // merge entries
                                     // db.removeEntry(historyEntry);
-                                    // TODO move this function in parent class, return hashmap with matchin historic elements
+                                    // TODO move this function in parent class, return hashmap with matching historic elements
 
                                     // check if db activity is longer
                                     if (TimestampUtils.addMinutesToTimestamp(
