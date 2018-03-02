@@ -138,7 +138,8 @@ public class ExerciseInterpreter extends Plugin {
                             for (VaultEntry historyEntry : dbValues) {
                                 if (isHistoricElementWithinSlice(lastExerciseItem, historyEntry)) { // is within duration
                                     // merge entries
-                                    //db.removeEntry(historyEntry); // TODO move this function in parent class, return hashmap with matchin historic elements
+                                    // db.removeEntry(historyEntry);
+                                    // TODO move this function in parent class, return hashmap with matching historic elements
 
                                     // check if db activity is longer
                                     if (TimestampUtils.addMinutesToTimestamp(
@@ -201,7 +202,8 @@ public class ExerciseInterpreter extends Plugin {
                                         }
                                     }
                                 }
-                                //TODO Discuss with Jens EntryTypes
+                                // TODO Check if we can get the heart rate for the exercise
+                                // to check which exercise type has been done (low, high, etc.)
                                 /*// get type with biggest share
                                 if (bike > run && bike > walk && bike > other) {
                                     lastExerciseItem.setType(VaultEntryType.EXERCISE_BICYCLE);
@@ -211,9 +213,10 @@ public class ExerciseInterpreter extends Plugin {
                                     lastExerciseItem.setType(VaultEntryType.EXERCISE_WALK);
                                 } else {
                                     lastExerciseItem.setType(VaultEntryType.EXERCISE_OTHER);
-                                }
+                                }*/
+
+                                lastExerciseItem.setType(VaultEntryType.EXERCISE_OTHER);
                                 retVal.add(lastExerciseItem);
-                                */
                             }
 
                             //  setup for new slice search
@@ -400,9 +403,19 @@ public class ExerciseInterpreter extends Plugin {
          * @return true if both entries are in the same slice, false otherwise
          */
         private boolean isHistoricElementWithinSlice(final VaultEntry item, final VaultEntry historyElement) {
-            return item != null && historyElement != null // not null
-                    && TimestampUtils.addMinutesToTimestamp(historyElement.getTimestamp(), -1 * activitySliceThreshold).after(item.getTimestamp()) // starts after current item (with respect to slice threshold)
-                    && TimestampUtils.addMinutesToTimestamp(item.getTimestamp(), Math.round(item.getValue() + activitySliceThreshold)).after(historyElement.getTimestamp()); // starts before item ends (with respect to slice threshold)
+            if (item == null || historyElement == null) {
+                return false;
+            }
+
+            // starts after current item (with respect to slice threshold)
+            boolean startsAfter = TimestampUtils
+                    .addMinutesToTimestamp(historyElement.getTimestamp(), -1 * activitySliceThreshold)
+                    .after(item.getTimestamp());
+            // starts before item ends (with respect to slice threshold)
+            boolean startsBefore = TimestampUtils
+                    .addMinutesToTimestamp(item.getTimestamp(), Math.round(item.getValue() + activitySliceThreshold))
+                    .after(historyElement.getTimestamp());
+            return startsAfter && startsBefore;
         }
 
         /**
