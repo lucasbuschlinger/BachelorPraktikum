@@ -270,6 +270,15 @@ public abstract class VaultExporter extends CSVFileExporter {
             case WEIGHT:
                 csvEntry.setWeight(entry.getValue());
                 break;
+            case Tag:
+            case BLOOD_PRESSURE:
+            case KETONES_MANUAL:
+            case MEAL_DESCRIPTION:
+            case KETONES_BLOOD:
+            case KETONES_URINE:
+                // TODO
+                LOG.log(Level.WARNING, "Skipping entry, it has the unimplemented type: " + entry.getType());
+                break;
             default:
                 LOG.severe("TYPE ASSERTION ERROR!");
                 throw new AssertionError();
@@ -309,6 +318,38 @@ public abstract class VaultExporter extends CSVFileExporter {
                         break;
                     case AVERAGE_HEART_RATE:
                         csvEntry.addSleepAnnotation(annotation.toStringWithValue());
+                        break;
+                    case TAG_Unknown:
+                    case MEAL_Information:
+                    case TAG_Sad:
+                    case TAG_Note:
+                    case TAG_Sick:
+                    case TAG_Lunch:
+                    case TAG_Party:
+                    case TAG_Snack:
+                    case BOLUS_MEAL:
+                    case TAG_Dinner:
+                    case TAG_Sports:
+                    case TAG_Stress:
+                    case TAG_Alcohol:
+                    case TAG_Bedtime:
+                    case TAG_Nervous:
+                    case TAG_Bingeing:
+                    case EXERCISE_cosy:
+                    case TAG_Breakfast:
+                    case TAG_Correction:
+                    case TAG_OfficeWork:
+                    case TAG_HypoFeeling:
+                    case BOLUS_CORRECTION:
+                    case TAG_AfterTheMeal:
+                    case TAG_HyperFeeling:
+                    case EXERCISE_ordinary:
+                    case TAG_BeforeTheMeal:
+                    case EXERCISE_demanding:
+                    case BLOOD_PRESSURE_Systolic:
+                    case BLOOD_PRESSURE_Diastolic:
+                        // TODO
+                        LOG.log(Level.WARNING, "Skipping entry, it has the unimplemented annotation type: " + entry.getType());
                         break;
                     default:
                         LOG.severe("ANNOTATION ASSERTION ERROR!");
