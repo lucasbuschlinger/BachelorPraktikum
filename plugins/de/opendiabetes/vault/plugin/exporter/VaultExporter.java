@@ -299,6 +299,9 @@ public abstract class VaultExporter extends CSVFileExporter {
                     case EXERCISE_TrackerRun:
                     case EXERCISE_TrackerWalk:
                     case EXERCISE_AUTOMATIC_OTHER:
+                    case EXERCISE_cosy:
+                    case EXERCISE_ordinary:
+                    case EXERCISE_demanding:
                         csvEntry.addExerciseAnnotation(annotation.toStringWithValue());
                         break;
                     case ML_PREDICTION_TIME_BUCKET_SIZE:
@@ -335,7 +338,6 @@ public abstract class VaultExporter extends CSVFileExporter {
                     case TAG_Bedtime:
                     case TAG_Nervous:
                     case TAG_Bingeing:
-                    case EXERCISE_cosy:
                     case TAG_Breakfast:
                     case TAG_Correction:
                     case TAG_OfficeWork:
@@ -343,9 +345,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                     case BOLUS_CORRECTION:
                     case TAG_AfterTheMeal:
                     case TAG_HyperFeeling:
-                    case EXERCISE_ordinary:
                     case TAG_BeforeTheMeal:
-                    case EXERCISE_demanding:
                     case BLOOD_PRESSURE_Systolic:
                     case BLOOD_PRESSURE_Diastolic:
                         // TODO
