@@ -488,5 +488,14 @@
 
     <target name="reports" depends="test, checkstyle,findbugs"/>
 
+    <target name="doc" depends="init" description="generate documentation">
+        <delete dir="docs" />
+        <mkdir dir="docs" />
+        <javadoc destdir="docs">
+            <fileset dir="${basedir}/plugins" />
+            <fileset dir="${basedir}/src" />
+        </javadoc>
+    </target>
+
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>
