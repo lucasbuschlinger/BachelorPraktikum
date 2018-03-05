@@ -18,6 +18,7 @@ package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -55,7 +56,7 @@ public class MedtronicCrawlerImporter extends Plugin {
      * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class MedtronicCrawlerImporterImplementation implements Importer {
+    public static class MedtronicCrawlerImporterImplementation extends AbstractImporter {
 
         /**
          * Constructor.
@@ -189,24 +190,14 @@ public class MedtronicCrawlerImporter extends Plugin {
         }
 
         /**
-         * Method to load the plugin's configuration file.
+         * Template method to load plugin specific configurations from the config file.
          *
-         * @param configuration the configuration object
-         * @return True if configuration can be loaded, false otherwise.
+         * @param configuration The configuration object.
+         * @return whether a valid configuration could be read from the config file
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             return false;
-        }
-
-        /**
-         * @return a path to a file containing .md/html formatted text,
-         * that gets displayed to the user if he wants to know more about that plugin.
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO not implemented yet
-            return null;
         }
 
         /**
