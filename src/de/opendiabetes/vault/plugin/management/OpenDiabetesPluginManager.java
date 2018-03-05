@@ -97,7 +97,7 @@ public class OpenDiabetesPluginManager {
             String pluginString = pluginToString(plugin);
             List<String> filteredCompatibility = plugin.getListOfCompatiblePluginIDs()
                     .stream()
-                    .filter(pluginID -> pf4jManager.getExtensions(pluginID).size() != 0) //list only compatible plugins that are available
+                    .filter(pluginID -> plugins.containsKey(pluginID)) //list only compatible plugins that are available
                     .collect(Collectors.toList());
             Set<String> compatibilitySet = compatibilityMap.get(pluginString);
             if (compatibilitySet == null) { //create set if it does not exist
@@ -260,5 +260,18 @@ public class OpenDiabetesPluginManager {
             return (T) plugin;
         }
         return null;
+    }
+
+    /**
+     * @param plugin the plugin for which you want the help file
+     * @return a path to a file containing .md/html formatted text,
+     * that gets displayed to the user if he wants to know more about that plugin.
+     */
+    public final Path getHelpFilePath(final OpenDiabetesPlugin plugin){
+        Path helpPath = Paths.get(getPluginBasePath(plugin), "help.md");
+        if (Files.exists(helpPath)){
+            return Paths.get("resources/defaultHelp.md");
+        }
+        return  helpPath;
     }
 }

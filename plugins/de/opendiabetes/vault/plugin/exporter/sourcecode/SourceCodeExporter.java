@@ -185,12 +185,5 @@ public class SourceCodeExporter extends Plugin {
             return dummy;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

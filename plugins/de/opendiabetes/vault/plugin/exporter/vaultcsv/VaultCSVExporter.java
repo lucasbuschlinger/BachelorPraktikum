@@ -44,12 +44,5 @@ public class VaultCSVExporter extends Plugin {
     @Extension
     public static final class VaultCSVExporterImplementation extends VaultExporter {
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

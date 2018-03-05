@@ -37,10 +37,16 @@ public abstract class CSVImporter extends FileImporter {
      * The validator who handles CSV data.
      */
     private CSVValidator validator;
+
+    /**
+     * Use this delimiter to use automatic delimiter detection.
+     */
+    public static final char AUTO_DELIMITER = 0;
+
     /**
      * Delimiter used in the CSV file.
      */
-    private char delimiter = 0; //set delimiter to "null" to indicate that it is not valid yet
+    private char delimiter = AUTO_DELIMITER; //set delimiter to "null" to indicate that it is not valid yet
 
 
     /**

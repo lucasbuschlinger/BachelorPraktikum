@@ -124,13 +124,5 @@ public class LibreTextImporter extends Plugin {
         @Override
         protected void preprocessingIfNeeded(final String filePath) { }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

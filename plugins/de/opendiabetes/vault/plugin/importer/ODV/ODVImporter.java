@@ -364,13 +364,6 @@ public class ODVImporter extends Plugin {
             private String checksum;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 
 }

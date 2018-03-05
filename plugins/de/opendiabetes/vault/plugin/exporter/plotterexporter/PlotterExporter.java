@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -23,12 +24,18 @@ import java.util.logging.Level;
 public class PlotterExporter extends Plugin {
 
     /**
+     * Path of the plugin directory.
+     */
+    private static Path pluginPath = null;
+
+    /**
      * Constructor for the {@link org.pf4j.PluginManager}.
      *
      * @param wrapper The {@link org.pf4j.PluginWrapper}.
      */
     public PlotterExporter(final PluginWrapper wrapper) {
         super(wrapper);
+        pluginPath = this.wrapper.getPluginPath().toAbsolutePath();
     }
 
     /**
@@ -36,6 +43,16 @@ public class PlotterExporter extends Plugin {
      */
     @Extension
     public static final class PlotterExporterImplementation extends VaultExporter {
+
+        /**
+         * The default temporary directory to use.
+         */
+        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + "PlotterExporter";
+
+        /**
+         * The default temporary filename to use.
+         */
+        private static final String DEFAULT_TEMP_FILENAME = "export.csv";
 
         /**
          * Supported plot formats.
@@ -61,7 +78,12 @@ public class PlotterExporter extends Plugin {
         /**
          * Path to the plotting script.
          */
-        private String scriptPath;
+        private String scriptPath = PlotterExporter.pluginPath.resolve("assets/plot.py").toString();
+
+        /**
+         * Path to the plotted data.
+         */
+        private String exportPath;
 
         /**
          * Runs the plot script.
@@ -172,10 +194,8 @@ public class PlotterExporter extends Plugin {
                 throw new IOException("Cannot plot data because python was not found");
             }
 
-            String plotPath = "plot.jpg";
             if (plotFormat == PlotFormats.PDF) {
                 boolean latex = isLaTeXInstalled();
-                plotPath = "plot.pdf";
 
                 if (!latex) {
                     throw new IOException("Cannot plot data to pdf file because pdflatex was not found");
@@ -183,15 +203,25 @@ public class PlotterExporter extends Plugin {
             }
 
             super.writeToFile(csvEntries);
-            if (!plotData(this.getExportFilePath(), plotPath)) {
+            if (!plotData(this.getExportFilePath(), this.exportPath)) {
                 LOG.log(Level.SEVERE, "Failed to plot data");
             }
 
 
             File file = new File(this.getExportFilePath());
             if (!file.delete()) {
-                LOG.log(Level.SEVERE, "Failed to delete export file");
+                LOG.log(Level.SEVERE, "Failed to delete temp export file");
             }
+        }
+
+        /**
+         * The given export path will be overwritten with a temporary file path.
+         * @param exportPath Path where the plot will be written to.
+         */
+        @Override
+        public void setExportFilePath(final String exportPath) {
+            this.exportPath = exportPath;
+            super.setExportFilePath(DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME);
         }
 
         /**
@@ -214,22 +244,8 @@ public class PlotterExporter extends Plugin {
                 plotFormat = PlotFormats.IMAGE;
             }
 
-            this.scriptPath = configuration.getProperty("scriptPath");
-
-            if (this.scriptPath == null || this.scriptPath.isEmpty()) {
-                LOG.log(Level.SEVERE, "Script path not defined");
-                return false;
-            }
-
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

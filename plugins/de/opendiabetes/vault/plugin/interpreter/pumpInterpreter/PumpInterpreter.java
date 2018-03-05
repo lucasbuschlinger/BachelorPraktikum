@@ -571,20 +571,10 @@ public class PumpInterpreter extends Plugin {
         }
 
         /**
-         * @return a path to a file containing .md/html formatted text,
-         * that gets displayed to the user if he wants to know more about that plugin.
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO implement
-            return null;
-        }
-
-        /**
          * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.
-         * @return wheter a valid configuration could be read from the config file
+         * @return whether a valid configuration could be read from the config file
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {

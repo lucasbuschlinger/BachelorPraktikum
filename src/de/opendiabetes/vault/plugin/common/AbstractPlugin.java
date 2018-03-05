@@ -13,6 +13,11 @@ import java.util.Properties;
 public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
 
     /**
+     * Progress value indicating loading of configuration.
+     */
+    private static final int PROGRESS_LOADED_CONFIG = 33;
+
+    /**
      * List containing all compatible plugins that are listed in this plugins config.
      * The data of this field is returned by {@link this#getListOfCompatiblePluginIDs()}
      * and used to list compatibilities among plugins.
@@ -63,10 +68,13 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
      */
     @Override
     public final boolean loadConfiguration(final Properties configuration) {
-        if (configuration.containsKey("compatiblePlugins")) {
+        if (configuration.containsKey("compatiblePlugins") && !configuration.getProperty("compatiblePlugins").equals("")) {
+
             this.compatiblePlugins.addAll(Arrays.asList(configuration.getProperty("compatiblePlugins").split("\\s*,\\s*")));
         }
-        return loadPluginSpecificConfiguration(configuration);
+        boolean result = loadPluginSpecificConfiguration(configuration);
+        notifyStatus(PROGRESS_LOADED_CONFIG, "Loaded configuration");
+        return result;
     }
 
     /**

@@ -554,14 +554,6 @@ public class MedtronicImporter extends Plugin {
             return retVal;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 
 }
