@@ -97,7 +97,7 @@ public class OpenDiabetesPluginManager {
             String pluginString = pluginToString(plugin);
             List<String> filteredCompatibility = plugin.getListOfCompatiblePluginIDs()
                     .stream()
-                    .filter(pluginID -> pf4jManager.getExtensions(pluginID).size() != 0) //list only compatible plugins that are available
+                    .filter(pluginID -> plugins.containsKey(pluginID)) //list only compatible plugins that are available
                     .collect(Collectors.toList());
             Set<String> compatibilitySet = compatibilityMap.get(pluginString);
             if (compatibilitySet == null) { //create set if it does not exist
