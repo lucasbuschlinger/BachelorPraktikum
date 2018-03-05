@@ -78,37 +78,4 @@ public class ODVDBJsonImporterTest {
         Assert.assertEquals("path/to/import/file", odvImporter.getImportFilePath());
     }
 
-    /**
-     * Test to see whether load configuration returns the correct log.
-     */
-    @Test
-    public void printLogOnLoadConfiguration() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
-        Handler handler = new Handler() {
-            String logOut = "";
-            int msgsReceived = 0;
-
-            @Override
-            public void publish(final LogRecord record) {
-                logOut += record.getLevel().getName() + ": " + record.getMessage();
-                msgsReceived++;
-                Assert.assertTrue(logOut.contains("WARNING: ODVDBJsonImporter does not support configuration."));
-            }
-
-            @Override
-            public void flush() {
-            }
-
-            @Override
-            public void close() throws SecurityException {
-                Assert.assertTrue(msgsReceived > 0);
-
-            }
-        };
-        odvImporter.LOG.addHandler(handler);
-
-        odvImporter.loadConfiguration(new Properties());
-
-        odvImporter.LOG.getHandlers()[0].close();
-    }
 }

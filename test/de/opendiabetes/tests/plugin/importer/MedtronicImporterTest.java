@@ -92,7 +92,7 @@ public class MedtronicImporterTest {
         Properties config = new Properties();
         FileInputStream input = null;
         try {
-            input = new FileInputStream("properties/medtronic.properties");
+            input = new FileInputStream("properties/MedtronicImporter.properties");
             config.load(input);
 
         } catch (IOException e) {
