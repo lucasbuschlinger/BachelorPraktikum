@@ -276,13 +276,5 @@ public class GoogleFitCrawlerImporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

@@ -288,13 +288,5 @@ public class MySugrCsvImporter extends Plugin {
         protected void preprocessingIfNeeded(final String filePath) {
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

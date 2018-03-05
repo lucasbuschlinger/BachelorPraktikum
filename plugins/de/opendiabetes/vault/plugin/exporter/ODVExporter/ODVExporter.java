@@ -16,7 +16,10 @@
  */
 package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 
+//TODO check class hieracy
+
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
@@ -64,7 +67,7 @@ public class ODVExporter extends Plugin {
      * Actual implementation of the ODVExporter plugin.
      */
     @Extension
-    public static final class ODVExporterImplementation implements Exporter {
+    public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter {
 
         /**
          * The location where the ZIP will be exported to.
@@ -320,15 +323,15 @@ public class ODVExporter extends Plugin {
         }
 
         /**
-         * This loads the config for this plugin and also stores it to be passed on to the individual importers.
+         * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.
-         * @return True if the configuration has been stored.
+         * @return wheter a valid configuration could be read from the config file
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration == null) {
-                LOG.log(Level.WARNING, "No configuration given, assuming default values and no period restriction");
+                LOG.log(Level.WARNING, "No configuration given, assuming default values and no period restriction"); //TODO what period restriction
                 config = new Properties();
             } else {
                 config = configuration;
@@ -336,47 +339,7 @@ public class ODVExporter extends Plugin {
                     tempDir = configuration.getProperty("temporaryDirectory");
                 }
             }
-            if (configuration.containsKey("compatiblePlugins")) {
-                this.compatiblePlugins.addAll(Arrays.asList(configuration.getProperty("compatiblePlugins").split("\\s*,\\s*")));
-            }
-            notifyStatus(PROGRESS_LOADED_CONFIG, "Loaded configuration");
-            return true;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //still missing
-            return null;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public List<String> getListOfCompatiblePluginIDs() {
-            return this.compatiblePlugins;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void registerStatusCallback(final StatusListener listener) {
-            this.listeners.add(listener);
-        }
-
-        /**
-         * Notifies the registered {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener}s about progress.
-         * See {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener#onStatusCallback} to register listeners.
-         *
-         * @param progress Percentage of completion.
-         * @param status Current status.
-         */
-        private void notifyStatus(final int progress, final String status) {
-            listeners.forEach(listener -> listener.onStatusCallback(progress, status));
+            return  true;
         }
 
         /**

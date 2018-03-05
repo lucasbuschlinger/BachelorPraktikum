@@ -110,13 +110,5 @@ public class ODVDBJsonImporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

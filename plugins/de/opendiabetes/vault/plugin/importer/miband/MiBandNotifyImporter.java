@@ -345,12 +345,5 @@ public class MiBandNotifyImporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }
