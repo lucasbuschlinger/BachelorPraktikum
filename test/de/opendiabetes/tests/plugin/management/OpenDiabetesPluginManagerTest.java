@@ -34,4 +34,17 @@ public class OpenDiabetesPluginManagerTest {
         System.out.println(m.pluginToString(plugin) + ": " + Arrays.toString(
                  m.getCompatiblePluginIDs(plugin).toArray())));
     }
+
+    @Test
+    public void printGetHelpFilePath() {
+        OpenDiabetesPluginManager m = new OpenDiabetesPluginManager();
+        int defaultHelpCount = 0;
+        for (OpenDiabetesPlugin plugin : m.getPluginsOfType(OpenDiabetesPlugin.class)) {
+            System.out.println(m.pluginToString(plugin)+" "+m.getHelpFilePath(plugin));
+            if(m.getHelpFilePath(plugin).toString().contains("defaultHelp")){
+                defaultHelpCount++;
+            }
+        }
+        System.out.println("\n"+defaultHelpCount+"/"+m.getPluginsOfType(OpenDiabetesPlugin.class).size()+" plugins do not provide a help file yet.");
+    }
 }

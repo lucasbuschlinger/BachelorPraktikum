@@ -385,6 +385,7 @@
         <copy todir="plugins_out" quiet="true" failonerror="false">
             <fileset dir="${plugin.src.path}">
                 <include name="*.properties"/>
+                <include name="help.md"/>
             </fileset>
         </copy>
         <javac srcdir="${plugin.src.path}" destdir="plugins_out/classes"
