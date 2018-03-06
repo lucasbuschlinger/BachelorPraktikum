@@ -18,6 +18,7 @@ package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.pf4j.Plugin;
@@ -120,7 +121,7 @@ public class MedtronicCrawlerImporter extends Plugin {
             manager.loadPlugins();
             manager.enablePlugin("MedtronicImporter");
             manager.startPlugin("MedtronicImporter");
-            Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
+            FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
             medtronicImporter.importData(path);
         }
 
@@ -128,7 +129,7 @@ public class MedtronicCrawlerImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean importData(final String filePath) {
+        public boolean importData() {
             return false;
         }
 

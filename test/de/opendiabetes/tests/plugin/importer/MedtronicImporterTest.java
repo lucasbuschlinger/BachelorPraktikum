@@ -16,7 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,7 +24,6 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;

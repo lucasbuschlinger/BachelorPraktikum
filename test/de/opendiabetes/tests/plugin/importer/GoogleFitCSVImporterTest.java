@@ -16,7 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;

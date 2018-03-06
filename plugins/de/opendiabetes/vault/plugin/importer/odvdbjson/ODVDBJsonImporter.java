@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryGsonAdapter;
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.importer.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -56,7 +56,7 @@ public class ODVDBJsonImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static final class ODVDBJsonImporterImplementation extends FileImporter {
+    public static final class ODVDBJsonImporterImplementation extends AbstractFileImporter {
 
         /**
          * Empty preprocessing for ODVDB Json data, as it is not necessary for this type of data.

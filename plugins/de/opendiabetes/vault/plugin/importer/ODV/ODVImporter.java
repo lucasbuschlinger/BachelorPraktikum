@@ -16,6 +16,8 @@
  */
 package de.opendiabetes.vault.plugin.importer.ODV;
 
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.importer.AbstractFileImporter;
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.pf4j.DefaultPluginManager;
@@ -31,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -63,7 +66,7 @@ public class ODVImporter extends Plugin {
      * Actual implementation of the ODV importer plugin.
      */
     @Extension
-    public static final class ODVImporterImplementation extends AbstractImporter {
+    public static final class ODVImporterImplementation extends AbstractFileImporter {
 
         /**
          * The buffer size to be used.
@@ -161,7 +164,11 @@ public class ODVImporter extends Plugin {
                     unimportedFiles.put(importFile, reasonChecksumFailed);
                     continue;
                 }
-                importer.importData(importFile);
+                if (importer instanceof FileImporter) {
+                    ((FileImporter) importer).importData(importFile);
+                } else {
+                    importer.importData();
+                }
                 importedData.addAll(importer.getImportedData());
                 result = true;
             }
@@ -328,6 +335,22 @@ public class ODVImporter extends Plugin {
                 stringBuilder.append("\n");
             }
             notifyStatus(PROGRESS_UNIMPORTED_FILES, stringBuilder.toString());
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected void preprocessingIfNeeded(String filePath) {
+            /** Not implemented **/
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        protected boolean processImport(InputStream fileInputStream, String filenameForLogging) {
+            return false;
         }
 
         /**

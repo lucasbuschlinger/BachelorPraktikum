@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.importer.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -56,7 +56,7 @@ public class MiBandNotifyImporter extends Plugin {
      * Actual implementation of the MiBandNotify importer plugin.
      */
     @Extension
-    public static final class MiBandNotifyImporterImplementation extends FileImporter {
+    public static final class MiBandNotifyImporterImplementation extends AbstractFileImporter {
 
         /**
          * The default value for the lower bound of the heart rate.

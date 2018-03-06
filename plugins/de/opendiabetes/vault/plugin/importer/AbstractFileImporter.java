@@ -25,10 +25,10 @@ import java.util.logging.Level;
  * This class defines the default structure how data gets imported from a file.
  * It implements file handling of the data source
  * All descendants must implement the template methods.
- * {@link FileImporter#preprocessingIfNeeded(String)}.
- * {@link FileImporter#processImport(InputStream, String)}.
+ * {@link AbstractFileImporter#preprocessingIfNeeded(String)}.
+ * {@link AbstractFileImporter#processImport(InputStream, String)}.
  */
-public abstract class FileImporter extends AbstractImporter {
+public abstract class AbstractFileImporter extends AbstractImporter implements de.opendiabetes.vault.plugin.fileimporter.FileImporter {
 
     /**
      * {@inheritDoc}

@@ -124,7 +124,10 @@ public class GoogleFitCrawlerImporter extends Plugin {
 
         }
 
-        public boolean importData(final String filePath) {
+        /**
+         * {@inheritDoc}
+         */
+        public boolean importData() {
 
             Credentials credentialsInstance = Credentials.getInstance();
 

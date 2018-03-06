@@ -32,7 +32,7 @@ import java.util.logging.Level;
 /**
  * This class implements the functionality for importing CSV based data.
  */
-public abstract class CSVImporter extends FileImporter {
+public abstract class CSVImporter extends AbstractFileImporter {
     /**
      * The validator who handles CSV data.
      */
