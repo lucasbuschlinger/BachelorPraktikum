@@ -204,7 +204,7 @@ public class ODVExporter extends Plugin {
                     checksum = makeChecksum(exportFile);
                 } catch (Exception exception) {
                     this.notifyStatus(-1, "An error occurred while creating the files' checksums.");
-                	return ReturnCode.RESULT_ERROR.getCode();
+                    return ReturnCode.RESULT_ERROR.getCode();
                 }
                 thisEntryMetaData.file = exportFile;
                 thisEntryMetaData.checksum = checksum;
@@ -215,7 +215,7 @@ public class ODVExporter extends Plugin {
                 metaFile = makeMetaFile(metaData);
             } catch (IOException exception) {
                 this.notifyStatus(-1, "An error occurred while creating a meta file.");
-            	return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             notifyStatus(PROGRESS_ALL_EXPORTERS_DONE, "Done exporting with all available exporters");
             // Adding all generated export files and the meta file to the zip
@@ -229,7 +229,7 @@ public class ODVExporter extends Plugin {
                 addFileToZip(metaFile, zipOutputStream);
             } catch (Exception exception) {
                 this.notifyStatus(-1, "An error occurred while accessing a file.");
-            	return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             try {
                 zipOutputStream.close();

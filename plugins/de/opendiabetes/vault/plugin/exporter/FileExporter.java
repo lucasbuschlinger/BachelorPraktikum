@@ -75,7 +75,7 @@ public abstract class FileExporter extends AbstractExporter {
         if (checkFile.exists()
                 && (!checkFile.isFile() || !checkFile.canWrite())) {
             this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
-        	return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
         }
         try {
             fileOutputStream = new FileOutputStream(checkFile);
@@ -88,7 +88,7 @@ public abstract class FileExporter extends AbstractExporter {
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
             this.notifyStatus(-1, "Could not find data to export.");
-        	return ReturnCode.RESULT_NO_DATA.getCode();
+            return ReturnCode.RESULT_NO_DATA.getCode();
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
