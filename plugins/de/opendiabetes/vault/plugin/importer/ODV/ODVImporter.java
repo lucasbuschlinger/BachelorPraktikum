@@ -101,10 +101,6 @@ public class ODVImporter extends Plugin {
          * The default name of the meta file.
          */
         private String metaFile;
-        /**
-         * The file to import the data from.
-         */
-        private String importFilePath;
 
         /**
          * Constructor used to set default values.
@@ -114,31 +110,17 @@ public class ODVImporter extends Plugin {
             this.metaFile = DEFAULT_META_FILE;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getImportFilePath() {
-            return importFilePath;
-        }
 
         /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void setImportFilePath(final String filePath) {
-            this.importFilePath = filePath;
-        }
-
-        /**
-         * This implementation imports the different files from the ZIP-archive which should be set in the {@link #importFilePath}.
+         * This implementation imports the different files from the ZIP-archive.
          * It does so by unzipping the archive and checking the integrity of the contained files.
          * Files can only be imported if the therefore needed importer plugin is available, if not it gets omitted and reported.
          *
+         * @param filePath Path to the ZIP-archive from which the files should be imported.
          * @return True some data could imported successfully, false if none could be imported.
          */
         @Override
-        public boolean importData() {
+        public boolean importData(final String filePath) {
             Map<String, MetaValues> metaInfo;
             Map<String, String> unimportedFiles = new HashMap<>();
             importedData = new ArrayList<>();
@@ -146,9 +128,9 @@ public class ODVImporter extends Plugin {
             String reasonNoPlugin = "No applicable importer plugin available for this file";
             String reasonChecksumFailed = "The integrity of the data could not be verified via the checksum";
             try {
-                unzipArchive(importFilePath, tempDir);
+                unzipArchive(filePath, tempDir);
             } catch (IOException exception) {
-                LOG.log(Level.SEVERE, "Error while unzipping archive: " + importFilePath);
+                LOG.log(Level.SEVERE, "Error while unzipping archive: " + filePath);
                 return false;
             }
             notifyStatus(PROGRESS_UNZIPPED, "Unzipped the archive");
@@ -179,8 +161,7 @@ public class ODVImporter extends Plugin {
                     unimportedFiles.put(importFile, reasonChecksumFailed);
                     continue;
                 }
-                importer.setImportFilePath(importFile);
-                importer.importData();
+                importer.importData(importFile);
                 importedData.addAll(importer.getImportedData());
                 result = true;
             }

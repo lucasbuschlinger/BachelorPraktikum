@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
+import de.opendiabetes.vault.plugin.importer.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -62,20 +63,8 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        FileImporter odvImporter = (FileImporter) TestImporterUtil.getImporter("ODVDBJsonImporter");
         System.out.println("TEST" + odvImporter.getClass());
-        odvImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(odvImporter.importData());
+        Assert.assertFalse(odvImporter.importData("path/to/data"));
     }
-
-    /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
-        odvImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", odvImporter.getImportFilePath());
-    }
-
 }

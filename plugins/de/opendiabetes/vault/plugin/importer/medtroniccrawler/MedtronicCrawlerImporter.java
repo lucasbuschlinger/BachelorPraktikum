@@ -121,46 +121,19 @@ public class MedtronicCrawlerImporter extends Plugin {
             manager.enablePlugin("MedtronicImporter");
             manager.startPlugin("MedtronicImporter");
             Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-            medtronicImporter.setImportFilePath(path);
-            medtronicImporter.importData();
-        }
-
-
-        /**
-         * Getter for the importFilePath.
-         *
-         * @return The path to the import file.
-         */
-        @Override
-        public String getImportFilePath() {
-            return null;
+            medtronicImporter.importData(path);
         }
 
         /**
-         * Setter for the importFilePath.
-         *
-         * @param filePath The path to the import file.
+         * {@inheritDoc}
          */
         @Override
-        public void setImportFilePath(final String filePath) {
-
-        }
-
-        /**
-         * Imports the data from the file specified by @see Importer.setImportFilePath().
-         *
-         * @return boolean true if data was imported, false otherwise.
-         */
-        @Override
-        public boolean importData() {
+        public boolean importData(final String filePath) {
             return false;
         }
 
         /**
-         * Getter for the imported data.
-         *
-         * @return List of VaultEntry consisting of the imported data.
-         * @see VaultEntry
+         * {@inheritDoc}
          */
         @Override
         public List<VaultEntry> getImportedData() {
@@ -168,10 +141,7 @@ public class MedtronicCrawlerImporter extends Plugin {
         }
 
         /**
-         * Getter for the raw imported data.
-         *
-         * @return List of RawEntry consisting of the raw imported data.
-         * @see RawEntry
+         * {@inheritDoc}
          */
         @Override
         public List<RawEntry> getImportedRawData() {
@@ -179,10 +149,7 @@ public class MedtronicCrawlerImporter extends Plugin {
         }
 
         /**
-         * Clears all Imported(Raw)Data.
-         * {@link Importer#getImportedData()},
-         * {@link Importer#getImportedRawData()}
-         * will return empty lists afterwards.
+         * {@inheritDoc}
          */
         @Override
         public void clearData() {

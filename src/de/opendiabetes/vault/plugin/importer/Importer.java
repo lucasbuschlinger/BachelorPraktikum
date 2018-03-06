@@ -34,21 +34,7 @@ import java.util.List;
 public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
 
     /**
-     * Getter for the importFilePath.
-     *
-     * @return The path to the import file.
-     */
-    String getImportFilePath();
-
-    /**
-     * Setter for the importFilePath.
-     *
-     * @param filePath The path to the import file.
-     */
-    void setImportFilePath(String filePath);
-
-    /**
-     * Imports the data from the file specified by @see Importer.setImportFilePath().
+     * Imports the data
      *
      * @return boolean true if data was imported, false otherwise.
      */

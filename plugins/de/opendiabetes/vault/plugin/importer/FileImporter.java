@@ -24,7 +24,6 @@ import java.util.logging.Level;
 /**
  * This class defines the default structure how data gets imported from a file.
  * It implements file handling of the data source
- * specified by {@link FileImporter#setImportFilePath(String)}.
  * All descendants must implement the template methods.
  * {@link FileImporter#preprocessingIfNeeded(String)}.
  * {@link FileImporter#processImport(InputStream, String)}.
@@ -32,54 +31,42 @@ import java.util.logging.Level;
 public abstract class FileImporter extends AbstractImporter {
 
     /**
-     * Path to the file data gets imported from.
-     */
-    private String importFilePath;
-
-    /**
      * {@inheritDoc}
      */
     @Override
-    public String getImportFilePath() {
-        return importFilePath;
+    public boolean importData() {
+        throw new UnsupportedOperationException("The importData() method of a FileImporter cannot be used."
+                + " Use importData(filePath) instead.");
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setImportFilePath(final String filePath) {
-        this.importFilePath = filePath;
-    }
-
-    /**
-     * Imports the data from the file specified
-     * with {@link FileImporter#setImportFilePath(String)}.
+     * Imports the data from a specified file path.
      *
+     * @param filePath File path from which the data should be imported to
      * @return True if data can be imported, false otherwise.
      */
-    public boolean importData() {
-        if (null == importFilePath) {
+    public boolean importData(final String filePath) {
+        if (filePath == null) {
             LOG.log(Level.WARNING, "No path specified from where to import data.");
             return false;
         }
-        preprocessingIfNeeded(importFilePath);
+        preprocessingIfNeeded(filePath);
         this.notifyStatus(0, "Preprocessing done.");
 
         FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(importFilePath);
-            return processImport(inputStream, importFilePath);
+            inputStream = new FileInputStream(filePath);
+            return processImport(inputStream, filePath);
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
-                    + importFilePath, ex);
+                    + filePath, ex);
             return false;
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (Exception ex) {
-                    LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + importFilePath, ex);
+                    LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + filePath, ex);
                 }
             }
         }

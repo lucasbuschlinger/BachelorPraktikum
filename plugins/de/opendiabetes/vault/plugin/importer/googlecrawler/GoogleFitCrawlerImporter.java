@@ -124,31 +124,7 @@ public class GoogleFitCrawlerImporter extends Plugin {
 
         }
 
-        /**
-         * Getter for the importFilePath.
-         *
-         * @return The path to the import file.
-         */
-        @Override
-        public String getImportFilePath() {
-            return null;
-        }
-
-        /**
-         * Setter for the importFilePath.
-         *
-         * @param filePath The path to the import file.
-         */
-        @Override
-        public void setImportFilePath(final String filePath) { /* not needed for now */ }
-
-        /**
-         * Imports the data from the file specified by @see Importer.setImportFilePath().
-         *
-         * @return boolean true if data was imported, false otherwise.
-         */
-        @Override
-        public boolean importData() {
+        public boolean importData(final String filePath) {
 
             Credentials credentialsInstance = Credentials.getInstance();
 
