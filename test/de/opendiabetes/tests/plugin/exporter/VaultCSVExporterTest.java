@@ -27,16 +27,6 @@ public class VaultCSVExporterTest {
     }
 
     /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
-        vaultCSVExporter.setExportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", vaultCSVExporter.getExportFilePath());
-    }
-
-    /**
      * Test to see whether load configuration returns the correct log.
      */
     @Test
