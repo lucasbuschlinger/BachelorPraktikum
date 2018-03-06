@@ -113,7 +113,7 @@ public abstract class FileExporter extends AbstractExporter {
      * @param data The data to be written.
      * @throws IOException Thrown if something goes wrong when writing the file.
      */
-    protected void writeToFile(String filePath, final List<ExportEntry> data) throws IOException {
+    protected void writeToFile(final String filePath, final List<ExportEntry> data) throws IOException {
         FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 

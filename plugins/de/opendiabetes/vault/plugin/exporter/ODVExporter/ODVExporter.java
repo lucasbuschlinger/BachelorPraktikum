@@ -37,7 +37,6 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -305,12 +304,13 @@ public class ODVExporter extends Plugin {
          * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.
-         * @return wheter a valid configuration could be read from the config file
+         * @return whether a valid configuration could be read from the config file
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration == null) {
-                LOG.log(Level.WARNING, "No configuration given, assuming default values and no period restriction"); //TODO what period restriction
+                LOG.log(Level.WARNING, "No configuration given,"
+                        + " assuming default values and no period restriction"); //TODO what period restriction
                 config = new Properties();
             } else {
                 config = configuration;
