@@ -81,11 +81,6 @@ public class PlotterExporter extends Plugin {
         private String scriptPath = PlotterExporter.pluginPath.resolve("assets/plot.py").toString();
 
         /**
-         * Path to the plotted data.
-         */
-        private String exportPath;
-
-        /**
          * Runs the plot script.
          * @param dataPath path to the data that should be plotted
          * @param outputPath path where the plot should be written to
@@ -181,13 +176,10 @@ public class PlotterExporter extends Plugin {
         }
 
         /**
-         * Writes the data to a CSV file and calls the plotter script.
-         *
-         * @param csvEntries The {@link ExportEntry} to be exported.
-         * @throws IOException Thrown if there was an error while writing or deleting files.
+         * {@inheritDoc}
          */
         @Override
-        protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
+        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
 
             boolean python = isPythonInstalled();
             if (!python) {
@@ -202,26 +194,18 @@ public class PlotterExporter extends Plugin {
                 }
             }
 
-            super.writeToFile(csvEntries);
-            if (!plotData(this.getExportFilePath(), this.exportPath)) {
+            String tempPath = DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME;
+
+            super.writeToFile(tempPath, csvEntries);
+            if (!plotData(tempPath, filePath)) {
                 LOG.log(Level.SEVERE, "Failed to plot data");
             }
 
 
-            File file = new File(this.getExportFilePath());
+            File file = new File(tempPath);
             if (!file.delete()) {
                 LOG.log(Level.SEVERE, "Failed to delete temp export file");
             }
-        }
-
-        /**
-         * The given export path will be overwritten with a temporary file path.
-         * @param exportPath Path where the plot will be written to.
-         */
-        @Override
-        public void setExportFilePath(final String exportPath) {
-            this.exportPath = exportPath;
-            super.setExportFilePath(DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME);
         }
 
         /**

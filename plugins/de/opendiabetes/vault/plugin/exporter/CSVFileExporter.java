@@ -37,7 +37,7 @@ public abstract class CSVFileExporter extends FileExporter {
      * {@inheritDoc}
      */
     @Override
-    protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
+    protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
         FileOutputStream fileOutputStream = getFileOutputStream();
         CsvWriter cwriter = new CsvWriter(fileOutputStream, VaultCsvEntry.CSV_DELIMITER, Charset.forName("UTF-8"));
 

@@ -28,16 +28,6 @@ public class SliceLayoutCSVExporterTest {
     }
 
     /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
-        SliceLayoutCSVExporter.setExportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", SliceLayoutCSVExporter.getExportFilePath());
-    }
-
-    /**
      * Test to see whether the needed database can be set.
      */
     @Test

@@ -37,7 +37,6 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -69,10 +68,6 @@ public class ODVExporter extends Plugin {
     @Extension
     public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter {
 
-        /**
-         * The location where the ZIP will be exported to.
-         */
-        private String exportFilePath;
         /**
          * List holding all StatusListeners registered to the exporter.
          */
@@ -124,22 +119,6 @@ public class ODVExporter extends Plugin {
         }
 
         /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void setExportFilePath(final String filePath) {
-            exportFilePath = filePath;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getExportFilePath() {
-            return exportFilePath;
-        }
-
-        /**
          * Unused, thus unimplemented.
          *
          * @param entries Nothing here.
@@ -154,14 +133,14 @@ public class ODVExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public int exportDataToFile(final List<VaultEntry> data) {
+        public int exportDataToFile(final String filePath, final List<VaultEntry> data) {
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
             Map<String, MetaValues> metaData = new HashMap<>();
             try {
-                fileOutputStream = new FileOutputStream(exportFilePath);
+                fileOutputStream = new FileOutputStream(filePath);
             } catch (FileNotFoundException exception) {
-                LOG.log(Level.SEVERE, "Could not open output stream " + exportFilePath);
+                LOG.log(Level.SEVERE, "Could not open output stream " + filePath);
                 return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
@@ -186,7 +165,6 @@ public class ODVExporter extends Plugin {
                 }
                 MetaValues thisEntryMetaData = new MetaValues();
                 String exportFile = tempDir + File.separator + name + ".export";
-                exporter.setExportFilePath(exportFile);
                 exporter.loadConfiguration(config);
                 exporter.registerStatusCallback(new StatusListener() {
                     @Override
@@ -195,7 +173,7 @@ public class ODVExporter extends Plugin {
                     }
                 });
                 try {
-                    exporter.exportDataToFile(data);
+                    exporter.exportDataToFile(exportFile, data);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;
@@ -326,12 +304,13 @@ public class ODVExporter extends Plugin {
          * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.
-         * @return wheter a valid configuration could be read from the config file
+         * @return whether a valid configuration could be read from the config file
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration == null) {
-                LOG.log(Level.WARNING, "No configuration given, assuming default values and no period restriction"); //TODO what period restriction
+                LOG.log(Level.WARNING, "No configuration given,"
+                        + " assuming default values and no period restriction"); //TODO what period restriction
                 config = new Properties();
             } else {
                 config = configuration;
