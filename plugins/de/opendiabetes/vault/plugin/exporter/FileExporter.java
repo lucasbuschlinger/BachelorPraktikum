@@ -65,11 +65,10 @@ public abstract class FileExporter extends AbstractExporter {
      * {@inheritDoc}
      */
     @Override
-    public int exportDataToFile(final List<VaultEntry> data) {
+    public int exportDataToFile(final String filePath, final List<VaultEntry> data) {
         // Status update constants.
         final int startWriteProgress = 80;
         final int writeDoneProgress = 100;
-        String filePath = this.getExportFilePath();
         // check file stuff
         File checkFile = new File(filePath);
         if (checkFile.exists()
@@ -90,7 +89,7 @@ public abstract class FileExporter extends AbstractExporter {
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
         try {
-            writeToFile(exportData);
+            writeToFile(filePath, exportData);
         } catch (IOException exception) {
             LOG.log(Level.SEVERE, "Error writing odv csv file: {0}" + filePath, exception);
             return ReturnCode.RESULT_ERROR.getCode();
@@ -110,10 +109,11 @@ public abstract class FileExporter extends AbstractExporter {
     /**
      * Writes the export data to the file.
      *
+     * @param filePath File path where the exported data should be written to.
      * @param data The data to be written.
      * @throws IOException Thrown if something goes wrong when writing the file.
      */
-    protected void writeToFile(final List<ExportEntry> data) throws IOException {
+    protected void writeToFile(String filePath, final List<ExportEntry> data) throws IOException {
         FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 

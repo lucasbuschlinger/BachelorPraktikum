@@ -70,10 +70,6 @@ public class ODVExporter extends Plugin {
     public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter {
 
         /**
-         * The location where the ZIP will be exported to.
-         */
-        private String exportFilePath;
-        /**
          * List holding all StatusListeners registered to the exporter.
          */
         private final List<Exporter.StatusListener> listeners = new ArrayList<>();
@@ -124,22 +120,6 @@ public class ODVExporter extends Plugin {
         }
 
         /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void setExportFilePath(final String filePath) {
-            exportFilePath = filePath;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getExportFilePath() {
-            return exportFilePath;
-        }
-
-        /**
          * Unused, thus unimplemented.
          *
          * @param entries Nothing here.
@@ -154,14 +134,14 @@ public class ODVExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public int exportDataToFile(final List<VaultEntry> data) {
+        public int exportDataToFile(final String filePath, final List<VaultEntry> data) {
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
             Map<String, MetaValues> metaData = new HashMap<>();
             try {
-                fileOutputStream = new FileOutputStream(exportFilePath);
+                fileOutputStream = new FileOutputStream(filePath);
             } catch (FileNotFoundException exception) {
-                LOG.log(Level.SEVERE, "Could not open output stream " + exportFilePath);
+                LOG.log(Level.SEVERE, "Could not open output stream " + filePath);
                 return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
             }
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
@@ -186,7 +166,6 @@ public class ODVExporter extends Plugin {
                 }
                 MetaValues thisEntryMetaData = new MetaValues();
                 String exportFile = tempDir + File.separator + name + ".export";
-                exporter.setExportFilePath(exportFile);
                 exporter.loadConfiguration(config);
                 exporter.registerStatusCallback(new StatusListener() {
                     @Override
@@ -195,7 +174,7 @@ public class ODVExporter extends Plugin {
                     }
                 });
                 try {
-                    exporter.exportDataToFile(data);
+                    exporter.exportDataToFile(exportFile, data);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;

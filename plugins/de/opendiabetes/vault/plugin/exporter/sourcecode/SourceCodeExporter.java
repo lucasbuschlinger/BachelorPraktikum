@@ -59,7 +59,7 @@ public class SourceCodeExporter extends Plugin {
 
         /**
          * List to hold all the entries queried from the database in {@link #prepareData(List)}
-         * and written on {@link #writeToFile(List)}.
+         * and written on {@link #writeToFile(String, List)}.
          */
         private final List<String> entries = new ArrayList<>();
 
@@ -129,12 +129,12 @@ public class SourceCodeExporter extends Plugin {
          * Writes the data to a CSV file and generates a signature hash.
          * Then it puts both of this into a ZIP archive file.
          *
+         * @param filePath File path where the data should be exported to.
          * @param csvEntries The {@link ExportEntry} to be exported.
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
-        protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
+        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
-            String filePath = getExportFilePath();
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
 
