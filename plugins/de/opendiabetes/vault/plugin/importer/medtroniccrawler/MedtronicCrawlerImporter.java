@@ -16,7 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
@@ -138,14 +137,6 @@ public class MedtronicCrawlerImporter extends Plugin {
          */
         @Override
         public List<VaultEntry> getImportedData() {
-            return null;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public List<RawEntry> getImportedRawData() {
             return null;
         }
 

@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.importer;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 
@@ -92,7 +91,6 @@ public abstract class CSVImporter extends AbstractFileImporter {
      */
     public boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
         importedData = new ArrayList<>();
-        importedRawData = new ArrayList<>();
         final int maxProgress = 100;
 
         //This list is used as a placeholder for future extensions
@@ -123,17 +121,12 @@ public abstract class CSVImporter extends AbstractFileImporter {
                 /*here the method template is used to process all records */
                 List<VaultEntry> entryList = parseEntry(creader);
 
-                boolean entryIsInterpreted = false;
                 if (entryList != null && !entryList.isEmpty()) {
                     for (VaultEntry item : entryList) {
-                        item.setRawId(importedRawData.size()); // add array position as raw id
                         importedData.add(item);
                         LOG.log(Level.FINE, "Got Entry: {0}", entryList.toString());
                     }
-                    entryIsInterpreted = true;
                 }
-                importedRawData.add(new RawEntry(creader.getRawRecord(), entryIsInterpreted));
-                LOG.log(Level.FINER, "Put Raw: {0}", creader.getRawRecord());
             }
             this.notifyStatus(maxProgress, "Done importing all entries");
 

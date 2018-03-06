@@ -73,7 +73,6 @@ public class ODVDBJsonImporter extends Plugin {
         @Override
         protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
             importedData = new ArrayList<>();
-            importedRawData = new ArrayList<>();
 
             // prepare libs
             GsonBuilder builder = new GsonBuilder();

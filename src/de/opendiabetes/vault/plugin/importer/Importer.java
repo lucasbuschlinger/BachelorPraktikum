@@ -49,17 +49,8 @@ public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
     List<VaultEntry> getImportedData();
 
     /**
-     * Getter for the raw imported data.
-     *
-     * @return List of RawEntry consisting of the raw imported data.
-     * @see de.opendiabetes.vault.container.RawEntry
-     */
-    List<RawEntry> getImportedRawData();
-
-    /**
      * Clears all Imported(Raw)Data.
      * {@link Importer#getImportedData()},
-     * {@link Importer#getImportedRawData()}
      * will return empty lists afterwards.
      */
     void clearData();

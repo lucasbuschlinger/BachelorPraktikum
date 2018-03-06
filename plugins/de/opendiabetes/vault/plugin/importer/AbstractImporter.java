@@ -39,11 +39,6 @@ public abstract class AbstractImporter extends AbstractPlugin implements Importe
     protected List<VaultEntry> importedData;
 
     /**
-     * List of RawEntry which contains the unprocessed data.
-     */
-    protected List<RawEntry> importedRawData;
-
-    /**
      * {@inheritDoc}
      */
     public List<VaultEntry> getImportedData() {
@@ -53,17 +48,9 @@ public abstract class AbstractImporter extends AbstractPlugin implements Importe
     /**
      * {@inheritDoc}
      */
-    public List<RawEntry> getImportedRawData() {
-        return importedRawData;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clearData() {
         getImportedData().clear();
-        getImportedRawData().clear();
     }
 
 }
