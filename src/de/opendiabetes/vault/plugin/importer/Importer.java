@@ -34,7 +34,7 @@ import java.util.List;
 public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
 
     /**
-     * Imports the data
+     * Imports the data.
      *
      * @return boolean true if data was imported, false otherwise.
      */

@@ -18,7 +18,6 @@ package de.opendiabetes.vault.plugin.importer.ODV;
 
 import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.AbstractFileImporter;
-import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
@@ -341,15 +340,15 @@ public class ODVImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected void preprocessingIfNeeded(String filePath) {
-            /** Not implemented **/
+        protected void preprocessingIfNeeded(final String filePath) {
+            /* Not implemented */
         }
 
         /**
          * {@inheritDoc}
          */
         @Override
-        protected boolean processImport(InputStream fileInputStream, String filenameForLogging) {
+        protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
             return false;
         }
 
