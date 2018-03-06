@@ -16,8 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 
-//TODO check class hieracy
-
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
@@ -36,7 +34,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -69,16 +66,6 @@ public class ODVExporter extends Plugin {
     public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter {
 
         /**
-         * List holding all StatusListeners registered to the exporter.
-         */
-        private final List<Exporter.StatusListener> listeners = new ArrayList<>();
-        /**
-         * List containing all compatible plugins that are listed in this plugins config.
-         * The data of this field is returned by {@link this#getListOfCompatiblePluginIDs()}
-         * and used to list compatibilities among plugins.
-         */
-        private final List<String> compatiblePlugins = new ArrayList<>();
-        /**
          * The properties which will get passed on to the exporters.
          */
         private Properties config;
@@ -98,10 +85,6 @@ public class ODVExporter extends Plugin {
          * The compression level used with the ZIP-archive.
          */
         private static final int COMPRESSION_LEVEL = 9;
-        /**
-         * Progress value indicating loading of configuration.
-         */
-        private static final int PROGRESS_LOADED_CONFIG = 33;
         /**
          * Progress value indicating all exporters were tried.
          */
@@ -166,12 +149,8 @@ public class ODVExporter extends Plugin {
                 MetaValues thisEntryMetaData = new MetaValues();
                 String exportFile = tempDir + File.separator + name + ".export";
                 exporter.loadConfiguration(config);
-                exporter.registerStatusCallback(new StatusListener() {
-                    @Override
-                    public void onStatusCallback(final int progress, final String status) {
-                        notifyStatus(progress, name + ": " + status);
-                    }
-                });
+                exporter.registerStatusCallback((progress, status)
+                        -> notifyStatus(progress, name + ": " + status));
                 try {
                     exporter.exportDataToFile(exportFile, data);
                 } catch (Exception ex) {
@@ -226,18 +205,15 @@ public class ODVExporter extends Plugin {
          */
         private String makeChecksum(final String fileName) throws IOException, NoSuchAlgorithmException {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
-            FileInputStream inputStream = new FileInputStream(fileName);
             byte[] dataBytes = new byte[BUFFER_SIZE];
             int nextRead;
-            try {
+            try (FileInputStream inputStream = new FileInputStream(fileName)) {
                 while ((nextRead = inputStream.read(dataBytes)) != -1) {
                     digest.update(dataBytes, 0, nextRead);
                 }
             } catch (Exception exception) {
                 LOG.log(Level.SEVERE, "Could not generate checksum for file " + fileName);
                 throw exception;
-            } finally {
-                inputStream.close();
             }
             return (new HexBinaryAdapter()).marshal(digest.digest());
         }
@@ -254,8 +230,7 @@ public class ODVExporter extends Plugin {
             ZipEntry zipEntry = new ZipEntry(file.replace(tempDir + File.separator, ""));
             zipStream.putNextEntry(zipEntry);
             File zipFile = new File(file);
-            FileInputStream in = new FileInputStream(zipFile);
-            try {
+            try (FileInputStream in = new FileInputStream(zipFile)) {
                 int len;
                 while ((len = in.read(buffer)) > 0) {
                     zipStream.write(buffer, 0, len);
@@ -264,7 +239,6 @@ public class ODVExporter extends Plugin {
                 LOG.log(Level.SEVERE, "Could not add file " + file + " to ZIP-archive");
                 throw exception;
             } finally {
-                in.close();
                 zipStream.closeEntry();
             }
         }
@@ -279,9 +253,8 @@ public class ODVExporter extends Plugin {
          */
         private String makeMetaFile(final Map<String, MetaValues> metaData) throws IOException {
             final String metaFile = tempDir + File.separator + "meta.info";
-            FileOutputStream outputStream = new FileOutputStream(metaFile);
             Iterator iterator = metaData.entrySet().iterator();
-            try {
+            try (FileOutputStream outputStream = new FileOutputStream(metaFile)) {
                 while (iterator.hasNext()) {
                     Map.Entry pair = (Map.Entry) iterator.next();
                     String exporter = pair.getKey().toString();
@@ -294,8 +267,6 @@ public class ODVExporter extends Plugin {
             } catch (Exception exception) {
                 LOG.log(Level.SEVERE, "Couldn't generate meta file for ZIP-archive");
                 throw exception;
-            } finally {
-                outputStream.close();
             }
             return  metaFile;
         }
@@ -310,7 +281,7 @@ public class ODVExporter extends Plugin {
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration == null) {
                 LOG.log(Level.WARNING, "No configuration given,"
-                        + " assuming default values and no period restriction"); //TODO what period restriction
+                        + " assuming default values and no period restriction");
                 config = new Properties();
             } else {
                 config = configuration;
@@ -318,7 +289,7 @@ public class ODVExporter extends Plugin {
                     tempDir = configuration.getProperty("temporaryDirectory");
                 }
             }
-            return  true;
+            return true;
         }
 
         /**
