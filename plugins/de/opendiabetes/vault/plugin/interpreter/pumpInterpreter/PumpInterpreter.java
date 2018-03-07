@@ -320,10 +320,12 @@ public class PumpInterpreter extends Plugin {
                         // --> we have to search the last known one before the suspenstion
                         for (VaultEntry basalEntry : data) {
                             if (basalEntry.getType() == VaultEntryType.BASAL_MANUAL
-                                    || basalEntry.getType() == VaultEntryType.BASAL_PROFILE) { // no interpreter basal items, since suspension will interrupt tmp basal
+                                    || basalEntry.getType() == VaultEntryType.BASAL_PROFILE) {
+                                // no interpreter basal items, since suspension will interrupt tmp basal
                                 if (suspendItem.getTimestamp().after(basalEntry.getTimestamp())) {
                                     lastKnownBasalEntry = basalEntry;
-                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) { // we passed the suspension time point --> stop the search
+                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) {
+                                    // we passed the suspension time point --> stop the search
                                     break;
                                 }
                             }
@@ -333,15 +335,19 @@ public class PumpInterpreter extends Plugin {
                             // still nothing found, search in DB
                             // query db
                             final int startingTimeBeforeSearch = 5;
-                            Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * startingTimeBeforeSearch * HOUR_TO_MIN); // start 5 hours before with the search
-                            Date ts2 = data.get(0).getTimestamp(); // we search just until the current dataset starts
+                            // start 5 hours before with the search
+                            Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(),
+                                    -1 * startingTimeBeforeSearch * HOUR_TO_MIN);
+                            Date ts2 = data.get(0).getTimestamp(); // we search just until the current data set starts
                             List<VaultEntry> dbBasalData = getDatabase().queryBasalBetween(ts1, ts2);
 
                             // search for profile entry
-                            for (VaultEntry basalEntry : dbBasalData) { // no interpreter basal items, since suspension will interrupt tmp basal
+                            for (VaultEntry basalEntry : dbBasalData) {
+                                // no interpreter basal items, since suspension will interrupt tmp basal
                                 if (suspendItem.getTimestamp().after(basalEntry.getTimestamp())) {
                                     lastKnownBasalEntry = basalEntry;
-                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) { // we passed the suspension time point --> stop the search
+                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) {
+                                    // we passed the suspension time point --> stop the search
                                     break;
                                 }
                             }
@@ -415,7 +421,8 @@ public class PumpInterpreter extends Plugin {
 
                         if (tmpItem != null) {
                             affectedHistoricElements.add(tmpItem);
-                        } else if ((basalItem.getRawType() == MedtronicCSVValidator.TYPE.BASAL_TMP_PERCENT //TODO is this interpreter only for medtronic data
+                            //TODO is this interpreter only for medtronic data. Comment: Seems like it, but not a todo?
+                        } else if ((basalItem.getRawType() == MedtronicCSVValidator.TYPE.BASAL_TMP_PERCENT
                                 && basalItem.getValue() > 0)) {
                             LOG.log(Level.WARNING, "Could not calculate tmp basal, "
                                             + "because no profile elements are found\n{0}",
