@@ -145,6 +145,7 @@ public class MiBandNotifyImporter extends Plugin {
                 reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             } catch (UnsupportedEncodingException exception) {
                 LOG.log(Level.SEVERE, "Can not handle fileInputStream, unsupported encoding (non UTF-8)!");
+                this.notifyStatus(-1, "Unsupported encoding! The file needs to be UTF-8 encoded in order to be processed.");
                 return false;
             }
             ObjectMapper mapper = new ObjectMapper();
@@ -184,6 +185,7 @@ public class MiBandNotifyImporter extends Plugin {
                 return true;
             } else {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
+                this.notifyStatus(-1, "Got no data from JSON import!");
                 return false;
             }
         }
