@@ -90,11 +90,11 @@ public class GoogleFitCSVImporter extends Plugin {
             }
 
             VaultEntry newVaultEntry;
-            Date timestamp = null; // TODO: fix to use something else then file path to determine start time
+            Date timestamp = null; // TODO fix to use something else then file path to determine start time
             // Date timestamp = new Date(parseValidator.getStartTime(creader, getImportFilePath()));
             double durationInMinutes = Math.round((runTime + bikeTime + walkTime) / msPerMin);
             double maxSpeed = parseValidator.getMaxSpeedValue(creader);
-            // TODO: Correct exercise type
+            // TODO Correct exercise type
             // estimate the activity within this slot
             if (runTime > bikeTime && runTime > walkTime) {
                 newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_OTHER,
