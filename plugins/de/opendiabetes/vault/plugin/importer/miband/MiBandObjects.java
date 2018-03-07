@@ -18,7 +18,6 @@ package de.opendiabetes.vault.plugin.importer.miband;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hamcrest.core.Is;
 
 import java.util.List;
 

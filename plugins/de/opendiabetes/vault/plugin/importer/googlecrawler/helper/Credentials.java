@@ -13,9 +13,11 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.fitness.FitnessScopes;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
@@ -116,7 +118,8 @@ public final class Credentials {
     public void authorize(final String path) throws IOException {
         File file = new File(Paths.get(path).toAbsolutePath().toString());
         // Load client secrets.
-        Reader reader = new FileReader(file);
+        FileInputStream fileInput = new FileInputStream(file);
+        Reader reader = new InputStreamReader(fileInput, Charset.defaultCharset());
 
         GoogleClientSecrets clientSecrets =
                 GoogleClientSecrets.load(JSON_FACTORY, reader);
