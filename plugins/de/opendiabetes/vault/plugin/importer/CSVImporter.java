@@ -122,10 +122,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
                 List<VaultEntry> entryList = parseEntry(creader);
 
                 if (entryList != null && !entryList.isEmpty()) {
-                    for (VaultEntry item : entryList) {
-                        importedData.add(item);
-                        LOG.log(Level.FINE, "Got Entry: {0}", entryList.toString());
-                    }
+                    importedData.addAll(entryList);
                 }
             }
             this.notifyStatus(maxProgress, "Done importing all entries");

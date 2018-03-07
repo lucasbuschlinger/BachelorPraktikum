@@ -61,9 +61,9 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
         try {
             inputStream = new FileInputStream(filePath);
             return processImport(inputStream, filePath);
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException exception) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
-                    + filePath, ex);
+                    + filePath, exception);
             return null;
         } finally {
             if (inputStream != null) {
