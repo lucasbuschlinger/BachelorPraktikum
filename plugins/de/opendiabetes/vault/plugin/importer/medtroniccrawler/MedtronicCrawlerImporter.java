@@ -20,6 +20,7 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
@@ -128,24 +129,8 @@ public class MedtronicCrawlerImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public boolean importData() {
-            return false;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public List<VaultEntry> getImportedData() {
+        public List<VaultEntry> importData() {
             return null;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void clearData() {
-
         }
 
         /**
@@ -163,8 +148,6 @@ public class MedtronicCrawlerImporter extends Plugin {
          * Takes the list of compatible plugins from a configuration file and returns it.
          *
          * @return a list of plugin names that are known to be compatible with this plugin
-         * @see {@link AbstractPlugin#loadConfiguration(Properties)} {@link AbstractPlugin#getListOfCompatiblePluginIDs()}
-         * for an implementation.
          */
         @Override
         public List<String> getListOfCompatiblePluginIDs() {

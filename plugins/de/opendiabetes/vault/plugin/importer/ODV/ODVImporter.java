@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.vault.plugin.importer.ODV;
 
+import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.AbstractFileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
@@ -39,6 +40,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -119,28 +121,27 @@ public class ODVImporter extends Plugin {
          * Files can only be imported if the therefore needed importer plugin is available, if not it gets omitted and reported.
          *
          * @param filePath Path to the ZIP-archive from which the files should be imported.
-         * @return True some data could imported successfully, false if none could be imported.
+         * @return List of VaultEntry consisting of the imported data.
          */
         @Override
-        public boolean importData(final String filePath) {
+        public List<VaultEntry> importData(final String filePath) {
             Map<String, MetaValues> metaInfo;
             Map<String, String> unimportedFiles = new HashMap<>();
-            importedData = new ArrayList<>();
-            boolean result = false;
+            List<VaultEntry> importedData = new ArrayList<>();
             String reasonNoPlugin = "No applicable importer plugin available for this file";
             String reasonChecksumFailed = "The integrity of the data could not be verified via the checksum";
             try {
                 unzipArchive(filePath, tempDir);
             } catch (IOException exception) {
                 LOG.log(Level.SEVERE, "Error while unzipping archive: " + filePath);
-                return false;
+                return null;
             }
             notifyStatus(PROGRESS_UNZIPPED, "Unzipped the archive");
             try {
                  metaInfo = readMetaFile(tempDir + File.separator + metaFile);
             } catch (IOException exception) {
                 LOG.log(Level.SEVERE, "Error while reading meta file");
-                return false;
+                return null;
             }
             Iterator iterator = metaInfo.entrySet().iterator();
             PluginManager manager = new DefaultPluginManager();
@@ -163,17 +164,17 @@ public class ODVImporter extends Plugin {
                     unimportedFiles.put(importFile, reasonChecksumFailed);
                     continue;
                 }
+                List<VaultEntry> subImportedData;
                 if (importer instanceof FileImporter) {
-                    ((FileImporter) importer).importData(importFile);
+                    subImportedData = ((FileImporter) importer).importData(importFile);
                 } else {
-                    importer.importData();
+                    subImportedData = importer.importData();
                 }
-                importedData.addAll(importer.getImportedData());
-                result = true;
+                importedData.addAll(subImportedData);
             }
             notifyStatus(PROGRESS_AVAILABLE_IMPORTED, "Imported all available data");
             reportUnimported(unimportedFiles);
-            return result;
+            return importedData;
         }
 
         /**
@@ -348,8 +349,8 @@ public class ODVImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            return false;
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
+            return null;
         }
 
         /**

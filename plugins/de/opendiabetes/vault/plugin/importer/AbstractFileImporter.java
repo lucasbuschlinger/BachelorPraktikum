@@ -16,9 +16,13 @@
  */
 package de.opendiabetes.vault.plugin.importer;
 
+import de.opendiabetes.vault.container.VaultEntry;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -34,7 +38,7 @@ public abstract class AbstractFileImporter extends AbstractImporter implements d
      * {@inheritDoc}
      */
     @Override
-    public boolean importData() {
+    public List<VaultEntry> importData() {
         throw new UnsupportedOperationException("The importData() method of a FileImporter cannot be used."
                 + " Use importData(filePath) instead.");
     }
@@ -43,12 +47,12 @@ public abstract class AbstractFileImporter extends AbstractImporter implements d
      * Imports the data from a specified file path.
      *
      * @param filePath File path from which the data should be imported to
-     * @return True if data can be imported, false otherwise.
+     * @return List of VaultEntry consisting of the imported data.
      */
-    public boolean importData(final String filePath) {
+    public List<VaultEntry> importData(final String filePath) {
         if (filePath == null) {
             LOG.log(Level.WARNING, "No path specified from where to import data.");
-            return false;
+            return null;
         }
         preprocessingIfNeeded(filePath);
         this.notifyStatus(0, "Preprocessing done.");
@@ -60,7 +64,7 @@ public abstract class AbstractFileImporter extends AbstractImporter implements d
         } catch (FileNotFoundException ex) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
                     + filePath, ex);
-            return false;
+            return null;
         } finally {
             if (inputStream != null) {
                 try {
@@ -85,8 +89,8 @@ public abstract class AbstractFileImporter extends AbstractImporter implements d
      *
      * @param fileInputStream    The input stream for the imported data.
      * @param filenameForLogging Filename to which the logger should write.
-     * @return True if the data can be processed, false otherwise.
+     * @return List of VaultEntry consisting of the imported data.
      */
-    protected abstract boolean processImport(InputStream fileInputStream, String filenameForLogging);
+    protected abstract List<VaultEntry> processImport(InputStream fileInputStream, String filenameForLogging);
 
 }

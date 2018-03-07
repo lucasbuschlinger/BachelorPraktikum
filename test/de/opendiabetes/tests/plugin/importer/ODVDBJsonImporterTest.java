@@ -61,6 +61,6 @@ public class ODVDBJsonImporterTest {
     public void callPlugin() {
         FileImporter odvImporter = (FileImporter) TestImporterUtil.getImporter("ODVDBJsonImporter");
         System.out.println("TEST" + odvImporter.getClass());
-        Assert.assertFalse(odvImporter.importData("path/to/data"));
+        Assert.assertNull(odvImporter.importData("path/to/data"));
     }
 }

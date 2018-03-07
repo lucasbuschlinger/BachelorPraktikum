@@ -1,6 +1,9 @@
 package de.opendiabetes.vault.plugin.fileimporter;
 
+import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.Importer;
+
+import java.util.List;
 
 /**
  * @author ocastx
@@ -14,7 +17,8 @@ public interface FileImporter extends Importer {
      * Imports the data from a file.
      *
      * @param filePath path to the file which should be used for importing data
-     * @return boolean true if data was imported, false otherwise.
+     * @return List of VaultEntry consisting of the imported data.
+     * @see de.opendiabetes.vault.container.VaultEntry
      */
-    boolean importData(String filePath);
+    List<VaultEntry> importData(String filePath);
 }

@@ -68,7 +68,7 @@ public class MedtronicImporterTest {
         manager.enablePlugin("MedtronicImporter");
         manager.startPlugin("MedtronicImporter");
         FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
-        Assert.assertFalse(medtronicImporter.importData("path/to/data"));
+        Assert.assertNull(medtronicImporter.importData("path/to/data"));
     }
 
     /**

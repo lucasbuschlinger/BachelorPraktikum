@@ -89,8 +89,8 @@ public abstract class CSVImporter extends AbstractFileImporter {
     /**
      * {@inheritDoc}
      */
-    public boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-        importedData = new ArrayList<>();
+    public List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
+        List<VaultEntry> importedData = new ArrayList<>();
         final int maxProgress = 100;
 
         //This list is used as a placeholder for future extensions
@@ -114,7 +114,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
             }
             if (creader == null) { //header could not be validated
                 LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
-                return false;
+                return null;
             }
             // read entries
             while (creader.readRecord()) {
@@ -134,7 +134,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
             LOG.log(Level.WARNING, "Error while parsing CSV: "
                     + filenameForLogging, ex);
         }
-        return true;
+        return importedData;
     }
 
     /**

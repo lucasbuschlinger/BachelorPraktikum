@@ -65,6 +65,6 @@ public class GoogleFitCSVImporterTest {
         manager.enablePlugin("GoogleFitCSVImporter");
         manager.startPlugin("GoogleFitCSVImporter");
         FileImporter googleFitCSVImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
-        Assert.assertFalse(googleFitCSVImporter.importData("path/to/data"));
+        Assert.assertNull(googleFitCSVImporter.importData("path/to/data"));
     }
 }

@@ -46,6 +46,6 @@ public class LibreTextImporterTest {
         manager.enablePlugin("LibreTextImporter");
         manager.startPlugin("LibreTextImporter");
         FileImporter LibreTextImporter = (FileImporter)manager.getExtensions(Importer.class).get(0);
-        Assert.assertFalse(LibreTextImporter.importData("path/to/data"));
+        Assert.assertNull(LibreTextImporter.importData("path/to/data"));
     }
 }

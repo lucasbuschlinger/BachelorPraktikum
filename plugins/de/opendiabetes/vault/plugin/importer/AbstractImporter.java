@@ -33,24 +33,4 @@ import java.util.List;
  */
 public abstract class AbstractImporter extends AbstractPlugin implements Importer {
 
-    /**
-     * List of VaultEntry which contains the imported and processed data.
-     */
-    protected List<VaultEntry> importedData;
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<VaultEntry> getImportedData() {
-        return importedData;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clearData() {
-        getImportedData().clear();
-    }
-
 }

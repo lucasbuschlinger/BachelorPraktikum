@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.vault.plugin.importer.googlecrawler;
 
+import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.AbstractImporter;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.fitness.GoogleFitness;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.helper.Credentials;
@@ -28,8 +29,10 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -127,7 +130,7 @@ public class GoogleFitCrawlerImporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        public boolean importData() {
+        public List<VaultEntry> importData() {
 
             Credentials credentialsInstance = Credentials.getInstance();
 
@@ -211,10 +214,10 @@ public class GoogleFitCrawlerImporter extends Plugin {
                 }
 
             } catch (Exception e) {
-                return false;
+                return null;
             }
 
-            return true;
+            return new ArrayList<>();
         }
 
         /**

@@ -60,6 +60,6 @@ public class SonySWR21ImporterTest {
     @Test
     public void callPlugin() {
         FileImporter sonySWR21Importer = (FileImporter) TestImporterUtil.getImporter("SonySWR21Importer");
-        Assert.assertFalse(sonySWR21Importer.importData("path/to/data"));
+        Assert.assertNull(sonySWR21Importer.importData("path/to/data"));
     }
 }
