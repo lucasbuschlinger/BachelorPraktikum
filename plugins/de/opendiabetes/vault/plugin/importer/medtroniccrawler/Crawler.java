@@ -4,11 +4,12 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Actual class for crawling the minimed web page.
@@ -33,16 +34,17 @@ public class Crawler {
      * @param startDate - start date from when the csv file data should begin.
      * @param endDate - end date until when the csv file data should go.
      * @param userWorkingDirectory - the directory where the csv file should be downloaded to.
-     * @param logger - a logger instance.
+     * @throws IOException - Thrown if there was something wrong while executing the request.
+     * @throws UnsupportedEncodingException - Thrown if the encoding of the request is not supported.
+     * @throws FileNotFoundException - Thrown if the path at which the file should be written to was not found.
      */
     public void generateDocument(final Map<String, String> loginCookies,
                                  final String startDate,
                                  final String endDate,
-                                 final String userWorkingDirectory,
-                                 final Logger logger) {
-
-        logger.info("Inside class CrawlerClass");
-        try {
+                                 final String userWorkingDirectory) throws
+            UnsupportedEncodingException,
+            FileNotFoundException,
+            IOException {
             Connection.Response reportDocument = Jsoup
                     .connect("https://carelink.minimed.eu/patient/main/selectCSV.do?t=11?t=11?t=11?t=11").timeout(CONNECT_TIMEOUT)
                     /* .ignoreContentType(false).userAgent(userAgent)*/.cookies(loginCookies)
@@ -65,13 +67,6 @@ public class Crawler {
             System.out.println("Export Sucessfull!");
             System.out.println("File will be saved to location " + userWorkingDirectory + " with name: " + "\"careLink-Export"
                     + (new Date().getTime()) + ".csv\"");
-            logger.info("Export Sucessfull!");
 
-        } catch (IOException e) {
-            logger.info("There is an issue Downloading File. Please try again after some time!!");
-            System.out.println(
-                    "There is an issue Downloading File. Please try checking output path or try again after some time!!");
-
-        }
     }
 }
