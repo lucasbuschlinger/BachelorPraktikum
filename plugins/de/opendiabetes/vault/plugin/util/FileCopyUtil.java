@@ -64,8 +64,13 @@ public final class FileCopyUtil {
             }
         }
 
-        for (String f : source.list()) {
-            copy(new File(source, f), new File(target, f));
+        String[] fileList = source.list();
+        if (fileList != null) {
+            for (String f : fileList) {
+                copy(new File(source, f), new File(target, f));
+            }
+        } else {
+            throw new IOException(String.format("Source directory %s is not a directory", source.getName()));
         }
     }
 

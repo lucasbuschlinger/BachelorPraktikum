@@ -18,6 +18,7 @@ package de.opendiabetes.vault.plugin.importer.miband;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hamcrest.core.Is;
 
 import java.util.List;
 
@@ -41,10 +42,11 @@ public class MiBandObjects {
      * This object will hold the data if there was some of the {@link Workout} type.
      */
     private List<Workout> workout;
-    /**
-     * This object will hold the data if there was some of the {@link StepsData} type.
-     */
-    private List<StepsData> stepsData;
+//    Currently unused.
+//     /**
+//     * This object will hold the data if there was some of the {@link StepsData} type.
+//     */
+//    private List<StepsData> stepsData;
     /**
      * This object will hold the data if there was some of the {@link Weight} type.
      */
@@ -77,14 +79,14 @@ public class MiBandObjects {
         return workout;
     }
 
-    /**
-     * Getter for the steps data.
-     *
-     * @return The steps data.
-     */
-    public List<MiBandObjects.StepsData> getStepsData() {
-        return stepsData;
-    }
+//    /**
+//     * Getter for the steps data.
+//    *
+//     * @return The steps data.
+//     */
+//    public List<MiBandObjects.StepsData> getStepsData() {
+//        return stepsData;
+//    }
 
     /**
      * Getter for the weight data.
@@ -300,11 +302,6 @@ public class MiBandObjects {
          * Number of steps recorded in this entry.
          */
         private String steps;
-        /**
-         * Timestamp of when data has been synced with GoogleFit.
-         * Is 0 if it has not been synced.
-         */
-        private String syncedGFit;
 
         /**
          * Getter for the timestamp.

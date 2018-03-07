@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Wrapper class for the GoogleFitCrawlerImporter plugin.
@@ -213,7 +214,10 @@ public class GoogleFitCrawlerImporter extends Plugin {
                     ConflictedLocations.main(new String[]{});
                 }
 
-            } catch (Exception e) {
+            } catch (RuntimeException exception) {
+              throw exception;
+            } catch (Exception exception) {
+                LOG.log(Level.SEVERE, "Exception happened: " + exception);
                 return null;
             }
 

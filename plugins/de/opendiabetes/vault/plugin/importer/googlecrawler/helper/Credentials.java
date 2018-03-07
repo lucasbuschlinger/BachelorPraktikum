@@ -75,12 +75,12 @@ public final class Credentials {
     /**
      * Singleton instance.
      */
-    private static Credential credential;
+    private Credential credential;
 
     /**
      * API Key used for Google Services.
      */
-    private static String apiKey;
+    private String apiKey;
 
 
     /**
@@ -178,7 +178,7 @@ public final class Credentials {
      * @param apiKey the API key used by the google services
      */
     public void setAPIkey(final String apiKey) {
-        Credentials.apiKey = apiKey;
+        this.apiKey = apiKey;
     }
 }
 

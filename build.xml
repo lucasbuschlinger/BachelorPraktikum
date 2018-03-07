@@ -426,7 +426,7 @@
         <findbugs home="${findbugs.home}"
                   output="html"
                   outputFile="reports/findbugs_report.html">
-            <auxClasspath path="${basedir}/lib/*.jar"/>
+            <auxClasspath path="${basedir}/lib/"/>
             <!--<sourcePath path="${basedir}/src/" />-->
             <class location="${basedir}/out/production/OpenDiabetes/de"/>
         </findbugs>
