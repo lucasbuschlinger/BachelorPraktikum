@@ -17,6 +17,7 @@
 package de.opendiabetes.vault.plugin.importer;
 
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,7 +33,7 @@ import java.util.logging.Level;
  * {@link AbstractFileImporter#preprocessingIfNeeded(String)}.
  * {@link AbstractFileImporter#processImport(InputStream, String)}.
  */
-public abstract class AbstractFileImporter extends AbstractImporter implements de.opendiabetes.vault.plugin.fileimporter.FileImporter {
+public abstract class AbstractFileImporter extends AbstractPlugin implements de.opendiabetes.vault.plugin.fileimporter.FileImporter {
 
     /**
      * {@inheritDoc}
