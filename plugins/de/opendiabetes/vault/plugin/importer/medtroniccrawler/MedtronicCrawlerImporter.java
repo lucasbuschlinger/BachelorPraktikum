@@ -16,10 +16,10 @@
  */
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.importer.AbstractImporter;
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
@@ -56,7 +56,7 @@ public class MedtronicCrawlerImporter extends Plugin {
      * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class MedtronicCrawlerImporterImplementation extends AbstractImporter {
+    public static class MedtronicCrawlerImporterImplementation extends AbstractPlugin {
 
         /**
          * Constructor.
@@ -120,73 +120,15 @@ public class MedtronicCrawlerImporter extends Plugin {
             manager.loadPlugins();
             manager.enablePlugin("MedtronicImporter");
             manager.startPlugin("MedtronicImporter");
-            Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-            medtronicImporter.setImportFilePath(path);
-            medtronicImporter.importData();
+            FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
+            medtronicImporter.importData(path);
         }
 
-
         /**
-         * Getter for the importFilePath.
-         *
-         * @return The path to the import file.
+         * {@inheritDoc}
          */
-        @Override
-        public String getImportFilePath() {
+        public List<VaultEntry> importData() {
             return null;
-        }
-
-        /**
-         * Setter for the importFilePath.
-         *
-         * @param filePath The path to the import file.
-         */
-        @Override
-        public void setImportFilePath(final String filePath) {
-
-        }
-
-        /**
-         * Imports the data from the file specified by @see Importer.setImportFilePath().
-         *
-         * @return boolean true if data was imported, false otherwise.
-         */
-        @Override
-        public boolean importData() {
-            return false;
-        }
-
-        /**
-         * Getter for the imported data.
-         *
-         * @return List of VaultEntry consisting of the imported data.
-         * @see VaultEntry
-         */
-        @Override
-        public List<VaultEntry> getImportedData() {
-            return null;
-        }
-
-        /**
-         * Getter for the raw imported data.
-         *
-         * @return List of RawEntry consisting of the raw imported data.
-         * @see RawEntry
-         */
-        @Override
-        public List<RawEntry> getImportedRawData() {
-            return null;
-        }
-
-        /**
-         * Clears all Imported(Raw)Data.
-         * {@link Importer#getImportedData()},
-         * {@link Importer#getImportedRawData()}
-         * will return empty lists afterwards.
-         */
-        @Override
-        public void clearData() {
-
         }
 
         /**
@@ -204,8 +146,6 @@ public class MedtronicCrawlerImporter extends Plugin {
          * Takes the list of compatible plugins from a configuration file and returns it.
          *
          * @return a list of plugin names that are known to be compatible with this plugin
-         * @see {@link AbstractPlugin#loadConfiguration(Properties)} {@link AbstractPlugin#getListOfCompatiblePluginIDs()}
-         * for an implementation.
          */
         @Override
         public List<String> getListOfCompatiblePluginIDs() {

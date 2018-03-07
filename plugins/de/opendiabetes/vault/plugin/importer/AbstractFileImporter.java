@@ -16,70 +16,61 @@
  */
 package de.opendiabetes.vault.plugin.importer;
 
+import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
  * This class defines the default structure how data gets imported from a file.
  * It implements file handling of the data source
- * specified by {@link FileImporter#setImportFilePath(String)}.
  * All descendants must implement the template methods.
- * {@link FileImporter#preprocessingIfNeeded(String)}.
- * {@link FileImporter#processImport(InputStream, String)}.
+ * {@link AbstractFileImporter#preprocessingIfNeeded(String)}.
+ * {@link AbstractFileImporter#processImport(InputStream, String)}.
  */
-public abstract class FileImporter extends AbstractImporter {
-
-    /**
-     * Path to the file data gets imported from.
-     */
-    private String importFilePath;
+public abstract class AbstractFileImporter extends AbstractPlugin implements de.opendiabetes.vault.plugin.fileimporter.FileImporter {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getImportFilePath() {
-        return importFilePath;
+    public List<VaultEntry> importData() {
+        throw new UnsupportedOperationException("The importData() method of a FileImporter cannot be used."
+                + " Use importData(filePath) instead.");
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setImportFilePath(final String filePath) {
-        this.importFilePath = filePath;
-    }
-
-    /**
-     * Imports the data from the file specified
-     * with {@link FileImporter#setImportFilePath(String)}.
+     * Imports the data from a specified file path.
      *
-     * @return True if data can be imported, false otherwise.
+     * @param filePath File path from which the data should be imported to
+     * @return List of VaultEntry consisting of the imported data.
      */
-    public boolean importData() {
-        if (null == importFilePath) {
+    public List<VaultEntry> importData(final String filePath) {
+        if (filePath == null) {
             LOG.log(Level.WARNING, "No path specified from where to import data.");
-            return false;
+            return null;
         }
-        preprocessingIfNeeded(importFilePath);
+        preprocessingIfNeeded(filePath);
         this.notifyStatus(0, "Preprocessing done.");
 
         FileInputStream inputStream = null;
         try {
-            inputStream = new FileInputStream(importFilePath);
-            return processImport(inputStream, importFilePath);
-        } catch (FileNotFoundException ex) {
+            inputStream = new FileInputStream(filePath);
+            return processImport(inputStream, filePath);
+        } catch (FileNotFoundException exception) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
-                    + importFilePath, ex);
-            return false;
+                    + filePath, exception);
+            return null;
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (Exception ex) {
-                    LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + importFilePath, ex);
+                    LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + filePath, ex);
                 }
             }
         }
@@ -98,8 +89,8 @@ public abstract class FileImporter extends AbstractImporter {
      *
      * @param fileInputStream    The input stream for the imported data.
      * @param filenameForLogging Filename to which the logger should write.
-     * @return True if the data can be processed, false otherwise.
+     * @return List of VaultEntry consisting of the imported data.
      */
-    protected abstract boolean processImport(InputStream fileInputStream, String filenameForLogging);
+    protected abstract List<VaultEntry> processImport(InputStream fileInputStream, String filenameForLogging);
 
 }

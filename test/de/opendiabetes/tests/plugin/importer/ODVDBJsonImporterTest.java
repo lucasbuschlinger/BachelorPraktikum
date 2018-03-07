@@ -16,7 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
@@ -24,9 +24,6 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.nio.file.Paths;
-import java.util.Properties;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 /**
  * Tests for the SonySWR21Importer plugin.
@@ -62,20 +59,8 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void callPlugin() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
+        FileImporter odvImporter = (FileImporter) TestImporterUtil.getImporter("ODVDBJsonImporter");
         System.out.println("TEST" + odvImporter.getClass());
-        odvImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(odvImporter.importData());
+        Assert.assertNull(odvImporter.importData("path/to/data"));
     }
-
-    /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Importer odvImporter = TestImporterUtil.getImporter("ODVDBJsonImporter");
-        odvImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", odvImporter.getImportFilePath());
-    }
-
 }

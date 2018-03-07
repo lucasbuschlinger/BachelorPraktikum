@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -66,19 +67,8 @@ public class MedtronicImporterTest {
         manager.loadPlugins();
         manager.enablePlugin("MedtronicImporter");
         manager.startPlugin("MedtronicImporter");
-        Importer medtronicImporter = manager.getExtensions(Importer.class).get(0);
-        medtronicImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(medtronicImporter.importData());
-    }
-
-    /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-        medtronicImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", medtronicImporter.getImportFilePath());
+        FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
+        Assert.assertNull(medtronicImporter.importData("path/to/data"));
     }
 
     /**

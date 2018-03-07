@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.importer;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 
@@ -32,7 +31,7 @@ import java.util.logging.Level;
 /**
  * This class implements the functionality for importing CSV based data.
  */
-public abstract class CSVImporter extends FileImporter {
+public abstract class CSVImporter extends AbstractFileImporter {
     /**
      * The validator who handles CSV data.
      */
@@ -90,9 +89,8 @@ public abstract class CSVImporter extends FileImporter {
     /**
      * {@inheritDoc}
      */
-    public boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-        importedData = new ArrayList<>();
-        importedRawData = new ArrayList<>();
+    public List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
+        List<VaultEntry> importedData = new ArrayList<>();
         final int maxProgress = 100;
 
         //This list is used as a placeholder for future extensions
@@ -116,24 +114,16 @@ public abstract class CSVImporter extends FileImporter {
             }
             if (creader == null) { //header could not be validated
                 LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
-                return false;
+                return null;
             }
             // read entries
             while (creader.readRecord()) {
                 /*here the method template is used to process all records */
                 List<VaultEntry> entryList = parseEntry(creader);
 
-                boolean entryIsInterpreted = false;
                 if (entryList != null && !entryList.isEmpty()) {
-                    for (VaultEntry item : entryList) {
-                        item.setRawId(importedRawData.size()); // add array position as raw id
-                        importedData.add(item);
-                        LOG.log(Level.FINE, "Got Entry: {0}", entryList.toString());
-                    }
-                    entryIsInterpreted = true;
+                    importedData.addAll(entryList);
                 }
-                importedRawData.add(new RawEntry(creader.getRawRecord(), entryIsInterpreted));
-                LOG.log(Level.FINER, "Put Raw: {0}", creader.getRawRecord());
             }
             this.notifyStatus(maxProgress, "Done importing all entries");
 
@@ -141,7 +131,7 @@ public abstract class CSVImporter extends FileImporter {
             LOG.log(Level.WARNING, "Error while parsing CSV: "
                     + filenameForLogging, ex);
         }
-        return true;
+        return importedData;
     }
 
     /**

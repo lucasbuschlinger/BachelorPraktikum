@@ -267,9 +267,9 @@ public class OpenDiabetesPluginManager {
      * @return a path to a file containing .md/html formatted text,
      * that gets displayed to the user if he wants to know more about that plugin.
      */
-    public final Path getHelpFilePath(final OpenDiabetesPlugin plugin){
+    public final Path getHelpFilePath(final OpenDiabetesPlugin plugin) {
         Path helpPath = Paths.get(getPluginBasePath(plugin), "help.md");
-        if (!Files.exists(helpPath)){
+        if (!Files.exists(helpPath)) {
             return Paths.get("resources/defaultHelp.md");
         }
         return  helpPath;

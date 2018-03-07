@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryGsonAdapter;
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.importer.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -56,7 +56,7 @@ public class ODVDBJsonImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static final class ODVDBJsonImporterImplementation extends FileImporter {
+    public static final class ODVDBJsonImporterImplementation extends AbstractFileImporter {
 
         /**
          * Empty preprocessing for ODVDB Json data, as it is not necessary for this type of data.
@@ -71,10 +71,7 @@ public class ODVDBJsonImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            importedData = new ArrayList<>();
-            importedRawData = new ArrayList<>();
-
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
             // prepare libs
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(VaultEntry.class, new VaultEntryGsonAdapter());
@@ -86,7 +83,7 @@ public class ODVDBJsonImporter extends Plugin {
                 reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             } catch (UnsupportedEncodingException exception) {
                 LOG.log(Level.SEVERE, "Can not handle fileInputStream, wrong encoding!");
-                return false;
+                return null;
             }
             // import
             Type listType = new TypeToken<ArrayList<VaultEntry>>() {
@@ -94,12 +91,11 @@ public class ODVDBJsonImporter extends Plugin {
             List<VaultEntry> importDb = gson.fromJson(reader, listType);
 
             if (importDb != null && !importDb.isEmpty()) {
-                importedData = importDb;
                 LOG.log(Level.FINE, "Successfully imported json file.");
-                return true;
+                return importDb;
             }
             LOG.log(Level.SEVERE, "Got no data from json import.");
-            return false;
+            return null;
         }
 
         /**
