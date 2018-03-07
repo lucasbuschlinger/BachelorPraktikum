@@ -28,6 +28,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.IOException;
@@ -63,7 +64,7 @@ public final class VaultDao {
     /**
      * The instance of the Database Access Object used herein.
      */
-    private static VaultDao INSTANCE = null;
+    private static VaultDao instance = null;
 
     /**
      * The {@link ConnectionSource} used herein.
@@ -86,30 +87,30 @@ public final class VaultDao {
     }
 
     /**
-     * Getter for the {@link #INSTANCE} of the database.
+     * Getter for the {@link #instance} of the database.
      * If the database has not been initialized by calling {@link #initializeDb()} this will terminate the execution.
      *
      * @return The instance of the Vault Database Access Object, provided it has been initialized by {@link #initializeDb()}.
      */
     public static VaultDao getInstance() {
-        if (INSTANCE == null) {
+        if (instance == null) {
             LOG.severe("Database is not initialized. Call VaultDao.initializeDb first!");
             System.exit(-1);
         }
-        return INSTANCE;
+        return instance;
     }
 
     /**
-     * Closes the connection to the database and thus finalizes the Vault Database Access Object {@link #INSTANCE}.
+     * Closes the connection to the database and thus finalizes the Vault Database Access Object {@link #instance}.
      *
      * @throws IOException Thrown if the connection to the database can not be closed.
      */
     public static void finalizeDb() throws IOException {
-        INSTANCE.connectionSource.close();
+        instance.connectionSource.close();
     }
 
     /**
-     * Initializes the connection to the database and sets up the Vault Database Access Object {@link #INSTANCE}.
+     * Initializes the connection to the database and sets up the Vault Database Access Object {@link #instance}.
      *
      * @throws SQLException Thrown if the database can not be successfully initialized.
      */
@@ -122,8 +123,8 @@ public final class VaultDao {
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY,
                 Log.Level.INFO.toString());
 
-        INSTANCE = new VaultDao();
-        INSTANCE.initDb();
+        instance = new VaultDao();
+        instance.initDb();
     }
 
     /**
@@ -150,7 +151,7 @@ public final class VaultDao {
 //        TableUtils.createTableIfNotExists(connectionSource, SliceEntry.class);
     }
 
-//    /**
+//        /**
 //     * Puts {@link VaultEntry}s into the database.
 //     *
 //     * @param entry The {@link VaultEntry} to be put into the database.
@@ -160,7 +161,7 @@ public final class VaultDao {
 //        try {
 //            return vaultDao.createIfNotExists(entry).getId();
 //        } catch (SQLException exception) {
-//            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
+//           LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
 //            return RESULT_ERROR;
 //        }
 //    }
@@ -270,73 +271,73 @@ public final class VaultDao {
 //        return returnValues;
 //    }
 
-//    /**
-//     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
-//     * The types to be queried for are exercise types:
-//     * <ul>
-//     *     <li>{@link VaultEntryType#EXERCISE_BICYCLE}</li>
-//     *     <li>{@link VaultEntryType#EXERCISE_RUN}</li>
-//     *     <li>{@link VaultEntryType#EXERCISE_WALK}</li>
-//     *     <li>{@link VaultEntryType#EXERCISE_MANUAL}</li>
-//     * </ul>
-//     *
-//     * @param from The start of the period to query entries from.
-//     * @param to The end of the period to query entries from.
-//     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
-//     */
-//    //TO DO OTHER TYPES? Let's ask Jens @next meeting
-//    public List<VaultEntry> queryExerciseBetween(final Date from, final Date to) {
-//        List<VaultEntry> returnValues = null;
-//        try {
-//            PreparedQuery<VaultEntry> query
-//                    = vaultDao.queryBuilder().orderBy("timestamp", true)
-//                    .where()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_BICYCLE)
-//                    .or()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_RUN)
-//                    .or()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_WALK)
-//                    .or()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_MANUAL)
-//                    .and()
-//                    .between(VaultEntry.TIMESTAMP_FIELD_NAME, from, to)
-//                    .prepare();
-//            returnValues = vaultDao.query(query);
-//        } catch (SQLException exception) {
-//            LOG.log(Level.SEVERE, "Error while db query", exception);
-//        }
-//        return returnValues;
-//    }
+    /**
+     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
+     * The types to be queried for are exercise types:
+     * <ul>
+     *     <li>{@link VaultEntryType#EXERCISE_LOW}</li>
+     *     <li>{@link VaultEntryType#EXERCISE_MID}</li>
+     *     <li>{@link VaultEntryType#EXERCISE_HIGH}</li>
+     *     <li>{@link VaultEntryType#EXERCISE_MANUAL}</li>
+     * </ul>
+     *
+     * @param from The start of the period to query entries from.
+     * @param to The end of the period to query entries from.
+     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
+     */
+    //TO DO OTHER TYPES? Let's ask Jens @next meeting
+    public List<VaultEntry> queryExerciseBetween(final Date from, final Date to) {
+        List<VaultEntry> returnValues = null;
+        try {
+            PreparedQuery<VaultEntry> query
+                    = vaultDao.queryBuilder().orderBy("timestamp", true)
+                    .where()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_LOW)
+                    .or()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_MID)
+                    .or()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_HIGH)
+                    .or()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.EXERCISE_MANUAL)
+                    .and()
+                    .between(VaultEntry.TIMESTAMP_FIELD_NAME, from, to)
+                    .prepare();
+            returnValues = vaultDao.query(query);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
+        }
+        return returnValues;
+    }
 
-//    /**
-//     * This is used to query a single Event ({@link VaultEntry} before a given point in time.
-//     * This is useful to determine why certain events might have happened (correlation of events).
-//     *
-//     * @param timestamp The point in time to get the preceding event from.
-//     * @param type The Type of {@link VaultEntry} to query for.
-//     * @return The event of the {@link VaultEntryType} preceding the specified point in time.
-//     */
-//    public VaultEntry queryLatestEventBefore(final Date timestamp, final VaultEntryType type) {
-//        VaultEntry returnValue = null;
-//        try {
-//
-//            PreparedQuery<VaultEntry> query
-//                    = vaultDao.queryBuilder().orderBy("timestamp", false)
-//                    .limit(1L)
-//                    .where()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, type)
-//                    .and()
-//                    .le(VaultEntry.TIMESTAMP_FIELD_NAME, timestamp)
-//                    .prepare();
-//            List<VaultEntry> tmpList = vaultDao.query(query);
-//            if (tmpList.size() > 0) {
-//                returnValue = tmpList.get(0);
-//            }
-//        } catch (SQLException exception) {
-//            LOG.log(Level.SEVERE, "Error while db query", exception);
-//        }
-//        return returnValue;
-//    }
+    /**
+     * This is used to query a single Event ({@link VaultEntry} before a given point in time.
+     * This is useful to determine why certain events might have happened (correlation of events).
+     *
+     * @param timestamp The point in time to get the preceding event from.
+     * @param type The Type of {@link VaultEntry} to query for.
+     * @return The event of the {@link VaultEntryType} preceding the specified point in time.
+     */
+    public VaultEntry queryLatestEventBefore(final Date timestamp, final VaultEntryType type) {
+        VaultEntry returnValue = null;
+        try {
+
+            PreparedQuery<VaultEntry> query
+                    = vaultDao.queryBuilder().orderBy("timestamp", false)
+                    .limit(1L)
+                    .where()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, type)
+                    .and()
+                    .le(VaultEntry.TIMESTAMP_FIELD_NAME, timestamp)
+                    .prepare();
+            List<VaultEntry> tmpList = vaultDao.query(query);
+            if (tmpList.size() > 0) {
+                returnValue = tmpList.get(0);
+            }
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
+        }
+        return returnValue;
+    }
 
     /**
      * This is used to query all {@link VaultEntry}s currently store in the database.
@@ -404,39 +405,40 @@ public final class VaultDao {
         }
         return returnValues;
     }
-//    /**
-//     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
-//     * The types to be queried for are basal types:
-//     * <ul>
-//     *     <li>{@link VaultEntryType#BASAL_MANUAL}</li>
-//     *     <li>{@link VaultEntryType#BASAL_PROFILE}</li>
-//     *     <li>{@link VaultEntryType#BASAL_INTERPRETER}</li>
-//     * </ul>
-//     *
-//     * @param from The start of the period to query entries from.
-//     * @param to The end of the period to query entries from.
-//     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
-//     */
-//    public List<VaultEntry> queryBasalBetween(final Date from, final Date to) {
-//        List<VaultEntry> returnValues = null;
-//        try {
-//            PreparedQuery<VaultEntry> query
-//                    = vaultDao.queryBuilder().orderBy("timestamp", true)
-//                    .where()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.BASAL_MANUAL)
-//                    .or()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.BASAL_PROFILE)
-//                    .or()
-//                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.BASAL_INTERPRETER)
-//                    .and()
-//                    .between(VaultEntry.TIMESTAMP_FIELD_NAME, from, to)
-//                    .prepare();
-//            returnValues = vaultDao.query(query);
-//        } catch (SQLException exception) {
-//            LOG.log(Level.SEVERE, "Error while db query", exception);
-//        }
-//        return returnValues;
-//    }
+
+    /**
+     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
+     * The types to be queried for are basal types:
+     * <ul>
+     *     <li>{@link VaultEntryType#BASAL_MANUAL}</li>
+     *     <li>{@link VaultEntryType#BASAL_PROFILE}</li>
+     *     <li>{@link VaultEntryType#BASAL_INTERPRETER}</li>
+     * </ul>
+     *
+     * @param from The start of the period to query entries from.
+     * @param to The end of the period to query entries from.
+     * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
+     */
+    public List<VaultEntry> queryBasalBetween(final Date from, final Date to) {
+        List<VaultEntry> returnValues = null;
+        try {
+            PreparedQuery<VaultEntry> query
+                    = vaultDao.queryBuilder().orderBy("timestamp", true)
+                    .where()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.BASAL_MANUAL)
+                    .or()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.BASAL_PROFILE)
+                    .or()
+                    .eq(VaultEntry.TYPE_FIELD_NAME, VaultEntryType.BASAL_INTERPRETER)
+                    .and()
+                    .between(VaultEntry.TIMESTAMP_FIELD_NAME, from, to)
+                    .prepare();
+            returnValues = vaultDao.query(query);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
+        }
+        return returnValues;
+    }
 
 //    /**
 //     * This is used to remove a specific entry from the database.

@@ -412,7 +412,7 @@ public class VaultEntry implements Serializable {
     @Override
     public String toString() {
         return "VaultEntry{" + "id=" + id + ", type=" + type + ", timestamp=" + timestamp + ", value=" + value + ", value2=" + value2
-                + ", rawId=" + rawId + ", annotaion=" + annotations + '}';
+                + ", rawId=" + rawId + ", annotation=" + annotations + '}';
     }
 
     /**

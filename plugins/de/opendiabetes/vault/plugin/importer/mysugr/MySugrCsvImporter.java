@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 
 /**
@@ -51,7 +50,7 @@ public class MySugrCsvImporter extends Plugin {
      * Actual implementation of the MySugrCsvImporter plugin.
      */
     @Extension
-    public static class MySugrCsvImporterImplementation extends CSVImporter {
+    public static final class MySugrCsvImporterImplementation extends CSVImporter {
 
         /**
          * The maximum number of lines to scan for a header.
@@ -69,8 +68,8 @@ public class MySugrCsvImporter extends Plugin {
          * Extracts a VaultEntry with the data type double.
          *
          * @param timestamp The timestamp at which the entry occurred.
-         * @param type The type of the entry.
-         * @param rawValue The raw value of the entry.
+         * @param type      The type of the entry.
+         * @param rawValue  The raw value of the entry.
          * @param fullEntry The full entry.
          * @return VaultEntry The extracted double entry as a VaultEntry.
          */
@@ -82,7 +81,7 @@ public class MySugrCsvImporter extends Plugin {
                     return new VaultEntry(type, timestamp, value);
                 } catch (NumberFormatException ex) {
                     LOG.log(Level.WARNING, "{0} -- Record: {1}",
-                            new Object[]{ex.getMessage(), Arrays.toString(fullEntry)});
+                            new Object[] {ex.getMessage(), Arrays.toString(fullEntry)});
                 }
             }
             return null;
@@ -252,11 +251,9 @@ public class MySugrCsvImporter extends Plugin {
             if (!rawValue.isEmpty()) {
                 tmpEntry = new VaultEntry(VaultEntryType.MEAL_DESCRIPTION, timestamp,
                         VaultEntry.VALUE_UNUSED);
-                if (tmpEntry != null) {
-                    VaultEntryAnnotation mealDescription = new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.MEAL_Information);
-                    mealDescription.setValue(rawValue);
-                    tmpEntry.addAnnotation(mealDescription);
-                }
+                VaultEntryAnnotation mealDescription = new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.MEAL_Information);
+                mealDescription.setValue(rawValue);
+                tmpEntry.addAnnotation(mealDescription);
             }
 
             //TAG
@@ -283,19 +280,13 @@ public class MySugrCsvImporter extends Plugin {
         }
 
         /**
-         *Unimplemented preprocessing method as no preprocessing is necessary for MySugr CSV data.
+         * Unimplemented preprocessing method as no preprocessing is necessary for MySugr CSV data.
          *
          * @param filePath The file path of the file to pre process.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
-
-        /**
-         *{@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
+        protected void preprocessingIfNeeded(final String filePath) {
         }
+
     }
 }

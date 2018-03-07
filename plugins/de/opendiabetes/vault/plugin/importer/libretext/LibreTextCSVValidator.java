@@ -67,7 +67,7 @@ public class LibreTextCSVValidator extends CSVValidator {
             LIBRE_HEADER_DE_HISTORIC,
             LIBRE_HEADER_DE_BLOOD,
             LIBRE_HEADER_DE_TIME,
-            TIME_FORMAT_LIBRE_DE
+            LIBRE_HEADER_DE_TYPE
     };
 /*
     /**

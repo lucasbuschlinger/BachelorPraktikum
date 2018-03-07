@@ -57,7 +57,7 @@ public class MySugrCSVValidator extends CSVValidator {
     /**
      * Pattern to indicate German meal manual header.
      */
-    private static final String MY_SUGR_HEADER_DE_MEAL_MANUAL = "Mahlzeitkohlenhydrate (Gramm, Faktor 1)";
+    private static final String MY_SUGR_HEADER_DE_MEAL_MANUAL = "Mahlzeitkohlenhydrate (Broteinheiten, Faktor 12)";
     /**
      * Pattern to indicate German basal injection units header.
      */
@@ -203,9 +203,12 @@ public class MySugrCSVValidator extends CSVValidator {
      * German header entries.
      */
     private static final String[] HEADER_DE = {
-            MY_SUGR_HEADER_DE_DATE, MY_SUGR_HEADER_DE_TIME, MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL,
-            MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT, MY_SUGR_HEADER_DE_MEAL_MANUAL,
+            MY_SUGR_HEADER_DE_DATE, MY_SUGR_HEADER_DE_TIME,
+            MY_SUGR_HEADER_DE_BLOOD_GLUCOSE_MEASUREMENT,
             MY_SUGR_HEADER_DE_BASAL_INJECTION_UNITS,
+            MY_SUGR_HEADER_DE_INSULIN_INJECTION_UNITS_MEAL,
+            MY_SUGR_HEADER_DE_MEAL_MANUAL,
+
     };
 
     /**
@@ -378,8 +381,8 @@ public class MySugrCSVValidator extends CSVValidator {
         Language language = getLanguageSelection();
         switch (language) {
             case DE:
-                dateString = dateFormatter(creader.get(MY_SUGR_HEADER_DE_DATE).trim());
-                timeString = timeFormatter(creader.get(MY_SUGR_HEADER_DE_TIME).trim());
+                dateString = creader.get(MY_SUGR_HEADER_DE_DATE).trim();
+                timeString = creader.get(MY_SUGR_HEADER_DE_TIME).trim();
                 return TimestampUtils.createCleanTimestamp(
                         dateString + " " + timeString, TIME_FORMAT_DE);
             case EN:
@@ -399,28 +402,27 @@ public class MySugrCSVValidator extends CSVValidator {
      * @param creader The CsvReader instance.
      * @return String The normal bolus.
      * @throws IOException If the file could not be opened.
-     * @throws ParseException If there was an error while parsing.
      */
-    public String getBolusNormal(final CsvReader creader) throws IOException, ParseException {
+    public String getBolusNormal(final CsvReader creader) throws IOException {
         String tempMeal = getInsulinMeal(creader);
         String tempCorrection = getInsulinCorrection(creader);
         String tempPen = getInsulinPen(creader);
         String tempPump = getInsulinPump(creader);
-        int insulinMeal = 0, insulinCorrection = 0, insulinPen = 0, insulinPump = 0;
+        double insulinMeal = 0, insulinCorrection = 0, insulinPen = 0, insulinPump = 0;
         if (!tempMeal.isEmpty()) {
-            insulinMeal = Integer.parseInt(tempMeal);
+            insulinMeal = Double.parseDouble(tempMeal.replace(",", "."));
         }
         if (!tempCorrection.isEmpty()) {
-            insulinCorrection = Integer.parseInt(tempCorrection);
+            insulinCorrection = Double.parseDouble(tempCorrection.replace(",", "."));
         }
         if (!tempPen.isEmpty()) {
-            insulinPen = Integer.parseInt(tempPen);
+            insulinPen = Double.parseDouble(tempPen.replace(",", "."));
         }
         if (!tempPump.isEmpty()) {
-            insulinPump = Integer.parseInt(tempPump);
+            insulinPump = Double.parseDouble(tempPump.replace(",", "."));
         }
         if (insulinMeal + insulinCorrection + insulinPen + insulinPump != 0) {
-            return Integer.toString(insulinMeal + insulinCorrection + insulinPen + insulinPump);
+            return Double.toString(insulinMeal + insulinCorrection + insulinPen + insulinPump);
         }
 
         return "";

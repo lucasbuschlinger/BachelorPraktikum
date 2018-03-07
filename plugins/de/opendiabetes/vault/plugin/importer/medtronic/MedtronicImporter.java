@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -56,7 +55,7 @@ public class MedtronicImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static class MedtronicImporterImplementation extends CSVImporter {
+    public static final class MedtronicImporterImplementation extends CSVImporter {
 
         /**
          * Pattern to indicate amount.
@@ -214,13 +213,6 @@ public class MedtronicImporter extends Plugin {
             return null;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean loadConfiguration(final Properties configuration) {
-            return super.loadConfiguration(configuration);
-        }
 
         /**
          * Unimplemented preprocessing method as no preprocessing is necessary for Medtronic data.
@@ -561,6 +553,7 @@ public class MedtronicImporter extends Plugin {
 
             return retVal;
         }
+
     }
 
 }

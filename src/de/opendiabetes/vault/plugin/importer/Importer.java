@@ -16,13 +16,11 @@
  */
 package de.opendiabetes.vault.plugin.importer;
 
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
 
 
 /**
@@ -32,86 +30,13 @@ import java.util.logging.Logger;
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
  * Therefore all importer plugins must implement this interface to get recognized as importer.
  */
-public interface Importer extends ExtensionPoint {
+public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
 
     /**
-     * Logger object of all Importers. Logs all messages of the importers to a human readable file.
-     */
-    Logger LOG = Logger.getLogger(Importer.class.getName());
-
-
-    /**
-     * Getter for the importFilePath.
-     *
-     * @return The path to the import file.
-     */
-    String getImportFilePath();
-
-    /**
-     * Setter for the importFilePath.
-     *
-     * @param filePath The path to the import file.
-     */
-    void setImportFilePath(String filePath);
-
-    /**
-     * Imports the data from the file specified by @see Importer.setImportFilePath().
-     *
-     * @return boolean true if data was imported, false otherwise.
-     */
-    boolean importData();
-
-    /**
-     * Getter for the imported data.
+     * Imports the data.
      *
      * @return List of VaultEntry consisting of the imported data.
      * @see de.opendiabetes.vault.container.VaultEntry
      */
-    List<VaultEntry> getImportedData();
-
-    /**
-     * Getter for the raw imported data.
-     *
-     * @return List of RawEntry consisting of the raw imported data.
-     * @see de.opendiabetes.vault.container.RawEntry
-     */
-    List<RawEntry> getImportedRawData();
-
-    /**
-     * Clears all Imported(Raw)Data.
-     * {@link Importer#getImportedData()},
-     * {@link Importer#getImportedRawData()}
-     * will return empty lists afterwards.
-     */
-    void clearData();
-
-    /**
-     * Method to load the plugin's configuration file.
-     *
-     * @param configuration the configuration object
-     * @return True if configuration can be loaded, false otherwise.
-     */
-    boolean loadConfiguration(Properties configuration);
-
-    /**
-     * Method to register listeners to the Plugins.
-     * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update.
-     *
-     * @param listener A listener.
-     */
-    void registerStatusCallback(StatusListener listener);
-
-    /**
-     * Interface which defines the methods called on a status update.
-     * Must be implemented by any listener of this plugin to handle the status update.
-     */
-    interface StatusListener {
-        /**
-         * Is called multiple times on all listeners during the import process to notify them about the import progress.
-         *
-         * @param progress Percentage of completion.
-         * @param status   Current Status.
-         */
-        void onStatusCallback(int progress, String status);
-    }
+    List<VaultEntry> importData();
 }

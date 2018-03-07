@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.importer;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 
@@ -32,15 +31,21 @@ import java.util.logging.Level;
 /**
  * This class implements the functionality for importing CSV based data.
  */
-public abstract class CSVImporter extends FileImporter {
+public abstract class CSVImporter extends AbstractFileImporter {
     /**
      * The validator who handles CSV data.
      */
     private CSVValidator validator;
+
+    /**
+     * Use this delimiter to use automatic delimiter detection.
+     */
+    public static final char AUTO_DELIMITER = 0;
+
     /**
      * Delimiter used in the CSV file.
      */
-    private char delimiter = 0; //set delimiter to "null" to indicate that it is not valid yet
+    private char delimiter = AUTO_DELIMITER; //set delimiter to "null" to indicate that it is not valid yet
 
 
     /**
@@ -52,21 +57,22 @@ public abstract class CSVImporter extends FileImporter {
         this.validator = csvValidator;
     }
 
+    /*HACK: uses filenameforlogging instead of fileInputStream*/
+
     /**
      * Method used to detect the valid delimiter by trying to validate the header using a given delimiter.
      *
-     * @param delimiter       the delimiter to use to read the file
-     * @param fileInputStream the file to read
-     * @param metaEntries     placeholder for future extensions
+     * @param delimiter   the delimiters to use to read the file
+     * @param file        the file to read
+     * @param metaEntries placeholder for future extensions
      * @return a CsvReader pointing to the headers, null if the headers could not be validated
      * @throws IOException if file reading goes wrong
      */
-    private CsvReader getValidatedCreader(final char delimiter, final InputStream fileInputStream, final List<String[]> metaEntries)
+    private CsvReader getValidatedCreader(final char delimiter, final String file, final List<String[]> metaEntries)
             throws IOException {
         // open file
-        CsvReader creader = new CsvReader(fileInputStream, delimiter, Charset.forName("UTF-8"));
+        CsvReader creader = new CsvReader(file, delimiter, Charset.forName("UTF-8"));
 
-        //validate header
         do {
             if (!creader.readHeaders()) {
                 LOG.log(Level.FINEST, "automatic delimiter detection detected invalid delimiter: " + delimiter);
@@ -83,13 +89,12 @@ public abstract class CSVImporter extends FileImporter {
     /**
      * {@inheritDoc}
      */
-    protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-        importedData = new ArrayList<>();
-        importedRawData = new ArrayList<>();
+    public List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
+        List<VaultEntry> importedData = new ArrayList<>();
         final int maxProgress = 100;
 
         //This list is used as a placeholder for future extensions
-         List<String[]> metaEntries = new ArrayList<>();
+        List<String[]> metaEntries = new ArrayList<>();
 
         this.notifyStatus(0, "Reading Header");
         try {
@@ -98,35 +103,27 @@ public abstract class CSVImporter extends FileImporter {
                 LOG.log(Level.INFO, "using automatic delimiter detection");
                 char[] delimiterList = {',', ';', '\t'};
                 for (char delimiter : delimiterList) {
-                    creader = getValidatedCreader(delimiter, fileInputStream, metaEntries);
+                    creader = getValidatedCreader(delimiter, filenameForLogging, metaEntries);
                     if (null != creader) {
                         setDelimiter(delimiter);
                         break;
                     }
                 }
             } else { // use the delimiter that was set
-                creader = getValidatedCreader(getDelimiter(), fileInputStream, metaEntries);
+                creader = getValidatedCreader(getDelimiter(), filenameForLogging, metaEntries);
             }
             if (creader == null) { //header could not be validated
                 LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
-                return false;
+                return null;
             }
             // read entries
             while (creader.readRecord()) {
                 /*here the method template is used to process all records */
                 List<VaultEntry> entryList = parseEntry(creader);
 
-                boolean entryIsInterpreted = false;
                 if (entryList != null && !entryList.isEmpty()) {
-                    for (VaultEntry item : entryList) {
-                        item.setRawId(importedRawData.size()); // add array position as raw id
-                        importedData.add(item);
-                        LOG.log(Level.FINE, "Got Entry: {0}", entryList.toString());
-                    }
-                    entryIsInterpreted = true;
+                    importedData.addAll(entryList);
                 }
-                importedRawData.add(new RawEntry(creader.getRawRecord(), entryIsInterpreted));
-                LOG.log(Level.FINER, "Put Raw: {0}", creader.getRawRecord());
             }
             this.notifyStatus(maxProgress, "Done importing all entries");
 
@@ -134,7 +131,7 @@ public abstract class CSVImporter extends FileImporter {
             LOG.log(Level.WARNING, "Error while parsing CSV: "
                     + filenameForLogging, ex);
         }
-        return true;
+        return importedData;
     }
 
     /**
@@ -193,7 +190,7 @@ public abstract class CSVImporter extends FileImporter {
      * {@inheritDoc}
      */
     @Override
-    public boolean loadConfiguration(final Properties configuration) {
+    public boolean loadPluginSpecificConfiguration(final Properties configuration) {
         if (configuration.containsKey("delimiter")) {
             String delimiter = configuration.getProperty("delimiter");
             if (delimiter != null && delimiter.length() == 1) {
@@ -207,7 +204,6 @@ public abstract class CSVImporter extends FileImporter {
                                 + "or remove the delimiter property to use automatic delimiter detection");
                 return false;
             }
-
         }
         return true;
     }
