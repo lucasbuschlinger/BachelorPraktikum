@@ -24,6 +24,7 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 /**
@@ -65,6 +66,12 @@ public class GoogleFitCSVImporterTest {
         manager.enablePlugin("GoogleFitCSVImporter");
         manager.startPlugin("GoogleFitCSVImporter");
         FileImporter googleFitCSVImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
-        Assert.assertNull(googleFitCSVImporter.importData("path/to/data"));
+        try {
+            googleFitCSVImporter.importData("path/to/data");
+        } catch (FileNotFoundException exception) {
+            Assert.assertNotNull(exception);
+        } catch (Exception exception) {
+            Assert.fail("Should have thrown FileNotFoundException");
+        }
     }
 }

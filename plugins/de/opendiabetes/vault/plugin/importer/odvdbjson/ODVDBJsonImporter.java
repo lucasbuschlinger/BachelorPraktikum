@@ -71,20 +71,16 @@ public class ODVDBJsonImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging)
+                throws UnsupportedEncodingException {
             // prepare libs
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(VaultEntry.class, new VaultEntryGsonAdapter());
             Gson gson = builder.create();
 
             // open stream
-            BufferedReader reader;
-            try {
-                reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException exception) {
-                LOG.log(Level.SEVERE, "Can not handle fileInputStream, wrong encoding!");
-                return null;
-            }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
+
             // import
             Type listType = new TypeToken<ArrayList<VaultEntry>>() {
             }.getType();

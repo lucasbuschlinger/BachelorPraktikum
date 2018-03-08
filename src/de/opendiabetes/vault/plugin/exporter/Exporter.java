@@ -20,6 +20,7 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -90,6 +91,7 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
      * @param filePath File path where the data should be exported to.
      * @param data The data to export.
      * @return The return code as specified in {@link ReturnCode}.
+     * @throws IOException Thrown if there was an error exporting the data
      */
-    int exportDataToFile(String filePath, List<VaultEntry> data);
+    int exportDataToFile(String filePath, List<VaultEntry> data) throws IOException;
 }

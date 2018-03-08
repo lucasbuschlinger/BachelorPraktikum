@@ -67,10 +67,23 @@ public class MedtronicCrawlerImporter extends Plugin {
 
         /**
          * Constructor.
+         * @throws Exception Thrown if the log file could not be written.
          */
-        public MedtronicCrawlerImporterImplementation() {
+        public MedtronicCrawlerImporterImplementation() throws Exception {
+            Logger logger = Logger.getLogger("MyLog");
+            FileHandler fh;
+            SimpleDateFormat formats = new SimpleDateFormat("dd-mm-HHMMSS");
 
-        }
+            String pathForLogFile = System.getProperty("user.dir");
+            System.out.println("Log will be saved at location " + pathForLogFile);
+            fh = new FileHandler(pathForLogFile + "/CommandLine_" + formats.format(Calendar.getInstance().getTime()) + ".log");
+            logger.addHandler(fh);
+            fh.setFormatter(new CrawlerLogFormatter());
+            logger.setUseParentHandlers(false);
+            logger.info("Command Line application started");
+
+            String username = "";
+            String password = "";
 
         /**
          * {@inheritDoc}

@@ -23,6 +23,7 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 /**
@@ -61,6 +62,12 @@ public class ODVDBJsonImporterTest {
     public void callPlugin() {
         FileImporter odvImporter = (FileImporter) TestImporterUtil.getImporter("ODVDBJsonImporter");
         System.out.println("TEST" + odvImporter.getClass());
-        Assert.assertNull(odvImporter.importData("path/to/data"));
+        try {
+            odvImporter.importData("path/to/data");
+        } catch (FileNotFoundException exception) {
+            Assert.assertNotNull(exception);
+        } catch (Exception exception) {
+            Assert.fail("Should have thrown FileNotFoundException");
+        }
     }
 }
