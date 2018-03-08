@@ -37,14 +37,14 @@ import java.util.logging.Logger;
  *
  * @author Lucas Buschlinger
  */
-public class SonySWR21Importer extends Plugin {
+public class SonySWR12Importer extends Plugin {
 
     /**
      * Constructor for the PluginManager.
      *
      * @param wrapper The PluginWrapper.
      */
-    public SonySWR21Importer(final PluginWrapper wrapper) {
+    public SonySWR12Importer(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
@@ -52,12 +52,12 @@ public class SonySWR21Importer extends Plugin {
      * Actual implementation of the Sony SWR21 importer plugin.
      */
     @Extension
-    public static final class SonySWR21ImporterImplementation extends CSVImporter {
+    public static final class SonySWR12ImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
          */
-        public SonySWR21ImporterImplementation() {
+        public SonySWR12ImporterImplementation() {
             super(new SonySWR12Validator());
         }
 

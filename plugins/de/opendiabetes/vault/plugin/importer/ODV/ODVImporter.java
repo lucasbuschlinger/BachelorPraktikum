@@ -122,27 +122,18 @@ public class ODVImporter extends Plugin {
          *
          * @param filePath Path to the ZIP-archive from which the files should be imported.
          * @return List of VaultEntry consisting of the imported data.
+         * @throws IOException Throws if there was an error reading the files
          */
         @Override
-        public List<VaultEntry> importData(final String filePath) {
+        public List<VaultEntry> importData(final String filePath) throws IOException {
             Map<String, MetaValues> metaInfo;
             Map<String, String> unimportedFiles = new HashMap<>();
             List<VaultEntry> importedData = new ArrayList<>();
             String reasonNoPlugin = "No applicable importer plugin available for this file";
             String reasonChecksumFailed = "The integrity of the data could not be verified via the checksum";
-            try {
-                unzipArchive(filePath, tempDir);
-            } catch (IOException exception) {
-                LOG.log(Level.SEVERE, "Error while unzipping archive: " + filePath);
-                return null;
-            }
+            unzipArchive(filePath, tempDir);
             notifyStatus(PROGRESS_UNZIPPED, "Unzipped the archive");
-            try {
-                 metaInfo = readMetaFile(tempDir + File.separator + metaFile);
-            } catch (IOException exception) {
-                LOG.log(Level.SEVERE, "Error while reading meta file");
-                return null;
-            }
+            metaInfo = readMetaFile(tempDir + File.separator + metaFile);
             Iterator iterator = metaInfo.entrySet().iterator();
             PluginManager manager = new DefaultPluginManager();
             manager.loadPlugins();

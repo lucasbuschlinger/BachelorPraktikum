@@ -18,7 +18,8 @@ public interface FileImporter extends Importer {
      *
      * @param filePath path to the file which should be used for importing data
      * @return List of VaultEntry consisting of the imported data.
+     * @throws Exception Thrown if there was an error reading the file
      * @see de.opendiabetes.vault.container.VaultEntry
      */
-    List<VaultEntry> importData(String filePath);
+    List<VaultEntry> importData(String filePath) throws Exception;
 }

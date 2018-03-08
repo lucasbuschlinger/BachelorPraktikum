@@ -28,7 +28,6 @@ import org.pf4j.PluginWrapper;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -116,16 +115,11 @@ public class ODVExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public int exportDataToFile(final String filePath, final List<VaultEntry> data) {
+        public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
             Map<String, MetaValues> metaData = new HashMap<>();
-            try {
-                fileOutputStream = new FileOutputStream(filePath);
-            } catch (FileNotFoundException exception) {
-                LOG.log(Level.SEVERE, "Could not open output stream " + filePath);
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
-            }
+            fileOutputStream = new FileOutputStream(filePath);
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
             zipOutputStream.setMethod(ZipOutputStream.DEFLATED);
             zipOutputStream.setLevel(COMPRESSION_LEVEL);
@@ -167,25 +161,16 @@ public class ODVExporter extends Plugin {
                 thisEntryMetaData.checksum = checksum;
                 metaData.put(name, thisEntryMetaData);
             }
-            String metaFile;
-            try {
-                metaFile = makeMetaFile(metaData);
-            } catch (IOException exception) {
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
-            }
+            String metaFile = makeMetaFile(metaData);
             notifyStatus(PROGRESS_ALL_EXPORTERS_DONE, "Done exporting with all available exporters");
             // Adding all generated export files and the meta file to the zip
-            try {
-                Iterator iterator = metaData.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry metaEntry = (Map.Entry) iterator.next();
-                    MetaValues metaValues = (MetaValues) metaEntry.getValue();
-                    addFileToZip(metaValues.file, zipOutputStream);
-                }
-                addFileToZip(metaFile, zipOutputStream);
-            } catch (Exception exception) {
-                    return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            Iterator iterator = metaData.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry metaEntry = (Map.Entry) iterator.next();
+                MetaValues metaValues = (MetaValues) metaEntry.getValue();
+                addFileToZip(metaValues.file, zipOutputStream);
             }
+            addFileToZip(metaFile, zipOutputStream);
             try {
                 zipOutputStream.close();
             } catch (IOException ex) {

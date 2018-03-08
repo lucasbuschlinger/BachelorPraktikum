@@ -89,7 +89,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
     /**
      * {@inheritDoc}
      */
-    public List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
+    public List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) throws Exception {
         List<VaultEntry> importedData = new ArrayList<>();
         final int maxProgress = 100;
 
@@ -97,40 +97,35 @@ public abstract class CSVImporter extends AbstractFileImporter {
         List<String[]> metaEntries = new ArrayList<>();
 
         this.notifyStatus(0, "Reading Header");
-        try {
-            CsvReader creader = null;
-            if (getDelimiter() == 0) { //try to detect the delimiter by trial and error
-                LOG.log(Level.INFO, "using automatic delimiter detection");
-                char[] delimiterList = {',', ';', '\t'};
-                for (char delimiter : delimiterList) {
-                    creader = getValidatedCreader(delimiter, filenameForLogging, metaEntries);
-                    if (null != creader) {
-                        setDelimiter(delimiter);
-                        break;
-                    }
-                }
-            } else { // use the delimiter that was set
-                creader = getValidatedCreader(getDelimiter(), filenameForLogging, metaEntries);
-            }
-            if (creader == null) { //header could not be validated
-                LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
-                return null;
-            }
-            // read entries
-            while (creader.readRecord()) {
-                /*here the method template is used to process all records */
-                List<VaultEntry> entryList = parseEntry(creader);
-
-                if (entryList != null && !entryList.isEmpty()) {
-                    importedData.addAll(entryList);
+        CsvReader creader = null;
+        if (getDelimiter() == 0) { //try to detect the delimiter by trial and error
+            LOG.log(Level.INFO, "using automatic delimiter detection");
+            char[] delimiterList = {',', ';', '\t'};
+            for (char delimiter : delimiterList) {
+                creader = getValidatedCreader(delimiter, filenameForLogging, metaEntries);
+                if (null != creader) {
+                    setDelimiter(delimiter);
+                    break;
                 }
             }
-            this.notifyStatus(maxProgress, "Done importing all entries");
-
-        } catch (Exception ex) {
-            LOG.log(Level.WARNING, "Error while parsing CSV: "
-                    + filenameForLogging, ex);
+        } else { // use the delimiter that was set
+            creader = getValidatedCreader(getDelimiter(), filenameForLogging, metaEntries);
         }
+        if (creader == null) { //header could not be validated
+            LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
+            return null;
+        }
+        // read entries
+        while (creader.readRecord()) {
+            /*here the method template is used to process all records */
+            List<VaultEntry> entryList = parseEntry(creader);
+
+            if (entryList != null && !entryList.isEmpty()) {
+                importedData.addAll(entryList);
+            }
+        }
+        this.notifyStatus(maxProgress, "Done importing all entries");
+
         return importedData;
     }
 
