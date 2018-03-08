@@ -143,7 +143,7 @@ public class MiBandNotifyImporter extends Plugin {
             BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-            MiBandObjects data = mapper.readValue(reader, MiBandObjects.class);;
+            MiBandObjects data = mapper.readValue(reader, MiBandObjects.class);
 
             // Reading the JSON file
             this.notifyStatus(STATUS_READ_JSON, "Read JSON file.");

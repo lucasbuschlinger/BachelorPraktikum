@@ -137,7 +137,7 @@ public final class OpenDiabetesPluginManager {
         try {
             return pf4jManager.getPlugin(pluginToString(plugin)).getPluginPath().toString();
 
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("could not resolve base path of plugin: " + pluginToString(plugin));
             e.printStackTrace();
         }

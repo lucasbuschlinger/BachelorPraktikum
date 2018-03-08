@@ -17,7 +17,7 @@
 package de.opendiabetes.vault.plugin.importer.googlecrawler;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.fitness.GoogleFitness;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.helper.Credentials;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.javaFX.views.ConflictedLocations;
@@ -56,7 +56,7 @@ public class GoogleFitCrawlerImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static final class GoogleFitCrawlerImporterImplementation extends AbstractPlugin {
+    public static final class GoogleFitCrawlerImporterImplementation extends AbstractCrawlerImporter {
 
         /**
          * The minimum default year for gathering data.
@@ -132,7 +132,7 @@ public class GoogleFitCrawlerImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public List<VaultEntry> importData(final String username, final String password) throws  Exception{
+        public List<VaultEntry> importData(final String username, final String password) throws  Exception {
 
             Credentials credentialsInstance = Credentials.getInstance();
 
