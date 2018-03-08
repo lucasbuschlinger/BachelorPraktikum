@@ -77,12 +77,12 @@ public final class Credentials {
     /**
      * Singleton instance.
      */
-    private Credential credential;
+    private static Credential credential;
 
     /**
      * API Key used for Google Services.
      */
-    private String apiKey;
+    private static String apiKey;
 
 
     /**
@@ -92,9 +92,7 @@ public final class Credentials {
         try {
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -181,7 +179,7 @@ public final class Credentials {
      * @param apiKey the API key used by the google services
      */
     public void setAPIkey(final String apiKey) {
-        this.apiKey = apiKey;
+        Credentials.apiKey = apiKey;
     }
 }
 
