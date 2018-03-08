@@ -114,6 +114,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
             }
             if (creader == null) { //header could not be validated
                 LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
+                this.notifyStatus(-1, "Could not find a valid header in file " + filenameForLogging + ".");
                 return null;
             }
             // read entries
@@ -130,6 +131,8 @@ public abstract class CSVImporter extends AbstractFileImporter {
         } catch (Exception ex) {
             LOG.log(Level.WARNING, "Error while parsing CSV: "
                     + filenameForLogging, ex);
+            this.notifyStatus(-1, "An error occurred while parsing the file.");
+            return null;
         }
         return importedData;
     }
@@ -139,7 +142,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
      *
      * @param csvReader Reader for CSV files.
      * @return List of VaultEntry holding the imported data.
-     * @throws Exception If a entry could not be parsed.
+     * @throws Exception If an entry could not be parsed.
      */
     protected abstract List<VaultEntry> parseEntry(CsvReader csvReader) throws Exception;
 

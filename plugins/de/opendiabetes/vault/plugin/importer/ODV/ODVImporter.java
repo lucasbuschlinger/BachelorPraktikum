@@ -134,6 +134,7 @@ public class ODVImporter extends Plugin {
                 unzipArchive(filePath, tempDir);
             } catch (IOException exception) {
                 LOG.log(Level.SEVERE, "Error while unzipping archive: " + filePath);
+                this.notifyStatus(-1, "An error occurred while unzipping the archive.");
                 return null;
             }
             notifyStatus(PROGRESS_UNZIPPED, "Unzipped the archive");
@@ -141,6 +142,7 @@ public class ODVImporter extends Plugin {
                  metaInfo = readMetaFile(tempDir + File.separator + metaFile);
             } catch (IOException exception) {
                 LOG.log(Level.SEVERE, "Error while reading meta file");
+                this.notifyStatus(-1, "An error occured while reading a meta file.");
                 return null;
             }
             Iterator iterator = metaInfo.entrySet().iterator();
