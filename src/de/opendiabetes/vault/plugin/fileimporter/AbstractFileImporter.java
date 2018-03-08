@@ -52,6 +52,7 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
     public List<VaultEntry> importData(final String filePath) {
         if (filePath == null) {
             LOG.log(Level.WARNING, "No path specified from where to import data.");
+            this.notifyStatus(-1, "No path specified from where to import data.");
             return null;
         }
         preprocessingIfNeeded(filePath);
@@ -64,6 +65,7 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
         } catch (FileNotFoundException exception) {
             LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
                     + filePath, exception);
+            this.notifyStatus(-1, "Could not find file " + filePath + ".");
             return null;
         } finally {
             if (inputStream != null) {
