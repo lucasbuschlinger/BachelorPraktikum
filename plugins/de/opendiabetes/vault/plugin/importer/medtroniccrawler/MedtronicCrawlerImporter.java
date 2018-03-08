@@ -17,9 +17,9 @@
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
 import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
-import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
@@ -28,7 +28,6 @@ import org.pf4j.DefaultPluginManager;
 
 import java.io.File;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -51,7 +50,22 @@ public class MedtronicCrawlerImporter extends Plugin {
      * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class MedtronicCrawlerImporterImplementation extends AbstractPlugin {
+    public static class MedtronicCrawlerImporterImplementation extends AbstractCrawlerImporter {
+
+        /**
+         * Progress percentage for showing that the configuration has been loaded.
+         */
+        private static final int PROGRESS_CONFIG_LOADED = 25;
+
+        /**
+         * Date string from when the data should start.
+         */
+        private String fromDate;
+
+        /**
+         * Date string until when the data should be imported.
+         */
+        private String toDate;
 
         /**
          * Constructor.
@@ -63,13 +77,8 @@ public class MedtronicCrawlerImporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        public List<VaultEntry> importData() {
-
-            // TODO get from function parameters
-            String username = "";
-            String password = "";
-            String fromDate = "";
-            String toDate = "";
+        @Override
+        public List<VaultEntry> importData(final String username, final String password) {
 
             Authentication auth = new Authentication();
             if (!auth.checkConnection(username, password)) {
@@ -124,30 +133,14 @@ public class MedtronicCrawlerImporter extends Plugin {
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
+            if (configuration.containsKey("fromDate")) {
+                this.fromDate = configuration.getProperty("fromDate");
+            }
+            if (configuration.containsKey("toDate")) {
+                this.toDate = configuration.getProperty("toDate");
+            }
+            this.notifyStatus(PROGRESS_CONFIG_LOADED, "Loaded configuration");
             return false;
-        }
-
-        /**
-         * Takes the list of compatible plugins from a configuration file and returns it.
-         *
-         * @return a list of plugin names that are known to be compatible with this plugin
-         */
-        @Override
-        public List<String> getListOfCompatiblePluginIDs() {
-            List<String> pluginIds = new ArrayList<>();
-            pluginIds.add("MedtronicImporter");
-            return pluginIds;
-        }
-
-        /**
-         * Method to register listeners to the Plugins.
-         * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update.
-         *
-         * @param listener A listener.
-         */
-        @Override
-        public void registerStatusCallback(final StatusListener listener) {
-
         }
     }
 }
