@@ -23,12 +23,13 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 /**
  * Tests for the SonySWR21Importer plugin.
  */
-public class SonySWR21ImporterTest {
+public class SonySWR12ImporterTest {
 
     /**
      * Test to see whether the plugin can be loaded.
@@ -49,9 +50,9 @@ public class SonySWR21ImporterTest {
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("SonySWR21Importer");
+        manager.enablePlugin("SonySWR12Importer");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("SonySWR21Importer"));
+        Assert.assertTrue(manager.enablePlugin("SonySWR12Importer"));
     }
 
     /**
@@ -59,7 +60,13 @@ public class SonySWR21ImporterTest {
      */
     @Test
     public void callPlugin() {
-        FileImporter sonySWR21Importer = (FileImporter) TestImporterUtil.getImporter("SonySWR21Importer");
-        Assert.assertNull(sonySWR21Importer.importData("path/to/data"));
+        FileImporter sonySWR12Importer = (FileImporter) TestImporterUtil.getImporter("SonySWR12Importer");
+        try {
+            sonySWR12Importer.importData("path/to/data");
+        } catch (FileNotFoundException exception) {
+            Assert.assertNotNull(exception);
+        } catch (Exception exception) {
+            Assert.fail("Should have thrown FileNotFoundException");
+        }
     }
 }

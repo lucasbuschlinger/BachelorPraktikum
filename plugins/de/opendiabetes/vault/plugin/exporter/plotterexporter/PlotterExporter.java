@@ -85,35 +85,31 @@ public class PlotterExporter extends Plugin {
          * @param dataPath path to the data that should be plotted
          * @param outputPath path where the plot should be written to
          * @return boolean value indicating whether the command was successful or not
+         * @throws IOException Thrown if there was an error executing the plot request
          */
-        private boolean plotData(final String dataPath, final String outputPath) {
-            try {
-                Process process = Runtime.getRuntime().exec(new String[]{"python", this.scriptPath, "-f", dataPath, "-o", outputPath});
+        private boolean plotData(final String dataPath, final String outputPath) throws IOException {
+            Process process = Runtime.getRuntime().exec(new String[]{"python", this.scriptPath, "-f", dataPath, "-o", outputPath});
 
-                InputStream inputStream = process.getInputStream();
-                InputStream errorStream = process.getErrorStream();
+            InputStream inputStream = process.getInputStream();
+            InputStream errorStream = process.getErrorStream();
 
-                BufferedReader stdInput = new BufferedReader(new InputStreamReader(inputStream));
-                BufferedReader stdError = new BufferedReader(new InputStreamReader(errorStream));
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(inputStream));
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(errorStream));
 
-                // read the output from the command
-                String line = null;
-                while ((line = stdInput.readLine()) != null) {
-                    LOG.log(Level.INFO, line);
-                }
-
-                // read any errors from the attempted command
-                int errorCounter = 0;
-                while ((line = stdError.readLine()) != null) {
-                    LOG.log(Level.SEVERE, line);
-                    errorCounter++;
-                }
-
-                return (errorCounter == 0);
-            } catch (IOException e) {
-                LOG.log(Level.SEVERE, "Error while executing command");
-                return false;
+            // read the output from the command
+            String line = null;
+            while ((line = stdInput.readLine()) != null) {
+                LOG.log(Level.INFO, line);
             }
+
+            // read any errors from the attempted command
+            int errorCounter = 0;
+            while ((line = stdError.readLine()) != null) {
+                LOG.log(Level.SEVERE, line);
+                errorCounter++;
+            }
+
+            return (errorCounter == 0);
         }
 
         /**

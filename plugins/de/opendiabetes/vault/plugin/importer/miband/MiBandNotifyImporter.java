@@ -27,9 +27,9 @@ import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -139,24 +139,11 @@ public class MiBandNotifyImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            BufferedReader reader;
-            try {
-                reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException exception) {
-                LOG.log(Level.SEVERE, "Can not handle fileInputStream, unsupported encoding (non UTF-8)!");
-                this.notifyStatus(-1, "Unsupported encoding! The file needs to be UTF-8 encoded in order to be processed.");
-                return null;
-            }
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) throws IOException {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             ObjectMapper mapper = new ObjectMapper();
-            MiBandObjects data;
-            try {
-                mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-                data = mapper.readValue(reader, MiBandObjects.class);
-            } catch (Exception exception) {
-                LOG.log(Level.SEVERE, "Could not read from JSON file: " + exception);
-                return null;
-            }
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            MiBandObjects data = mapper.readValue(reader, MiBandObjects.class);;
 
             // Reading the JSON file
             this.notifyStatus(STATUS_READ_JSON, "Read JSON file.");

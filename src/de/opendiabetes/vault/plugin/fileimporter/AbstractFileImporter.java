@@ -20,7 +20,6 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Level;
@@ -48,35 +47,25 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
      *
      * @param filePath File path from which the data should be imported to
      * @return List of VaultEntry consisting of the imported data.
+     * @throws Exception Thrown if there was an error reading the file
      */
-    public List<VaultEntry> importData(final String filePath) {
+    public List<VaultEntry> importData(final String filePath) throws Exception {
         if (filePath == null) {
-            LOG.log(Level.WARNING, "No path specified from where to import data.");
-            this.notifyStatus(-1, "No path specified from where to import data.");
-            return null;
+            throw new IllegalArgumentException("No path specified from where to import data.");
         }
         preprocessingIfNeeded(filePath);
         this.notifyStatus(0, "Preprocessing done.");
 
-        FileInputStream inputStream = null;
+        FileInputStream inputStream = new FileInputStream(filePath);
+        List<VaultEntry> result = processImport(inputStream, filePath);
+
         try {
-            inputStream = new FileInputStream(filePath);
-            return processImport(inputStream, filePath);
-        } catch (FileNotFoundException exception) {
-            LOG.log(Level.SEVERE, "Error opening a FileInputStream for File "
-                    + filePath, exception);
-            this.notifyStatus(-1, "Could not find file " + filePath + ".");
-            return null;
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (Exception ex) {
-                    LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + filePath, ex);
-                }
-            }
+            inputStream.close();
+        } catch (Exception ex) {
+            LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + filePath, ex);
         }
 
+        return result;
     }
 
     /**
@@ -92,7 +81,8 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
      * @param fileInputStream    The input stream for the imported data.
      * @param filenameForLogging Filename to which the logger should write.
      * @return List of VaultEntry consisting of the imported data.
+     * @throws Exception Thrown if there was an error reading the file
      */
-    protected abstract List<VaultEntry> processImport(InputStream fileInputStream, String filenameForLogging);
+    protected abstract List<VaultEntry> processImport(InputStream fileInputStream, String filenameForLogging) throws Exception;
 
 }

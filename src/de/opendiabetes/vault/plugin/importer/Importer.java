@@ -36,7 +36,8 @@ public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
      * Imports the data.
      *
      * @return List of VaultEntry consisting of the imported data.
+     * @throws Exception Thrown if any kind of error occurs while importing
      * @see de.opendiabetes.vault.container.VaultEntry
      */
-    List<VaultEntry> importData();
+    List<VaultEntry> importData() throws Exception;
 }

@@ -25,6 +25,7 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -68,7 +69,13 @@ public class MedtronicImporterTest {
         manager.enablePlugin("MedtronicImporter");
         manager.startPlugin("MedtronicImporter");
         FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
-        Assert.assertNull(medtronicImporter.importData("path/to/data"));
+        try {
+            medtronicImporter.importData("path/to/data");
+        } catch (FileNotFoundException exception) {
+            Assert.assertNotNull(exception);
+        } catch (Exception exception) {
+            Assert.fail("Should have thrown FileNotFoundException");
+        }
     }
 
     /**

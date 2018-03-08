@@ -67,8 +67,13 @@ public class MedtronicCrawlerImporter extends Plugin {
 
         /**
          * Constructor.
+         *
+         * @throws Exception Thrown if the log file could not be written.
          */
-        public MedtronicCrawlerImporterImplementation() {
+        public MedtronicCrawlerImporterImplementation() throws Exception {
+            Logger logger = Logger.getLogger("MyLog");
+            FileHandler fh;
+            SimpleDateFormat formats = new SimpleDateFormat("dd-mm-HHMMSS");
 
         }
 
