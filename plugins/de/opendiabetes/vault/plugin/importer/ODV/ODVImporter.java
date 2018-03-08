@@ -203,42 +203,38 @@ public class ODVImporter extends Plugin {
          * @return True if the integrity could be verified successfully, false otherwise.
          */
         private boolean verifyChecksum(final String filePath, final String checksum) {
-            FileInputStream fileInputStream;
-            try {
-                fileInputStream = new FileInputStream(filePath);
+            try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
+                MessageDigest digest;
+                try {
+                    digest = MessageDigest.getInstance("SHA-512");
+                } catch (NoSuchAlgorithmException exception) {
+                    LOG.log(Level.WARNING, "Could not verify integrity, SHA-512 algorithm not available");
+                    return false;
+                }
+                byte[] dataBytes = new byte[BUFFER_SIZE];
+                int nextRead;
+                try {
+                    while ((nextRead = fileInputStream.read(dataBytes)) != -1) {
+                        digest.update(dataBytes, 0, nextRead);
+                    }
+                } catch (IOException exception) {
+                    LOG.log(Level.WARNING, "Could not read file, integrity not verified");
+                    return false;
+                }
+
+                String generateChecksum = (new HexBinaryAdapter()).marshal(digest.digest());
+                if (!generateChecksum.equalsIgnoreCase(checksum)) {
+                    LOG.log(Level.WARNING, "Checksum is not valid for the specified file");
+                    return false;
+                } else {
+                    LOG.log(Level.INFO, "Checksum successfully verified for: " + filePath);
+                }
             } catch (FileNotFoundException exception) {
                 LOG.log(Level.WARNING, "Could not find file, integrity could not be verified: " + filePath);
                 return false;
-            }
-            MessageDigest digest;
-            try {
-                digest = MessageDigest.getInstance("SHA-512");
-            } catch (NoSuchAlgorithmException exception) {
-                LOG.log(Level.WARNING, "Could not verify integrity, SHA-512 algorithm not available");
-                return false;
-            }
-            byte[] dataBytes = new byte[BUFFER_SIZE];
-            int nextRead;
-            try {
-                while ((nextRead = fileInputStream.read(dataBytes)) != -1) {
-                    digest.update(dataBytes, 0, nextRead);
-                }
             } catch (IOException exception) {
-                LOG.log(Level.WARNING, "Could not read file, integrity not verified");
+                LOG.log(Level.SEVERE, "Error while handling the file input stream " + exception);
                 return false;
-            }
-
-            String generateChecksum = (new HexBinaryAdapter()).marshal(digest.digest());
-            if (!generateChecksum.equalsIgnoreCase(checksum)) {
-                LOG.log(Level.WARNING, "Checksum is not valid for the specified file");
-                return false;
-            } else {
-                LOG.log(Level.INFO, "Checksum successfully verified for: " + filePath);
-            }
-            try {
-                fileInputStream.close();
-            } catch (IOException exception) {
-                LOG.log(Level.WARNING, "Could not close stream to file");
             }
             return true;
         }

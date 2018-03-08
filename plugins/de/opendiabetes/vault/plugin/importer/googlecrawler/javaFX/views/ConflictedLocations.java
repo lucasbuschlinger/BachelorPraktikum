@@ -11,8 +11,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Conflicted locations view.
@@ -65,7 +68,8 @@ public final class ConflictedLocations extends Application {
         File file = new File(System.getProperty("user.home") + Constants.RESOLVED_LOCATION_PATH);
 
         try {
-            FileWriter writer = new FileWriter(file, false);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, false),
+                    StandardCharsets.UTF_8);
             writer.write(output);
             writer.close();
         } catch (IOException e) {

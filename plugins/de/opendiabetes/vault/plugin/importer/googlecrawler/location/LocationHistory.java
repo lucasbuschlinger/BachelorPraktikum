@@ -15,10 +15,12 @@ import de.opendiabetes.vault.plugin.importer.googlecrawler.models.ActivityTypes;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.plot.GoogleMapsPlot;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -107,11 +109,13 @@ public final class LocationHistory {
         File file = new File(System.getProperty("user.home") + Constants.RESOLVED_LOCATION_PATH);
         if (file.exists() && !file.isDirectory()) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            try {
-                ResolvedLocations resLoc = gson.fromJson(new FileReader(file.getAbsolutePath().toString()), ResolvedLocations.class);
+            try (FileInputStream inputStream = new FileInputStream(file.getAbsolutePath())) {
+                ResolvedLocations resLoc = gson.fromJson(new InputStreamReader(inputStream, StandardCharsets.UTF_8),
+                        ResolvedLocations.class);
                 ResolvedLocations.getInstance().importFromJson(resLoc);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                inputStream.close();
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
         }
     }
@@ -619,7 +623,8 @@ public final class LocationHistory {
                 + ".json");
 
         try {
-            FileWriter writer = new FileWriter(file, false);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, false),
+                    StandardCharsets.UTF_8);
             writer.write(output);
             writer.close();
         } catch (IOException e) {
