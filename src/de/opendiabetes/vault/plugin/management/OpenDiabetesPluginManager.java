@@ -38,10 +38,11 @@ import java.util.stream.Collectors;
 
 /**
  * This class is intended to simplify the interaction with all the plugins used in OpenDiabetes.
+ * --Singleton--
  *
  * @author magnus
  */
-public class OpenDiabetesPluginManager {
+public final class OpenDiabetesPluginManager {
 
     /**
      * The path to the configuration files of the plugins.
@@ -64,12 +65,17 @@ public class OpenDiabetesPluginManager {
     private Map<String, OpenDiabetesPlugin> plugins = new HashMap<>();
 
     /**
+     * The singleton instance of this class.
+     */
+    private static OpenDiabetesPluginManager singletonInstance = null;
+
+    /**
      * Most generic Constructor.
      *
      * @param pluginPath        the path where all the plugins are located.
      * @param configurationPath the path where all the configuration files of the plugins are located.
      */
-    public OpenDiabetesPluginManager(final Path pluginPath, final Path configurationPath) {
+    private OpenDiabetesPluginManager(final Path pluginPath, final Path configurationPath) {
         this.configurationPath = configurationPath;
         pf4jManager = new DefaultPluginManager(pluginPath);
         pf4jManager.loadPlugins();
@@ -81,10 +87,14 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
-     * Default Constructor.
-     */
-    public OpenDiabetesPluginManager() {
-        this(Paths.get("export"), Paths.get("properties"));
+     * Singleton factory method.
+     * @return the Singleton OpenDiabetesPluginManager instance
+      */
+    public static OpenDiabetesPluginManager getInstance() {
+        if (singletonInstance == null) {
+            singletonInstance = new OpenDiabetesPluginManager(Paths.get("export"), Paths.get("properties"));
+        }
+        return  singletonInstance;
     }
 
     /**
@@ -267,7 +277,7 @@ public class OpenDiabetesPluginManager {
      * @return a path to a file containing .md/html formatted text,
      * that gets displayed to the user if he wants to know more about that plugin.
      */
-    public final Path getHelpFilePath(final OpenDiabetesPlugin plugin) {
+    public Path getHelpFilePath(final OpenDiabetesPlugin plugin) {
         Path helpPath = Paths.get(getPluginBasePath(plugin), "help.md");
         if (!Files.exists(helpPath)) {
             return Paths.get("resources/defaultHelp.md");

@@ -17,26 +17,18 @@
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
 import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
-import de.opendiabetes.vault.plugin.importer.Importer;
-import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
-import org.pf4j.PluginManager;
-import org.pf4j.DefaultPluginManager;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Wrapper class for the MedtronicCrawlerImporter plugin.
@@ -56,11 +48,25 @@ public class MedtronicCrawlerImporter extends Plugin {
      * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class MedtronicCrawlerImporterImplementation extends AbstractPlugin {
+    public static class MedtronicCrawlerImporterImplementation extends AbstractCrawlerImporter {
+
+        /**
+         * Progress percentage for showing that the configuration has been loaded.
+         */
+        private static final int PROGRESS_CONFIG_LOADED = 25;
+
+        /**
+         * Date string from when the data should start.
+         */
+        private String fromDate;
+
+        /**
+         * Date string until when the data should be imported.
+         */
+        private String toDate;
 
         /**
          * Constructor.
-         *
          * @throws Exception Thrown if the log file could not be written.
          */
         public MedtronicCrawlerImporterImplementation() throws Exception {
@@ -79,56 +85,50 @@ public class MedtronicCrawlerImporter extends Plugin {
             String username = "";
             String password = "";
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public List<VaultEntry> importData(final String username, final String password) {
+
             Authentication auth = new Authentication();
-            if (!auth.checkConnection(username, password, logger)) {
-                logger.info("username and password entered are incorrect");
-                return;
+            if (!auth.checkConnection(username, password)) {
+                LOG.log(Level.SEVERE, "Entered username/password are incorrect");
+                return null;
             }
             String lang = auth.getLanguage();
 
-            String fromDate = "";
-            String toDate = "";
-
             try {
                 DateHelper dateHelper = new DateHelper(lang);
-                if (!dateHelper.getStartDate(fromDate, logger)) {
-                    logger.info("from date is incorrect");
-                    return;
-                }
-                logger.info("from date is correct");
-
-                if (!dateHelper.getEndDate(fromDate, toDate, logger)) {
-                    logger.info("End date is incorrect");
-                    return;
+                if (!dateHelper.getStartDate(fromDate)) {
+                    LOG.log(Level.SEVERE, "fromDate is incorrect");
+                    return null;
                 }
 
-                logger.info("End date is correct");
+                if (!dateHelper.getEndDate(fromDate, toDate)) {
+                    LOG.log(Level.SEVERE, "toDate is incorrect");
+                    return null;
+                }
             } catch (ParseException e) {
-                logger.info("Parse exception");
-                return;
+                LOG.log(Level.SEVERE, "Date parsing failed");
+                return null;
             }
 
             Crawler crawler = new Crawler();
 
             String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler";
-            crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath, logger);
+            try {
+                crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
+            } catch (Exception exception) {
+                LOG.log(Level.SEVERE, "Error while crawling data.");
+                return null;
+            }
+
 
             String path = exportPath + File.separator + "careLink-Export";
 
-            // TODO change to dynamic path
-            PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-            manager.loadPlugins();
-            manager.enablePlugin("MedtronicImporter");
-            manager.startPlugin("MedtronicImporter");
-            FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
-            medtronicImporter.importData(path);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public List<VaultEntry> importData() {
-            return null;
+            OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+            return manager.getPluginFromString(FileImporter.class, "MedtronicImporter").importData(path);
         }
 
         /**
@@ -139,30 +139,14 @@ public class MedtronicCrawlerImporter extends Plugin {
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
+            if (configuration.containsKey("fromDate")) {
+                this.fromDate = configuration.getProperty("fromDate");
+            }
+            if (configuration.containsKey("toDate")) {
+                this.toDate = configuration.getProperty("toDate");
+            }
+            this.notifyStatus(PROGRESS_CONFIG_LOADED, "Loaded configuration");
             return false;
-        }
-
-        /**
-         * Takes the list of compatible plugins from a configuration file and returns it.
-         *
-         * @return a list of plugin names that are known to be compatible with this plugin
-         */
-        @Override
-        public List<String> getListOfCompatiblePluginIDs() {
-            List<String> pluginIds = new ArrayList<>();
-            pluginIds.add("MedtronicImporter");
-            return pluginIds;
-        }
-
-        /**
-         * Method to register listeners to the Plugins.
-         * The GUI for example can implement onStatusCallback behavior and register its interface here to get notified by a status update.
-         *
-         * @param listener A listener.
-         */
-        @Override
-        public void registerStatusCallback(final StatusListener listener) {
-
         }
     }
 }
