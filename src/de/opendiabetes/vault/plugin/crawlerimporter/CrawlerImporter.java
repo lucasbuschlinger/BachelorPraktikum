@@ -19,7 +19,8 @@ public interface CrawlerImporter extends Importer {
      * @param username Name of the user to use at log in
      * @param password Password of the user to use at log in
      * @return List of VaultEntry consisting of the imported data.
+     * @throws Exception Thrown if any kind of error occurs while importing
      * @see de.opendiabetes.vault.container.VaultEntry
      */
-    List<VaultEntry> importData(String username, String password);
+    List<VaultEntry> importData(String username, String password) throws Exception;
 }

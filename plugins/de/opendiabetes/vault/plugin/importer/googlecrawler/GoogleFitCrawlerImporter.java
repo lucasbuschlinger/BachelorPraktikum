@@ -132,7 +132,8 @@ public class GoogleFitCrawlerImporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        public List<VaultEntry> importData(final String username, final String password) {
+        @Override
+        public List<VaultEntry> importData(final String username, final String password) throws  Exception{
 
             Credentials credentialsInstance = Credentials.getInstance();
 
