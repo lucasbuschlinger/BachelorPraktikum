@@ -64,11 +64,6 @@ public class PumpInterpreter extends Plugin {
         private static final double DEFAULT_OUTPUTFILTER_SIZE = 5;
 
         /**
-         * The size of the slidingWindow output filter.
-         */
-        private double outputFilterSize = DEFAULT_OUTPUTFILTER_SIZE;
-
-        /**
          * Conversion factor from minutes to milliseconds.
          */
         private static final int MS_PER_MINUTE = 60000;
@@ -82,6 +77,11 @@ public class PumpInterpreter extends Plugin {
          * Conversion factor from hours to milliseconds.
          */
         private static final long HOUR_TO_MIN = 60;
+
+        /**
+         * The size of the slidingWindow output filter.
+         */
+        private double outputFilterSize = DEFAULT_OUTPUTFILTER_SIZE;
 
         /**
          * Boolean to say whether the canula has to be filled as a new Katheder.
