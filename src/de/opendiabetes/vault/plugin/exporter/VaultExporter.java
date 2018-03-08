@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * This class implements functionality shared by the Exporters exporting from the Vault database.
+ * This class implements functionality shared by the exporters exporting from the Vault database.
  */
 public abstract class VaultExporter extends CSVFileExporter {
     /**
@@ -105,7 +105,7 @@ public abstract class VaultExporter extends CSVFileExporter {
      *
      * @param csvEntry The {@link VaultCsvEntry} to process the data to.
      * @param entry The {@link VaultEntry} to process.
-     * @return The processed {@link VaultEntry}.
+     * @return The processed {@link VaultCsvEntry}.
      */
     private VaultCsvEntry processVaultEntry(final VaultCsvEntry csvEntry, final VaultEntry entry) {
 //            VaultCsvEntry tmpCsvEntry = vaultCsvEntry;

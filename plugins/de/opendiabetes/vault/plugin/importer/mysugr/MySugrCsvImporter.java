@@ -207,6 +207,8 @@ public class MySugrCsvImporter extends Plugin {
                             case "Demanding":
                                 annotation = new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.EXERCISE_demanding);
                                 break;
+                            default:
+                                LOG.log(Level.WARNING, "Skipping entry. Unknown intensity: " + intensity);
                         }
                         tmpEntry.addAnnotation(annotation);
                     }

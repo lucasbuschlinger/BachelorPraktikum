@@ -64,14 +64,13 @@ public final class ConflictedLocations extends Application {
         String output = gson.toJson(ResolvedLocations.getInstance());
         File file = new File(System.getProperty("user.home") + Constants.RESOLVED_LOCATION_PATH);
 
-        FileWriter writer = null;
         try {
-            writer = new FileWriter(file, false);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, false),
+                    StandardCharsets.UTF_8);
             writer.write(output);
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (writer != null) writer.close();
         }
 
     }

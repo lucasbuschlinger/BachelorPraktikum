@@ -1,5 +1,7 @@
 package de.opendiabetes.vault.plugin.importer.googlecrawler.models;
 
+import java.util.Arrays;
+
 /**
  * Activity model.
  */
@@ -110,7 +112,7 @@ public class Activity {
      * @return the minimum, maximum and average of heart rates
      */
     public int[] getHeartRate() {
-        return heartRate;
+        return Arrays.copyOf(heartRate, heartRate.length);
     }
 
     /**
@@ -118,7 +120,7 @@ public class Activity {
      * @param heartRate an integer array containing the heart rates
      */
     public void setHeartRate(final int[] heartRate) {
-        this.heartRate = heartRate;
+        this.heartRate = Arrays.copyOf(heartRate, heartRate.length);
     }
 
     /**

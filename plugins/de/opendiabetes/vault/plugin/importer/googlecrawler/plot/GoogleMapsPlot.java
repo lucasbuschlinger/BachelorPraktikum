@@ -6,8 +6,10 @@ import de.opendiabetes.vault.plugin.importer.googlecrawler.helper.Credentials;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public final class GoogleMapsPlot {
     /**
      * Default location multiplicator viewing coordinates.
      */
-    private static final double LOCATION_MULTIPLICATOR = 100.0;
+    private static final double LOCATION_MULTIPLIER = 100.0;
 
     /**
      * Singleton instance.
@@ -104,9 +106,9 @@ public final class GoogleMapsPlot {
                 + "      zoom: 12,\n"
                 + "      center: new google.maps.LatLng(";
         htmlFile += String.valueOf(
-                Math.round(locations.get(0).lat * LOCATION_MULTIPLICATOR) / LOCATION_MULTIPLICATOR)
+                Math.round(locations.get(0).lat * LOCATION_MULTIPLIER) / LOCATION_MULTIPLIER)
                 + ", "
-                + String.valueOf(Math.round(locations.get(0).lng * LOCATION_MULTIPLICATOR) / LOCATION_MULTIPLICATOR)
+                + String.valueOf(Math.round(locations.get(0).lng * LOCATION_MULTIPLIER) / LOCATION_MULTIPLIER)
                 + "),\n";
         htmlFile += Constants.MAPS_POST;
         htmlFile += Credentials.getInstance().getAPIKey();
@@ -120,7 +122,8 @@ public final class GoogleMapsPlot {
         File file = new File("map.html");
 
         try {
-            FileWriter writer = new FileWriter(file, false);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, false),
+                    StandardCharsets.UTF_8);
             writer.write(htmlFile);
             writer.close();
             File htmlFile = new File("map.html");
