@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.importer;
+package de.opendiabetes.vault.plugin.fileimporter;
 
 import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
