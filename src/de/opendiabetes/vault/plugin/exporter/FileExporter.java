@@ -72,12 +72,14 @@ public abstract class FileExporter extends AbstractExporter {
         File checkFile = new File(filePath);
         if (checkFile.exists()
                 && (!checkFile.isFile() || !checkFile.canWrite())) {
+            this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
             return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
         }
         fileOutputStream = new FileOutputStream(checkFile);
         // create csv data
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
+            this.notifyStatus(-1, "Could not find data to export.");
             return ReturnCode.RESULT_NO_DATA.getCode();
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");

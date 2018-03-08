@@ -169,6 +169,7 @@ public class MiBandNotifyImporter extends Plugin {
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
             } else {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
+                this.notifyStatus(-1, "Got no data from JSON import!");
                 return null;
             }
             return importedData;

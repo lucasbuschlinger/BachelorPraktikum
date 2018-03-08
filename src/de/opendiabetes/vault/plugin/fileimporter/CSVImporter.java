@@ -134,7 +134,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
      *
      * @param csvReader Reader for CSV files.
      * @return List of VaultEntry holding the imported data.
-     * @throws Exception If a entry could not be parsed.
+     * @throws Exception If an entry could not be parsed.
      */
     protected abstract List<VaultEntry> parseEntry(CsvReader csvReader) throws Exception;
 
