@@ -23,6 +23,7 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 /**
@@ -60,6 +61,12 @@ public class SonySWR21ImporterTest {
     @Test
     public void callPlugin() {
         FileImporter sonySWR21Importer = (FileImporter) TestImporterUtil.getImporter("SonySWR21Importer");
-        Assert.assertNull(sonySWR21Importer.importData("path/to/data"));
+        try {
+            sonySWR21Importer.importData("path/to/data");
+        } catch (FileNotFoundException exception) {
+            Assert.assertNotNull(exception);
+        } catch (Exception exception) {
+            Assert.fail("Should have thrown FileNotFoundException");
+        }
     }
 }
