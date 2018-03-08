@@ -178,7 +178,7 @@ public final class Credentials {
      * Setter for the API key.
      * @param apiKey the API key used by the google services
      */
-    public void setAPIkey(final String apiKey) {
+    public static void setAPIkey(final String apiKey) {
         Credentials.apiKey = apiKey;
     }
 }
