@@ -122,10 +122,10 @@ public class ODVImporter extends Plugin {
          *
          * @param filePath Path to the ZIP-archive from which the files should be imported.
          * @return List of VaultEntry consisting of the imported data.
-         * @throws IOException Throws if there was an error reading the files
+         * @throws Exception Throws if there was an error reading the files
          */
         @Override
-        public List<VaultEntry> importData(final String filePath) throws IOException {
+        public List<VaultEntry> importData(final String filePath) throws Exception {
             Map<String, MetaValues> metaInfo;
             Map<String, String> unimportedFiles = new HashMap<>();
             List<VaultEntry> importedData = new ArrayList<>();
