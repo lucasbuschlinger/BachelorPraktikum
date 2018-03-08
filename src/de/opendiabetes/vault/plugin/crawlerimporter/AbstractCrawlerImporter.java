@@ -5,6 +5,9 @@ import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.util.List;
 
+/**
+ * TODO this class should not be necessary.
+ **/
 public abstract class AbstractCrawlerImporter extends AbstractPlugin implements CrawlerImporter {
 
     /**

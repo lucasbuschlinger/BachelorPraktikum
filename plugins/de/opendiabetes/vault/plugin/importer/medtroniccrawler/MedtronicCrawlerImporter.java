@@ -19,12 +19,10 @@ package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
 import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
-import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
-import org.pf4j.PluginManager;
-import org.pf4j.DefaultPluginManager;
 
 import java.io.File;
 import java.text.ParseException;
@@ -116,13 +114,8 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             String path = exportPath + File.separator + "careLink-Export";
 
-            PluginManager manager = new DefaultPluginManager();
-            manager.loadPlugins();
-            manager.startPlugins();
-            manager.enablePlugin("MedtronicImporter");
-            manager.startPlugin("MedtronicImporter");
-            FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
-            return medtronicImporter.importData(path);
+            OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+            return manager.getPluginFromString(FileImporter.class, "MedtronicImporter").importData(path);
         }
 
         /**

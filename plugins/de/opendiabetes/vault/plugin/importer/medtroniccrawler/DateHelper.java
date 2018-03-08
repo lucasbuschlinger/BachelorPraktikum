@@ -101,8 +101,6 @@ public class DateHelper {
         String todayDate = formatTodayDate.format(new Date());
 
         Date formattedEnteredEndDate = new SimpleDateFormat(dateFormat).parse(endDate);
-
-        // Date StiatcValidStartDate = new SimpleDateFormat(dateFormat).parse("01/01/1998");
         Date formattedEnteredStartDate = new SimpleDateFormat(dateFormat).parse(startDate);
         DateFormat validEndDate = new SimpleDateFormat(dateFormat); // To validate End date
         validEndDate.setLenient(false);
