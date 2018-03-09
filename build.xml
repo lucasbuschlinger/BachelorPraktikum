@@ -276,20 +276,59 @@
             <include name="test"/>
         </dirset>
     </path>
+    <path id="opendiabetes.module.base.sourcepath">
+        <dirset dir="${module.opendiabetes.basedir}">
+            <include name="src"/>
+            <include name="lib"/>
+        </dirset>
+    </path>
+
     <target name="compile.module.opendiabetes"
             depends="compile.module.opendiabetes.production"
             description="Compile module OpenDiabetes"/>
+
     <target name="compile.module.opendiabetes.production"
+                     description="Compile module OpenDiabetes; production classes">
+    <mkdir dir="${opendiabetes.output.dir}"/>
+    <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}"
+           nowarn="${compiler.generate.no.warnings}"
+           memorymaximumsize="${compiler.max.memory}" fork="true">
+        <!--executable="${java.home}/lib">-->
+        <compilerarg line="${compiler.args.opendiabetes}"/>
+        <bootclasspath refid="opendiabetes.module.bootclasspath"/>
+        <classpath refid="opendiabetes.module.production.classpath"/>
+        <src refid="opendiabetes.module.sourcepath"/>
+        <patternset refid="excluded.from.compilation.opendiabetes"/>
+    </javac>
+
+    <copy todir="${opendiabetes.output.dir}">
+        <fileset dir="${module.opendiabetes.basedir}/src">
+            <patternset refid="compiler.resources"/>
+            <type type="file"/>
+        </fileset>
+        <fileset dir="${module.opendiabetes.basedir}/lib">
+            <patternset refid="compiler.resources"/>
+            <type type="file"/>
+        </fileset>
+        <!--fileset dir="${module.opendiabetes.basedir}/plugins">
+            <patternset refid="compiler.resources"/>
+            <type type="file"/>
+        </fileset -->
+    </copy>
+</target>
+
+    <target name="compile.module.opendiabetes.base"
             description="Compile module OpenDiabetes; production classes">
+        <delete dir="${opendiabetes.output.dir}" quiet="true"/>
         <mkdir dir="${opendiabetes.output.dir}"/>
         <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}"
                nowarn="${compiler.generate.no.warnings}"
                memorymaximumsize="${compiler.max.memory}" fork="true">
-            <!--executable="${java.home}/lib">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
             <classpath refid="opendiabetes.module.production.classpath"/>
-            <src refid="opendiabetes.module.sourcepath"/>
+            <src refid="opendiabetes.module.base.sourcepath"/>
+            <exclude name="**/package-info.java"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
         </javac>
 
@@ -302,10 +341,6 @@
                 <patternset refid="compiler.resources"/>
                 <type type="file"/>
             </fileset>
-            <!--fileset dir="${module.opendiabetes.basedir}/plugins">
-                <patternset refid="compiler.resources"/>
-                <type type="file"/>
-            </fileset -->
         </copy>
     </target>
 
@@ -496,6 +531,13 @@
             <fileset dir="${basedir}/plugins" />
             <fileset dir="${basedir}/src" />
         </javadoc>
+    </target>
+
+    <!-- Target to build the base of OpenDiabetes as a jar file-->
+    <target name="build-base" depends="compile.module.opendiabetes.base"
+            description="Build the jar containing the base for OpenDiabetes">
+        <delete file="export/opendiabetes-base.jar" quiet="true"/>
+        <jar destfile="export/opendiabetes-base.jar" basedir="${opendiabetes.output.dir}"/>
     </target>
 
     <!-- target name="all" depends="build.modules" description="build all"/ -->
