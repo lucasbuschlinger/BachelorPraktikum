@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Wrapper class for the SonySWR21Importer plugin.
+ * Wrapper class for the SonySWR12 Importer plugin.
  *
  * @author Lucas Buschlinger
  */
@@ -49,7 +49,7 @@ public class SonySWR12Importer extends Plugin {
     }
 
     /**
-     * Actual implementation of the Sony SWR21 importer plugin.
+     * Actual implementation of the Sony SWR12 importer plugin.
      */
     @Extension
     public static final class SonySWR12ImporterImplementation extends CSVImporter {
@@ -62,11 +62,11 @@ public class SonySWR12Importer extends Plugin {
         }
 
         /**
-         * Parser for Sony SWR21 CSV data.
+         * Parser for Sony SWR12 CSV data.
          *
          * @param creader The CSV reader.
          * @return List of VaultEntry holding the parsed data.
-         * @throws Exception If Sony SWR21 CSV file can not be parsed.
+         * @throws Exception If Sony SWR12 CSV file can not be parsed.
          */
         @Override
         protected List<VaultEntry> parseEntry(final CsvReader creader) throws Exception {
