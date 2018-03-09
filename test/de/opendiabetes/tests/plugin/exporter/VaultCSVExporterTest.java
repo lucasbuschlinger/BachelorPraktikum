@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class VaultCSVExporterTest {
 
@@ -25,27 +27,46 @@ public class VaultCSVExporterTest {
     }
 
     /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
-        vaultCSVExporter.setExportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", vaultCSVExporter.getExportFilePath());
-    }
-
-    /**
      * Test to see whether load configuration returns the correct log.
      */
     @Test
     public void printLogOnLoadConfiguration() {
         Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
+        Handler handler = new Handler() {
+            String logOut = "";
+            int msgsReceived = 0;
+
+            @Override
+            public void publish(final LogRecord record) {
+                logOut += record.getLevel().getName() + ": " + record.getMessage();
+                msgsReceived++;
+                if(msgsReceived == 6){
+                    Assert.assertTrue(
+                            logOut.contains(
+                                    "WARNING: The exporter's configuration does not specify " +
+                                            "whether the data is period restricted, defaulting to no period restriction")
+                                    && logOut.contains("INFO: Export data is not period restricted by the exporter's configuration.")
+                                    && logOut.contains("SEVERE: Either of the dates specified in the exporter's configuration is malformed. The expected format is dd/mm/yyyy."));
+                }
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                Assert.assertTrue(msgsReceived == 6);
+
+            }
+        };
+        vaultCSVExporter.LOG.addHandler(handler);
 
         //load properties from file
         Properties config = new Properties();
         FileInputStream input = null;
         try {
-            input = new FileInputStream("properties/vaultcsvexporter.properties");
+            input = new FileInputStream("properties/VaultCSVExporter.properties");
             config.load(input);
 
         } catch (IOException e) {
@@ -66,24 +87,26 @@ public class VaultCSVExporterTest {
 
         //check which wrong dates
         config.remove("periodRestrictionTo");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        vaultCSVExporter.loadConfiguration(config);
 
         config.remove("periodRestrictionFrom");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        vaultCSVExporter.loadConfiguration(config);
 
         config.setProperty("periodRestrictionFrom", "12/12/2017");
         config.setProperty("periodRestrictionTo", "12/11/2017");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        vaultCSVExporter.loadConfiguration(config);
 
         //check no restriction => all get exported
         config = new Properties();
         config.setProperty("periodRestriction", "false");
-        Assert.assertTrue(vaultCSVExporter.loadConfiguration(config));
+        vaultCSVExporter.loadConfiguration(config);
 
         // check wrong format of date
         config.setProperty("periodRestriction", "True");
         config.setProperty("periodRestrictionFrom", "12.03.98");
         config.setProperty("periodRestrictionTo", "14.03.99");
-        Assert.assertFalse(vaultCSVExporter.loadConfiguration(config));
+        vaultCSVExporter.loadConfiguration(config);
+
+        vaultCSVExporter.LOG.getHandlers()[0].close();
     }
 }

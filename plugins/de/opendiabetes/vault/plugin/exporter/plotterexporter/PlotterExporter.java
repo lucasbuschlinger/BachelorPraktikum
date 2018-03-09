@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Properties;
@@ -81,25 +82,24 @@ public class PlotterExporter extends Plugin {
         private String scriptPath = PlotterExporter.pluginPath.resolve("assets/plot.py").toString();
 
         /**
-         * Path to the plotted data.
-         */
-        private String exportPath;
-
-        /**
          * Runs the plot script.
          * @param dataPath path to the data that should be plotted
          * @param outputPath path where the plot should be written to
          * @return boolean value indicating whether the command was successful or not
          */
         private boolean plotData(final String dataPath, final String outputPath) {
+            BufferedReader stdInput = null;
+            BufferedReader stdError = null;
             try {
                 Process process = Runtime.getRuntime().exec(new String[]{"python", this.scriptPath, "-f", dataPath, "-o", outputPath});
 
                 InputStream inputStream = process.getInputStream();
                 InputStream errorStream = process.getErrorStream();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                InputStreamReader errorStreamReader = new InputStreamReader(errorStream, StandardCharsets.UTF_8);
 
-                BufferedReader stdInput = new BufferedReader(new InputStreamReader(inputStream));
-                BufferedReader stdError = new BufferedReader(new InputStreamReader(errorStream));
+                stdInput = new BufferedReader(inputStreamReader);
+                stdError = new BufferedReader(errorStreamReader);
 
                 // read the output from the command
                 String line = null;
@@ -114,10 +114,26 @@ public class PlotterExporter extends Plugin {
                     errorCounter++;
                 }
 
+
                 return (errorCounter == 0);
             } catch (IOException e) {
                 LOG.log(Level.SEVERE, "Error while executing command");
                 return false;
+            } finally {
+                try {
+                    if (stdInput != null) {
+                        stdInput.close();
+                    }
+                } catch (IOException exception) {
+                    LOG.log(Level.FINE, "Input Stream was already closed");
+                }
+                try {
+                    if (stdError != null) {
+                        stdError.close();
+                    }
+                } catch (IOException exception) {
+                    LOG.log(Level.FINE, "Error Stream was already closed");
+                }
             }
         }
 
@@ -128,14 +144,13 @@ public class PlotterExporter extends Plugin {
          * @return boolean value indicating whether the command is installed or not
          */
         private static boolean isCommandInstalled(final String[] cmds, final String check) {
+            BufferedReader stdInput = null;
+            BufferedReader stdError = null;
             try {
                 Process process = Runtime.getRuntime().exec(cmds);
 
-                BufferedReader stdInput = new BufferedReader(new
-                        InputStreamReader(process.getInputStream()));
-
-                BufferedReader stdError = new BufferedReader(new
-                        InputStreamReader(process.getErrorStream()));
+                stdInput = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+                stdError = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
 
                 // read the output from the command
                 String line = null;
@@ -161,6 +176,21 @@ public class PlotterExporter extends Plugin {
             } catch (IOException e) {
                 LOG.log(Level.SEVERE, "Error while checking for command " + check);
                 return false;
+            } finally {
+                try {
+                    if (stdInput != null) {
+                        stdInput.close();
+                    }
+                } catch (IOException exception) {
+                    LOG.log(Level.FINE, "Input Stream was already closed");
+                }
+                try {
+                    if (stdError != null) {
+                        stdError.close();
+                    }
+                } catch (IOException exception) {
+                    LOG.log(Level.FINE, "Error Stream was already closed");
+                }
             }
         }
 
@@ -181,13 +211,10 @@ public class PlotterExporter extends Plugin {
         }
 
         /**
-         * Writes the data to a CSV file and calls the plotter script.
-         *
-         * @param csvEntries The {@link ExportEntry} to be exported.
-         * @throws IOException Thrown if there was an error while writing or deleting files.
+         * {@inheritDoc}
          */
         @Override
-        protected void writeToFile(final List<ExportEntry> csvEntries) throws IOException {
+        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
 
             boolean python = isPythonInstalled();
             if (!python) {
@@ -202,26 +229,18 @@ public class PlotterExporter extends Plugin {
                 }
             }
 
-            super.writeToFile(csvEntries);
-            if (!plotData(this.getExportFilePath(), this.exportPath)) {
+            String tempPath = DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME;
+
+            super.writeToFile(tempPath, csvEntries);
+            if (!plotData(tempPath, filePath)) {
                 LOG.log(Level.SEVERE, "Failed to plot data");
             }
 
 
-            File file = new File(this.getExportFilePath());
+            File file = new File(tempPath);
             if (!file.delete()) {
                 LOG.log(Level.SEVERE, "Failed to delete temp export file");
             }
-        }
-
-        /**
-         * The given export path will be overwritten with a temporary file path.
-         * @param exportPath Path where the plot will be written to.
-         */
-        @Override
-        public void setExportFilePath(final String exportPath) {
-            this.exportPath = exportPath;
-            super.setExportFilePath(DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME);
         }
 
         /**
@@ -247,12 +266,5 @@ public class PlotterExporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

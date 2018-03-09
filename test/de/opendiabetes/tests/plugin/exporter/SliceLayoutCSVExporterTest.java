@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class SliceLayoutCSVExporterTest {
 
@@ -26,16 +28,6 @@ public class SliceLayoutCSVExporterTest {
     }
 
     /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
-        SliceLayoutCSVExporter.setExportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", SliceLayoutCSVExporter.getExportFilePath());
-    }
-
-    /**
      * Test to see whether the needed database can be set.
      */
     @Test
@@ -45,12 +37,38 @@ public class SliceLayoutCSVExporterTest {
     }
 
     /**
-     * Test to see whether the IllegalArgumentException gets thrown when passing wrong input to setAdditional
+     * Test to see whether there is a SEVERE Warning when passing wrong input to setAdditional
      */
-    @Test(expected =  IllegalArgumentException.class)
+    @Test
     public void setAdditionalException() {
         Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        Handler handler = new Handler() {
+            String logOut = "";
+            int msgsReceived = 0;
+
+            @Override
+            public void publish(final LogRecord record) {
+                logOut += record.getLevel().getName() + ": " + record.getMessage();
+                msgsReceived++;
+                Assert.assertTrue(logOut.contains("SEVERE: No data supplied to be set"));
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                Assert.assertTrue(msgsReceived > 0);
+
+            }
+        };
+        sliceLayoutCSVExporter.LOG.addHandler(handler);
+
         sliceLayoutCSVExporter.setEntries(new ArrayList<SliceEntry>());
+
+        sliceLayoutCSVExporter.LOG.getHandlers()[0].close();
+
     }
 
     /**
@@ -60,11 +78,41 @@ public class SliceLayoutCSVExporterTest {
     public void printLogOnLoadConfiguration() {
         Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
 
+        Handler handler = new Handler() {
+            String logOut = "";
+            int msgsReceived = 0;
+
+            @Override
+            public void publish(final LogRecord record) {
+                logOut += record.getLevel().getName() + ": " + record.getMessage();
+                msgsReceived++;
+                if(msgsReceived == 6){
+                Assert.assertTrue(
+                        logOut.contains(
+                                "WARNING: The exporter's configuration does not specify " +
+                                        "whether the data is period restricted, defaulting to no period restriction")
+                                && logOut.contains("INFO: Export data is not period restricted by the exporter's configuration.")
+                                && logOut.contains("SEVERE: Either of the dates specified in the exporter's configuration is malformed. The expected format is dd/mm/yyyy."));
+                }
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() throws SecurityException {
+                Assert.assertTrue(msgsReceived == 6);
+
+            }
+        };
+        SliceLayoutCSVExporter.LOG.addHandler(handler);
+
         //load properties from file
         Properties config = new Properties();
         FileInputStream input = null;
         try {
-            input = new FileInputStream("properties/slicelayoutcsvexporter.properties");
+            input = new FileInputStream("properties/SliceLayoutCSVExporter.properties");
             config.load(input);
 
         } catch (IOException e) {
@@ -85,24 +133,26 @@ public class SliceLayoutCSVExporterTest {
 
         //check which wrong dates
         config.remove("periodRestrictionTo");
-        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
+        SliceLayoutCSVExporter.loadConfiguration(config);
 
         config.remove("periodRestrictionFrom");
-        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
+        SliceLayoutCSVExporter.loadConfiguration(config);
 
         config.setProperty("periodRestrictionFrom", "12/12/2017");
         config.setProperty("periodRestrictionTo", "12/11/2017");
-        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
+        SliceLayoutCSVExporter.loadConfiguration(config);
 
         //check no restriction => all get exported
         config = new Properties();
         config.setProperty("periodRestriction", "false");
-        Assert.assertTrue(SliceLayoutCSVExporter.loadConfiguration(config));
+        SliceLayoutCSVExporter.loadConfiguration(config);
 
         // check wrong format of date
         config.setProperty("periodRestriction", "True");
         config.setProperty("periodRestrictionFrom", "12.03.98");
         config.setProperty("periodRestrictionTo", "14.03.99");
-        Assert.assertFalse(SliceLayoutCSVExporter.loadConfiguration(config));
+        SliceLayoutCSVExporter.loadConfiguration(config);
+
+        SliceLayoutCSVExporter.LOG.getHandlers()[0].close();
     }
 }

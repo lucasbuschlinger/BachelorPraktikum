@@ -20,7 +20,6 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -65,11 +64,10 @@ public abstract class FileExporter extends AbstractExporter {
      * {@inheritDoc}
      */
     @Override
-    public int exportDataToFile(final List<VaultEntry> data) {
+    public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
         // Status update constants.
         final int startWriteProgress = 80;
         final int writeDoneProgress = 100;
-        String filePath = this.getExportFilePath();
         // check file stuff
         File checkFile = new File(filePath);
         if (checkFile.exists()
@@ -77,13 +75,7 @@ public abstract class FileExporter extends AbstractExporter {
             this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
             return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
         }
-        try {
-            fileOutputStream = new FileOutputStream(checkFile);
-        } catch (FileNotFoundException exception) {
-            LOG.log(Level.SEVERE, "Error accessing file for output stream", exception);
-            this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
-            return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
-        }
+        fileOutputStream = new FileOutputStream(checkFile);
         // create csv data
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
@@ -92,18 +84,11 @@ public abstract class FileExporter extends AbstractExporter {
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
+        writeToFile(filePath, exportData);
         try {
-            writeToFile(exportData);
+            fileOutputStream.close();
         } catch (IOException exception) {
-            LOG.log(Level.SEVERE, "Error writing odv csv file: {0}" + filePath, exception);
-            this.notifyStatus(-1, "An error occurred while writing the odv csv file.");
-            return ReturnCode.RESULT_ERROR.getCode();
-        } finally { //finally is needed here!
-            try {
-                fileOutputStream.close();
-            } catch (IOException exception) {
-                LOG.log(Level.WARNING, "Error while closing the fileOutputStream, uncritical.", exception);
-            }
+            LOG.log(Level.WARNING, "Error while closing the fileOutputStream, uncritical.", exception);
         }
 
         this.notifyStatus(writeDoneProgress, "Writing to file successful, all done.");
@@ -114,10 +99,11 @@ public abstract class FileExporter extends AbstractExporter {
     /**
      * Writes the export data to the file.
      *
+     * @param filePath File path where the exported data should be written to.
      * @param data The data to be written.
      * @throws IOException Thrown if something goes wrong when writing the file.
      */
-    protected void writeToFile(final List<ExportEntry> data) throws IOException {
+    protected void writeToFile(final String filePath, final List<ExportEntry> data) throws IOException {
         FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 

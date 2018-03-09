@@ -16,7 +16,8 @@
  */
 package de.opendiabetes.vault.plugin.importer.googlecrawler;
 
-import de.opendiabetes.vault.plugin.importer.AbstractImporter;
+import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.fitness.GoogleFitness;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.helper.Credentials;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.javaFX.views.ConflictedLocations;
@@ -28,9 +29,12 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
 
 /**
  * Wrapper class for the GoogleFitCrawlerImporter plugin.
@@ -52,7 +56,7 @@ public class GoogleFitCrawlerImporter extends Plugin {
      * Actual implementation of the Medtronic importer plugin.
      */
     @Extension
-    public static final class GoogleFitCrawlerImporterImplementation extends AbstractImporter {
+    public static final class GoogleFitCrawlerImporterImplementation extends AbstractCrawlerImporter {
 
         /**
          * The minimum default year for gathering data.
@@ -125,30 +129,10 @@ public class GoogleFitCrawlerImporter extends Plugin {
         }
 
         /**
-         * Getter for the importFilePath.
-         *
-         * @return The path to the import file.
+         * {@inheritDoc}
          */
         @Override
-        public String getImportFilePath() {
-            return null;
-        }
-
-        /**
-         * Setter for the importFilePath.
-         *
-         * @param filePath The path to the import file.
-         */
-        @Override
-        public void setImportFilePath(final String filePath) { /* not needed for now */ }
-
-        /**
-         * Imports the data from the file specified by @see Importer.setImportFilePath().
-         *
-         * @return boolean true if data was imported, false otherwise.
-         */
-        @Override
-        public boolean importData() {
+        public List<VaultEntry> importData(final String username, final String password) throws  Exception {
 
             Credentials credentialsInstance = Credentials.getInstance();
 
@@ -231,12 +215,14 @@ public class GoogleFitCrawlerImporter extends Plugin {
                     ConflictedLocations.main(new String[]{});
                 }
 
-            } catch (Exception e) {
-                this.notifyStatus(-1, "An error occurred while importing data.");
-                return false;
+            } catch (RuntimeException exception) {
+              throw exception;
+            } catch (Exception exception) {
+                LOG.log(Level.SEVERE, "Exception happened: " + exception);
+                return null;
             }
 
-            return true;
+            return new ArrayList<>();
         }
 
         /**
@@ -277,13 +263,5 @@ public class GoogleFitCrawlerImporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

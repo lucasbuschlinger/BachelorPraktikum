@@ -5,7 +5,6 @@ import org.jsoup.Jsoup;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 
 /**
@@ -39,23 +38,16 @@ public final class Authentication {
      *
      * @param username - the users username.
      * @param password - the users password.
-     * @param logger a logger instance.
      * @return a boolean value indicating if the credentials are correct.
      */
-    Boolean checkConnection(final String username, final String password, final Logger logger) {
+    Boolean checkConnection(final String username, final String password) {
         // check if login credentials are correct or not
         try {
-            logger.info("Inside class checkConnection");
-
             Connection.Response res = Jsoup.connect("https://carelink.minimed.eu/patient/j_security_check")
                     .data("j_username", username).data("j_password", password).method(Connection.Method.POST).execute();
             loginCookies = res.cookies();
-            System.out.println("correct Username and Password");
-            logger.info("correct Username and Password");
             return true;
         } catch (Exception e) {
-            logger.info("Incorrect Username or Password");
-            System.out.println("Incorrect Username or Password");
             return false;
         }
 

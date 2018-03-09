@@ -17,6 +17,7 @@
 package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
@@ -27,14 +28,11 @@ import org.pf4j.PluginWrapper;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -64,22 +62,8 @@ public class ODVExporter extends Plugin {
      * Actual implementation of the ODVExporter plugin.
      */
     @Extension
-    public static final class ODVExporterImplementation implements Exporter {
+    public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter {
 
-        /**
-         * The location where the ZIP will be exported to.
-         */
-        private String exportFilePath;
-        /**
-         * List holding all StatusListeners registered to the exporter.
-         */
-        private final List<Exporter.StatusListener> listeners = new ArrayList<>();
-        /**
-         * List containing all compatible plugins that are listed in this plugins config.
-         * The data of this field is returned by {@link this#getListOfCompatiblePluginIDs()}
-         * and used to list compatibilities among plugins.
-         */
-        private final List<String> compatiblePlugins = new ArrayList<>();
         /**
          * The properties which will get passed on to the exporters.
          */
@@ -101,10 +85,6 @@ public class ODVExporter extends Plugin {
          */
         private static final int COMPRESSION_LEVEL = 9;
         /**
-         * Progress value indicating loading of configuration.
-         */
-        private static final int PROGRESS_LOADED_CONFIG = 33;
-        /**
          * Progress value indicating all exporters were tried.
          */
         private static final int PROGRESS_ALL_EXPORTERS_DONE = 66;
@@ -118,22 +98,6 @@ public class ODVExporter extends Plugin {
          */
         public ODVExporterImplementation() {
             this.tempDir = DEFAULT_TEMP_DIR;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void setExportFilePath(final String filePath) {
-            exportFilePath = filePath;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getExportFilePath() {
-            return exportFilePath;
         }
 
         /**
@@ -151,17 +115,11 @@ public class ODVExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public int exportDataToFile(final List<VaultEntry> data) {
+        public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
             Map<String, MetaValues> metaData = new HashMap<>();
-            try {
-                fileOutputStream = new FileOutputStream(exportFilePath);
-            } catch (FileNotFoundException exception) {
-                LOG.log(Level.SEVERE, "Could not open output stream " + exportFilePath);
-                this.notifyStatus(-1, "An error occurred while creating file " + exportFilePath + ".");
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
-            }
+            fileOutputStream = new FileOutputStream(filePath);
             zipOutputStream = new ZipOutputStream(fileOutputStream, Charset.forName("UTF-8"));
             zipOutputStream.setMethod(ZipOutputStream.DEFLATED);
             zipOutputStream.setLevel(COMPRESSION_LEVEL);
@@ -185,16 +143,11 @@ public class ODVExporter extends Plugin {
                 }
                 MetaValues thisEntryMetaData = new MetaValues();
                 String exportFile = tempDir + File.separator + name + ".export";
-                exporter.setExportFilePath(exportFile);
                 exporter.loadConfiguration(config);
-                exporter.registerStatusCallback(new StatusListener() {
-                    @Override
-                    public void onStatusCallback(final int progress, final String status) {
-                        notifyStatus(progress, name + ": " + status);
-                    }
-                });
+                exporter.registerStatusCallback((progress, status)
+                        -> notifyStatus(progress, name + ": " + status));
                 try {
-                    exporter.exportDataToFile(data);
+                    exporter.exportDataToFile(exportFile, data);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;
@@ -210,27 +163,16 @@ public class ODVExporter extends Plugin {
                 thisEntryMetaData.checksum = checksum;
                 metaData.put(name, thisEntryMetaData);
             }
-            String metaFile;
-            try {
-                metaFile = makeMetaFile(metaData);
-            } catch (IOException exception) {
-                this.notifyStatus(-1, "An error occurred while creating a meta file.");
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
-            }
+            String metaFile = makeMetaFile(metaData);
             notifyStatus(PROGRESS_ALL_EXPORTERS_DONE, "Done exporting with all available exporters");
             // Adding all generated export files and the meta file to the zip
-            try {
-                Iterator iterator = metaData.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry metaEntry = (Map.Entry) iterator.next();
-                    MetaValues metaValues = (MetaValues) metaEntry.getValue();
-                    addFileToZip(metaValues.file, zipOutputStream);
-                }
-                addFileToZip(metaFile, zipOutputStream);
-            } catch (Exception exception) {
-                this.notifyStatus(-1, "An error occurred while accessing a file.");
-                return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            Iterator iterator = metaData.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry metaEntry = (Map.Entry) iterator.next();
+                MetaValues metaValues = (MetaValues) metaEntry.getValue();
+                addFileToZip(metaValues.file, zipOutputStream);
             }
+            addFileToZip(metaFile, zipOutputStream);
             try {
                 zipOutputStream.close();
             } catch (IOException ex) {
@@ -250,18 +192,15 @@ public class ODVExporter extends Plugin {
          */
         private String makeChecksum(final String fileName) throws IOException, NoSuchAlgorithmException {
             MessageDigest digest = MessageDigest.getInstance("SHA-512");
-            FileInputStream inputStream = new FileInputStream(fileName);
             byte[] dataBytes = new byte[BUFFER_SIZE];
             int nextRead;
-            try {
+            try (FileInputStream inputStream = new FileInputStream(fileName)) {
                 while ((nextRead = inputStream.read(dataBytes)) != -1) {
                     digest.update(dataBytes, 0, nextRead);
                 }
             } catch (Exception exception) {
                 LOG.log(Level.SEVERE, "Could not generate checksum for file " + fileName);
                 throw exception;
-            } finally {
-                inputStream.close();
             }
             return (new HexBinaryAdapter()).marshal(digest.digest());
         }
@@ -278,8 +217,7 @@ public class ODVExporter extends Plugin {
             ZipEntry zipEntry = new ZipEntry(file.replace(tempDir + File.separator, ""));
             zipStream.putNextEntry(zipEntry);
             File zipFile = new File(file);
-            FileInputStream in = new FileInputStream(zipFile);
-            try {
+            try (FileInputStream in = new FileInputStream(zipFile)) {
                 int len;
                 while ((len = in.read(buffer)) > 0) {
                     zipStream.write(buffer, 0, len);
@@ -288,7 +226,6 @@ public class ODVExporter extends Plugin {
                 LOG.log(Level.SEVERE, "Could not add file " + file + " to ZIP-archive");
                 throw exception;
             } finally {
-                in.close();
                 zipStream.closeEntry();
             }
         }
@@ -303,9 +240,8 @@ public class ODVExporter extends Plugin {
          */
         private String makeMetaFile(final Map<String, MetaValues> metaData) throws IOException {
             final String metaFile = tempDir + File.separator + "meta.info";
-            FileOutputStream outputStream = new FileOutputStream(metaFile);
             Iterator iterator = metaData.entrySet().iterator();
-            try {
+            try (FileOutputStream outputStream = new FileOutputStream(metaFile)) {
                 while (iterator.hasNext()) {
                     Map.Entry pair = (Map.Entry) iterator.next();
                     String exporter = pair.getKey().toString();
@@ -318,22 +254,21 @@ public class ODVExporter extends Plugin {
             } catch (Exception exception) {
                 LOG.log(Level.SEVERE, "Couldn't generate meta file for ZIP-archive");
                 throw exception;
-            } finally {
-                outputStream.close();
             }
             return  metaFile;
         }
 
         /**
-         * This loads the config for this plugin and also stores it to be passed on to the individual importers.
+         * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.
-         * @return True if the configuration has been stored.
+         * @return whether a valid configuration could be read from the config file
          */
         @Override
-        public boolean loadConfiguration(final Properties configuration) {
+        protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
             if (configuration == null) {
-                LOG.log(Level.WARNING, "No configuration given, assuming default values and no period restriction");
+                LOG.log(Level.WARNING, "No configuration given,"
+                        + " assuming default values and no period restriction");
                 config = new Properties();
             } else {
                 config = configuration;
@@ -341,47 +276,7 @@ public class ODVExporter extends Plugin {
                     tempDir = configuration.getProperty("temporaryDirectory");
                 }
             }
-            if (configuration.containsKey("compatiblePlugins")) {
-                this.compatiblePlugins.addAll(Arrays.asList(configuration.getProperty("compatiblePlugins").split("\\s*,\\s*")));
-            }
-            notifyStatus(PROGRESS_LOADED_CONFIG, "Loaded configuration");
             return true;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //still missing
-            return null;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public List<String> getListOfCompatiblePluginIDs() {
-            return this.compatiblePlugins;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void registerStatusCallback(final StatusListener listener) {
-            this.listeners.add(listener);
-        }
-
-        /**
-         * Notifies the registered {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener}s about progress.
-         * See {@link de.opendiabetes.vault.plugin.exporter.Exporter.StatusListener#onStatusCallback} to register listeners.
-         *
-         * @param progress Percentage of completion.
-         * @param status Current status.
-         */
-        private void notifyStatus(final int progress, final String status) {
-            listeners.forEach(listener -> listener.onStatusCallback(progress, status));
         }
 
         /**

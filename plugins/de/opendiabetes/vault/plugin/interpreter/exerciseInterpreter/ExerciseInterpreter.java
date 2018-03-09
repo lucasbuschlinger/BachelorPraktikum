@@ -483,14 +483,5 @@ public class ExerciseInterpreter extends Plugin {
             return true;
         }
 
-        /**
-         * @return a path to a file containing .md/html formatted text,
-         * that gets displayed to the user if he wants to know more about that plugin.
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO implement
-            return null;
-        }
     }
 }

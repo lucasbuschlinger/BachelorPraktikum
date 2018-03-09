@@ -16,6 +16,7 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
+import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 /**
@@ -63,19 +65,13 @@ public class GoogleFitCSVImporterTest {
         manager.loadPlugins();
         manager.enablePlugin("GoogleFitCSVImporter");
         manager.startPlugin("GoogleFitCSVImporter");
-        Importer googleFitCSVImporter = manager.getExtensions(Importer.class).get(0);
-        googleFitCSVImporter.setImportFilePath("path/to/data");
-        Assert.assertFalse(googleFitCSVImporter.importData());
+        FileImporter googleFitCSVImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
+        try {
+            googleFitCSVImporter.importData("path/to/data");
+        } catch (FileNotFoundException exception) {
+            Assert.assertNotNull(exception);
+        } catch (Exception exception) {
+            Assert.fail("Should have thrown FileNotFoundException");
+        }
     }
-
-    /**
-     * Test for the path setter and getter.
-     */
-    @Test
-    public void setGetPath() {
-        Importer googleFitCSVImporter = TestImporterUtil.getImporter("GoogleFitCSVImporter");
-        googleFitCSVImporter.setImportFilePath("path/to/import/file");
-        Assert.assertEquals("path/to/import/file", googleFitCSVImporter.getImportFilePath());
-    }
-
 }

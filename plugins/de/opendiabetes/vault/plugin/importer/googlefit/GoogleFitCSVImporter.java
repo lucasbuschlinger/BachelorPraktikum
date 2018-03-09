@@ -21,7 +21,7 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.importer.CSVImporter;
+import de.opendiabetes.vault.plugin.fileimporter.CSVImporter;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -90,10 +90,11 @@ public class GoogleFitCSVImporter extends Plugin {
             }
 
             VaultEntry newVaultEntry;
-            Date timestamp = new Date(parseValidator.getStartTime(creader, getImportFilePath()));
+            Date timestamp = new Date(); // TODO fix to use something else then file path to determine start time
+            // Date timestamp = new Date(parseValidator.getStartTime(creader, getImportFilePath()));
             double durationInMinutes = Math.round((runTime + bikeTime + walkTime) / msPerMin);
             double maxSpeed = parseValidator.getMaxSpeedValue(creader);
-            // TODO: Correct exercise type
+            // TODO Correct exercise type
             // estimate the activity within this slot
             if (runTime > bikeTime && runTime > walkTime) {
                 newVaultEntry = new VaultEntry(VaultEntryType.EXERCISE_OTHER,
@@ -121,14 +122,6 @@ public class GoogleFitCSVImporter extends Plugin {
             return retVal;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 
 
