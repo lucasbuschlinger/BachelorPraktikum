@@ -331,6 +331,12 @@
             <exclude name="**/package-info.java"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
         </javac>
+        <copy todir="${opendiabetes.output.dir}">
+            <fileset dir="${module.opendiabetes.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
     </target>
 
     <target name="compile.module.opendiabetes.tests"
