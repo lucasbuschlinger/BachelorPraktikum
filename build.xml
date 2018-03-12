@@ -404,6 +404,10 @@
                   value="plugins/de/opendiabetes/vault/plugin"/>
     </target>
 
+    <target name="copy.lib">
+        <copy file="lib/${library}" tofile="plugins_out/lib/${library}"/>
+    </target>
+
     <target name="plugin.compile">
         <dirname file="${att1}" property="plugin.src.path"/>
 
@@ -416,7 +420,7 @@
         <copy todir="plugins_out/assets" quiet="true" failonerror="false">
             <fileset dir="${plugin.src.path}/assets"/>
         </copy>
-        <!--<copydir src="lib" dest="plugins_out/lib"/>-->
+        <foreach list="${plugin.libs}" param="library" target="copy.lib"/>
         <copy todir="plugins_out" quiet="true" failonerror="false">
             <fileset dir="${plugin.src.path}">
                 <include name="*.properties"/>
