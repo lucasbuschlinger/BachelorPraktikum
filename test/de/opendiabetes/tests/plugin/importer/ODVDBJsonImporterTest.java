@@ -50,9 +50,9 @@ public class ODVDBJsonImporterTest {
     public void pluginStart() throws PluginException {
         PluginManager manager = new DefaultPluginManager(Paths.get("export"));
         manager.loadPlugins();
-        manager.enablePlugin("ODVDBJsonImporter");
+        manager.enablePlugin("ODVDBJSONImporter");
         manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("ODVDBJsonImporter"));
+        Assert.assertTrue(manager.enablePlugin("ODVDBJSONImporter"));
     }
 
     /**
@@ -60,7 +60,7 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void callPlugin() {
-        FileImporter odvImporter = (FileImporter) TestImporterUtil.getImporter("ODVDBJsonImporter");
+        FileImporter odvImporter = (FileImporter) TestImporterUtil.getImporter("ODVDBJSONImporter");
         System.out.println("TEST" + odvImporter.getClass());
         try {
             odvImporter.importData("path/to/data");
