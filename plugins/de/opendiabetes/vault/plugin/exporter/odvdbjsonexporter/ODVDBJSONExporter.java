@@ -29,23 +29,23 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * Wrapper class for the OdvDbJsonExporter plugin.
+ * Wrapper class for the ODVDBJSONExporter plugin.
  *
  * @author juehv
  */
-public class OdvDbJsonExporter extends Plugin {
+public class ODVDBJSONExporter extends Plugin {
 
     /**
      * Constructor for the {@link org.pf4j.PluginManager}.
      *
      * @param wrapper The {@link org.pf4j.PluginWrapper}.
      */
-    public OdvDbJsonExporter(final PluginWrapper wrapper) {
+    public ODVDBJSONExporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
     /**
-     * Actual implementation of the OdvDbJsonExporter.
+     * Actual implementation of the ODVDBJSONExporter.
      */
     @Extension
     public static final class OdvDbJsonExporterImplementation extends FileExporter {

@@ -33,21 +33,21 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * Wrapper class for MySugrCsvImporter plugin.
+ * Wrapper class for MySugrCSVImporter plugin.
  */
-public class MySugrCsvImporter extends Plugin {
+public class MySugrCSVImporter extends Plugin {
 
     /**
      * Constructor for the PluginManager.
      *
      * @param wrapper The PluginWrapper.
      */
-    public MySugrCsvImporter(final PluginWrapper wrapper) {
+    public MySugrCSVImporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
     /**
-     * Actual implementation of the MySugrCsvImporter plugin.
+     * Actual implementation of the MySugrCSVImporter plugin.
      */
     @Extension
     public static final class MySugrCsvImporterImplementation extends CSVImporter {

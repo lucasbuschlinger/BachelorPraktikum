@@ -37,18 +37,18 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 /**
- * Wrapper class for the ODVDBJsonImporter plugin.
+ * Wrapper class for the ODVDBJSONImporter plugin.
  *
  * @author Lucas Buschlinger
  */
-public class ODVDBJsonImporter extends Plugin {
+public class ODVDBJSONImporter extends Plugin {
 
     /**
      * Constructor for the PluginManager.
      *
      * @param wrapper The PluginWrapper.
      */
-    public ODVDBJsonImporter(final PluginWrapper wrapper) {
+    public ODVDBJSONImporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
