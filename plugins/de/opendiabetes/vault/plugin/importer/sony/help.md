@@ -1,10 +1,10 @@
-# MedtronicImporter
+# SonySWR12Importer
 Version: 0.0.1
 Classification: Importer
 
 Overview
 -----
-The MedtronicImporter plugin is an importer plugin which imports Medtronic data in the .csv format.
+The SonySWR12Importer plugin is an importer plugin which imports SonySWR12 data in the .csv format.
 
 Data example
 -----
@@ -12,12 +12,12 @@ The .csv format is commonly used to represent multivariate data. Every data poin
 
 Configuration
 -----
-The MedtronicImporter plugin offers the following configuration options:
+The SonySWR12Importer plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the MedtronicImporter plugin, separated by commas. | x
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the SonySWR12Importer plugin, separated by commas. | x
 
 Required Plugins
 -----
- - The MedtronicImporter does not require any other plugins.
+ - The SonySWR12Importer does not require any other plugins.

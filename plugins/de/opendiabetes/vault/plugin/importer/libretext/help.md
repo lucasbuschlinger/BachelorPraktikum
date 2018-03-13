@@ -1,10 +1,10 @@
-# MedtronicImporter
+# LibreTextImporter
 Version: 0.0.1
 Classification: Importer
 
 Overview
 -----
-The MedtronicImporter plugin is an importer plugin which imports Medtronic data in the .csv format.
+The LibreTextImporter plugin is an importer plugin which imports LibreText data in the .csv format.
 
 Data example
 -----
@@ -12,12 +12,12 @@ The .csv format is commonly used to represent multivariate data. Every data poin
 
 Configuration
 -----
-The MedtronicImporter plugin offers the following configuration options:
+The LibreTextImporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the MedtronicImporter plugin, separated by commas. | x
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the LibreTextImporter plugin, separated by commas. | x
 
 Required Plugins
 -----
- - The MedtronicImporter does not require any other plugins.
+ - The LibreTextImporter does not require any other plugins.
