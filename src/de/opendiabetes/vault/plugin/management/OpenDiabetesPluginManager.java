@@ -51,7 +51,7 @@ public final class OpenDiabetesPluginManager {
     /**
      * Internal plugin manager provided by pf4j.
      */
-    private ODVPluginManager pf4jManager;
+    private InternalPluginManager pf4jManager;
 
     /**
      * A map containing all compatible plugins for each plugin individually.
@@ -76,7 +76,7 @@ public final class OpenDiabetesPluginManager {
      */
     private OpenDiabetesPluginManager(final Path pluginPath, final Path configurationPath) {
         this.configurationPath = configurationPath;
-        pf4jManager = new ODVPluginManager(pluginPath);
+        pf4jManager = new InternalPluginManager(pluginPath);
         pf4jManager.loadPlugins();
         pf4jManager.startPlugins();
         pf4jManager.getExtensions(OpenDiabetesPlugin.class).forEach(plugin -> plugins.put(pluginToString(plugin), plugin));

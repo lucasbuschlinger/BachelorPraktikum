@@ -12,13 +12,13 @@ import java.nio.file.Path;
  *
  * @author Lucas Buschlinger
  */
-public class ODVPluginManager extends DefaultPluginManager {
+public class InternalPluginManager extends DefaultPluginManager {
 
     /**
      * Constructor matching super.
      * @param pluginsRoot The folder where all plugins reside in.
      */
-    public ODVPluginManager(final Path pluginsRoot) {
+    public InternalPluginManager(final Path pluginsRoot) {
         super(pluginsRoot);
     }
 
