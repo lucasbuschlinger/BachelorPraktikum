@@ -2,6 +2,7 @@ de.opendiabetes.vault.container
 de.opendiabetes.vault.container.csv
 de.opendiabetes.vault.data
 de.opendiabetes.vault.plugin.common
+de.opendiabetes.vault.plugin.crawlerimporter
 de.opendiabetes.vault.plugin.exporter
 de.opendiabetes.vault.plugin.exporter.ODVExporter
 de.opendiabetes.vault.plugin.exporter.odvdbjsonexporter
