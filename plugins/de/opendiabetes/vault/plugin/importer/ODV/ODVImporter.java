@@ -17,15 +17,11 @@
 package de.opendiabetes.vault.plugin.importer.ODV;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.fileimporter.AbstractFileImporter;
-import de.opendiabetes.vault.plugin.importer.Importer;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
-import org.pf4j.DefaultPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
-import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;

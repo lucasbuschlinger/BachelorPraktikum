@@ -7,7 +7,6 @@ import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
-import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +28,7 @@ public abstract class VaultExporter extends CSVFileExporter<ExportEntry, VaultEn
      * @return The entries ready for export.
      */
     @Override
-    protected List<ExportEntry> prepareData(final List<VaultEntry> data){
+    protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
 
         // Status update constants
         final int startPrepareProgress = 33;

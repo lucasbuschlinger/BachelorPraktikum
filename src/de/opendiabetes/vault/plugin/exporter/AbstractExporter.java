@@ -17,12 +17,8 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 
-import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Most abstract exporter, implements the {@link Exporter} interface.

@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.exporter.slicelayoutcsv;
 
 import de.opendiabetes.vault.container.SliceEntry;
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.SliceCsVEntry;
 import de.opendiabetes.vault.plugin.exporter.CSVFileExporter;
@@ -25,10 +24,8 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Wrapper class for the SliceLayoutCSVExporter plugin.

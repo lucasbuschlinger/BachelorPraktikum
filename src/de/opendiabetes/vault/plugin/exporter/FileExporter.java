@@ -108,8 +108,6 @@ public abstract class FileExporter<T, U> extends AbstractExporter<U> {
      * @param filePath File path where the exported data should be written to.
      * @param data The data to be written.
      * @throws IOException Thrown if something goes wrong when writing the file.
-     * @param <T> type of the list entries
-     * @param listEntryType class type of the list entries
      */
     protected void writeToFile(final String filePath, final List<T> data) throws IOException {
         FileChannel channel = fileOutputStream.getChannel();
@@ -130,8 +128,6 @@ public abstract class FileExporter<T, U> extends AbstractExporter<U> {
      *
      * @param data The data to be prepared.
      * @return The data in exportable containers.
-     * @param inputListEntryType class type of the input list entries
-     * @param <T> type of the input list entries
      * @throws UnsupportedDataTypeException if the list entries in data do not match the supported datatype of the exporter
      */
     protected abstract List<T> prepareData(List<U> data) throws UnsupportedDataTypeException;

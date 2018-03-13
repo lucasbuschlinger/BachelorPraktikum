@@ -2,8 +2,6 @@ package de.opendiabetes.vault.plugin.importer.crawlerimporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.Importer;
-import org.pf4j.Extension;
-import org.pf4j.ExtensionPoint;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ import java.util.List;
  * Therefore all file importer plugins must implement this interface to get recognized as crawler importer.
  */
 
-public interface CrawlerImporter extends Importer{
+public interface CrawlerImporter extends Importer {
 
     /**
      * Imports the data from a external site using the given credentials.

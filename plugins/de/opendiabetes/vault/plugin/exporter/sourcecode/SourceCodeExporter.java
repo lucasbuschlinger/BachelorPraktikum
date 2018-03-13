@@ -18,9 +18,7 @@ package de.opendiabetes.vault.plugin.exporter.sourcecode;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
-import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.exporter.FileExporter;
-import de.opendiabetes.vault.plugin.exporter.VaultExporter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -129,7 +127,7 @@ public class SourceCodeExporter extends Plugin {
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
         @Override
-        protected void writeToFile(final String filePath, final List<String> data) throws IOException{
+        protected void writeToFile(final String filePath, final List<String> data) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));

@@ -1,13 +1,11 @@
 package de.opendiabetes.vault.plugin.exporter.plotterexporter;
 
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.exporter.VaultExporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import javax.activation.UnsupportedDataTypeException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

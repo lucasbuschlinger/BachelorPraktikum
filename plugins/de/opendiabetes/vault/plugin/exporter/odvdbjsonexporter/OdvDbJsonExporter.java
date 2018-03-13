@@ -27,7 +27,6 @@ import org.pf4j.PluginWrapper;
 import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Wrapper class for the OdvDbJsonExporter plugin.
