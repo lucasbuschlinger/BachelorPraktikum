@@ -28,9 +28,10 @@ import java.util.List;
  * Furthermore it serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
  * Thus all exporter plugins must implement this interface to get recognized as exporters.
  *
- * @author Lucas Buschlinger
+ * @author Lucas Buschlinger, Magnus Gärtner
+ * @param <U> Type of data accepted to export
  */
-public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
+public interface Exporter<U> extends ExtensionPoint, OpenDiabetesPlugin {
     /**
      * Return codes for exporting data.
      */
@@ -82,8 +83,6 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
      * @param data The data to export.
      * @return The return code as specified in {@link ReturnCode}.
      * @throws IOException Thrown if there was an error exporting the data
-     * @param <T> type of the list entries
-     * @param listEntryType class type of T for type checking
      */
-     <T> int exportDataToFile(String filePath, List<T>  data, Class<T> listEntryType) throws IOException;
+     int exportDataToFile(String filePath, List<U>  data) throws IOException;
 }

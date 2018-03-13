@@ -16,7 +16,7 @@ import java.util.logging.Level;
 /**
  * This class implements functionality shared by the exporters exporting from the Vault database.
  */
-public abstract class VaultExporter extends CSVFileExporter {
+public abstract class VaultExporter extends CSVFileExporter<ExportEntry, VaultEntry> {
     /**
      * Buffer for the entries before they get exported.
      */
@@ -29,10 +29,8 @@ public abstract class VaultExporter extends CSVFileExporter {
      * @return The entries ready for export.
      */
     @Override
-    protected <T> List<?> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException {
-        if (!VaultEntry.class.isAssignableFrom(listEntryType)){
-            throw new UnsupportedDataTypeException("VaultExporter can only prepare List<VaultEntry> data!");
-        }
+    protected List<ExportEntry> prepareData(final List<VaultEntry> data){
+
         // Status update constants
         final int startPrepareProgress = 33;
         final int prepareDoneProgress = 66;
@@ -45,9 +43,9 @@ public abstract class VaultExporter extends CSVFileExporter {
 
         List<VaultEntry> tmpData;
         if (getIsPeriodRestricted()) {
-            tmpData = filterPeriodRestriction((List<VaultEntry>) data);
+            tmpData = filterPeriodRestriction(data);
         } else {
-            tmpData = (List<VaultEntry>) data;
+            tmpData = data;
         }
 
         // list is ordered by timestamp from database (or should be ordered otherwise)

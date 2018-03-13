@@ -50,18 +50,15 @@ public class SliceLayoutCSVExporter extends Plugin {
      * Actual implementation of the SliceLayoutCSVExporter.
      */
     @Extension
-    public static final class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
+    public static final class SliceLayoutCSVExporterImplementation extends CSVFileExporter<ExportEntry, SliceEntry> {
         /**
          * {@inheritDoc}
          */
         @Override
-        protected <T> List<ExportEntry> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException{
-            if (!SliceEntry.class.isAssignableFrom(listEntryType)){
-                throw new UnsupportedDataTypeException("SliceLayoutCSV exporter accepts only List<SliceEntrys> data");
-            }
+        protected  List<ExportEntry> prepareData(final List<SliceEntry> data) {
             List<ExportEntry> retVal = new ArrayList<>();
-            for (T item : data) {
-                retVal.add(new SliceCsVEntry((SliceEntry) item));
+            for (SliceEntry item : data) {
+                retVal.add(new SliceCsVEntry(item));
             }
             return retVal;
         }

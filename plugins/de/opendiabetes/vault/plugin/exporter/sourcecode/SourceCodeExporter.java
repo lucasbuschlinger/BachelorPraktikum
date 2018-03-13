@@ -18,13 +18,14 @@ package de.opendiabetes.vault.plugin.exporter.sourcecode;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
+import de.opendiabetes.vault.container.csv.ExportEntry;
+import de.opendiabetes.vault.plugin.exporter.FileExporter;
 import de.opendiabetes.vault.plugin.exporter.VaultExporter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import javax.activation.UnsupportedDataTypeException;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class SourceCodeExporter extends Plugin {
      * Actual implementation of the SourceCode exporter plugin.
      */
     @Extension
-    public static final class SourceCodeExporterImplementation extends VaultExporter {
+    public static final class SourceCodeExporterImplementation extends FileExporter<String, VaultEntry> {
 
 
         /**
@@ -128,11 +129,7 @@ public class SourceCodeExporter extends Plugin {
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
         @Override
-        protected <T> void writeToFile(final String filePath, final List<?> data, final Class<T> listEntryType)
-                throws IOException, UnsupportedDataTypeException {
-            if (!String.class.isAssignableFrom(listEntryType)) {
-                throw new UnsupportedDataTypeException("SourceCodeExporter supports only List<String>");
-            }
+        protected void writeToFile(final String filePath, final List<String> data) throws IOException{
             FileOutputStream fileOutputStream = getFileOutputStream();
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
@@ -153,10 +150,7 @@ public class SourceCodeExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected <T> List<String> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException {
-            if (!VaultEntry.class.isAssignableFrom(listEntryType)) {
-                throw new UnsupportedDataTypeException("OdvDBJson Exporter can only prepare List<VaultEntry> data!");
-            }
+        protected List<String> prepareData(final List<VaultEntry> data) {
             if (data == null || data.isEmpty()) {
                 return null;
             }

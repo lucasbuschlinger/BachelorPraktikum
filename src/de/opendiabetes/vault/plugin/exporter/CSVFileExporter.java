@@ -17,6 +17,7 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 import com.csvreader.CsvWriter;
+import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.CsvEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.VaultCsvEntry;
@@ -31,17 +32,16 @@ import java.util.List;
  * This defines a standard implementation for writing CSV data.
  *
  * @author Lucas Buschlinger
+ * @param <T> Type of the list entries passed from {@link #prepareData(List)} to {@link #writeToFile(String, List)}
+ * @param <U> Type of data accepted to export
  */
-public abstract class CSVFileExporter extends FileExporter {
+public abstract class CSVFileExporter<T, U> extends FileExporter<T, U> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected <T> void writeToFile(final String filePath, final List<?> csvEntries, final Class<T> listEntryType) throws IOException, UnsupportedDataTypeException {
-        if (!ExportEntry.class.isAssignableFrom(listEntryType)) {
-            throw new UnsupportedDataTypeException("CSVFileExporter accepts only List<ExportEntrys> data");
-        }
+    protected void writeToFile(final String filePath, final List<T> csvEntries) throws IOException {
         FileOutputStream fileOutputStream = getFileOutputStream();
         CsvWriter cwriter = new CsvWriter(fileOutputStream, VaultCsvEntry.CSV_DELIMITER, Charset.forName("UTF-8"));
 

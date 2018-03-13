@@ -1,5 +1,6 @@
 package de.opendiabetes.vault.plugin.exporter.plotterexporter;
 
+import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.exporter.VaultExporter;
 import org.pf4j.Extension;
@@ -214,10 +215,7 @@ public class PlotterExporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        protected <T> void writeToFile(final String filePath, final List<?> csvEntries, final Class<T> listEntryType) throws IOException {
-            if (!ExportEntry.class.isAssignableFrom(listEntryType)) {
-                throw new UnsupportedDataTypeException("PlotterExporter accepts only List<ExportEntrys> data");
-            }
+        protected  void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
             boolean python = isPythonInstalled();
             if (!python) {
                 throw new IOException("Cannot plot data because python was not found");
@@ -233,7 +231,7 @@ public class PlotterExporter extends Plugin {
 
             String tempPath = DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME;
 
-            super.writeToFile(tempPath, csvEntries, listEntryType);
+            super.writeToFile(tempPath, csvEntries);
             if (!plotData(tempPath, filePath)) {
                 LOG.log(Level.SEVERE, "Failed to plot data");
             }

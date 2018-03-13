@@ -24,7 +24,6 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import javax.activation.UnsupportedDataTypeException;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -62,7 +61,7 @@ public class ODVExporter extends Plugin {
      * Actual implementation of the ODVExporter plugin.
      */
     @Extension
-    public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter {
+    public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter<VaultEntry> {
 
         /**
          * The properties which will get passed on to the exporters.
@@ -104,10 +103,7 @@ public class ODVExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        public <T> int exportDataToFile(final String filePath, final List<T> data, final Class<T> listEntryType) throws IOException {
-            if (!VaultEntry.class.isAssignableFrom(listEntryType)){
-                throw new UnsupportedDataTypeException("Please provide List<VaultEntry> data for O!");
-            }
+        public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
             Map<String, MetaValues> metaData = new HashMap<>();
@@ -138,7 +134,7 @@ public class ODVExporter extends Plugin {
                 exporter.registerStatusCallback((progress, status)
                         -> notifyStatus(progress, name + ": " + status));
                 try {
-                    exporter.exportDataToFile(exportFile, (List<VaultEntry>) data, VaultEntry.class);
+                    exporter.exportDataToFile(exportFile,  data);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;

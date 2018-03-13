@@ -49,7 +49,7 @@ public class OdvDbJsonExporter extends Plugin {
      * Actual implementation of the OdvDbJsonExporter.
      */
     @Extension
-    public static final class OdvDbJsonExporterImplementation extends FileExporter {
+    public static final class OdvDbJsonExporterImplementation extends FileExporter<ExportEntry, VaultEntry> {
 
         /**
          * Prepares data for the export by putting it into exportable containers.
@@ -58,10 +58,7 @@ public class OdvDbJsonExporter extends Plugin {
          * @return The data in exportable containers.
          */
         @Override
-        protected <T> List<ExportEntry> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException {
-            if (!VaultEntry.class.isAssignableFrom(listEntryType)){
-                throw new UnsupportedDataTypeException("OdvDBJson Exporter can only prepare List<VaultEntry> data!");
-            }
+        protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws UnsupportedDataTypeException {
             List<ExportEntry> container = new ArrayList<>();
             List<VaultEntry> tempData;
             if (getIsPeriodRestricted()) {

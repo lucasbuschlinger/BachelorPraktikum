@@ -31,8 +31,9 @@ import java.util.List;
  * Takes care of handling status listeners {@link AbstractExporter#listeners}.
  *
  * @author Lucas Buschlinger
+ * @param <U> Type of data accepted to export
  */
-public abstract class AbstractExporter extends AbstractPlugin implements  Exporter {
+public abstract class AbstractExporter<U> extends AbstractPlugin implements  Exporter<U> {
 
 
 }

@@ -40,9 +40,11 @@ import static java.lang.Boolean.parseBoolean;
 /**
  * This class defines the default structure how data gets exported to a file.
  *
- * @author Lucas Buschlinger
+ * @author Lucas Buschlinger, Magnus Gärtner
+ * @param <T> Type of the list entries passed from {@link #prepareData(List)} to {@link #writeToFile(String, List, Class)}
+ * @param <U> Type of data accepted by {{@link #prepareData(List)}}
  */
-public abstract class FileExporter extends AbstractExporter {
+public abstract class FileExporter<T, U> extends AbstractExporter<U> {
 
     /**
      * The fileOutputStream used to write to the file.
@@ -64,11 +66,11 @@ public abstract class FileExporter extends AbstractExporter {
 
     /**
      * {@inheritDoc}
-     * {@link #prepareData(List, Class)}
-     * {@link #writeToFile(String, List, Class)}
+     * {@link #prepareData(List)}
+     * {@link #writeToFile(String, List)}
      */
     @Override
-    public <T> int exportDataToFile(final String filePath, final List<T> data, final Class<T> listEntryType) throws IOException {
+    public int exportDataToFile(final String filePath, final List<U> data) throws IOException {
         // Status update constants.
         final int startWriteProgress = 80;
         final int writeDoneProgress = 100;
@@ -81,14 +83,14 @@ public abstract class FileExporter extends AbstractExporter {
         }
         fileOutputStream = new FileOutputStream(checkFile);
         // create csv data
-        List<?> exportData = prepareData(data, listEntryType);
+        List<T> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
             this.notifyStatus(-1, "Could not find data to export.");
             return ReturnCode.RESULT_NO_DATA.getCode();
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
-        writeToFile(filePath, exportData, listEntryType);
+        writeToFile(filePath, exportData);
         try {
             fileOutputStream.close();
         } catch (IOException exception) {
@@ -109,10 +111,7 @@ public abstract class FileExporter extends AbstractExporter {
      * @param <T> type of the list entries
      * @param listEntryType class type of the list entries
      */
-    protected <T> void writeToFile(final String filePath, final List<?> data, final Class<T> listEntryType) throws IOException {
-        if (!ExportEntry.class.isAssignableFrom(listEntryType)) {
-            throw new UnsupportedDataTypeException("Exporter accepts only List<ExportEntrys> data");
-        }
+    protected void writeToFile(final String filePath, final List<T> data) throws IOException {
         FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 
@@ -135,7 +134,7 @@ public abstract class FileExporter extends AbstractExporter {
      * @param <T> type of the input list entries
      * @throws UnsupportedDataTypeException if the list entries in data do not match the supported datatype of the exporter
      */
-    protected abstract <T> List<?> prepareData(List<T> data, Class<T> inputListEntryType) throws UnsupportedDataTypeException;
+    protected abstract List<T> prepareData(List<U> data) throws UnsupportedDataTypeException;
 
     /**
      * Most generic loading of configurations of exporter plugins.
