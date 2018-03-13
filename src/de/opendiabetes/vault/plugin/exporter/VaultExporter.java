@@ -7,6 +7,7 @@ import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
+import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,10 @@ public abstract class VaultExporter extends CSVFileExporter {
      * @return The entries ready for export.
      */
     @Override
-    protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+    protected <T> List<?> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException {
+        if (!VaultEntry.class.isAssignableFrom(listEntryType)){
+            throw new UnsupportedDataTypeException("VaultExporter can only prepare List<VaultEntry> data!");
+        }
         // Status update constants
         final int startPrepareProgress = 33;
         final int prepareDoneProgress = 66;
@@ -41,9 +45,9 @@ public abstract class VaultExporter extends CSVFileExporter {
 
         List<VaultEntry> tmpData;
         if (getIsPeriodRestricted()) {
-            tmpData = filterPeriodRestriction(data);
+            tmpData = filterPeriodRestriction((List<VaultEntry>) data);
         } else {
-            tmpData = data;
+            tmpData = (List<VaultEntry>) data;
         }
 
         // list is ordered by timestamp from database (or should be ordered otherwise)
@@ -317,14 +321,4 @@ public abstract class VaultExporter extends CSVFileExporter {
         return csvEntry;
     }
 
-    /**
-     * Unused, thus unimplemented.
-     *
-     * @param entries Nothing here.
-     * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-     */
-    @Override
-    public void setEntries(final List<?> entries) throws IllegalArgumentException {
-        LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
-    }
 }

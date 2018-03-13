@@ -19,6 +19,8 @@ package de.opendiabetes.vault.plugin.exporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 
+
+import javax.activation.UnsupportedDataTypeException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,9 +64,11 @@ public abstract class FileExporter extends AbstractExporter {
 
     /**
      * {@inheritDoc}
+     * {@link #prepareData(List, Class)}
+     * {@link #writeToFile(String, List, Class)}
      */
     @Override
-    public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
+    public <T> int exportDataToFile(final String filePath, final List<T> data, final Class<T> listEntryType) throws IOException {
         // Status update constants.
         final int startWriteProgress = 80;
         final int writeDoneProgress = 100;
@@ -77,14 +81,14 @@ public abstract class FileExporter extends AbstractExporter {
         }
         fileOutputStream = new FileOutputStream(checkFile);
         // create csv data
-        List<ExportEntry> exportData = prepareData(data);
+        List<?> exportData = prepareData(data, listEntryType);
         if (exportData == null || exportData.isEmpty()) {
             this.notifyStatus(-1, "Could not find data to export.");
             return ReturnCode.RESULT_NO_DATA.getCode();
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
-        writeToFile(filePath, exportData);
+        writeToFile(filePath, exportData, listEntryType);
         try {
             fileOutputStream.close();
         } catch (IOException exception) {
@@ -102,13 +106,19 @@ public abstract class FileExporter extends AbstractExporter {
      * @param filePath File path where the exported data should be written to.
      * @param data The data to be written.
      * @throws IOException Thrown if something goes wrong when writing the file.
+     * @param <T> type of the list entries
+     * @param listEntryType class type of the list entries
      */
-    protected void writeToFile(final String filePath, final List<ExportEntry> data) throws IOException {
+    protected <T> void writeToFile(final String filePath, final List<?> data, final Class<T> listEntryType) throws IOException {
+        if (!ExportEntry.class.isAssignableFrom(listEntryType)) {
+            throw new UnsupportedDataTypeException("Exporter accepts only List<ExportEntrys> data");
+        }
         FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 
-        for (ExportEntry entry : data) {
-            byte[] messageBytes = entry.toByteEntryLine();
+        for (Object entry : data) {
+
+            byte[] messageBytes = ((ExportEntry) entry).toByteEntryLine();
             channel.write(ByteBuffer.wrap(messageBytes));
             channel.write(ByteBuffer.wrap(lineFeed));
         }
@@ -121,8 +131,11 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @param data The data to be prepared.
      * @return The data in exportable containers.
+     * @param inputListEntryType class type of the input list entries
+     * @param <T> type of the input list entries
+     * @throws UnsupportedDataTypeException if the list entries in data do not match the supported datatype of the exporter
      */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
+    protected abstract <T> List<?> prepareData(List<T> data, Class<T> inputListEntryType) throws UnsupportedDataTypeException;
 
     /**
      * Most generic loading of configurations of exporter plugins.

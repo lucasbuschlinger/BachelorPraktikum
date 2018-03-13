@@ -19,12 +19,12 @@ package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
-import org.pf4j.DefaultPluginManager;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
-import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
 
+import javax.activation.UnsupportedDataTypeException;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -101,21 +101,13 @@ public class ODVExporter extends Plugin {
         }
 
         /**
-         * Unused, thus unimplemented.
-         *
-         * @param entries Nothing here.
-         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-         */
-        @Override
-        public void setEntries(final List<?> entries) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
-        }
-
-        /**
          * {@inheritDoc}
          */
         @Override
-        public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
+        public <T> int exportDataToFile(final String filePath, final List<T> data, final Class<T> listEntryType) throws IOException {
+            if (!VaultEntry.class.isAssignableFrom(listEntryType)){
+                throw new UnsupportedDataTypeException("Please provide List<VaultEntry> data for O!");
+            }
             FileOutputStream fileOutputStream;
             ZipOutputStream zipOutputStream;
             Map<String, MetaValues> metaData = new HashMap<>();
@@ -131,11 +123,10 @@ public class ODVExporter extends Plugin {
                     return ReturnCode.RESULT_ERROR.getCode();
                 }
             }
-            PluginManager manager = new DefaultPluginManager();
-            manager.loadPlugins();
-            manager.startPlugins();
-            List<Exporter> exporters = manager.getExtensions(Exporter.class);
+            OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+            List<Exporter> exporters = manager.getPluginsOfType(Exporter.class);
             for (Exporter exporter : exporters) {
+
                 String name = exporter.getClass().getName().replaceAll(".*\\$", "")
                         .replace("Implementation", "");
                 if (name.contains("ODVExporter") || metaData.containsKey(name)) {
@@ -147,7 +138,7 @@ public class ODVExporter extends Plugin {
                 exporter.registerStatusCallback((progress, status)
                         -> notifyStatus(progress, name + ": " + status));
                 try {
-                    exporter.exportDataToFile(exportFile, data);
+                    exporter.exportDataToFile(exportFile, (List<VaultEntry>) data, VaultEntry.class);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;

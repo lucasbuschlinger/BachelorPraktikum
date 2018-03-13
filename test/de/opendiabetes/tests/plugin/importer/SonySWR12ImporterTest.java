@@ -16,30 +16,18 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.junit.Assert;
 import org.junit.Test;
-import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
-import org.pf4j.PluginManager;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Paths;
 
 /**
  * Tests for the SonySWR21Importer plugin.
  */
 public class SonySWR12ImporterTest {
-
-    /**
-     * Test to see whether the plugin can be loaded.
-     */
-    @Test
-    public void pluginLoad() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        Assert.assertTrue(0 != manager.getPlugins().size());
-    }
 
     /**
      * Test to see whether the plugin can be started.
@@ -48,11 +36,8 @@ public class SonySWR12ImporterTest {
      */
     @Test
     public void pluginStart() throws PluginException {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.enablePlugin("SonySWR12Importer");
-        manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("SonySWR12Importer"));
+        OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+        FileImporter sonySWR12Importer = manager.getPluginFromString(FileImporter.class, "SonySWR12Importer");
     }
 
     /**
@@ -60,7 +45,9 @@ public class SonySWR12ImporterTest {
      */
     @Test
     public void callPlugin() {
-        FileImporter sonySWR12Importer = (FileImporter) TestImporterUtil.getImporter("SonySWR12Importer");
+        OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+        FileImporter sonySWR12Importer = manager.getPluginFromString(FileImporter.class, "SonySWR12Importer");
+
         try {
             sonySWR12Importer.importData("path/to/data");
         } catch (FileNotFoundException exception) {

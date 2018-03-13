@@ -18,14 +18,13 @@ package de.opendiabetes.vault.plugin.exporter.sourcecode;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
-import de.opendiabetes.vault.container.csv.CsvEntry;
-import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.exporter.VaultExporter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import javax.activation.UnsupportedDataTypeException;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -57,11 +56,6 @@ public class SourceCodeExporter extends Plugin {
     @Extension
     public static final class SourceCodeExporterImplementation extends VaultExporter {
 
-        /**
-         * List to hold all the entries queried from the database in {@link #prepareData(List)}
-         * and written on {@link #writeToFile(String, List)}.
-         */
-        private final List<String> entries = new ArrayList<>();
 
         /**
          * Method to get the ListInitCode.
@@ -130,18 +124,23 @@ public class SourceCodeExporter extends Plugin {
          * Then it puts both of this into a ZIP archive file.
          *
          * @param filePath File path where the data should be exported to.
-         * @param csvEntries The {@link ExportEntry} to be exported.
+         * @param data The to be exported.
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
-        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
+        @Override
+        protected <T> void writeToFile(final String filePath, final List<?> data, final Class<T> listEntryType)
+                throws IOException, UnsupportedDataTypeException {
+            if (!String.class.isAssignableFrom(listEntryType)) {
+                throw new UnsupportedDataTypeException("SourceCodeExporter supports only List<String>");
+            }
             FileOutputStream fileOutputStream = getFileOutputStream();
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
 
             writer.write("  public static List<VaultEntry> getStaticDataset() throws ParseException {\n");
             writer.write(getListInitCode());
-            for (String entry : entries) {
-                writer.write(entry);
+            for (Object entry : data) {
+                writer.write((String) entry);
             }
             writer.write(getReturnStatementCode());
             writer.write("}");
@@ -154,35 +153,26 @@ public class SourceCodeExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected <T> List<String> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException {
+            if (!VaultEntry.class.isAssignableFrom(listEntryType)) {
+                throw new UnsupportedDataTypeException("OdvDBJson Exporter can only prepare List<VaultEntry> data!");
+            }
             if (data == null || data.isEmpty()) {
                 return null;
             }
+
+            List<String> result = new ArrayList<>();
             List<VaultEntry> tmpValues;
             if (getIsPeriodRestricted()) {
-                tmpValues = filterPeriodRestriction(data);
+                tmpValues = filterPeriodRestriction((List<VaultEntry>) data);
             } else {
-                tmpValues = data;
+                tmpValues = (List<VaultEntry>) data;
             }
             for (VaultEntry value : tmpValues) {
-                entries.add(toListCode(value));
+                result.add(toListCode(value));
             }
+            return  result;
 
-            // Dirty hack again to overcome safety features
-            ArrayList<ExportEntry> dummy = new ArrayList<>();
-            dummy.add(new CsvEntry() {
-                @Override
-                public String[] toCsvRecord() {
-                    return new String[] {};
-                }
-
-                @Override
-                public String[] getCsvHeaderRecord() {
-                    return new String[] {};
-                }
-            });
-
-            return dummy;
         }
 
     }

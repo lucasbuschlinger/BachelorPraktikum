@@ -367,6 +367,7 @@
 
         <property name="plugin.src.base"
                   value="plugins/de/opendiabetes/vault/plugin"/>
+        <delete dir="out"/>
     </target>
 
     <target name="plugin.compile">

@@ -17,8 +17,9 @@
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
-import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+import de.opendiabetes.vault.plugin.importer.crawlerimporter.CrawlerImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -51,7 +52,7 @@ public class MedtronicCrawlerImporter extends Plugin {
      * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class MedtronicCrawlerImporterImplementation extends AbstractCrawlerImporter {
+    public static class MedtronicCrawlerImporterImplementation extends AbstractPlugin implements CrawlerImporter {
 
         /**
          * Progress percentage for showing that the configuration has been loaded.

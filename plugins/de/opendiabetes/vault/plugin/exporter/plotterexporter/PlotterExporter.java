@@ -6,6 +6,7 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import javax.activation.UnsupportedDataTypeException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -213,9 +214,10 @@ public class PlotterExporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        @Override
-        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
-
+        protected <T> void writeToFile(final String filePath, final List<?> csvEntries, final Class<T> listEntryType) throws IOException {
+            if (!ExportEntry.class.isAssignableFrom(listEntryType)) {
+                throw new UnsupportedDataTypeException("PlotterExporter accepts only List<ExportEntrys> data");
+            }
             boolean python = isPythonInstalled();
             if (!python) {
                 throw new IOException("Cannot plot data because python was not found");
@@ -231,7 +233,7 @@ public class PlotterExporter extends Plugin {
 
             String tempPath = DEFAULT_TEMP_DIR + File.pathSeparator + DEFAULT_TEMP_FILENAME;
 
-            super.writeToFile(tempPath, csvEntries);
+            super.writeToFile(tempPath, csvEntries, listEntryType);
             if (!plotData(tempPath, filePath)) {
                 LOG.log(Level.SEVERE, "Failed to plot data");
             }

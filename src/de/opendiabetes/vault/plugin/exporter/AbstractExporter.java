@@ -34,21 +34,5 @@ import java.util.List;
  */
 public abstract class AbstractExporter extends AbstractPlugin implements  Exporter {
 
-    /**
 
-     * Writes the export data to the file.
-     *
-     * @param filePath File path where the exported data should be written to.
-     * @param data The data to be written.
-     * @throws IOException Thrown if something goes wrong when writing the file.
-     */
-    protected abstract void writeToFile(String filePath, List<ExportEntry> data) throws IOException;
-
-    /**
-     * Prepares data for the export by putting it into exportable containers.
-     *
-     * @param data The data to be prepared.
-     * @return The data in exportable containers.
-     */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
 }

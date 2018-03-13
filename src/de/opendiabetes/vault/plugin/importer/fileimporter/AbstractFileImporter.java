@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.fileimporter;
+package de.opendiabetes.vault.plugin.importer.fileimporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
@@ -31,16 +31,7 @@ import java.util.logging.Level;
  * {@link AbstractFileImporter#preprocessingIfNeeded(String)}.
  * {@link AbstractFileImporter#processImport(InputStream, String)}.
  */
-public abstract class AbstractFileImporter extends AbstractPlugin implements de.opendiabetes.vault.plugin.fileimporter.FileImporter {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<VaultEntry> importData() {
-        throw new UnsupportedOperationException("The importData() method of a FileImporter cannot be used."
-                + " Use importData(filePath) instead.");
-    }
+public abstract class AbstractFileImporter extends AbstractPlugin implements FileImporter {
 
     /**
      * Imports the data from a specified file path.
@@ -73,7 +64,7 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
      *
      * @param filePath Path to the import file.
      */
-    protected abstract void preprocessingIfNeeded(String filePath);
+    protected void preprocessingIfNeeded(final String filePath) { }
 
     /**
      * Method for processing the data.

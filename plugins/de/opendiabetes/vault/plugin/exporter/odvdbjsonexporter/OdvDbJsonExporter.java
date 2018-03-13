@@ -24,6 +24,7 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -57,27 +58,19 @@ public class OdvDbJsonExporter extends Plugin {
          * @return The data in exportable containers.
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected <T> List<ExportEntry> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException {
+            if (!VaultEntry.class.isAssignableFrom(listEntryType)){
+                throw new UnsupportedDataTypeException("OdvDBJson Exporter can only prepare List<VaultEntry> data!");
+            }
             List<ExportEntry> container = new ArrayList<>();
             List<VaultEntry> tempData;
             if (getIsPeriodRestricted()) {
-               tempData = filterPeriodRestriction(data);
+               tempData = filterPeriodRestriction((List<VaultEntry>) data);
             } else {
-                tempData = data;
+                tempData = (List<VaultEntry>) data;
             }
             container.add(OdvDbJsonPseudoEntry.fromVaultEntryList(tempData));
             return container;
-        }
-
-        /**
-         * Unused, thus unimplemented.
-         *
-         * @param entries Nothing here.
-         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-         */
-        @Override
-        public void setEntries(final List<?> entries) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
     }

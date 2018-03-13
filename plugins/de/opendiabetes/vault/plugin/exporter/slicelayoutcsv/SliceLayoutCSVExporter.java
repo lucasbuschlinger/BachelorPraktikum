@@ -25,6 +25,7 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,43 +51,19 @@ public class SliceLayoutCSVExporter extends Plugin {
      */
     @Extension
     public static final class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
-
-        /**
-         * The entries to be exported by the SliceLayoutCSVExporter plugins.
-         */
-        private List<SliceEntry> entries;
-
-
         /**
          * {@inheritDoc}
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected <T> List<ExportEntry> prepareData(final List<T> data, final Class<T> listEntryType) throws UnsupportedDataTypeException{
+            if (!SliceEntry.class.isAssignableFrom(listEntryType)){
+                throw new UnsupportedDataTypeException("SliceLayoutCSV exporter accepts only List<SliceEntrys> data");
+            }
             List<ExportEntry> retVal = new ArrayList<>();
-            for (SliceEntry item : entries) {
-                retVal.add(new SliceCsVEntry(item));
+            for (T item : data) {
+                retVal.add(new SliceCsVEntry((SliceEntry) item));
             }
             return retVal;
-        }
-
-        /**
-         * This sets the List of {@link SliceEntry} which will be exported by this exporter.
-         *
-         * @param entries The entries which will be exported by the SliceLayoutCSVExporter.
-         * @throws IllegalArgumentException Thrown if the entries of the supplied list are not of type {@link SliceEntry}
-         */
-        @Override
-        public void setEntries(final List<?> entries) throws IllegalArgumentException {
-            if (entries != null && !entries.isEmpty()) {
-                if (entries.get(0) instanceof SliceEntry) {
-                    this.entries = (List<SliceEntry>) entries;
-                } else {
-                    LOG.log(Level.SEVERE, "Entries are not of type SliceEntry");
-                    throw new IllegalArgumentException("Entries are not of type SliceEntry");
-                }
-            } else {
-                LOG.log(Level.SEVERE, "No data supplied to be set");
-            }
         }
 
     }

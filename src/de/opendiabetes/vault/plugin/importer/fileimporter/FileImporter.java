@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.fileimporter;
+package de.opendiabetes.vault.plugin.importer.fileimporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.Importer;

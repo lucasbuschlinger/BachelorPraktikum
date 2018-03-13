@@ -76,22 +76,14 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
     }
 
     /**
-     * This method is used to set the entries to export.
-     * Should only be used with exporters that do not export from {@link VaultEntry}
-     * but something different like {@link de.opendiabetes.vault.container.SliceEntry}.
-     *
-     * @param entries The entries which will be exported by the respective exporter.
-     * @throws IllegalArgumentException Thrown if the wrong kind of entries were set.
-     */
-    void setEntries(List<?> entries) throws IllegalArgumentException;
-
-    /**
      * Exports the data to a file.
      *
      * @param filePath File path where the data should be exported to.
      * @param data The data to export.
      * @return The return code as specified in {@link ReturnCode}.
      * @throws IOException Thrown if there was an error exporting the data
+     * @param <T> type of the list entries
+     * @param listEntryType class type of T for type checking
      */
-    int exportDataToFile(String filePath, List<VaultEntry> data) throws IOException;
+     <T> int exportDataToFile(String filePath, List<T>  data, Class<T> listEntryType) throws IOException;
 }

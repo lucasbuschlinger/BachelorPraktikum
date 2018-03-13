@@ -21,6 +21,7 @@ import de.opendiabetes.vault.container.csv.CsvEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 
+import javax.activation.UnsupportedDataTypeException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -37,12 +38,15 @@ public abstract class CSVFileExporter extends FileExporter {
      * {@inheritDoc}
      */
     @Override
-    protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
+    protected <T> void writeToFile(final String filePath, final List<?> csvEntries, final Class<T> listEntryType) throws IOException, UnsupportedDataTypeException {
+        if (!ExportEntry.class.isAssignableFrom(listEntryType)) {
+            throw new UnsupportedDataTypeException("CSVFileExporter accepts only List<ExportEntrys> data");
+        }
         FileOutputStream fileOutputStream = getFileOutputStream();
         CsvWriter cwriter = new CsvWriter(fileOutputStream, VaultCsvEntry.CSV_DELIMITER, Charset.forName("UTF-8"));
 
         cwriter.writeRecord(((CsvEntry) csvEntries.get(0)).getCsvHeaderRecord());
-        for (ExportEntry item : csvEntries) {
+        for (Object item : csvEntries) {
             cwriter.writeRecord(((CsvEntry) item).toCsvRecord());
         }
         cwriter.flush();
