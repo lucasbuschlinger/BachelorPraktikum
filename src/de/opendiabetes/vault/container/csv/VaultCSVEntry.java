@@ -30,7 +30,7 @@ import static de.opendiabetes.vault.plugin.util.TimestampUtils.copyTimestamp;
  *
  * @author Jens Heuschkel
  */
-public class VaultCsvEntry extends CsvEntry {
+public class VaultCSVEntry extends CSVEntry {
     /**
      * The version of the VaultCSVEntry.
      */
@@ -1077,7 +1077,7 @@ public class VaultCsvEntry extends CsvEntry {
      */
     @Override
     public String toString() {
-        return "VaultCsvEntry{" + "timestamp=" + timestamp + ", bgValue=" + bgValue + ", cgmValue=" + cgmValue + ", cgmRawValue="
+        return "VaultCSVEntry{" + "timestamp=" + timestamp + ", bgValue=" + bgValue + ", cgmValue=" + cgmValue + ", cgmRawValue="
                 + cgmRawValue + ", cgmAlertValue=" + cgmAlertValue + ", pumpCgmPredictionValue=" + pumpCgmPredictionValue
                 + ", glucoseAnnotation=" + glucoseAnnotation + ", basalValue=" + basalValue + ", basalAnnotation=" + basalAnnotation
                 + ", bolusValue=" + bolusValue + ", bolusCalculationValue=" + bolusCalculationValue + ", bolusAnnotation=" + bolusAnnotation

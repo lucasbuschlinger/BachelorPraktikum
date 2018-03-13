@@ -3,7 +3,7 @@ package de.opendiabetes.vault.plugin.exporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.csv.ExportEntry;
-import de.opendiabetes.vault.container.csv.VaultCsvEntry;
+import de.opendiabetes.vault.container.csv.VaultCSVEntry;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
@@ -57,7 +57,7 @@ public abstract class VaultExporter extends CSVFileExporter {
             delayBuffer = new ArrayList<>();
             while (!fromTimestamp.after(toTimestamp)) {
                 // start new time slot (1m slots)
-                VaultCsvEntry tmpCsvEntry = new VaultCsvEntry();
+                VaultCSVEntry tmpCsvEntry = new VaultCSVEntry();
                 tmpCsvEntry.setTimestamp(fromTimestamp);
 
                 // add delayed items
@@ -103,12 +103,12 @@ public abstract class VaultExporter extends CSVFileExporter {
     /**
      * Processes the VaultEntries.
      *
-     * @param csvEntry The {@link VaultCsvEntry} to process the data to.
+     * @param csvEntry The {@link VaultCSVEntry} to process the data to.
      * @param entry The {@link VaultEntry} to process.
-     * @return The processed {@link VaultCsvEntry}.
+     * @return The processed {@link VaultCSVEntry}.
      */
-    private VaultCsvEntry processVaultEntry(final VaultCsvEntry csvEntry, final VaultEntry entry) {
-//            VaultCsvEntry tmpCsvEntry = vaultCsvEntry;
+    private VaultCSVEntry processVaultEntry(final VaultCSVEntry csvEntry, final VaultEntry entry) {
+//            VaultCSVEntry tmpCsvEntry = vaultCsvEntry;
         switch (entry.getType()) {
             case GLUCOSE_CGM_ALERT:
                 csvEntry.setCgmAlertValue(entry.getValue());
@@ -118,7 +118,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                 // --> when more than one cgm value per minute is available
                 // but cgm ticks are every 15 minutes ...
                 if (csvEntry.getCgmValue()
-                        == VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                        == VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     csvEntry.setCgmValue(entry.getValue());
                 } else {
                     LOG.log(Level.WARNING,
@@ -141,7 +141,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                 // TODO why does this happen ?
                 // it often happens with identical values, but db has been cleaned before ...
                 if (csvEntry.getBgValue()
-                        == VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                        == VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     csvEntry.setBgValue(entry.getValue());
                     csvEntry.addGlucoseAnnotation(entry.getType().toString());
                 } else {
@@ -174,7 +174,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                 csvEntry.addBasalAnnotation(entry.getType().toString());
                 break;
             case BOLUS_SQUARE:
-                if (csvEntry.getBolusValue() != VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                if (csvEntry.getBolusValue() != VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     // delay entry if bolus is already set for this time slot
                     delayBuffer.add(entry);
                     LOG.log(Level.INFO, "Delayed bolus entry: {0}", entry.toString());
@@ -187,7 +187,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                                 + EasyFormatter.formatDouble(entry.getValue2()));
                 break;
             case BOLUS_NORMAL:
-                if (csvEntry.getBolusValue() != VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                if (csvEntry.getBolusValue() != VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     // delay entry if bolus is already set for this time slot
                     delayBuffer.add(entry);
                     LOG.log(Level.INFO, "Delayed bolus entry: {0}", entry.toString());

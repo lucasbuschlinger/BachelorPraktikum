@@ -19,7 +19,7 @@ package de.opendiabetes.vault.container.csv;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.VaultEntryGsonAdapter;
+import de.opendiabetes.vault.container.VaultEntryGSONAdapter;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * This class implements the pseudo ODV DB Json entry data structure.
  */
-public final class OdvDbJsonPseudoEntry implements ExportEntry {
+public final class ODVDBJSONPseudoEntry implements ExportEntry {
 
     /**
      * The data.
@@ -39,7 +39,7 @@ public final class OdvDbJsonPseudoEntry implements ExportEntry {
      * Constructor for ODVDBJsonPseudo entries.
      * @param data The data to be converted to ODVDBJsonPseudo entries.
      */
-    private OdvDbJsonPseudoEntry(final List<VaultEntry> data) {
+    private ODVDBJSONPseudoEntry(final List<VaultEntry> data) {
         this.data = data;
     }
 
@@ -48,8 +48,8 @@ public final class OdvDbJsonPseudoEntry implements ExportEntry {
      * @param data The VaultEntries.
      * @return The ODVDBJsonPseudoEntry with the data.
      */
-    public static OdvDbJsonPseudoEntry fromVaultEntryList(final List<VaultEntry> data) {
-        return new OdvDbJsonPseudoEntry(data);
+    public static ODVDBJSONPseudoEntry fromVaultEntryList(final List<VaultEntry> data) {
+        return new ODVDBJSONPseudoEntry(data);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class OdvDbJsonPseudoEntry implements ExportEntry {
     @Override
     public byte[] toByteEntryLine() throws IOException {
         GsonBuilder gb = new GsonBuilder();
-        gb.registerTypeAdapter(VaultEntry.class, new VaultEntryGsonAdapter());
+        gb.registerTypeAdapter(VaultEntry.class, new VaultEntryGSONAdapter());
         Gson gs = gb.create();
 
         try {

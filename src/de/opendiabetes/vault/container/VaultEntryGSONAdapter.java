@@ -31,7 +31,7 @@ import java.util.Date;
 /**
  * This class implements a JsonSerializer for Gson based VaultEntries.
  */
-public class VaultEntryGsonAdapter implements JsonSerializer<VaultEntry>, JsonDeserializer<VaultEntry> {
+public class VaultEntryGSONAdapter implements JsonSerializer<VaultEntry>, JsonDeserializer<VaultEntry> {
 
     /**
      * Serializer for VaultEntries.

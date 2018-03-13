@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.VaultEntryGsonAdapter;
+import de.opendiabetes.vault.container.VaultEntryGSONAdapter;
 import de.opendiabetes.vault.plugin.fileimporter.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -75,7 +75,7 @@ public class ODVDBJSONImporter extends Plugin {
                 throws UnsupportedEncodingException {
             // prepare libs
             GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(VaultEntry.class, new VaultEntryGsonAdapter());
+            builder.registerTypeAdapter(VaultEntry.class, new VaultEntryGSONAdapter());
             Gson gson = builder.create();
 
             // open stream
