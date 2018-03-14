@@ -152,6 +152,7 @@
         <pathelement location="${plugins.importer}/googlecrawler/lib/jfreechart-1.0.19.jar"/>
         <pathelement location="${plugins.importer}/googlecrawler/lib/okhttp-3.10.0.jar"/>
         <pathelement location="${plugins.importer}/googlecrawler/lib/okio-1.14.0.jar"/>
+        <pathelement location="${plugins.importer}/googlecrawler/lib/jackson-core-2.9.4.jar"/>
     </path>
 
     <!-- Libraries for tests -->
