@@ -6,11 +6,6 @@
 
     <property name="plugin.path" value="export"/>
 
-    <property name="plugins.importer" value="${basedir}/plugins/de/opendiabetes/vault/plugin/importer"/>
-    <property name="plugins.exporter" value="${basedir}/plugins/de/opendiabetes/vault/plugin/exporter"/>
-    <property name="plugins.interpreter" value="${basedir}/plugins/de/opendiabetes/vault/plugin/interpreter"/>
-
-
     <!-- Uncomment the following property if no tests compilation is needed -->
     <!--
     <property name="skip.tests" value="true"/>
@@ -96,72 +91,14 @@
 
     <!-- Project Libraries -->
 
-    <!-- Libraries used by the Base -->
-    <path id="library.log4j2">
-        <pathelement location="${basedir}/lib/log4j-api-2.10.0.jar"/>
-        <pathelement location="${basedir}/lib/log4j-core-2.10.0.jar"/>
-        <pathelement location="${basedir}/lib/log4j-slf4j-impl-2.10.0.jar"/>
+    <path id="libraries.base">
+        <fileset dir="lib" includes="*.jar"/>
     </path>
-
-    <path id="library.slf4j">
-        <pathelement location="${basedir}/lib/slf4j-api-1.7.5.jar"/>
+    <path id="libraries.plugins">
+        <fileset dir="plugins" includes="**/lib/*.jar"/>
     </path>
-
-    <path id="library.ormlite-jdbc-5.0.classpath">
-        <pathelement location="${basedir}/lib/gson-2.8.0.jar"/>
-        <pathelement location="${basedir}/lib/hsqldb.jar"/>
-        <pathelement location="${basedir}/lib/javacsv.jar"/>
-        <pathelement location="${basedir}/lib/ormlite-core-5.0.jar"/>
-        <pathelement location="${basedir}/lib/ormlite-jdbc-5.0.jar"/>
-        <pathelement location="${basedir}/lib/servlet-2_3-fcs-classfiles.zip"/>
-        <pathelement location="${basedir}/lib/sqltool.jar"/>
-    </path>
-
-    <path id="library.pf4j-2.0.0.classpath">
-        <pathelement location="${basedir}/lib/pf4j-2.0.0.jar"/>
-    </path>
-
-    <!-- Libraries used by the plugins -->
-
-    <!-- MiBand -->
-    <path id="library.jackson">
-        <path location="${plugins.importer}/miband/lib/jackson-core-2.9.4.jar"/>
-        <path location="${plugins.importer}/miband/lib/jackson-databind-2.9.4.jar"/>
-        <path location="${plugins.importer}/miband/lib/jackson-annotations-2.9.0.jar"/>
-    </path>
-
-    <!-- Medtronic Crawler-->
-    <path id="library.jsoup.classpath">
-        <pathelement location="${plugins.importer}/medtroniccrawler/lib/jsoup-1.10.2.jar"/>
-    </path>
-
-    <!-- Google Crawler -->
-    <path id="library.google.classpath">
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-api-client-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-api-client-jackson2-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-api-services-fitness-v1-rev30-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-api-services-people-v1-rev213-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-http-client-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-http-client-jackson2-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-maps-services-0.2.6.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-oauth-client-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-oauth-client-java6-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/google-oauth-client-jetty-1.23.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/jsr305-1.3.9.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/jcommon-1.0.23.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/jfreechart-1.0.19.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/okhttp-3.10.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/okio-1.14.0.jar"/>
-        <pathelement location="${plugins.importer}/googlecrawler/lib/jackson-core-2.9.4.jar"/>
-    </path>
-
-    <!-- Libraries for tests -->
-    <path id="library.junit.classpath">
-        <pathelement location="${basedir}/testlib/junit-4.12.jar"/>
-    </path>
-
-    <path id="library.ant-junit.classpath">
-        <pathelement location="${basedir}/testlib/ant-junit.jar"/>
+    <path id="libraries.test">
+        <fileset dir="testlib" includes="*.jar"/>
     </path>
 
     <!-- Global Libraries -->
@@ -193,54 +130,31 @@
     </path>
     <path id="opendiabetes.module.production.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.jackson"/>
+        <path refid="libraries.base"/>
+        <path refid="libraries.plugins"/>
+        <path refid="libraries.test"/>
     </path>
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.jackson"/>
+        <path refid="libraries.base"/>
+        <path refid="libraries.plugins"/>
+        <path refid="libraries.test"/>
     </path>
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.jackson"/>
+        <path refid="libraries.base"/>
+        <path refid="libraries.plugins"/>
+        <path refid="libraries.test"/>
     </path>
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.jackson"/>
+        <path refid="libraries.base"/>
+        <path refid="libraries.plugins"/>
+        <path refid="libraries.test"/>
     </path>
+
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
     </patternset>
@@ -272,7 +186,6 @@
 
     <target name="compile.module.opendiabetes.production"
                      description="Compile module OpenDiabetes; production classes">
-     <echo message="${plugins.importer}/miband"/>
     <mkdir dir="${opendiabetes.output.dir}"/>
     <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}"
            nowarn="${compiler.generate.no.warnings}"
@@ -302,7 +215,7 @@
     </target>
 
     <target name="compile.module.opendiabetes.base"
-            description="Compile module OpenDiabetes; production classes">
+            description="Compile base classes of OpenDiabetes">
         <delete dir="${opendiabetes.output.dir}" quiet="true"/>
         <mkdir dir="${opendiabetes.output.dir}"/>
         <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}"
@@ -347,24 +260,12 @@
             </fileset>
         </copy>
     </target>
-    <target name="clean.module.opendiabetes" description="cleanup module">
+
+    <target name="clean" description="Cleanup">
         <delete dir="plugins_out"/>
         <delete dir="export"/>
         <delete dir="out"/>
     </target>
-
-    <target name="init" description="Build initialization">
-        <!-- Perform any build initialization in this target -->
-    </target>
-
-    <target name="clean" depends="clean.module.opendiabetes"
-            description="cleanup all"/>
-
-    <path id="libs-classpath">
-        <fileset dir="lib">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
 
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
@@ -443,7 +344,6 @@
                   output="html"
                   outputFile="reports/findbugs_report.html">
             <auxClasspath path="${basedir}/lib/"/>
-            <!--<sourcePath path="${basedir}/src/" />-->
             <class location="${basedir}/out/production/OpenDiabetes/de"/>
         </findbugs>
     </target>
@@ -468,8 +368,6 @@
                 <exclude name="*.class"/>
             </fileset>
         </delete>
-        <!--move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j2.properties"
-              tofile="out/production/OpenDiabetes/log4j2.properties"/-->
     </target>
 
 
@@ -503,9 +401,9 @@
         <delete dir="reports/resources/junit"/>
     </target>
 
-    <target name="reports" depends="test, checkstyle,findbugs"/>
+    <target name="reports" depends="test, checkstyle, findbugs"/>
 
-    <target name="doc" depends="init" description="generate documentation">
+    <target name="doc" description="generate documentation">
         <delete dir="docs" />
         <mkdir dir="docs" />
         <javadoc destdir="docs">
