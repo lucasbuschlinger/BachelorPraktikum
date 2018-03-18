@@ -5,6 +5,8 @@ import org.pf4j.PluginClassLoader;
 import org.pf4j.PluginClasspath;
 import org.pf4j.PluginManager;
 import org.pf4j.util.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -17,6 +19,11 @@ import java.util.List;
  * @author Lucas Buschlinger
  */
 public class OpenDiabetesPluginLoader extends DefaultPluginLoader {
+
+    /**
+     * The log used to write errors to.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(OpenDiabetesPluginLoader.class);
 
     /**
      * Constructor matching super in {@link DefaultPluginLoader}.
@@ -42,6 +49,8 @@ public class OpenDiabetesPluginLoader extends DefaultPluginLoader {
             for (File jar : jars) {
                 if (!jarInLibs(jar)) {
                     pluginClassLoader.addFile(jar);
+                } else {
+                    LOG.warn(String.format("Received request to load '%s' for Plugin, but is already in base libraries", jar.getName()));
                 }
             }
         }
