@@ -249,7 +249,7 @@
         </classpath>
     </taskdef>
 
-    <target name="plugin" depends="compile.opendiabetes.base">
+    <target name="plugin" depends="compile.opendiabetes.all">
         <foreach target="plugin.compile" param="att1">
             <fileset dir="plugins" casesensitive="yes">
                 <include name="**/plugin.properties"/>
