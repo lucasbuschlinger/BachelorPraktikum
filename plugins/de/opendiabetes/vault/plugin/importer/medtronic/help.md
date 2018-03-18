@@ -8,7 +8,7 @@ The MedtronicImporter plugin is an importer plugin which imports Medtronic data 
 
 Data example
 -----
-The .csv format is commonly used to represent multivariate data. Every data point's values are separated by a delimiter. However, this delimiter is not standardized which means that it can vary between files. You can find more information on the .csv format here: https://en.wikipedia.org/wiki/Comma-separated_values
+You can find more information on Medtronic data at https://carelink.minimed.com/patient/entry.jsp?bhcp=1
 
 Configuration
 -----

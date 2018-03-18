@@ -8,7 +8,7 @@ The MySugrCsvImporter plugin is an importer plugin which imports MySugr data in 
 
 Data example
 -----
-The .csv format is commonly used to represent multivariate data. Every data point's values are separated by a delimiter. However, this delimiter is not standardized which means that it can vary between files. You can find more information on the .csv format here: https://en.wikipedia.org/wiki/Comma-separated_values
+To get MySugr data to import, simply open its app and select reports, then choose the .csv format. You can find more information on this at https://mysugr.com/how-to-use-mysugr-logbook-reports/ 
 
 Configuration
 -----

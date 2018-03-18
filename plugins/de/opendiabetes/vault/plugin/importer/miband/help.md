@@ -6,6 +6,10 @@ Overview
 -----
 The MiBandNotifyImporter is an importer plugin which imports data from the MiBand 2. The data to import is in a JSON format. 
 
+Data Example
+-----
+To get MiBand 2 data for the import, visit https://play.google.com/store/apps/details?id=com.mc.miband1&hl=en
+
 Configuration
 -----
 The MiBandNotifyImporter plugin offers the following configuration options:

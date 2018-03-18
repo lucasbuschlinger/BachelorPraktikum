@@ -8,7 +8,7 @@ The GoogleFitCSVImporter plugin is an importer plugin which imports Google Fit d
 
 Data example
 -----
-The .csv format is commonly used to represent multivariate data. Every data point's values are separated by a delimiter. However, this delimiter is not standardized which means that it can vary between files. You can find more information on the .csv format here: https://en.wikipedia.org/wiki/Comma-separated_values
+Data can be exported from https://takeout.google.com/ by selecting 'Fit' data. The data to import can then be found under Takeout/Fit/Daily Aggregations (in the downloaded archive file) and is either one of the files labeled with a date, such as "2018-03-17.csv".
 
 Configuration
 -----
