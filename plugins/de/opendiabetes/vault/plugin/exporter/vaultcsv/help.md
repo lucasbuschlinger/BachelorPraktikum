@@ -6,16 +6,20 @@ Overview
 -----
 The VaultCSVExporter is an exporter plugin which exports data from the database.
 
+Data example
+-----
+
 Configuration
 -----
-The VaultCSVExporter plugin offers the following configuration options:
+The Sample plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| compatiblePlugins | list of plugins | A list of all available plugins which work with the VaultCSVExporter | x |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the VaultCSVExporter plugin, separated by commas. | x
 
 Required Plugins
 -----
- - The VaultCSVExporter does not require any other plugins.
+The VaultCSVExporter does not require any other plugins.
 
 
+ 

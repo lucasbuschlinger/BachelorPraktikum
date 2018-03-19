@@ -4,18 +4,22 @@ Classification: Exporter
 
 Overview
 -----
-The SliceLayoutCSVExporter is an exporter plugin which exports data from the database.
+The SliceLayoutCSVExporter is an exporter plugin which exports data from the database by exporting the set entries of type SliceEntry.
+
+Data example
+-----
 
 Configuration
 -----
-The SliceLayoutCSVExporter plugin offers the following configuration options:
+The Sample plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| compatiblePlugins | list of plugins | A list of all available plugins which work with the SliceLayoutExporter | x |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the SliceLayoutCSVExporter plugin, separated by commas. | x
 
 Required Plugins
 -----
- - The SliceLayoutCSVExporter does not require any other plugins.
+The SliceLayoutCSVExporter does not require any other plugins.
 
 
+ 

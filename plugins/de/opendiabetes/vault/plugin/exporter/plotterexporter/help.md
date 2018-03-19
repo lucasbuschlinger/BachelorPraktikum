@@ -4,19 +4,23 @@ Classification: Exporter
 
 Overview
 -----
-The PlotterExporter is an exporter plugin which exports data from the database.
+The PlotterExporter is an exporter plugin which exports data from the database. It is responsible for the provision of data for the plotter. 
+
+Data example
+-----
 
 Configuration
 -----
-The PlotterExporter plugin offers the following configuration options:
+The Sample plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| compatiblePlugins | list of plugins | A list of all available plugins which work with the PlotterExporter | x |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the PlotterExporter plugin, separated by commas. | x
 plotFormat | formatType | All formats that are allowed. | x |
 
 Required Plugins
 -----
- - The PlotterExporter does not require any other plugins.
+The PlotterExporter does not require any other plugins.
 
 
+ 

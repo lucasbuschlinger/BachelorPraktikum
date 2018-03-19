@@ -1,21 +1,25 @@
-# SourceCodeExporter
+# SourcecodeExporter
 ver 0.0.1
 Classification: Exporter
 
 Overview
 -----
-The SourceCodeExporter is an exporter plugin which exports data from the database.
+The SourcecodeExporter is an exporter plugin which exports data from the database to the original source code.
+
+Data example
+-----
 
 Configuration
 -----
-The SourceCodeExporter plugin offers the following configuration options:
+The Sample plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| compatiblePlugins | list of plugins | A list of all available plugins which work with the SourcecodeExporter | x |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the SourcecodeExporter plugin, separated by commas. | x
 
 Required Plugins
 -----
- - The SourceCodeExporter does not require any other plugins.
+The SourcecodeExporter does not require any other plugins.
 
 
+ 
