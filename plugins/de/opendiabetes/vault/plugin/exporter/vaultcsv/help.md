@@ -11,7 +11,7 @@ Data example
 
 Configuration
 -----
-The Sample plugin offers the following configuration options:
+The VaultCSVExporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
