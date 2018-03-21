@@ -74,7 +74,7 @@ public class LibreTextImporter extends Plugin {
          * @throws IOException Thrown by the CSV Reader.
          */
         @Override
-        public List<VaultEntry> parseEntry(final CsvReader reader) throws IOException {
+        public List<VaultEntry> parseEntry(final CsvReader reader) throws Exception {
             List<VaultEntry> retVal = new ArrayList<>();
             LibreTextCSVValidator parseValidator = (LibreTextCSVValidator) getValidator();
 

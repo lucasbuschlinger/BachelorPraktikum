@@ -119,8 +119,9 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @param data The data to be prepared.
      * @return The data in exportable containers.
+     * @throws IllegalArgumentException Thrown if the given parameter is invalid
      */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
+    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data) throws IllegalArgumentException;
 
     /**
      * Most generic loading of configurations of exporter plugins.

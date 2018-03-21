@@ -28,13 +28,13 @@ public abstract class VaultExporter extends CSVFileExporter {
      * @return The entries ready for export.
      */
     @Override
-    protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+    protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
         // Status update constants
         final int startPrepareProgress = 33;
         final int prepareDoneProgress = 66;
 
         if (data == null || data.isEmpty()) {
-            return null;
+            throw new IllegalArgumentException("Data cannot be empty");
         }
 
         List<ExportEntry> returnValues = new ArrayList<>();
