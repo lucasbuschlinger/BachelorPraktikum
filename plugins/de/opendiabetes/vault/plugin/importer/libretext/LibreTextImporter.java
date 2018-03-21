@@ -25,7 +25,6 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +70,7 @@ public class LibreTextImporter extends Plugin {
          *
          * @param reader The CSV Reader.
          * @return Parsed entry.
-         * @throws IOException Thrown by the CSV Reader.
+         * @throws Exception Thrown by the CSV Reader.
          */
         @Override
         public List<VaultEntry> parseEntry(final CsvReader reader) throws Exception {
