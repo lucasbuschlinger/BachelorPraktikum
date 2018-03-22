@@ -17,9 +17,11 @@
 package de.opendiabetes.vault.plugin.management;
 
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
+import de.opendiabetes.vault.plugin.util.HelpLanguage;
 import org.pf4j.DefaultPluginManager;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -130,13 +132,12 @@ public final class OpenDiabetesPluginManager {
     /**
      * Returns the path to the root folder of the desired plugin where it was loaded from.
      *
-     * @param plugin the plugin whos base path is returned
+     * @param plugin the plugin whose base path is returned
      * @return the base path of the plugin
      */
     private String getPluginBasePath(final OpenDiabetesPlugin plugin) {
         try {
             return pf4jManager.getPlugin(pluginToString(plugin)).getPluginPath().toString();
-
         } catch (Exception e) {
             System.out.println("could not resolve base path of plugin: " + pluginToString(plugin));
             e.printStackTrace();
@@ -281,14 +282,50 @@ public final class OpenDiabetesPluginManager {
 
     /**
      * @param plugin the plugin for which you want the help file
+     * @param lang the language in which the help page should be returned.
+     *             If the page was not found in the given language, the help page
+     *             will be returned in default language (english).
      * @return a path to a file containing .md/html formatted text,
      * that gets displayed to the user if he wants to know more about that plugin.
+     * @throws Exception Thrown if the plugin base path could not be determined
      */
-    public Path getHelpFilePath(final OpenDiabetesPlugin plugin) {
-        Path helpPath = Paths.get(getPluginBasePath(plugin), "help.md");
-        if (!Files.exists(helpPath)) {
-            return Paths.get("resources/defaultHelp.md");
+    public Path getHelpFilePath(final OpenDiabetesPlugin plugin, final HelpLanguage lang) throws Exception {
+        String langExt;
+
+        switch (lang) {
+            case LANG_DE:
+                langExt = "-de";
+                break;
+            default:
+                langExt = "";
+                break;
         }
-        return  helpPath;
+
+        String helpFilename = "help.md";
+        if (lang != HelpLanguage.LANG_EN) {
+            helpFilename = "help" + langExt + ".md";
+        }
+
+        String pluginBasePath = getPluginBasePath(plugin);
+        if (pluginBasePath == null) {
+            throw new Exception("Plugin base path not found");
+        }
+
+        Path helpPath = Paths.get(pluginBasePath, helpFilename);
+        if (Files.exists(helpPath)) {
+            return helpPath;
+        }
+
+        // If the help path was not the default language, try to fall back to default help file
+        if (lang != HelpLanguage.LANG_EN) {
+            System.out.println("Requested Help file not found. Falling back to default help file");
+            helpFilename = "help.md";
+            helpPath = Paths.get(pluginBasePath, helpFilename);
+            if (Files.exists(helpPath)) {
+                return helpPath;
+            }
+            System.out.println("Default help file could not be found");
+        }
+        throw new FileNotFoundException("Help file could not be found in the plugin");
     }
 }
