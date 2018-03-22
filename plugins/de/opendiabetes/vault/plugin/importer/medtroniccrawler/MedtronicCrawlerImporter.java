@@ -66,11 +66,6 @@ public class MedtronicCrawlerImporter extends Plugin {
         private String toDate;
 
         /**
-         * Constructor.
-         */
-        public MedtronicCrawlerImporterImplementation() { }
-
-        /**
          * {@inheritDoc}
          */
         @Override
