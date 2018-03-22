@@ -34,6 +34,7 @@ public abstract class VaultExporter extends CSVFileExporter {
         final int prepareDoneProgress = 66;
 
         if (data == null || data.isEmpty()) {
+            LOG.log(Level.SEVERE, "Data cannot be empty");
             throw new IllegalArgumentException("Data cannot be empty");
         }
 
