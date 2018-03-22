@@ -5,6 +5,7 @@ import de.opendiabetes.vault.plugin.crawlerimporter.CrawlerImporter;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
+import de.opendiabetes.vault.plugin.util.HelpLanguage;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -41,9 +42,13 @@ public class OpenDiabetesPluginManagerTest {
         OpenDiabetesPluginManager m = OpenDiabetesPluginManager.getInstance();
         int defaultHelpCount = 0;
         for (OpenDiabetesPlugin plugin : m.getPluginsOfType(OpenDiabetesPlugin.class)) {
-            System.out.println(m.pluginToString(plugin)+" "+m.getHelpFilePath(plugin));
-            if(m.getHelpFilePath(plugin).toString().contains("defaultHelp")){
-                defaultHelpCount++;
+            try {
+                System.out.println(m.pluginToString(plugin)+" "+m.getHelpFilePath(plugin, HelpLanguage.LANG_EN));
+                if(m.getHelpFilePath(plugin, HelpLanguage.LANG_EN).toString().contains("defaultHelp")){
+                    defaultHelpCount++;
+                }
+            } catch (Exception exception) {
+
             }
         }
         System.out.println("\n"+defaultHelpCount+"/"+m.getPluginsOfType(OpenDiabetesPlugin.class).size()+" plugins do not provide a help file yet.");
