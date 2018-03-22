@@ -34,7 +34,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
 
 /**
  * Wrapper class for the GoogleFitCrawlerImporter plugin.
@@ -136,90 +135,81 @@ public class GoogleFitCrawlerImporter extends Plugin {
 
             Credentials credentialsInstance = Credentials.getInstance();
 
-            try {
+            if (clientSecretPath != null) {
+                credentialsInstance.authorize(clientSecretPath);
+            }
 
-                if (clientSecretPath != null) {
-                    credentialsInstance.authorize(clientSecretPath);
+            if (apiKey != null) {
+                credentialsInstance.setAPIkey(apiKey);
+            }
+
+            LocationHistory.getInstance().setAge(age);
+            GooglePeople.getInstance().getAllProfiles();
+
+            // if (keywordSearchParams != null) {
+            //    GooglePlaces.getInstance().setKeywordSearchParams(keywordSearchParams);
+            // }
+
+            if (timeframe != null) {
+                Calendar start = new GregorianCalendar();
+                Calendar end = new GregorianCalendar();
+
+                if (timeframe.equals("all")) {
+                    start.set(DEFAULT_MIN_YEAR, Calendar.JANUARY, 1, 0, 0, 0);
+                    start.set(Calendar.MILLISECOND, 0);
+                    end = GregorianCalendar.getInstance();
+
+
+                    System.out.println("set all as timeframe");
+                } else if (timeframe.contains("-")) {
+                    String[] help = timeframe.split("-");
+
+                    String[] startDate = help[0].split("\\.");
+                    start.set(Integer.parseInt(startDate[2]),
+                            Integer.parseInt(startDate[1]) - 1,
+                            Integer.parseInt(startDate[0]), 0, 0, 0);
+                    start.set(Calendar.MILLISECOND, 0);
+
+                    String[] endDate = help[1].split("\\.");
+                    end.set(Integer.parseInt(endDate[2]), Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[0]), 0, 0, 0);
+                    end.set(Calendar.MILLISECOND, 0);
+                } else {
+                    String[] date = timeframe.split("\\.");
+                    start.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[0]), 0, 0, 0);
+                    start.set(Calendar.MILLISECOND, 0);
+
+                    end.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[0]), 0, 0, 0);
+                    end.set(Calendar.MILLISECOND, 0);
                 }
 
-                if (apiKey != null) {
-                    credentialsInstance.setAPIkey(apiKey);
+                GoogleFitness.getInstance().fetchData(start.getTimeInMillis(), end.getTimeInMillis());
+            }
+
+
+            if (exportHistory) {
+                LocationHistory.getInstance().export();
+            }
+
+            if (plotTimeframe != null) {
+                Plotter plot = new Plotter(plotTimeframe);
+
+                if (exportPlot) {
+                    plot.export();
                 }
 
-                LocationHistory.getInstance().setAge(age);
-                GooglePeople.getInstance().getAllProfiles();
-
-                // if (keywordSearchParams != null) {
-                //    GooglePlaces.getInstance().setKeywordSearchParams(keywordSearchParams);
-                // }
-
-                if (timeframe != null) {
-                    Calendar start = new GregorianCalendar();
-                    Calendar end = new GregorianCalendar();
-
-                    if (timeframe.equals("all")) {
-                        start.set(DEFAULT_MIN_YEAR, Calendar.JANUARY, 1, 0, 0, 0);
-                        start.set(Calendar.MILLISECOND, 0);
-                        end = GregorianCalendar.getInstance();
-
-
-                        System.out.println("set all as timeframe");
-                    } else if (timeframe.contains("-")) {
-                        String[] help = timeframe.split("-");
-
-                        String[] startDate = help[0].split("\\.");
-                        start.set(Integer.parseInt(startDate[2]),
-                                Integer.parseInt(startDate[1]) - 1,
-                                Integer.parseInt(startDate[0]), 0, 0, 0);
-                        start.set(Calendar.MILLISECOND, 0);
-
-                        String[] endDate = help[1].split("\\.");
-                        end.set(Integer.parseInt(endDate[2]), Integer.parseInt(endDate[1]) - 1, Integer.parseInt(endDate[0]), 0, 0, 0);
-                        end.set(Calendar.MILLISECOND, 0);
-                    } else {
-                        String[] date = timeframe.split("\\.");
-                        start.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[0]), 0, 0, 0);
-                        start.set(Calendar.MILLISECOND, 0);
-
-                        end.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]) - 1, Integer.parseInt(date[0]), 0, 0, 0);
-                        end.set(Calendar.MILLISECOND, 0);
-                    }
-
-                    GoogleFitness.getInstance().fetchData(start.getTimeInMillis(), end.getTimeInMillis());
+                if (viewPlot) {
+                    plot.viewPlot();
                 }
 
+            }
 
-                if (exportHistory) {
-                    LocationHistory.getInstance().export();
-                }
+            if (viewMap) {
+                GoogleMapsPlot.getInstance().createMap();
+                GoogleMapsPlot.getInstance().openMap();
+            }
 
-                if (plotTimeframe != null) {
-                    Plotter plot = new Plotter(plotTimeframe);
-
-                    if (exportPlot) {
-                        plot.export();
-                    }
-
-                    if (viewPlot) {
-                        plot.viewPlot();
-                    }
-
-                }
-
-                if (viewMap) {
-                    GoogleMapsPlot.getInstance().createMap();
-                    GoogleMapsPlot.getInstance().openMap();
-                }
-
-                if (!LocationHistory.getInstance().getConflictedActivities().isEmpty()) {
-                    ConflictedLocations.main(new String[]{});
-                }
-
-            } catch (RuntimeException exception) {
-              throw exception;
-            } catch (Exception exception) {
-                LOG.log(Level.SEVERE, "Exception happened: " + exception);
-                return null;
+            if (!LocationHistory.getInstance().getConflictedActivities().isEmpty()) {
+                ConflictedLocations.main(new String[]{});
             }
 
             return new ArrayList<>();

@@ -72,15 +72,15 @@ public abstract class FileExporter extends AbstractExporter {
         File checkFile = new File(filePath);
         if (checkFile.exists()
                 && (!checkFile.isFile() || !checkFile.canWrite())) {
-            this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
-            return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            LOG.log(Level.SEVERE, "An error occurred while accessing file " + filePath + ".");
+            throw new IOException("An error occurred while accessing file " + filePath + ".");
         }
         fileOutputStream = new FileOutputStream(checkFile);
         // create csv data
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
-            this.notifyStatus(-1, "Could not find data to export.");
-            return ReturnCode.RESULT_NO_DATA.getCode();
+            LOG.log(Level.SEVERE, "Could not find data to export.");
+            throw new IOException("Could not find data to export.");
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
@@ -121,8 +121,9 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @param data The data to be prepared.
      * @return The data in exportable containers.
+     * @throws IllegalArgumentException Thrown if the given parameter is invalid
      */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
+    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data) throws IllegalArgumentException;
 
     /**
      * Most generic loading of configurations of exporter plugins.
