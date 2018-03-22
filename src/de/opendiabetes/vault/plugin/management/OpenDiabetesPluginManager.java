@@ -318,6 +318,7 @@ public final class OpenDiabetesPluginManager {
 
         // If the help path was not the default language, try to fall back to default help file
         if (lang != HelpLanguage.LANG_EN) {
+            System.out.println("Requested Help file not found. Falling back to default help file");
             helpFilename = "help.md";
             helpPath = Paths.get(pluginBasePath, helpFilename);
             if (Files.exists(helpPath)) {
