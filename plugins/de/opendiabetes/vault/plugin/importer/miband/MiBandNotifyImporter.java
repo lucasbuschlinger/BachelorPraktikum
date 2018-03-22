@@ -167,6 +167,7 @@ public class MiBandNotifyImporter extends Plugin {
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
             } else {
+                LOG.log(Level.SEVERE, "Got no data from JSON import!");
                 throw new Exception("Got no data from JSON import!");
             }
             return importedData;

@@ -89,6 +89,7 @@ public class ODVDBJsonImporter extends Plugin {
                 LOG.log(Level.FINE, "Successfully imported json file.");
                 return importDb;
             }
+            LOG.log(Level.SEVERE, "Got no data from json import.");
             throw new Exception("Got no data from json import.");
         }
 
