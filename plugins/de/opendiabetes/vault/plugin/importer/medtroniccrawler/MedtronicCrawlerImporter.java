@@ -73,6 +73,7 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             Authentication auth = new Authentication();
             if (!auth.checkConnection(username, password)) {
+                LOG.log(Level.SEVERE, "Entered username/password are incorrect");
                 throw new Exception("Entered username/password are incorrect");
             }
             String lang = auth.getLanguage();
@@ -80,10 +81,12 @@ public class MedtronicCrawlerImporter extends Plugin {
             try {
                 DateHelper dateHelper = new DateHelper(lang);
                 if (!dateHelper.getStartDate(fromDate)) {
+                    LOG.log(Level.SEVERE, "fromDate is incorrect");
                     throw new IllegalArgumentException("fromDate is incorrect");
                 }
 
                 if (!dateHelper.getEndDate(fromDate, toDate)) {
+                    LOG.log(Level.SEVERE, "toDate is incorrect");
                     throw new IllegalArgumentException("toDate is incorrect");
                 }
             } catch (ParseException exception) {
@@ -104,6 +107,7 @@ public class MedtronicCrawlerImporter extends Plugin {
             FileImporter plugin = manager.getPluginFromString(FileImporter.class, "MedtronicImporter");
 
             if (plugin == null) {
+                LOG.log(Level.SEVERE, "Plugin MedtronicImporter not found");
                 throw new Exception("Plugin MedtronicImporter not found");
             }
 
