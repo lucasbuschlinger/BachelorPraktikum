@@ -155,6 +155,7 @@ public class ODVExporter extends Plugin {
                 try {
                     checksum = makeChecksum(exportFile);
                 } catch (Exception exception) {
+                    LOG.log(Level.SEVERE, "An error occurred while creating the files' checksums.");
                     throw new IOException("An error occurred while creating the files' checksums.");
                 }
                 thisEntryMetaData.file = exportFile;

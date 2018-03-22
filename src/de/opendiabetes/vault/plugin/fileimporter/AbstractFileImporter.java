@@ -52,11 +52,13 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
      */
     public List<VaultEntry> importData(final String filePath) throws Exception {
         if (filePath == null) {
+            LOG.log(Level.SEVERE, "File path cannot be empty.");
             throw new IllegalArgumentException("File path cannot be empty.");
         }
 
         File file = new File(filePath);
         if (!file.exists()) {
+            LOG.log(Level.SEVERE, "File at given path does not exist.");
             throw new IllegalArgumentException("File at given path does not exist.");
         }
         preprocessingIfNeeded(filePath);
