@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,6 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 /**
@@ -68,7 +67,7 @@ public class GoogleFitCSVImporterTest {
         FileImporter googleFitCSVImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
         try {
             googleFitCSVImporter.importData("path/to/data");
-        } catch (FileNotFoundException exception) {
+        } catch (IllegalArgumentException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");
