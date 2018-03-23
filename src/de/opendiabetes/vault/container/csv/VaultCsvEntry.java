@@ -147,7 +147,18 @@ public class VaultCsvEntry extends CsvEntry {
      * Other annotations.
      */
     private List<String> otherAnnotation = new ArrayList<>();
-
+    /**
+     * Tag annotations.
+     */
+    private List<String> tagAnnotation = new ArrayList<>();
+    /**
+     * Blood pressure annotations.
+     */
+    private List<String> bloodPressureAnnotation = new ArrayList<>();
+    /**
+     * Meal information annotations.
+     */
+    private List<String> mealInfoAnnotation = new ArrayList<>();
     /**
      * The weight.
      */
@@ -722,6 +733,87 @@ public class VaultCsvEntry extends CsvEntry {
     }
 
     /**
+     * Getter for entry's {@link #tagAnnotation}.
+     *
+     * @return The entry's {@link #tagAnnotation}.
+     */
+    public List<String> getTagAnnotation() {
+        return tagAnnotation;
+    }
+
+    /**
+     * Setter for the entry's {@link #tagAnnotation}.
+     *
+     * @param tagAnnotation The {@link #tagAnnotation} to be set.
+     */
+    public void setTagAnnotation(final List<String> tagAnnotation) {
+        this.tagAnnotation = tagAnnotation;
+    }
+
+    /**
+     * Adds an annotation to the entry's {@link #tagAnnotation}.
+     *
+     * @param tagAnnotation The annotation to be added.
+     */
+    public void addTagAnnotation(final String tagAnnotation) {
+        this.tagAnnotation.add(tagAnnotation);
+    }
+
+    /**
+     * Getter for entry's {@link #bloodPressureAnnotation}.
+     *
+     * @return The entry's {@link #bloodPressureAnnotation}.
+     */
+    public List<String> getBloodPressureAnnotation() {
+        return bloodPressureAnnotation;
+    }
+
+    /**
+     * Setter for the entry's {@link #bloodPressureAnnotation}.
+     *
+     * @param bloodPressureAnnotation The {@link #bloodPressureAnnotation} to be set.
+     */
+    public void setBloodPressureAnnotation(final List<String> bloodPressureAnnotation) {
+        this.bloodPressureAnnotation = bloodPressureAnnotation;
+    }
+
+    /**
+     * Adds an annotation to the entry's {@link #bloodPressureAnnotation}.
+     *
+     * @param bloodPressureAnnotation The annotation to be added.
+     */
+    public void addBloodPressureAnnotation(final String bloodPressureAnnotation) {
+        this.bloodPressureAnnotation.add(bloodPressureAnnotation);
+    }
+
+    /**
+     * Getter for entry's {@link #mealInfoAnnotation}.
+     *
+     * @return The entry's {@link #mealInfoAnnotation}.
+     */
+    public List<String> getMealInfoAnnotation() {
+        return mealInfoAnnotation;
+    }
+
+    /**
+     * Setter for the entry's {@link #mealInfoAnnotation}.
+     *
+     * @param mealInfoAnnotation The {@link #mealInfoAnnotation} to be set.
+     */
+    public void setMealInfoAnnotation(final List<String> mealInfoAnnotation) {
+        this.mealInfoAnnotation = mealInfoAnnotation;
+    }
+
+    /**
+     * Adds an annotation to the entry's {@link #mealInfoAnnotation}.
+     *
+     * @param mealInfoAnnotation The annotation to be added.
+     */
+    public void addMealInfoAnnotation(final String mealInfoAnnotation) {
+        this.mealInfoAnnotation.add(mealInfoAnnotation);
+    }
+
+    /**
      * Getter for the {@link #weight}.
      *
      * @return The weight recorded in the entry.
@@ -771,6 +863,9 @@ public class VaultCsvEntry extends CsvEntry {
                 && mlAnnotation.isEmpty()
                 && insulinSensitivityFactor == UNINITIALIZED_DOUBLE
                 && otherAnnotation.isEmpty()
+                && tagAnnotation.isEmpty()
+                && bloodPressureAnnotation.isEmpty()
+                && mealInfoAnnotation.isEmpty()
                 && weight == UNINITIALIZED_DOUBLE;
     }
 
@@ -1004,6 +1099,36 @@ public class VaultCsvEntry extends CsvEntry {
         } else {
             csvRecord.add("");
         }
+        if (!tagAnnotation.isEmpty()) {
+            StringBuilder annotations = new StringBuilder();
+            for (String item : tagAnnotation) {
+                annotations.insert(0, CSV_LIST_DELIMITER).insert(0, item);
+            }
+            annotations.deleteCharAt(annotations.length() - 1);
+            csvRecord.add(annotations.toString());
+        } else {
+            csvRecord.add("");
+        }
+        if (!bloodPressureAnnotation.isEmpty()) {
+            StringBuilder annotations = new StringBuilder();
+            for (String item : bloodPressureAnnotation) {
+                annotations.insert(0, CSV_LIST_DELIMITER).insert(0, item);
+            }
+            annotations.deleteCharAt(annotations.length() - 1);
+            csvRecord.add(annotations.toString());
+        } else {
+            csvRecord.add("");
+        }
+        if (!mealInfoAnnotation.isEmpty()) {
+            StringBuilder annotations = new StringBuilder();
+            for (String item : mealInfoAnnotation) {
+                annotations.insert(0, CSV_LIST_DELIMITER).insert(0, item);
+            }
+            annotations.deleteCharAt(annotations.length() - 1);
+            csvRecord.add(annotations.toString());
+        } else {
+            csvRecord.add("");
+        }
         if (weight > UNINITIALIZED_DOUBLE) {
             csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, weight).replaceAll(",", ""));
         } else {
@@ -1066,6 +1191,9 @@ public class VaultCsvEntry extends CsvEntry {
                 "mlAnnotation",
                 "insulinSensitivityFactor",
                 "otherAnnotation",
+                "tagAnnotation",
+                "bloodPressureAnnotation",
+                "mealInfoAnnotation",
                 "weight"
         };
     }
@@ -1086,7 +1214,8 @@ public class VaultCsvEntry extends CsvEntry {
                 + stressBalanceValue + ", heartRateVariabilityValue=" + heartRateVariabilityValue + ", stressValue=" + stressValue
                 + ", sleepValue=" + sleepValue + ", sleepAnnotation=" + sleepAnnotation + ", locationAnnotation=" + locationAnnotation
                 + ", mlCgmValue=" + mlCgmValue + ", mlAnnotation=" + mlAnnotation + ", insulinSensitivityFactor=" + insulinSensitivityFactor
-                + ", otherAnnotation=" + otherAnnotation + ", weight=" + weight + '}';
+                + ", otherAnnotation=" + otherAnnotation + ", tagAnnotation=" + tagAnnotation + ", bloodPressureAnnotation="
+                + bloodPressureAnnotation + ", mealInfoAnnotation=" + mealInfoAnnotation +", weight=" + weight + '}';
     }
 
 }

@@ -321,14 +321,12 @@ public abstract class VaultExporter extends CSVFileExporter {
                         csvEntry.addSleepAnnotation(annotation.toStringWithValue());
                         break;
                     case TAG_Unknown:
-                    case MEAL_Information:
                     case TAG_Sad:
                     case TAG_Note:
                     case TAG_Sick:
                     case TAG_Lunch:
                     case TAG_Party:
                     case TAG_Snack:
-                    case BOLUS_MEAL:
                     case TAG_Dinner:
                     case TAG_Sports:
                     case TAG_Stress:
@@ -340,14 +338,21 @@ public abstract class VaultExporter extends CSVFileExporter {
                     case TAG_Correction:
                     case TAG_OfficeWork:
                     case TAG_HypoFeeling:
-                    case BOLUS_CORRECTION:
                     case TAG_AfterTheMeal:
                     case TAG_HyperFeeling:
                     case TAG_BeforeTheMeal:
+                        csvEntry.addTagAnnotation(annotation.toStringWithValue());
+                        break;
+                    case BOLUS_MEAL:
+                    case BOLUS_CORRECTION:
+                        csvEntry.addBolusAnnotation(annotation.toStringWithValue());
+                        break;
                     case BLOOD_PRESSURE_Systolic:
                     case BLOOD_PRESSURE_Diastolic:
-                        // TODO
-                        LOG.log(Level.WARNING, "Skipping entry, it has the unimplemented annotation type: " + entry.getType());
+                        csvEntry.addBloodPressureAnnotation(annotation.toStringWithValue());
+                        break;
+                    case MEAL_Information:
+                        csvEntry.addMealInfoAnnotation(annotation.toStringWithValue());
                         break;
                     default:
                         LOG.severe("ANNOTATION ASSERTION ERROR!");
