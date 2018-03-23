@@ -359,7 +359,7 @@ public class LibreTextCSVValidator extends CSVValidator {
 //        /**
 //        * Indicates that the value is that of a bolus normal.
 //        */
-//        BOLUS_NORMAL(TODO);
+//        BOLUS_NORMAL; TODO with file that contains data about this
 
         /**
          * The numeric representation of the types of data.
