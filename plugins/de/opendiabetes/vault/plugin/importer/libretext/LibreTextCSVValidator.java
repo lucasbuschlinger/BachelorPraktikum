@@ -251,6 +251,7 @@ public class LibreTextCSVValidator extends CSVValidator {
             case DE:
                 return Double.parseDouble(reader.get(LIBRE_HEADER_DE_BLOOD));
             case EN:
+                return Double.parseDouble(reader.get(LIBRE_HEADER_EN_BLOOD));
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -396,7 +397,6 @@ public class LibreTextCSVValidator extends CSVValidator {
                     return TIME_CHANGED;
                 default:
                     LOG.log(Level.SEVERE, "Error while type checking!");
-                    System.out.println(type);
                     throw new IllegalArgumentException("No such type for LibreText data.");
             }
         }
