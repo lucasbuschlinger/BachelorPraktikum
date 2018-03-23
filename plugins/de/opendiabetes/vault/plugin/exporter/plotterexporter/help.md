@@ -8,6 +8,12 @@ The PlotterExporter is an exporter plugin which exports data from the database. 
 
 It is possible to export the data into a PNG or PDF file. 
 In order for the exporter to work the environment needs to have [Python 2.3](https://www.python.org/download/releases/2.3/) installed.
+Also, the following libraries are required in the given version:
+
+- [matplotlib (2.0.0)](https://matplotlib.org/2.0.0/index.html)
+- [configparser](https://docs.python.org/2/library/configparser.html)
+
+
 If you want to export the plot in a PDF file, the environment needs [pdflatex](https://www.latex-project.org/get/#tex-distributions) to be installed additionally.
 
 Data example
