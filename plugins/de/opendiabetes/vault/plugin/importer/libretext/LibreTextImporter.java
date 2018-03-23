@@ -109,7 +109,7 @@ public class LibreTextImporter extends Plugin {
                     value = parseValidator.getCarbohydrates(reader);
                     tempEntry = new VaultEntry(VaultEntryType.MEAL_MANUAL, timestamp, value);
                     break;
-                //case BOLUS_NORMAL:
+                //case BOLUS_NORMAL: TODO with file that contains data about this
                 //   value = parseValidator.getBolusNormal(reader);
                 //    tempEntry = new VaultEntry(VaultEntryType.BOLUS_NORMAL, timestamp, value);
                 //    break;
