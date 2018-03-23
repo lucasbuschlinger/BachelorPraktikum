@@ -1,5 +1,5 @@
 # SourceCodeExporter
-ver 0.0.1
+Version 0.0.1
 Classification: Exporter
 
 Overview
