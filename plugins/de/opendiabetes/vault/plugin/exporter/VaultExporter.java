@@ -262,20 +262,20 @@ public abstract class VaultExporter extends CSVFileExporter {
             case DM_INSULIN_SENSITIVITY:
                 csvEntry.setInsulinSensitivityFactor(entry.getValue());
                 break;
+            case Tag:
+            case MEAL_DESCRIPTION:
             case OTHER_ANNOTATION:
                 // will be handled by annotations
                 break;
             case WEIGHT:
                 csvEntry.setWeight(entry.getValue());
                 break;
-            case Tag:
             case BLOOD_PRESSURE:
+                csvEntry.setBloodPressure(entry.getValue());
             case KETONES_MANUAL:
-            case MEAL_DESCRIPTION:
             case KETONES_BLOOD:
             case KETONES_URINE:
-                // TODO
-                LOG.log(Level.WARNING, "Skipping entry, it has the unimplemented type: " + entry.getType());
+                csvEntry.setKetones(entry.getValue());
                 break;
             default:
                 LOG.severe("TYPE ASSERTION ERROR!");

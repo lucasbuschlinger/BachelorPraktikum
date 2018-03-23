@@ -163,6 +163,14 @@ public class VaultCsvEntry extends CsvEntry {
      * The weight.
      */
     private double weight = UNINITIALIZED_DOUBLE;
+    /**
+     * The blood pressure.
+     */
+    private double bloodPressure = UNINITIALIZED_DOUBLE;
+    /**
+     * The ketones.
+     */
+    private double ketones = UNINITIALIZED_DOUBLE;
 
 
     /**
@@ -825,12 +833,47 @@ public class VaultCsvEntry extends CsvEntry {
     /**
      * Setter for the {@link #weight}.
      *
-     * @param weight The weight recoreded in the entry.
+     * @param weight The weight recorded in the entry.
      */
     public void setWeight(final double weight) {
         this.weight = weight;
     }
 
+    /**
+     * Getter for the {@link #bloodPressure}.
+     *
+     * @return The blood pressure recorded in the entry.
+     */
+    public double getBloodPressure() {
+        return bloodPressure;
+    }
+
+    /**
+     * Setter for the {@link #bloodPressure}.
+     *
+     * @param bloodPressure The blood pressure recorded in the entry.
+     */
+    public void setBloodPressure(final double bloodPressure) {
+        this.bloodPressure = bloodPressure;
+    }
+
+    /**
+     * Getter for the {@link #ketones}.
+     *
+     * @return The ketones recorded in the entry.
+     */
+    public double getKetones() {
+        return ketones;
+    }
+
+    /**
+     * Setter for the {@link #ketones}.
+     *
+     * @param ketones The ketones pressure recorded in the entry.
+     */
+    public void setKetones(final double ketones) {
+        this.ketones = ketones;
+    }
     /**
      * Checks whether the entry is empty.
      *
@@ -866,7 +909,9 @@ public class VaultCsvEntry extends CsvEntry {
                 && tagAnnotation.isEmpty()
                 && bloodPressureAnnotation.isEmpty()
                 && mealInfoAnnotation.isEmpty()
-                && weight == UNINITIALIZED_DOUBLE;
+                && weight == UNINITIALIZED_DOUBLE
+                && bloodPressure == UNINITIALIZED_DOUBLE
+                && ketones == UNINITIALIZED_DOUBLE;
     }
 
     /**
@@ -1134,6 +1179,16 @@ public class VaultCsvEntry extends CsvEntry {
         } else {
             csvRecord.add("");
         }
+        if (bloodPressure > UNINITIALIZED_DOUBLE) {
+            csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, bloodPressure).replaceAll(",", ""));
+        } else {
+            csvRecord.add("");
+        }
+        if (ketones > UNINITIALIZED_DOUBLE) {
+            csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, ketones).replaceAll(",", ""));
+        } else {
+            csvRecord.add("");
+        }
 
         return csvRecord.toArray(new String[] {});
     }
@@ -1194,7 +1249,9 @@ public class VaultCsvEntry extends CsvEntry {
                 "tagAnnotation",
                 "bloodPressureAnnotation",
                 "mealInfoAnnotation",
-                "weight"
+                "weight",
+                "bloodPressure",
+                "ketones"
         };
     }
 
@@ -1215,7 +1272,8 @@ public class VaultCsvEntry extends CsvEntry {
                 + ", sleepValue=" + sleepValue + ", sleepAnnotation=" + sleepAnnotation + ", locationAnnotation=" + locationAnnotation
                 + ", mlCgmValue=" + mlCgmValue + ", mlAnnotation=" + mlAnnotation + ", insulinSensitivityFactor=" + insulinSensitivityFactor
                 + ", otherAnnotation=" + otherAnnotation + ", tagAnnotation=" + tagAnnotation + ", bloodPressureAnnotation="
-                + bloodPressureAnnotation + ", mealInfoAnnotation=" + mealInfoAnnotation +", weight=" + weight + '}';
+                + bloodPressureAnnotation + ", mealInfoAnnotation=" + mealInfoAnnotation + ", weight=" + weight + ", bloodPressure="
+                + bloodPressure + ", ketones=" + ketones + '}';
     }
 
 }
