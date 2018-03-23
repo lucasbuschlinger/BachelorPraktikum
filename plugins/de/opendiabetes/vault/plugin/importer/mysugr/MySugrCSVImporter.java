@@ -105,7 +105,7 @@ public class MySugrCSVImporter extends Plugin {
                 timestamp = parseValidator.getManualTimestamp(csvReader);
             } catch (ParseException ex) {
                 //should not happen
-                timestamp = null;
+                return null;
             }
             if (timestamp == null) {
                 return null;

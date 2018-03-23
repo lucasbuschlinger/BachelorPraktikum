@@ -218,6 +218,7 @@ public class PlotterExporter extends Plugin {
 
             boolean python = isPythonInstalled();
             if (!python) {
+                LOG.log(Level.SEVERE, "Cannot plot data because python was not found");
                 throw new IOException("Cannot plot data because python was not found");
             }
 
@@ -225,6 +226,7 @@ public class PlotterExporter extends Plugin {
                 boolean latex = isLaTeXInstalled();
 
                 if (!latex) {
+                    LOG.log(Level.SEVERE, "Cannot plot data to pdf file because pdflatex was not found");
                     throw new IOException("Cannot plot data to pdf file because pdflatex was not found");
                 }
             }

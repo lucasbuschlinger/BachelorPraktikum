@@ -127,8 +127,7 @@ public class ODVExporter extends Plugin {
             if (!file.exists()) {
                 if (!file.mkdir()) {
                     LOG.log(Level.SEVERE, "Could not create temporary folder");
-                    this.notifyStatus(-1, "Could not create temporary folder.");
-                    return ReturnCode.RESULT_ERROR.getCode();
+                    throw new IOException("Could not create temporary folder");
                 }
             }
             PluginManager manager = new DefaultPluginManager();
@@ -156,8 +155,8 @@ public class ODVExporter extends Plugin {
                 try {
                     checksum = makeChecksum(exportFile);
                 } catch (Exception exception) {
-                    this.notifyStatus(-1, "An error occurred while creating the files' checksums.");
-                    return ReturnCode.RESULT_ERROR.getCode();
+                    LOG.log(Level.SEVERE, "An error occurred while creating the files' checksums.");
+                    throw new IOException("An error occurred while creating the files' checksums.");
                 }
                 thisEntryMetaData.file = exportFile;
                 thisEntryMetaData.checksum = checksum;

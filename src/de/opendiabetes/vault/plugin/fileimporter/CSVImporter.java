@@ -112,8 +112,8 @@ public abstract class CSVImporter extends AbstractFileImporter {
             creader = getValidatedCreader(getDelimiter(), filenameForLogging, metaEntries);
         }
         if (creader == null) { //header could not be validated
-            LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
-            return null;
+            LOG.log(Level.SEVERE, "No valid header found in File: " + filenameForLogging);
+            throw new Exception("No valid header found in File: " + filenameForLogging);
         }
         // read entries
         while (creader.readRecord()) {

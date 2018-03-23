@@ -26,12 +26,9 @@ import org.pf4j.Extension;
 
 import java.io.File;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Wrapper class for the MedtronicCrawlerImporter plugin.
@@ -69,18 +66,6 @@ public class MedtronicCrawlerImporter extends Plugin {
         private String toDate;
 
         /**
-         * Constructor.
-         *
-         * @throws Exception Thrown if the log file could not be written.
-         */
-        public MedtronicCrawlerImporterImplementation() throws Exception {
-            Logger logger = Logger.getLogger("MyLog");
-            FileHandler fh;
-            SimpleDateFormat formats = new SimpleDateFormat("dd-mm-HHMMSS");
-
-        }
-
-        /**
          * {@inheritDoc}
          */
         @Override
@@ -89,7 +74,7 @@ public class MedtronicCrawlerImporter extends Plugin {
             Authentication auth = new Authentication();
             if (!auth.checkConnection(username, password)) {
                 LOG.log(Level.SEVERE, "Entered username/password are incorrect");
-                return null;
+                throw new Exception("Entered username/password are incorrect");
             }
             String lang = auth.getLanguage();
 
@@ -97,33 +82,36 @@ public class MedtronicCrawlerImporter extends Plugin {
                 DateHelper dateHelper = new DateHelper(lang);
                 if (!dateHelper.getStartDate(fromDate)) {
                     LOG.log(Level.SEVERE, "fromDate is incorrect");
-                    return null;
+                    throw new IllegalArgumentException("fromDate is incorrect");
                 }
 
                 if (!dateHelper.getEndDate(fromDate, toDate)) {
                     LOG.log(Level.SEVERE, "toDate is incorrect");
-                    return null;
+                    throw new IllegalArgumentException("toDate is incorrect");
                 }
-            } catch (ParseException e) {
+            } catch (ParseException exception) {
                 LOG.log(Level.SEVERE, "Date parsing failed");
-                return null;
+                throw exception;
             }
 
             Crawler crawler = new Crawler();
 
             String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler";
-            try {
-                crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
-            } catch (Exception exception) {
-                LOG.log(Level.SEVERE, "Error while crawling data.");
-                return null;
-            }
+            crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
 
 
             String path = exportPath + File.separator + "careLink-Export";
 
             OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
-            return manager.getPluginFromString(FileImporter.class, "MedtronicImporter").importData(path);
+
+            FileImporter plugin = manager.getPluginFromString(FileImporter.class, "MedtronicImporter");
+
+            if (plugin == null) {
+                LOG.log(Level.SEVERE, "Plugin MedtronicImporter not found");
+                throw new Exception("Plugin MedtronicImporter not found");
+            }
+
+            return plugin.importData(path);
         }
 
         /**
