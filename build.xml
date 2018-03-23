@@ -128,10 +128,12 @@
     <path id="opendiabetes.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
     </path>
+    <!-- Classpath holding all classes for the Base and it's libraries -->
     <path id="opendiabetes.classpath.base">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <path refid="libraries.base"/>
     </path>
+    <!-- Full classpath containing all compiled classes and libraries-->
     <path id="opendiabetes.classpath.full">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -146,6 +148,7 @@
     <patternset id="excluded.from.compilation.opendiabetes">
         <patternset refid="excluded.from.module.opendiabetes"/>
     </patternset>
+    <!-- Full source path containing all source files and libraries -->
     <path id="opendiabetes.module.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="src"/>
@@ -153,11 +156,13 @@
             <include name="plugins"/>
         </dirset>
     </path>
+    <!-- Source path for the tests -->
     <path id="opendiabetes.module.test.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="test"/>
         </dirset>
     </path>
+    <!-- Source path for the OpenDiabetes base -->
     <path id="opendiabetes.module.base.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="src"/>
@@ -165,6 +170,7 @@
         </dirset>
     </path>
 
+    <!-- Compiles all available source files, needed for plugin creation -->
     <target name="compile.opendiabetes.all"
                      description="Compile OpenDiabetes; all classes (plugins + base)">
     <mkdir dir="${opendiabetes.output.dir}"/>
@@ -190,6 +196,7 @@
     </copy>
     </target>
 
+    <!-- Compiles the source of the OpenDiabetes base -->
     <target name="compile.opendiabetes.base"
             description="Compile base classes of OpenDiabetes">
         <delete dir="${opendiabetes.output.dir}" quiet="true"/>
@@ -212,6 +219,7 @@
         </copy>
     </target>
 
+    <!-- Compiles the test source files -->
     <target name="compile.opendiabetes.tests"
             depends="compile.opendiabetes.all"
             description="compile module OpenDiabetes; test classes"
@@ -237,6 +245,7 @@
         </copy>
     </target>
 
+    <!-- Cleans the working directory of all compilation and build artifacts. -->
     <target name="clean" description="Cleanup">
         <delete dir="plugins_out"/>
         <delete dir="export"/>
@@ -249,6 +258,7 @@
         </classpath>
     </taskdef>
 
+    <!-- Task to compile and build all available plugins -->
     <target name="plugin" depends="compile.opendiabetes.all">
         <foreach target="plugin.compile" param="att1">
             <fileset dir="plugins" casesensitive="yes">
@@ -260,6 +270,7 @@
                   value="plugins/de/opendiabetes/vault/plugin"/>
     </target>
 
+    <!-- Compilation and packing of a single plugin -->
     <target name="plugin.compile">
         <dirname file="${att1}" property="plugin.src.path"/>
 
@@ -299,7 +310,7 @@
                 locale="de,GERMANY"/>
     </tstamp>
 
-    <!-- Working checkstyle task! -->
+    <!-- Task to run Checkstyle analysis and generating a HTML report therefor-->
     <taskdef
             resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
             classpath="${basedir}/testlib/checkstyle-8.5-all.jar"/>
@@ -317,7 +328,7 @@
               style="reports/resources/checkstyle/checkstyle.xsl"/>
     </target>
 
-    <!-- Working findbugs task!-->
+    <!-- Task to run FindBugs analysis and generating a HTML report therefor-->
     <taskdef name="findbugs"
              classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
              classpath="${basedir}/testlib/findbugs-ant.jar"/>
@@ -341,6 +352,7 @@
 
     <property name="plugins_out" value="out/production/OpenDiabetes/de/opendiabetes/vault/plugin"/>
 
+    <!-- Deletes the plugin's class files from the out-directory to avoid ClassLoader collisions.-->
     <target name="prepare_for_tests">
         <delete includeemptydirs="true">
             <fileset dir="${plugins_out}/importer">
@@ -354,7 +366,7 @@
     </target>
 
 
-    <!-- Working JUnit task!-->
+    <!-- Task for running all available JUnit tests and generating a HTML reports afterwards-->
     <taskdef name="junit"
              classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
              classpath="${basedir}/testlib/ant-junit.jar"/>
@@ -384,8 +396,10 @@
         <delete dir="reports/resources/junit"/>
     </target>
 
+    <!-- Target to generate all available reports with one click. Includes JUnit tests, FindBugs and Checkstyle-->
     <target name="reports" depends="test, checkstyle, findbugs"/>
 
+    <!-- Target to generate the JavaDoc documentation-->
     <target name="doc" description="generate documentation">
         <delete dir="docs" />
         <mkdir dir="docs" />
@@ -402,5 +416,4 @@
         <jar destfile="export/opendiabetes-base.jar" basedir="${opendiabetes.output.dir}"/>
     </target>
 
-    <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>
