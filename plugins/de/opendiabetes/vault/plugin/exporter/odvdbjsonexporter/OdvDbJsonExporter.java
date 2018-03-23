@@ -57,7 +57,7 @@ public class OdvDbJsonExporter extends Plugin {
          * @return The data in exportable containers.
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws UnsupportedDataTypeException {
+        protected List<ExportEntry> prepareData(final List<VaultEntry> data){
             List<ExportEntry> container = new ArrayList<>();
             List<VaultEntry> tempData;
             if (getIsPeriodRestricted()) {

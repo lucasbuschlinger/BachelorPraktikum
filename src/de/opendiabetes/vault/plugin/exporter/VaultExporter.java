@@ -35,7 +35,7 @@ public abstract class VaultExporter extends CSVFileExporter<ExportEntry, VaultEn
 
         if (data == null || data.isEmpty()) {
             LOG.log(Level.SEVERE, "Data cannot be empty");
-            throw new IllegalArgumentException("Data cannot be empty");
+            throw new IllegalArgumentException("Data cannot be empty"); //TODO better return null and remove IllegalArgumentException from parent class aswell
         }
 
         List<ExportEntry> returnValues = new ArrayList<>();

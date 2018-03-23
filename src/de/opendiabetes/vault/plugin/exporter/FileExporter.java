@@ -128,7 +128,7 @@ public abstract class FileExporter<T, U> extends AbstractExporter<U> {
      *
      * @param data The data to be prepared.
      * @return The data in exportable containers.
-     * @throws IllegalArgumentException Thrown if the given parameter is invalid
+     * @throws IllegalArgumentException Thrown if the given parameter is invalid //TODO is only used by VaultExporter
      */
     protected abstract List<T> prepareData(List<U> data) throws IllegalArgumentException;
 
