@@ -119,7 +119,6 @@ public abstract class CSVImporter extends AbstractFileImporter {
         while (creader.readRecord()) {
             /*here the method template is used to process all records */
             List<VaultEntry> entryList = parseEntry(creader);
-            
             if (entryList != null && !entryList.isEmpty()) {
                 importedData.addAll(entryList);
             }
