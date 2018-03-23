@@ -75,6 +75,7 @@ public class MedtronicCrawlerImporter extends Plugin {
          * @throws Exception Thrown if the log file could not be written.
          */
         public MedtronicCrawlerImporterImplementation() throws Exception {
+            //TODO what are these unused variables for?!
             Logger logger = Logger.getLogger("MyLog");
             FileHandler fh;
             SimpleDateFormat formats = new SimpleDateFormat("dd-mm-HHMMSS");
@@ -112,7 +113,7 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             Crawler crawler = new Crawler();
 
-            String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler";
+            String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler"; //TODO separator? better use Paths.something
             try {
                 crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
             } catch (Exception exception) {
@@ -127,6 +128,7 @@ public class MedtronicCrawlerImporter extends Plugin {
             return manager.getPluginFromString(FileImporter.class, "MedtronicImporter").importData(path);
         }
 
+        //TODO Dates introduce state to the plugin, is this really necessary?
         /**
          * Template method to load plugin specific configurations from the config file.
          *
