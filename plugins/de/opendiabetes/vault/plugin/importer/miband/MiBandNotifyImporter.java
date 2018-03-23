@@ -16,11 +16,12 @@
  */
 package de.opendiabetes.vault.plugin.importer.miband;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.fileimporter.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -28,7 +29,6 @@ import org.pf4j.PluginWrapper;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +55,7 @@ public class MiBandNotifyImporter extends Plugin {
      * Actual implementation of the MiBandNotify importer plugin.
      */
     @Extension
-    public static final class MiBandNotifyImporterImplementation extends FileImporter {
+    public static final class MiBandNotifyImporterImplementation extends AbstractFileImporter {
 
         /**
          * The default value for the lower bound of the heart rate.
@@ -138,47 +138,39 @@ public class MiBandNotifyImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            Gson gson = new Gson();
-
-            BufferedReader reader;
-            try {
-                reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException exception) {
-                LOG.log(Level.SEVERE, "Can not handle fileInputStream, unsupported encoding (non UTF-8)!");
-                return false;
-            }
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) throws Exception {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            MiBandObjects data = mapper.readValue(reader, MiBandObjects.class);
 
             // Reading the JSON file
-            MiBandObjects data = gson.fromJson(reader, MiBandObjects.class);
             this.notifyStatus(STATUS_READ_JSON, "Read JSON file.");
+            List<VaultEntry> importedData = new ArrayList<>();
 
             // Seeing, whether the data contained heart rate related data
-            if (data.HeartMonitorData != null) {
+            if (data.getHeartMonitorData() != null) {
                 importedData = processHeartData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
-            } else if (data.SleepIntervalData != null) {
+            } else if (data.getSleepIntervalData() != null) {
                 importedData = processSleepData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 importedData = interpretMiBandSleep(importedData);
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
-            } else if (data.Workout != null) {
+            } else if (data.getWorkout() != null) {
                 importedData = processWorkoutData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
-            } else if (data.Weight != null) {
+            } else if (data.getWeight() != null) {
                 importedData = processWeightData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
             } else {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
-                return false;
+                throw new Exception("Got no data from JSON import!");
             }
+            return importedData;
         }
 
         /**
@@ -190,9 +182,9 @@ public class MiBandNotifyImporter extends Plugin {
          */
         private List<VaultEntry> processHeartData(final MiBandObjects data) {
             List<VaultEntry> entries = new ArrayList<>();
-            for (MiBandObjects.HeartMonitorData item : data.HeartMonitorData) {
+            for (MiBandObjects.HeartMonitorData item : data.getHeartMonitorData()) {
                 if (!item.isHidden()) {
-                    double heartRate = item.getHeartRate();
+                    double heartRate = item.getIntensity();
                     if (heartRate > heartRateLowerBound && heartRate < heartRateUpperBound) {
                         Date timestamp = new Date(item.getTimestamp());
                         VaultEntry entry = new VaultEntry(VaultEntryType.HEART_RATE, timestamp, heartRate);
@@ -216,9 +208,9 @@ public class MiBandNotifyImporter extends Plugin {
             List<VaultEntry> entries = new ArrayList<>();
             final int deepSleep = 5;
             final int lightSleep = 4;
-            for (MiBandObjects.SleepIntervalData item : data.SleepIntervalData) {
+            for (MiBandObjects.SleepIntervalData item : data.getSleepIntervalData()) {
                 int typeInt = item.getType();
-                Date timestamp = new Date(item.getTimestamp());
+                Date timestamp = new Date(item.getStartDateTime());
                 double duration = item.getDuration();
                 VaultEntryType type;
                 if (typeInt == lightSleep) {
@@ -243,7 +235,7 @@ public class MiBandNotifyImporter extends Plugin {
          */
         private List<VaultEntry> processWorkoutData(final MiBandObjects data) {
             List<VaultEntry> entries = new ArrayList<>();
-            for (MiBandObjects.Workout item : data.Workout) {
+            for (MiBandObjects.Workout item : data.getWorkout()) {
                 String heartRate = item.getHeartAvg();
                 List<VaultEntryAnnotation> annotation = new ArrayList<>();
                 annotation.add(new VaultEntryAnnotation(heartRate, VaultEntryAnnotation.TYPE.AVERAGE_HEART_RATE));
@@ -276,8 +268,8 @@ public class MiBandNotifyImporter extends Plugin {
          */
         private List<VaultEntry> processWeightData(final MiBandObjects data) {
             List<VaultEntry> entries = new ArrayList<>();
-            for (MiBandObjects.Weight item : data.Weight) {
-                entries.add(new VaultEntry(VaultEntryType.WEIGHT, new Date((item.getTimestamp())), item.getWeight()));
+            for (MiBandObjects.Weight item : data.getWeight()) {
+                entries.add(new VaultEntry(VaultEntryType.WEIGHT, new Date((item.getTimestamp())), item.getValue()));
             }
             return entries;
         }
@@ -338,12 +330,5 @@ public class MiBandNotifyImporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

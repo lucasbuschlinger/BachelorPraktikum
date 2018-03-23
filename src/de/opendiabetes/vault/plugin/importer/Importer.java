@@ -16,7 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.importer;
 
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
@@ -34,47 +33,11 @@ import java.util.List;
 public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
 
     /**
-     * Getter for the importFilePath.
-     *
-     * @return The path to the import file.
-     */
-    String getImportFilePath();
-
-    /**
-     * Setter for the importFilePath.
-     *
-     * @param filePath The path to the import file.
-     */
-    void setImportFilePath(String filePath);
-
-    /**
-     * Imports the data from the file specified by @see Importer.setImportFilePath().
-     *
-     * @return boolean true if data was imported, false otherwise.
-     */
-    boolean importData();
-
-    /**
-     * Getter for the imported data.
+     * Imports the data.
      *
      * @return List of VaultEntry consisting of the imported data.
+     * @throws Exception Thrown if any kind of error occurs while importing
      * @see de.opendiabetes.vault.container.VaultEntry
      */
-    List<VaultEntry> getImportedData();
-
-    /**
-     * Getter for the raw imported data.
-     *
-     * @return List of RawEntry consisting of the raw imported data.
-     * @see de.opendiabetes.vault.container.RawEntry
-     */
-    List<RawEntry> getImportedRawData();
-
-    /**
-     * Clears all Imported(Raw)Data.
-     * {@link Importer#getImportedData()},
-     * {@link Importer#getImportedRawData()}
-     * will return empty lists afterwards.
-     */
-    void clearData();
+    List<VaultEntry> importData() throws Exception;
 }

@@ -102,6 +102,13 @@
         <pathelement location="${basedir}/lib/slf4j-api-1.7.5.jar"/>
     </path>
 
+    <path id="jackson">
+        <path location="${basedir}/lib/jackson-core-2.9.4.jar"/>
+        <path location="${basedir}/lib/jackson-databind-2.9.4.jar"/>
+        <path location="${basedir}/lib/jackson-annotations-2.9.0.jar"/>
+    </path>
+
+
     <path id="library.ormlite-jdbc-5.0.classpath">
         <pathelement location="${basedir}/lib/gson-2.8.0.jar"/>
         <pathelement location="${basedir}/lib/hsqldb.jar"/>
@@ -135,7 +142,6 @@
         <pathelement location="${basedir}/lib/google-oauth-client-1.23.0.jar"/>
         <pathelement location="${basedir}/lib/google-oauth-client-java6-1.23.0.jar"/>
         <pathelement location="${basedir}/lib/google-oauth-client-jetty-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/jackson-core-2.1.3.jar"/>
         <pathelement location="${basedir}/lib/jsr305-1.3.9.jar"/>
     </path>
 
@@ -203,6 +209,7 @@
         <path refid="library.jsoup.classpath"/>
         <path refid="library.openqa-selenium.classpath"/>
         <path refid="library.commons-cli.classpath"/>
+        <path refid="jackson"/>
     </path>
     <path id="opendiabetes.runtime.production.module.classpath">
         <pathelement location="${opendiabetes.output.dir}"/>
@@ -217,6 +224,7 @@
         <path refid="library.jsoup.classpath"/>
         <path refid="library.openqa-selenium.classpath"/>
         <path refid="library.commons-cli.classpath"/>
+        <path refid="jackson"/>
     </path>
     <path id="opendiabetes.module.classpath">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
@@ -232,6 +240,7 @@
         <path refid="library.jsoup.classpath"/>
         <path refid="library.openqa-selenium.classpath"/>
         <path refid="library.commons-cli.classpath"/>
+        <path refid="jackson"/>
     </path>
     <path id="opendiabetes.runtime.module.classpath">
         <pathelement location="${opendiabetes.testoutput.dir}"/>
@@ -247,6 +256,7 @@
         <path refid="library.jsoup.classpath"/>
         <path refid="library.openqa-selenium.classpath"/>
         <path refid="library.commons-cli.classpath"/>
+        <path refid="jackson"/>
     </path>
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
@@ -371,10 +381,11 @@
         <copy todir="plugins_out/assets" quiet="true" failonerror="false">
             <fileset dir="${plugin.src.path}/assets"/>
         </copy>
-        <copydir src="lib" dest="plugins_out/lib"/>
+        <!--<copydir src="lib" dest="plugins_out/lib"/>-->
         <copy todir="plugins_out" quiet="true" failonerror="false">
             <fileset dir="${plugin.src.path}">
                 <include name="*.properties"/>
+                <include name="help.md"/>
             </fileset>
         </copy>
         <javac srcdir="${plugin.src.path}" destdir="plugins_out/classes"
@@ -415,7 +426,7 @@
         <findbugs home="${findbugs.home}"
                   output="html"
                   outputFile="reports/findbugs_report.html">
-            <!--<auxClasspath path="${basedir}/lib/Regex.jar" />-->
+            <auxClasspath path="${basedir}/lib/"/>
             <!--<sourcePath path="${basedir}/src/" />-->
             <class location="${basedir}/out/production/OpenDiabetes/de"/>
         </findbugs>
@@ -477,6 +488,15 @@
     </target>
 
     <target name="reports" depends="test, checkstyle,findbugs"/>
+
+    <target name="doc" depends="init" description="generate documentation">
+        <delete dir="docs" />
+        <mkdir dir="docs" />
+        <javadoc destdir="docs">
+            <fileset dir="${basedir}/plugins" />
+            <fileset dir="${basedir}/src" />
+        </javadoc>
+    </target>
 
     <!-- target name="all" depends="build.modules" description="build all"/ -->
 </project>

@@ -17,6 +17,8 @@
 package de.opendiabetes.vault.plugin.importer.miband;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 /**
@@ -30,41 +32,76 @@ public class MiBandObjects {
     /**
      * This object will hold the data if there was some of the {@link HeartMonitorData} type.
      */
-    public List<HeartMonitorData> HeartMonitorData;
+    private List<HeartMonitorData> heartMonitorData;
     /**
      * This object will hold the data if there was some of the {@link SleepIntervalData} type.
      */
-    public List<SleepIntervalData> SleepIntervalData;
+    private List<SleepIntervalData> sleepIntervalData;
     /**
      * This object will hold the data if there was some of the {@link Workout} type.
      */
-    public List<Workout> Workout;
-    /**
-     * This object will hold the data if there was some of the {@link StepsData} type.
-     */
-    public List<StepsData> StepsData;
+    private List<Workout> workout;
+//    Currently unused.
+//     /**
+//     * This object will hold the data if there was some of the {@link StepsData} type.
+//     */
+//    private List<StepsData> stepsData;
     /**
      * This object will hold the data if there was some of the {@link Weight} type.
      */
-    public List<Weight> Weight;
+    private List<Weight> weight;
 
-    /*
-     * The following are the actual data structures used in the MiBand data.
-     * If further fields from these structures are needed one only has to implement accessors to it.
+    /**
+     * Getter for the heart monitor data.
+     *
+     * @return The heart monitor data.
      */
+    public List<HeartMonitorData> getHeartMonitorData() {
+        return heartMonitorData;
+    }
+
+    /**
+     * Getter for the sleep data.
+     *
+     * @return The sleep data.
+     */
+    public List<SleepIntervalData> getSleepIntervalData() {
+        return sleepIntervalData;
+    }
+
+    /**
+     * Getter for the workout data.
+     *
+     * @return The workout data.
+     */
+    public List<MiBandObjects.Workout> getWorkout() {
+        return workout;
+    }
+
+//    /**
+//     * Getter for the steps data.
+//    *
+//     * @return The steps data.
+//     */
+//    public List<MiBandObjects.StepsData> getStepsData() {
+//        return stepsData;
+//    }
+
+    /**
+     * Getter for the weight data.
+     *
+     * @return The weight data.
+     */
+    public List<MiBandObjects.Weight> getWeight() {
+        return weight;
+    }
 
     /**
      * This class resembles the data structure within MiBand heart rate logs.
+     * But only the used fields are present, if others are needed they have to be added along with their respective getters.
      */
-    public class HeartMonitorData {
-        /**
-         * The ID of the entry.
-         */
-        private String rush_id;
-        /**
-         * The version.
-         */
-        private int rush_version;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class HeartMonitorData {
         /**
          * Boolean to indicate whether the entry is hidden.
          */
@@ -73,18 +110,6 @@ public class MiBandObjects {
          * The heart rate.
          */
         private String intensity;
-        /**
-         * Indicator whether this heart rate has been recorded during an activity.
-         */
-        private String isActivityValue;
-        /**
-         * Indicator whether this heart rate has been recorded during a workout.
-         */
-        private String isWorkout;
-        /**
-         * Timestamp when the data has been synchronized with GoogleFit.
-         */
-        private String syncedGFit;
         /**
          * The timestamp of the recorded heart rate.
          */
@@ -104,7 +129,7 @@ public class MiBandObjects {
          *
          * @return The heart rate parsed from String.
          */
-        public double getHeartRate() {
+        public double getIntensity() {
             return Double.parseDouble(intensity);
         }
 
@@ -120,24 +145,15 @@ public class MiBandObjects {
 
     /**
      * This class resembles the data structured within MiBand sleep logs.
+     * But only the used fields are present, if others are needed they have to be added along with their respective getters.
      */
-    public class SleepIntervalData {
-        /**
-         * The ID of the entry.
-         */
-        private String rush_id;
-        /**
-         * The version.
-         */
-        private int rush_version;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class SleepIntervalData {
+
         /**
          * The ending time of the sleep interval.
          */
         private String endDateTime;
-        /**
-         * The average heart rate in the sleep interval.
-         */
-        private String heartRateAvg;
         /**
          * The starting time of the sleep interval.
          */
@@ -148,26 +164,26 @@ public class MiBandObjects {
         private String type;
 
         /**
-         * Getter for the timestamp, which is hereby defined by the end time of the entry.
+         * Getter for the starting time of the entry.
          *
-         * @return The timestamp of the entry.
+         * @return The timestamp of the entry as long.
          */
-        public long getTimestamp() {
+        public long getStartDateTime() {
             return Long.parseLong(startDateTime);
         }
 
         /**
-         * Getter for the average heart rate held in {@link #heartRateAvg}.
+         * Getter for the ending time of the entry.
          *
-         * @return The average heart rate parsed from String.
+         * @return The timestamp of the entry as long.
          */
-        public String getHeartRateAvg() {
-            return heartRateAvg;
+        public long getEndDateTime() {
+            return Long.parseLong(endDateTime);
         }
 
         /**
          * Getter for the duration of the sleep interval.
-         * Computed by the difference between start end end times of the entry.
+         * Computed by the difference between start and end times of the entry.
          *
          * @return The duration of the sleep interval.
          */
@@ -190,16 +206,11 @@ public class MiBandObjects {
 
     /**
      * This class resembles the data structure within MiBand workout logs.
+     * But only the used fields are present, if others are needed they have to be added along with their respective getters.
      */
-    public class Workout {
-        /**
-         * The ID of the entry.
-         */
-        private String rush_id;
-        /**
-         * The version.
-         */
-        private int rush_version;
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Workout {
+
         /**
          * The ending time of the workout.
          */
@@ -209,33 +220,27 @@ public class MiBandObjects {
          */
         private String heartAvg;
         /**
-         * The duration of the workout in minutes.
-         */
-        private String minutes;
-        /**
          * The starting time of the workout.
          */
         private String startDateTime;
+
         /**
-         * The amount of steps walked during the workout.
+         * Getter for the ending time of the activity.
+         *
+         * @return The time represented as a long.
          */
-        private String steps;
+        public Double getEndDateTime() {
+            return Double.parseDouble(endDateTime);
+        }
+
         /**
-         * The type of workout.
+         * Getter for the starting time of the activity.
+         *
+         * @return The time represented as a long.
          */
-        private String type;
-        /**
-         * The amount of calories burned during the workout.
-         */
-        private String xCalories;
-        /**
-         * The distance covered during the workout.
-         */
-        private String xDistance;
-        /**
-         * The amount of pause made during the workout in minutes.
-         */
-        private String xMinutesPause;
+        public Double getStartDateTime() {
+            return Double.parseDouble(startDateTime);
+        }
 
         /**
          * Getter for the timestamp, which is hereby defined by the end time of the entry.
@@ -273,17 +278,13 @@ public class MiBandObjects {
 
     /**
      * This class resembles the data structure within MiBand step logs.
+     * But only the used fields are present, if others are needed they have to be added along with their respective getters.
+     *
+     * Currently not used.
      */
-    public class StepsData {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class StepsData {
 
-        /**
-         * The ID of the entry.
-         */
-        private String rush_id;
-        /**
-         * The version.
-         */
-        private int rush_version;
         /**
          * The timestamp of the data.
          */
@@ -300,11 +301,6 @@ public class MiBandObjects {
          * Number of steps recorded in this entry.
          */
         private String steps;
-        /**
-         * Timestamp of when data has been synced with GoogleFit.
-         * Is 0 if it has not been synced.
-         */
-        private String syncedGFit;
 
         /**
          * Getter for the timestamp.
@@ -347,26 +343,11 @@ public class MiBandObjects {
 
     /**
      * This class resembles the data structure within MiBand weight logs.
+     * But only the used fields are present, if others are needed they have to be added along with their respective getters.
      */
-    public class Weight {
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Weight {
 
-        /**
-         * The ID of the entry.
-         */
-        private String rush_id;
-        /**
-         * The version.
-         */
-        private int rush_version;
-        /**
-         * A note for the entry.
-         */
-        private String note;
-        /**
-         * Timestamp of when data has been synced with GoogleFit.
-         * Is 0 if it has not been synced.
-         */
-        private String syncedGFit;
         /**
          * The timestamp of the entry.
          */
@@ -392,7 +373,7 @@ public class MiBandObjects {
          *
          * @return The number of steps recorded in this entry.
          */
-        public double getWeight() {
+        public double getValue() {
             return Double.parseDouble(value);
         }
     }

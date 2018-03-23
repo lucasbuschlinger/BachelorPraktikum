@@ -25,35 +25,35 @@ import java.text.ParseException;
 import java.util.Date;
 
 /**
- * Validator for Sony SWR21 data.
+ * Validator for Sony SWR12 data.
  *
  * @author Jens Heuschkel
  */
 public class SonySWR12Validator extends CSVValidator {
 
     /**
-     * Field of the Sony SWR 21 CSV headers containing the activity type.
+     * Field of the Sony SWR12 CSV headers containing the activity type.
      */
     private static final String HEADER_TYPE = "activity_type";
     /**
-     * Field of the Sony SWR 21 CSV headers containing the activity data.
+     * Field of the Sony SWR12 CSV headers containing the activity data.
      */
     private static final String HEADER_VALUE = "activity_data";
     /**
-     * Field of the Sony SWR 21 CSV headers containing the time the activity started.
+     * Field of the Sony SWR12 CSV headers containing the time the activity started.
      */
     private static final String HEADER_START_TIME = "start_time";
     /**
-     * Field of the Sony SWR 21 CSV headers containing the time the activity ended.
+     * Field of the Sony SWR12 CSV headers containing the time the activity ended.
      */
     private static final String HEADER_END_TIME = "end_time";
     /**
-     * The time format used in Sony SWR21 CSV data.
+     * The time format used in Sony SWR12 CSV data.
      */
     private static final String TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * The composed header used in Sony SWR21 CSV data.
+     * The composed header used in Sony SWR12 CSV data.
      */
     private static final String[] HEADER = {
             HEADER_START_TIME, HEADER_END_TIME,
@@ -130,7 +130,7 @@ public class SonySWR12Validator extends CSVValidator {
     }
 
     /**
-     * The available types of Sony SWR21 data.
+     * The available types of Sony SWR12 data.
      */
     public enum TYPE {
         /**

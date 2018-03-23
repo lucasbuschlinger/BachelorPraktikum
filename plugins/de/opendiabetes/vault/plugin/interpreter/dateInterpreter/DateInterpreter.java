@@ -89,15 +89,6 @@ public class DateInterpreter extends Plugin {
         }
 
         /**
-         * @return a path to a file containing .md/html formatted text,
-         * that gets displayed to the user if he wants to know more about that plugin.
-         */
-        @Override
-        public String getHelpFilePath() {
-            return null;
-        }
-
-        /**
          * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.

@@ -20,7 +20,7 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.importer.CSVImporter;
+import de.opendiabetes.vault.plugin.fileimporter.CSVImporter;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -33,40 +33,40 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * Wrapper class for the SonySWR21Importer plugin.
+ * Wrapper class for the SonySWR12 Importer plugin.
  *
  * @author Lucas Buschlinger
  */
-public class SonySWR21Importer extends Plugin {
+public class SonySWR12Importer extends Plugin {
 
     /**
      * Constructor for the PluginManager.
      *
      * @param wrapper The PluginWrapper.
      */
-    public SonySWR21Importer(final PluginWrapper wrapper) {
+    public SonySWR12Importer(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
     /**
-     * Actual implementation of the Sony SWR21 importer plugin.
+     * Actual implementation of the Sony SWR12 importer plugin.
      */
     @Extension
-    public static final class SonySWR21ImporterImplementation extends CSVImporter {
+    public static final class SonySWR12ImporterImplementation extends CSVImporter {
 
         /**
          * Constructor.
          */
-        public SonySWR21ImporterImplementation() {
+        public SonySWR12ImporterImplementation() {
             super(new SonySWR12Validator());
         }
 
         /**
-         * Parser for Sony SWR21 CSV data.
+         * Parser for Sony SWR12 CSV data.
          *
          * @param creader The CSV reader.
          * @return List of VaultEntry holding the parsed data.
-         * @throws Exception If Sony SWR21 CSV file can not be parsed.
+         * @throws Exception If Sony SWR12 CSV file can not be parsed.
          */
         @Override
         protected List<VaultEntry> parseEntry(final CsvReader creader) throws Exception {
@@ -192,13 +192,5 @@ public class SonySWR21Importer extends Plugin {
         protected void preprocessingIfNeeded(final String filePath) {
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

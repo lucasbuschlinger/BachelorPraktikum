@@ -39,12 +39,6 @@ public interface OpenDiabetesPlugin {
     boolean loadConfiguration(Properties configuration);
 
     /**
-     *
-     * @return a path to a file containing .md/html formatted text,
-     * that gets displayed to the user if he wants to know more about that plugin.
-     */
-    String getHelpFilePath();
-    /**
      * Takes the list of compatible plugins from a configuration file and returns it.
      * @see {@link AbstractPlugin#loadConfiguration(Properties)} {@link AbstractPlugin#getListOfCompatiblePluginIDs()}
      * for an implementation.

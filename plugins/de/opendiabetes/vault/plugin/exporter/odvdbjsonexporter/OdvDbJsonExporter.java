@@ -80,12 +80,5 @@ public class OdvDbJsonExporter extends Plugin {
             LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

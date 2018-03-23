@@ -100,7 +100,6 @@
         <module name="LineLength">
             <property name="max" value="140"/>
         </module>
-        <module name="MethodLength"/>
         <module name="ParameterNumber"/>
 
         <!-- Checks for whitespace                               -->

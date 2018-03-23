@@ -17,9 +17,11 @@
 package de.opendiabetes.vault.plugin.management;
 
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
+import de.opendiabetes.vault.plugin.util.HelpLanguage;
 import org.pf4j.DefaultPluginManager;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,10 +40,11 @@ import java.util.stream.Collectors;
 
 /**
  * This class is intended to simplify the interaction with all the plugins used in OpenDiabetes.
+ * --Singleton--
  *
  * @author magnus
  */
-public class OpenDiabetesPluginManager {
+public final class OpenDiabetesPluginManager {
 
     /**
      * The path to the configuration files of the plugins.
@@ -64,12 +67,17 @@ public class OpenDiabetesPluginManager {
     private Map<String, OpenDiabetesPlugin> plugins = new HashMap<>();
 
     /**
+     * The singleton instance of this class.
+     */
+    private static OpenDiabetesPluginManager singletonInstance = null;
+
+    /**
      * Most generic Constructor.
      *
      * @param pluginPath        the path where all the plugins are located.
      * @param configurationPath the path where all the configuration files of the plugins are located.
      */
-    public OpenDiabetesPluginManager(final Path pluginPath, final Path configurationPath) {
+    private OpenDiabetesPluginManager(final Path pluginPath, final Path configurationPath) {
         this.configurationPath = configurationPath;
         pf4jManager = new DefaultPluginManager(pluginPath);
         pf4jManager.loadPlugins();
@@ -81,10 +89,14 @@ public class OpenDiabetesPluginManager {
     }
 
     /**
-     * Default Constructor.
-     */
-    public OpenDiabetesPluginManager() {
-        this(Paths.get("export"), Paths.get("properties"));
+     * Singleton factory method.
+     * @return the Singleton OpenDiabetesPluginManager instance
+      */
+    public static OpenDiabetesPluginManager getInstance() {
+        if (singletonInstance == null) {
+            singletonInstance = new OpenDiabetesPluginManager(Paths.get("export"), Paths.get("properties"));
+        }
+        return  singletonInstance;
     }
 
     /**
@@ -97,7 +109,7 @@ public class OpenDiabetesPluginManager {
             String pluginString = pluginToString(plugin);
             List<String> filteredCompatibility = plugin.getListOfCompatiblePluginIDs()
                     .stream()
-                    .filter(pluginID -> pf4jManager.getExtensions(pluginID).size() != 0) //list only compatible plugins that are available
+                    .filter(pluginID -> plugins.containsKey(pluginID)) //list only compatible plugins that are available
                     .collect(Collectors.toList());
             Set<String> compatibilitySet = compatibilityMap.get(pluginString);
             if (compatibilitySet == null) { //create set if it does not exist
@@ -120,11 +132,17 @@ public class OpenDiabetesPluginManager {
     /**
      * Returns the path to the root folder of the desired plugin where it was loaded from.
      *
-     * @param plugin the plugin whos base path is returned
+     * @param plugin the plugin whose base path is returned
      * @return the base path of the plugin
      */
     private String getPluginBasePath(final OpenDiabetesPlugin plugin) {
-        return pf4jManager.getPlugin(pluginToString(plugin)).getPluginPath().toString();
+        try {
+            return pf4jManager.getPlugin(pluginToString(plugin)).getPluginPath().toString();
+        } catch (Exception e) {
+            System.out.println("could not resolve base path of plugin: " + pluginToString(plugin));
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -260,5 +278,54 @@ public class OpenDiabetesPluginManager {
             return (T) plugin;
         }
         return null;
+    }
+
+    /**
+     * @param plugin the plugin for which you want the help file
+     * @param lang the language in which the help page should be returned.
+     *             If the page was not found in the given language, the help page
+     *             will be returned in default language (english).
+     * @return a path to a file containing .md/html formatted text,
+     * that gets displayed to the user if he wants to know more about that plugin.
+     * @throws Exception Thrown if the plugin base path could not be determined
+     */
+    public Path getHelpFilePath(final OpenDiabetesPlugin plugin, final HelpLanguage lang) throws Exception {
+        String langExt;
+
+        switch (lang) {
+            case LANG_DE:
+                langExt = "-de";
+                break;
+            default:
+                langExt = "";
+                break;
+        }
+
+        String helpFilename = "help.md";
+        if (lang != HelpLanguage.LANG_EN) {
+            helpFilename = "help" + langExt + ".md";
+        }
+
+        String pluginBasePath = getPluginBasePath(plugin);
+        if (pluginBasePath == null) {
+            throw new Exception("Plugin base path not found");
+        }
+
+        Path helpPath = Paths.get(pluginBasePath, helpFilename);
+        if (Files.exists(helpPath)) {
+            return helpPath;
+        }
+
+        // If the help path was not the default language, try to fall back to default help file
+        if (lang != HelpLanguage.LANG_EN) {
+            System.out.println("Requested Help file not found. Falling back to default help file");
+            helpFilename = "help.md";
+            helpPath = Paths.get(pluginBasePath, helpFilename);
+            if (Files.exists(helpPath)) {
+                return helpPath;
+            }
+            System.out.println("Default help file could not be found");
+        }
+        throw new FileNotFoundException("Help file could not be found in the plugin");
     }
 }

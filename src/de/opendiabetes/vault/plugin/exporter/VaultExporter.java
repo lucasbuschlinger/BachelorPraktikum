@@ -6,16 +6,14 @@ import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.VaultCsvEntry;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
-import sun.rmi.runtime.Log;
 
-import javax.sound.sampled.LineEvent;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 
 /**
- * This class implements functionality shared by the Exporters exporting from the Vault database.
+ * This class implements functionality shared by the exporters exporting from the Vault database.
  */
 public abstract class VaultExporter extends CSVFileExporter {
     /**
@@ -30,13 +28,14 @@ public abstract class VaultExporter extends CSVFileExporter {
      * @return The entries ready for export.
      */
     @Override
-    protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+    protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
         // Status update constants
         final int startPrepareProgress = 33;
         final int prepareDoneProgress = 66;
 
         if (data == null || data.isEmpty()) {
-            return null;
+            LOG.log(Level.SEVERE, "Data cannot be empty");
+            throw new IllegalArgumentException("Data cannot be empty");
         }
 
         List<ExportEntry> returnValues = new ArrayList<>();
@@ -107,7 +106,7 @@ public abstract class VaultExporter extends CSVFileExporter {
      *
      * @param csvEntry The {@link VaultCsvEntry} to process the data to.
      * @param entry The {@link VaultEntry} to process.
-     * @return The processed {@link VaultEntry}.
+     * @return The processed {@link VaultCsvEntry}.
      */
     private VaultCsvEntry processVaultEntry(final VaultCsvEntry csvEntry, final VaultEntry entry) {
 //            VaultCsvEntry tmpCsvEntry = vaultCsvEntry;
