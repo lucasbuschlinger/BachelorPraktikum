@@ -20,7 +20,6 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -65,41 +64,31 @@ public abstract class FileExporter extends AbstractExporter {
      * {@inheritDoc}
      */
     @Override
-    public int exportDataToFile(final List<VaultEntry> data) {
+    public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
         // Status update constants.
         final int startWriteProgress = 80;
         final int writeDoneProgress = 100;
-        String filePath = this.getExportFilePath();
         // check file stuff
         File checkFile = new File(filePath);
         if (checkFile.exists()
                 && (!checkFile.isFile() || !checkFile.canWrite())) {
-            return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            LOG.log(Level.SEVERE, "An error occurred while accessing file " + filePath + ".");
+            throw new IOException("An error occurred while accessing file " + filePath + ".");
         }
-        try {
-            fileOutputStream = new FileOutputStream(checkFile);
-        } catch (FileNotFoundException exception) {
-            LOG.log(Level.SEVERE, "Error accessing file for output stream", exception);
-            return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
-        }
+        fileOutputStream = new FileOutputStream(checkFile);
         // create csv data
         List<ExportEntry> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
-            return ReturnCode.RESULT_NO_DATA.getCode();
+            LOG.log(Level.SEVERE, "Could not find data to export.");
+            throw new IOException("Could not find data to export.");
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
+        writeToFile(filePath, exportData);
         try {
-            writeToFile(exportData);
+            fileOutputStream.close();
         } catch (IOException exception) {
-            LOG.log(Level.SEVERE, "Error writing odv csv file: {0}" + filePath, exception);
-            return ReturnCode.RESULT_ERROR.getCode();
-        } finally { //finally is needed here!
-            try {
-                fileOutputStream.close();
-            } catch (IOException exception) {
-                LOG.log(Level.WARNING, "Error while closing the fileOutputStream, uncritical.", exception);
-            }
+            LOG.log(Level.WARNING, "Error while closing the fileOutputStream, uncritical.", exception);
         }
 
         this.notifyStatus(writeDoneProgress, "Writing to file successful, all done.");
@@ -110,10 +99,11 @@ public abstract class FileExporter extends AbstractExporter {
     /**
      * Writes the export data to the file.
      *
+     * @param filePath File path where the exported data should be written to.
      * @param data The data to be written.
      * @throws IOException Thrown if something goes wrong when writing the file.
      */
-    protected void writeToFile(final List<ExportEntry> data) throws IOException {
+    protected void writeToFile(final String filePath, final List<ExportEntry> data) throws IOException {
         FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 
@@ -131,8 +121,9 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @param data The data to be prepared.
      * @return The data in exportable containers.
+     * @throws IllegalArgumentException Thrown if the given parameter is invalid
      */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
+    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data) throws IllegalArgumentException;
 
     /**
      * Most generic loading of configurations of exporter plugins.

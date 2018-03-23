@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.fileimporter.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -29,7 +29,6 @@ import org.pf4j.PluginWrapper;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,7 +55,7 @@ public class MiBandNotifyImporter extends Plugin {
      * Actual implementation of the MiBandNotify importer plugin.
      */
     @Extension
-    public static final class MiBandNotifyImporterImplementation extends FileImporter {
+    public static final class MiBandNotifyImporterImplementation extends AbstractFileImporter {
 
         /**
          * The default value for the lower bound of the heart rate.
@@ -139,53 +138,39 @@ public class MiBandNotifyImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            BufferedReader reader;
-            try {
-                reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException exception) {
-                LOG.log(Level.SEVERE, "Can not handle fileInputStream, unsupported encoding (non UTF-8)!");
-                return false;
-            }
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) throws Exception {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             ObjectMapper mapper = new ObjectMapper();
-            MiBandObjects data;
-            try {
-                mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
-                data = mapper.readValue(reader, MiBandObjects.class);
-            } catch (Exception exception) {
-                LOG.log(Level.SEVERE, "Could not read from JSON file: " + exception);
-                return false;
-            }
+            mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            MiBandObjects data = mapper.readValue(reader, MiBandObjects.class);
 
             // Reading the JSON file
             this.notifyStatus(STATUS_READ_JSON, "Read JSON file.");
+            List<VaultEntry> importedData = new ArrayList<>();
 
             // Seeing, whether the data contained heart rate related data
             if (data.getHeartMonitorData() != null) {
                 importedData = processHeartData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
             } else if (data.getSleepIntervalData() != null) {
                 importedData = processSleepData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 importedData = interpretMiBandSleep(importedData);
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
             } else if (data.getWorkout() != null) {
                 importedData = processWorkoutData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
             } else if (data.getWeight() != null) {
                 importedData = processWeightData(data);
                 this.notifyStatus(STATUS_IMPORTED_ENTRIES, "Successfully imported MiBand data to VaultEntries");
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
-                return true;
             } else {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
-                return false;
+                throw new Exception("Got no data from JSON import!");
             }
+            return importedData;
         }
 
         /**
@@ -345,12 +330,5 @@ public class MiBandNotifyImporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

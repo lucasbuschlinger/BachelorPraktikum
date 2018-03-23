@@ -20,6 +20,7 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -75,20 +76,6 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
     }
 
     /**
-     * Setter for the exportFilePath.
-     *
-     * @param filePath The path to the export file.
-     */
-    void setExportFilePath(String filePath);
-
-    /**
-     * Getter for the exportFilePath.
-     *
-     * @return The exportFilePath.
-     */
-    String getExportFilePath();
-
-    /**
      * This method is used to set the entries to export.
      * Should only be used with exporters that do not export from {@link VaultEntry}
      * but something different like {@link de.opendiabetes.vault.container.SliceEntry}.
@@ -101,8 +88,10 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
     /**
      * Exports the data to a file.
      *
+     * @param filePath File path where the data should be exported to.
      * @param data The data to export.
      * @return The return code as specified in {@link ReturnCode}.
+     * @throws IOException Thrown if there was an error exporting the data
      */
-    int exportDataToFile(List<VaultEntry> data);
+    int exportDataToFile(String filePath, List<VaultEntry> data) throws IOException;
 }

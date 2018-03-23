@@ -13,9 +13,11 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.fitness.FitnessScopes;
 
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
@@ -90,9 +92,7 @@ public final class Credentials {
         try {
             httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -116,7 +116,8 @@ public final class Credentials {
     public void authorize(final String path) throws IOException {
         File file = new File(Paths.get(path).toAbsolutePath().toString());
         // Load client secrets.
-        Reader reader = new FileReader(file);
+        FileInputStream fileInput = new FileInputStream(file);
+        Reader reader = new InputStreamReader(fileInput, Charset.defaultCharset());
 
         GoogleClientSecrets clientSecrets =
                 GoogleClientSecrets.load(JSON_FACTORY, reader);
@@ -177,7 +178,7 @@ public final class Credentials {
      * Setter for the API key.
      * @param apiKey the API key used by the google services
      */
-    public void setAPIkey(final String apiKey) {
+    public static void setAPIkey(final String apiKey) {
         Credentials.apiKey = apiKey;
     }
 }

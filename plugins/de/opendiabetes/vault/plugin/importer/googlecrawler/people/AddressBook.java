@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 import de.opendiabetes.vault.plugin.importer.googlecrawler.models.Contact;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,7 +110,8 @@ public final class AddressBook {
         File file = new File("addressBook" + System.currentTimeMillis() / MILLISECONDS_TO_SECONDS_DIVISOR + ".json");
 
         try {
-            FileWriter writer = new FileWriter(file, false);
+            OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file, false),
+                    StandardCharsets.UTF_8);
             writer.write(output);
             writer.close();
         } catch (IOException e) {

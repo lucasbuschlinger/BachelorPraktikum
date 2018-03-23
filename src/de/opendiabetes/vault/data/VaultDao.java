@@ -26,7 +26,6 @@ import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryType;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
@@ -74,10 +73,6 @@ public final class VaultDao {
      * The Database Access Object ({@link Dao}) for data in the form of {@link VaultEntry} used herein.
      */
     private Dao<VaultEntry, Long> vaultDao;
-    /**
-     * The Database Access Object ({@link Dao}) for data in the form of {@link RawEntry} used herein.
-     */
-    private Dao<RawEntry, Long> rawDao;
 
     /**
      * Default constructor for the Vault Database Access Object.
@@ -143,11 +138,6 @@ public final class VaultDao {
         } else {
             LOG.warning("Found existing DB for VaultEntries. Reusing it!!");
         }
-
-        rawDao = DaoManager.createDao(connectionSource, RawEntry.class);
-        if (!rawDao.isTableExists()) {
-            TableUtils.createTableIfNotExists(connectionSource, RawEntry.class);
-        }
 //        TableUtils.createTableIfNotExists(connectionSource, SliceEntry.class);
     }
 
@@ -164,23 +154,6 @@ public final class VaultDao {
 //           LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
 //            return RESULT_ERROR;
 //        }
-//    }
-
-//    /**
-//     * Puts {@link RawEntry}s into the database.
-//     *
-//     * @param entry The {@link RawEntry} to be put into the database.
-//     * @return The ID of the respective entry or {@link #RESULT_ERROR}.
-//     */
-//    public long putRawEntry(final RawEntry entry) {
-//        // TO DO rethink raw entry tracking
-//        return 0;
-////        try {
-////            return rawDao.createIfNotExists(entry).getId();
-////        } catch (SQLException exception) {
-////            LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
-////            return RESULT_ERROR;
-////        }
 //    }
 
 //    /**

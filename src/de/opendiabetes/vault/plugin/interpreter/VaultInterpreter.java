@@ -22,7 +22,7 @@ import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 /**
  * Abstract interpreter, implements the Interpreter interface.
  * All actual interpreter plugins are descendants of this class.
- * Supplies a Logger {@link OpenDiabetesPlugin#LOG }.
+ * Supplies a Logger {@link de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin#LOG }.
  * Handles status listeners {@link AbstractPlugin#listeners}.
  * @author OpenDiabetes
  */

@@ -64,11 +64,6 @@ public class PumpInterpreter extends Plugin {
         private static final double DEFAULT_OUTPUTFILTER_SIZE = 5;
 
         /**
-         * The size of the slidingWindow output filter.
-         */
-        private double outputFilterSize = DEFAULT_OUTPUTFILTER_SIZE;
-
-        /**
          * Conversion factor from minutes to milliseconds.
          */
         private static final int MS_PER_MINUTE = 60000;
@@ -82,6 +77,11 @@ public class PumpInterpreter extends Plugin {
          * Conversion factor from hours to milliseconds.
          */
         private static final long HOUR_TO_MIN = 60;
+
+        /**
+         * The size of the slidingWindow output filter.
+         */
+        private double outputFilterSize = DEFAULT_OUTPUTFILTER_SIZE;
 
         /**
          * Boolean to say whether the canula has to be filled as a new Katheder.
@@ -320,10 +320,12 @@ public class PumpInterpreter extends Plugin {
                         // --> we have to search the last known one before the suspenstion
                         for (VaultEntry basalEntry : data) {
                             if (basalEntry.getType() == VaultEntryType.BASAL_MANUAL
-                                    || basalEntry.getType() == VaultEntryType.BASAL_PROFILE) { // no interpreter basal items, since suspension will interrupt tmp basal
+                                    || basalEntry.getType() == VaultEntryType.BASAL_PROFILE) {
+                                // no interpreter basal items, since suspension will interrupt tmp basal
                                 if (suspendItem.getTimestamp().after(basalEntry.getTimestamp())) {
                                     lastKnownBasalEntry = basalEntry;
-                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) { // we passed the suspension time point --> stop the search
+                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) {
+                                    // we passed the suspension time point --> stop the search
                                     break;
                                 }
                             }
@@ -333,15 +335,19 @@ public class PumpInterpreter extends Plugin {
                             // still nothing found, search in DB
                             // query db
                             final int startingTimeBeforeSearch = 5;
-                            Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(), -1 * startingTimeBeforeSearch * HOUR_TO_MIN); // start 5 hours before with the search
-                            Date ts2 = data.get(0).getTimestamp(); // we search just until the current dataset starts
+                            // start 5 hours before with the search
+                            Date ts1 = TimestampUtils.addMinutesToTimestamp(data.get(0).getTimestamp(),
+                                    -1 * startingTimeBeforeSearch * HOUR_TO_MIN);
+                            Date ts2 = data.get(0).getTimestamp(); // we search just until the current data set starts
                             List<VaultEntry> dbBasalData = getDatabase().queryBasalBetween(ts1, ts2);
 
                             // search for profile entry
-                            for (VaultEntry basalEntry : dbBasalData) { // no interpreter basal items, since suspension will interrupt tmp basal
+                            for (VaultEntry basalEntry : dbBasalData) {
+                                // no interpreter basal items, since suspension will interrupt tmp basal
                                 if (suspendItem.getTimestamp().after(basalEntry.getTimestamp())) {
                                     lastKnownBasalEntry = basalEntry;
-                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) { // we passed the suspension time point --> stop the search
+                                } else if (suspendItem.getTimestamp().before(basalEntry.getTimestamp())) {
+                                    // we passed the suspension time point --> stop the search
                                     break;
                                 }
                             }
@@ -415,7 +421,8 @@ public class PumpInterpreter extends Plugin {
 
                         if (tmpItem != null) {
                             affectedHistoricElements.add(tmpItem);
-                        } else if ((basalItem.getRawType() == MedtronicCSVValidator.TYPE.BASAL_TMP_PERCENT //TODO is this interpreter only for medtronic data
+                            //TODO is this interpreter only for medtronic data. Comment: Seems like it, but not a todo?
+                        } else if ((basalItem.getRawType() == MedtronicCSVValidator.TYPE.BASAL_TMP_PERCENT
                                 && basalItem.getValue() > 0)) {
                             LOG.log(Level.WARNING, "Could not calculate tmp basal, "
                                             + "because no profile elements are found\n{0}",
@@ -571,20 +578,10 @@ public class PumpInterpreter extends Plugin {
         }
 
         /**
-         * @return a path to a file containing .md/html formatted text,
-         * that gets displayed to the user if he wants to know more about that plugin.
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO implement
-            return null;
-        }
-
-        /**
          * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.
-         * @return wheter a valid configuration could be read from the config file
+         * @return whether a valid configuration could be read from the config file
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {

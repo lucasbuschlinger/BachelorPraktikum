@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.importer;
+package de.opendiabetes.vault.plugin.fileimporter;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.container.RawEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
 
@@ -32,15 +31,21 @@ import java.util.logging.Level;
 /**
  * This class implements the functionality for importing CSV based data.
  */
-public abstract class CSVImporter extends FileImporter {
+public abstract class CSVImporter extends AbstractFileImporter {
     /**
      * The validator who handles CSV data.
      */
     private CSVValidator validator;
+
+    /**
+     * Use this delimiter to use automatic delimiter detection.
+     */
+    public static final char AUTO_DELIMITER = 0;
+
     /**
      * Delimiter used in the CSV file.
      */
-    private char delimiter = 0; //set delimiter to "null" to indicate that it is not valid yet
+    private char delimiter = AUTO_DELIMITER; //set delimiter to "null" to indicate that it is not valid yet
 
 
     /**
@@ -84,58 +89,44 @@ public abstract class CSVImporter extends FileImporter {
     /**
      * {@inheritDoc}
      */
-    public boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-        importedData = new ArrayList<>();
-        importedRawData = new ArrayList<>();
+    public List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) throws Exception {
+        List<VaultEntry> importedData = new ArrayList<>();
         final int maxProgress = 100;
 
         //This list is used as a placeholder for future extensions
         List<String[]> metaEntries = new ArrayList<>();
 
         this.notifyStatus(0, "Reading Header");
-        try {
-            CsvReader creader = null;
-            if (getDelimiter() == 0) { //try to detect the delimiter by trial and error
-                LOG.log(Level.INFO, "using automatic delimiter detection");
-                char[] delimiterList = {',', ';', '\t'};
-                for (char delimiter : delimiterList) {
-                    creader = getValidatedCreader(delimiter, filenameForLogging, metaEntries);
-                    if (null != creader) {
-                        setDelimiter(delimiter);
-                        break;
-                    }
+        CsvReader creader = null;
+        if (getDelimiter() == 0) { //try to detect the delimiter by trial and error
+            LOG.log(Level.INFO, "using automatic delimiter detection");
+            char[] delimiterList = {',', ';', '\t'};
+            for (char delimiter : delimiterList) {
+                creader = getValidatedCreader(delimiter, filenameForLogging, metaEntries);
+                if (null != creader) {
+                    setDelimiter(delimiter);
+                    break;
                 }
-            } else { // use the delimiter that was set
-                creader = getValidatedCreader(getDelimiter(), filenameForLogging, metaEntries);
             }
-            if (creader == null) { //header could not be validated
-                LOG.log(Level.WARNING, "No valid header found in File:{0}", filenameForLogging);
-                return false;
-            }
-            // read entries
-            while (creader.readRecord()) {
-                /*here the method template is used to process all records */
-                List<VaultEntry> entryList = parseEntry(creader);
-
-                boolean entryIsInterpreted = false;
-                if (entryList != null && !entryList.isEmpty()) {
-                    for (VaultEntry item : entryList) {
-                        item.setRawId(importedRawData.size()); // add array position as raw id
-                        importedData.add(item);
-                        LOG.log(Level.FINE, "Got Entry: {0}", entryList.toString());
-                    }
-                    entryIsInterpreted = true;
-                }
-                importedRawData.add(new RawEntry(creader.getRawRecord(), entryIsInterpreted));
-                LOG.log(Level.FINER, "Put Raw: {0}", creader.getRawRecord());
-            }
-            this.notifyStatus(maxProgress, "Done importing all entries");
-
-        } catch (Exception ex) {
-            LOG.log(Level.WARNING, "Error while parsing CSV: "
-                    + filenameForLogging, ex);
+        } else { // use the delimiter that was set
+            creader = getValidatedCreader(getDelimiter(), filenameForLogging, metaEntries);
         }
-        return true;
+        if (creader == null) { //header could not be validated
+            LOG.log(Level.SEVERE, "No valid header found in File: " + filenameForLogging);
+            throw new Exception("No valid header found in File: " + filenameForLogging);
+        }
+        // read entries
+        while (creader.readRecord()) {
+            /*here the method template is used to process all records */
+            List<VaultEntry> entryList = parseEntry(creader);
+
+            if (entryList != null && !entryList.isEmpty()) {
+                importedData.addAll(entryList);
+            }
+        }
+        this.notifyStatus(maxProgress, "Done importing all entries");
+
+        return importedData;
     }
 
     /**
@@ -143,7 +134,7 @@ public abstract class CSVImporter extends FileImporter {
      *
      * @param csvReader Reader for CSV files.
      * @return List of VaultEntry holding the imported data.
-     * @throws Exception If a entry could not be parsed.
+     * @throws Exception If an entry could not be parsed.
      */
     protected abstract List<VaultEntry> parseEntry(CsvReader csvReader) throws Exception;
 

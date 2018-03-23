@@ -21,7 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryGsonAdapter;
-import de.opendiabetes.vault.plugin.importer.FileImporter;
+import de.opendiabetes.vault.plugin.fileimporter.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -29,7 +29,6 @@ import org.pf4j.PluginWrapper;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class ODVDBJsonImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static final class ODVDBJsonImporterImplementation extends FileImporter {
+    public static final class ODVDBJsonImporterImplementation extends AbstractFileImporter {
 
         /**
          * Empty preprocessing for ODVDB Json data, as it is not necessary for this type of data.
@@ -71,35 +70,27 @@ public class ODVDBJsonImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected boolean processImport(final InputStream fileInputStream, final String filenameForLogging) {
-            importedData = new ArrayList<>();
-            importedRawData = new ArrayList<>();
-
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging)
+                throws Exception {
             // prepare libs
             GsonBuilder builder = new GsonBuilder();
             builder.registerTypeAdapter(VaultEntry.class, new VaultEntryGsonAdapter());
             Gson gson = builder.create();
 
             // open stream
-            BufferedReader reader;
-            try {
-                reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
-            } catch (UnsupportedEncodingException exception) {
-                LOG.log(Level.SEVERE, "Can not handle fileInputStream, wrong encoding!");
-                return false;
-            }
+            BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
+
             // import
             Type listType = new TypeToken<ArrayList<VaultEntry>>() {
             }.getType();
             List<VaultEntry> importDb = gson.fromJson(reader, listType);
 
             if (importDb != null && !importDb.isEmpty()) {
-                importedData = importDb;
                 LOG.log(Level.FINE, "Successfully imported json file.");
-                return true;
+                return importDb;
             }
             LOG.log(Level.SEVERE, "Got no data from json import.");
-            return false;
+            throw new Exception("Got no data from json import.");
         }
 
         /**
@@ -110,13 +101,5 @@ public class ODVDBJsonImporter extends Plugin {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }

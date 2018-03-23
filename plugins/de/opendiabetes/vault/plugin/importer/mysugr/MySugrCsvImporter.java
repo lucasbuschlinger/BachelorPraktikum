@@ -20,7 +20,7 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.importer.CSVImporter;
+import de.opendiabetes.vault.plugin.fileimporter.CSVImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
@@ -105,7 +105,7 @@ public class MySugrCsvImporter extends Plugin {
                 timestamp = parseValidator.getManualTimestamp(csvReader);
             } catch (ParseException ex) {
                 //should not happen
-                timestamp = null;
+                return null;
             }
             if (timestamp == null) {
                 return null;
@@ -207,6 +207,8 @@ public class MySugrCsvImporter extends Plugin {
                             case "Demanding":
                                 annotation = new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.EXERCISE_demanding);
                                 break;
+                            default:
+                                LOG.log(Level.WARNING, "Skipping entry. Unknown intensity: " + intensity);
                         }
                         tmpEntry.addAnnotation(annotation);
                     }
@@ -288,13 +290,5 @@ public class MySugrCsvImporter extends Plugin {
         protected void preprocessingIfNeeded(final String filePath) {
         }
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getHelpFilePath() {
-            //TODO write help
-            return null;
-        }
     }
 }
