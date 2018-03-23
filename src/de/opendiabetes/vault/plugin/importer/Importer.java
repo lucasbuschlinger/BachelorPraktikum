@@ -16,12 +16,8 @@
  */
 package de.opendiabetes.vault.plugin.importer;
 
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
-
-import java.util.List;
-
 
 /**
  * @author Magnus Gärtner
@@ -32,12 +28,4 @@ import java.util.List;
  */
 public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
 
-    /**
-     * Imports the data.
-     *
-     * @return List of VaultEntry consisting of the imported data.
-     * @throws Exception Thrown if any kind of error occurs while importing
-     * @see de.opendiabetes.vault.container.VaultEntry
-     */
-    List<VaultEntry> importData() throws Exception;
 }

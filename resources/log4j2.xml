@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
-    <Appenders>
+    <!--Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d %p %c - %m%n"/>
         </Console>
-    </Appenders>
+    </Appenders-->
     <Loggers>
         <Logger name="org.pf4j" level="ERROR"/>
         <Logger name="org.pf4j.AbstractExtensionFinder" level="ERROR"/>

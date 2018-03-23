@@ -182,7 +182,7 @@ public final class OpenDiabetesPluginManager {
             input = new FileInputStream(Paths.get(configurationPath.toString(), filename).toFile());
             config.load(input);
             plugin.loadConfiguration(config);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -256,13 +256,19 @@ public final class OpenDiabetesPluginManager {
      *
      * @param pluginIDs a list of plugin IDs
      * @return a set of the plugins
+     * @throws PluginNotFoundException if one or more plugins could not be found with the given pluginID
      */
-    public List<OpenDiabetesPlugin> pluginsFromStringList(final Collection<String> pluginIDs) {
-        return pluginIDs
+    public List<OpenDiabetesPlugin> pluginsFromStringList(final Collection<String> pluginIDs) throws PluginNotFoundException {
+       return pluginIDs
                 .stream()
                 .map(pluginID -> getPluginFromString(OpenDiabetesPlugin.class, pluginID))
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Exception, thrown if there is no such plugin found.
+     */
+    static class PluginNotFoundException extends RuntimeException { }
 
     /**
      * Takes a pluginID and the class of the corresponding plugin and returns the corresponding plugin.
@@ -270,14 +276,15 @@ public final class OpenDiabetesPluginManager {
      * @param type     the class of the plugin
      * @param pluginID the name of the plugin
      * @param <T>      the type of the plugin specified in type
-     * @return the plugin <<pluginID>> with type <<type>>
+     * @return the plugin <<pluginID>> with type <<type>> returns null if the plugin was not found
+     * @throws PluginNotFoundException if there is no plugin found for the given pluginID
      */
-    public <T extends OpenDiabetesPlugin> T getPluginFromString(final Class<T> type, final String pluginID) {
+    public <T extends OpenDiabetesPlugin> T getPluginFromString(final Class<T> type, final String pluginID) throws PluginNotFoundException {
         OpenDiabetesPlugin plugin = plugins.get(pluginID);
         if (type.isInstance(plugin)) {
             return (T) plugin;
         }
-        return null;
+        throw new PluginNotFoundException();
     }
 
     /**

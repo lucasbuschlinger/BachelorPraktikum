@@ -16,7 +16,6 @@
  */
 package de.opendiabetes.vault.plugin.exporter;
 
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
 
@@ -28,9 +27,10 @@ import java.util.List;
  * Furthermore it serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
  * Thus all exporter plugins must implement this interface to get recognized as exporters.
  *
- * @author Lucas Buschlinger
+ * @author Lucas Buschlinger, Magnus Gärtner
+ * @param <U> Type of data accepted to export
  */
-public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
+public interface Exporter<U> extends ExtensionPoint, OpenDiabetesPlugin {
     /**
      * Return codes for exporting data.
      */
@@ -76,16 +76,6 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
     }
 
     /**
-     * This method is used to set the entries to export.
-     * Should only be used with exporters that do not export from {@link VaultEntry}
-     * but something different like {@link de.opendiabetes.vault.container.SliceEntry}.
-     *
-     * @param entries The entries which will be exported by the respective exporter.
-     * @throws IllegalArgumentException Thrown if the wrong kind of entries were set.
-     */
-    void setEntries(List<?> entries) throws IllegalArgumentException;
-
-    /**
      * Exports the data to a file.
      *
      * @param filePath File path where the data should be exported to.
@@ -93,5 +83,5 @@ public interface Exporter extends ExtensionPoint, OpenDiabetesPlugin {
      * @return The return code as specified in {@link ReturnCode}.
      * @throws IOException Thrown if there was an error exporting the data
      */
-    int exportDataToFile(String filePath, List<VaultEntry> data) throws IOException;
+     int exportDataToFile(String filePath, List<U>  data) throws IOException;
 }

@@ -213,9 +213,7 @@ public class PlotterExporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        @Override
-        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
-
+        protected  void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
             boolean python = isPythonInstalled();
             if (!python) {
                 LOG.log(Level.SEVERE, "Cannot plot data because python was not found");

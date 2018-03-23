@@ -17,12 +17,8 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 
-import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Most abstract exporter, implements the {@link Exporter} interface.
@@ -31,24 +27,9 @@ import java.util.List;
  * Takes care of handling status listeners {@link AbstractExporter#listeners}.
  *
  * @author Lucas Buschlinger
+ * @param <U> Type of data accepted to export
  */
-public abstract class AbstractExporter extends AbstractPlugin implements  Exporter {
+public abstract class AbstractExporter<U> extends AbstractPlugin implements  Exporter<U> {
 
-    /**
 
-     * Writes the export data to the file.
-     *
-     * @param filePath File path where the exported data should be written to.
-     * @param data The data to be written.
-     * @throws IOException Thrown if something goes wrong when writing the file.
-     */
-    protected abstract void writeToFile(String filePath, List<ExportEntry> data) throws IOException;
-
-    /**
-     * Prepares data for the export by putting it into exportable containers.
-     *
-     * @param data The data to be prepared.
-     * @return The data in exportable containers.
-     */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
 }
