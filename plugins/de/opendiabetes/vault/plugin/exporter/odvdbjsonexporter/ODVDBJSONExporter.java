@@ -26,6 +26,7 @@ import org.pf4j.PluginWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Wrapper class for the ODVDBJSONExporter plugin.
@@ -49,14 +50,16 @@ public class ODVDBJSONExporter extends Plugin {
     @Extension
     public static final class OdvDbJsonExporterImplementation extends FileExporter<ExportEntry, VaultEntry> {
 
+
         /**
-         * Prepares data for the export by putting it into exportable containers.
-         *
-         * @param data The data to be prepared.
-         * @return The data in exportable containers.
+         * {@inheritDoc}
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
+            if (data == null || data.isEmpty()) {
+                LOG.log(Level.SEVERE, "Data cannot be empty");
+                throw new IllegalArgumentException("Data cannot be empty");
+            }
             List<ExportEntry> container = new ArrayList<>();
             List<VaultEntry> tempData;
             if (getIsPeriodRestricted()) {

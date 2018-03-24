@@ -148,7 +148,7 @@ public class SourceCodeExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected List<String> prepareData(final List<VaultEntry> data) {
+        protected List<String> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
             if (data == null || data.isEmpty()) {
                 return null;
             }
