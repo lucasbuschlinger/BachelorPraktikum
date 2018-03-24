@@ -29,15 +29,19 @@ import java.util.List;
 public class ImportAndInterpretDataflowHelper {
 
     /**
-     * Imports and interprets data from a file given the filepath, the importer to use and the interpreters to apply sequentially to the imported data.
+     * Imports and interprets data from a file given the filepath,
+     * the importer to use and the interpreters to apply sequentially to the imported data.
      * The output of the last interpreter is then returned.
      * @param importer to use for importing the data from a file
      * @param path to the file
      * @param interpreters sequentially applied to the imported data
      * @return the output of the last interpreter.
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
-    public List<VaultEntry> importAndInterpretWithoutDb(final FileImporter importer, final String path, final List<Interpreter> interpreters) throws Exception{
+    public List<VaultEntry> importAndInterpretWithoutDb(final FileImporter importer,
+                                                        final String path,
+                                                        final List<Interpreter> interpreters)
+            throws Exception {
         // parse file
         List<VaultEntry> result = importer.importData(path);
         result = interpret(result, interpreters);
@@ -52,9 +56,10 @@ public class ImportAndInterpretDataflowHelper {
      * @param path to the file
      * @param interpreters sequentially applied to the imported data
      * @param db to export the result to.
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
-    public void importAndInterpret(final FileImporter importer, final String path, final List<Interpreter> interpreters, final VaultDAO db) throws Exception {
+    public void importAndInterpret(final FileImporter importer, final String path, final List<Interpreter> interpreters, final VaultDAO db)
+            throws Exception {
         // parse file
         List<VaultEntry> result = importer.importData(path);
         result = interpret(result, interpreters);
@@ -67,7 +72,7 @@ public class ImportAndInterpretDataflowHelper {
      * @param interpreters the interpreters that are applied sequentially to the input data
      * @return the output of the last interpreter
      */
-    private List<VaultEntry> interpret(final List<VaultEntry> input, final List<Interpreter> interpreters){
+    private List<VaultEntry> interpret(final List<VaultEntry> input, final List<Interpreter> interpreters) {
         List<VaultEntry> result = input;
         for (Interpreter interpreter : interpreters) {
             if (result == null || result.isEmpty()) {
@@ -83,7 +88,7 @@ public class ImportAndInterpretDataflowHelper {
      * @param db the database
      * @param entries to add to the database
      */
-    private void addEntriesToDB(final VaultDAO db, final List<VaultEntry> entries){
+    private void addEntriesToDB(final VaultDAO db, final List<VaultEntry> entries) {
         // update DB
         for (VaultEntry item : entries) {
             // put in db

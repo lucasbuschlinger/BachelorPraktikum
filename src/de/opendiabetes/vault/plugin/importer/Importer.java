@@ -22,7 +22,8 @@ import org.pf4j.ExtensionPoint;
 /**
  * @author Magnus Gärtner
  * @author Lucas Buschlinger
- * This interface bundles {@link de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter}  and {@link de.opendiabetes.vault.plugin.importer.crawlerimporter.CrawlerImporter}
+ * This interface bundles {@link de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter}
+ * and {@link de.opendiabetes.vault.plugin.importer.crawlerimporter.CrawlerImporter}
  * and marks all importer plugins.
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
  * Therefore all importer plugins must implement this interface to get recognized as importer.

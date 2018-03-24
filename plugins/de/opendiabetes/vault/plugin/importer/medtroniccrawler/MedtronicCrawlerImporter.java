@@ -115,7 +115,6 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             return plugin.importData(path);
         }
-        
         /**
          * Template method to load plugin specific configurations from the config file.
          *
