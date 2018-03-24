@@ -21,6 +21,7 @@ import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,7 +51,7 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements Fil
         File file = new File(filePath);
         if (!file.exists()) {
             LOG.log(Level.SEVERE, "File at given path does not exist.");
-            throw new IllegalArgumentException("File at given path does not exist.");
+            throw new FileNotFoundException("File at given path does not exist.");
         }
         preprocessingIfNeeded(filePath);
         this.notifyStatus(0, "Preprocessing done.");

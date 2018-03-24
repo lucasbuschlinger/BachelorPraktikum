@@ -50,7 +50,7 @@ public class GoogleFitCSVImporterTest {
         FileImporter googleFitCSVImporter = manager.getPluginFromString(FileImporter.class, "GoogleFitCSVImporter");
         try {
             googleFitCSVImporter.importData("path/to/data");
-        } catch (IllegalArgumentException exception) {
+        } catch (FileNotFoundException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");

@@ -35,6 +35,7 @@ public class LibreTextImporterTest {
         } catch (FileNotFoundException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
+            exception.printStackTrace();
             Assert.fail("Should have thrown FileNotFoundException");
         }
     }

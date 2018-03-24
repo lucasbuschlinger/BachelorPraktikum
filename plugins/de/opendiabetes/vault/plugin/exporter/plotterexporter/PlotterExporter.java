@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -27,7 +28,7 @@ public class PlotterExporter extends Plugin {
     /**
      * Path of the plugin directory.
      */
-    private static Path pluginPath = null;
+    //private static Path pluginPath = null;
 
     /**
      * Constructor for the {@link org.pf4j.PluginManager}.
@@ -36,7 +37,8 @@ public class PlotterExporter extends Plugin {
      */
     public PlotterExporter(final PluginWrapper wrapper) {
         super(wrapper);
-        pluginPath = this.wrapper.getPluginPath().toAbsolutePath();
+        //pluginPath = this.wrapper.getPluginPath().toAbsolutePath();
+        PlotterExporterImplementation.scriptPath = this.wrapper.getPluginPath().toAbsolutePath().resolve("assets/plot.py").toString();
     }
 
     /**
@@ -48,7 +50,7 @@ public class PlotterExporter extends Plugin {
         /**
          * The default temporary directory to use.
          */
-        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + "PlotterExporter";
+        private static final String DEFAULT_TEMP_DIR = Paths.get(System.getProperty("java.io.tmpdir"), "PlotterExporter").toString();
 
         /**
          * The default temporary filename to use.
@@ -74,12 +76,12 @@ public class PlotterExporter extends Plugin {
         /**
          * Selected plot format read from the configuration.
          */
-        private PlotFormats plotFormat;
+        protected PlotFormats plotFormat;
 
         /**
          * Path to the plotting script.
          */
-        private String scriptPath = PlotterExporter.pluginPath.resolve("assets/plot.py").toString();
+        static String scriptPath;
 
         /**
          * Runs the plot script.

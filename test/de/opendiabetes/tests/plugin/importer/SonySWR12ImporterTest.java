@@ -51,7 +51,7 @@ public class SonySWR12ImporterTest {
 
         try {
             sonySWR12Importer.importData("path/to/data");
-        } catch (IllegalArgumentException exception) {
+        } catch (FileNotFoundException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");

@@ -38,7 +38,7 @@ public class ODVDBJsonImporterTest {
     @Test
     public void pluginStart() throws PluginException {
         OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
-        manager.getPluginFromString(FileImporter.class, "ODVDBJsonImporter");
+        manager.getPluginFromString(FileImporter.class, "ODVDBJSONImporter");
 
     }
 
@@ -48,12 +48,12 @@ public class ODVDBJsonImporterTest {
     @Test
     public void callPlugin() {
         OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
-        FileImporter odvImporter = manager.getPluginFromString(FileImporter.class, "ODVDBJsonImporter");
+        FileImporter odvImporter = manager.getPluginFromString(FileImporter.class, "ODVDBJSONImporter");//TODO JSON?
 
         System.out.println("TEST" + odvImporter.getClass());
         try {
             odvImporter.importData("path/to/data");
-        } catch (IllegalArgumentException exception) {
+        } catch (FileNotFoundException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");

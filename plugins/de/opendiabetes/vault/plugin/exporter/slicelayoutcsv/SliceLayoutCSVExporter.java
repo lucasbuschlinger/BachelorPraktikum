@@ -55,7 +55,7 @@ public class SliceLayoutCSVExporter extends Plugin {
         protected  List<ExportEntry> prepareData(final List<SliceEntry> data) {
             List<ExportEntry> retVal = new ArrayList<>();
             for (SliceEntry item : data) {
-                retVal.add(new SliceCsVEntry(item));
+                retVal.add(new SliceCSVEntry(item));
             }
             return retVal;
         }

@@ -33,20 +33,9 @@ public class VaultCSVExporterTest {
         Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
         Handler handler = new Handler() {
             String logOut = "";
-            int msgsReceived = 0;
-
             @Override
             public void publish(final LogRecord record) {
                 logOut += record.getLevel().getName() + ": " + record.getMessage();
-                msgsReceived++;
-                if(msgsReceived == 6){
-                    Assert.assertTrue(
-                            logOut.contains(
-                                    "WARNING: The exporter's configuration does not specify " +
-                                            "whether the data is period restricted, defaulting to no period restriction")
-                                    && logOut.contains("INFO: Export data is not period restricted by the exporter's configuration.")
-                                    && logOut.contains("SEVERE: Either of the dates specified in the exporter's configuration is malformed. The expected format is dd/mm/yyyy."));
-                }
             }
 
             @Override
@@ -55,8 +44,12 @@ public class VaultCSVExporterTest {
 
             @Override
             public void close() throws SecurityException {
-                Assert.assertTrue(msgsReceived == 6);
-
+                Assert.assertTrue(
+                        logOut.contains(
+                                "WARNING: The exporter's configuration does not specify " +
+                                        "whether the data is period restricted, defaulting to no period restriction")
+                                && logOut.contains("INFO: Export data is not period restricted by the exporter's configuration.")
+                                && logOut.contains("SEVERE: Either of the dates specified in the exporter's configuration is malformed. The expected format is dd/mm/yyyy."));
             }
         };
         vaultCSVExporter.LOG.addHandler(handler);

@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.pf4j.PluginException;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -53,7 +54,7 @@ public class MedtronicImporterTest {
 
         try {
             medtronicImporter.importData("path/to/data");
-        } catch (IllegalArgumentException exception) {
+        } catch (FileNotFoundException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");
