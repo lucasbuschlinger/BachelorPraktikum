@@ -273,6 +273,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                 break;
             case BLOOD_PRESSURE:
                 csvEntry.setBloodPressure(entry.getValue());
+                break;
             case KETONES_MANUAL:
             case KETONES_BLOOD:
             case KETONES_URINE:

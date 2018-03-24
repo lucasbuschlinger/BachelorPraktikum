@@ -952,7 +952,7 @@ public class VaultCsvEntry extends CsvEntry {
 
         csvRecord.add(new SimpleDateFormat("dd.MM.yy").format(timestamp));
         csvRecord.add(new SimpleDateFormat("HH:mm").format(timestamp));
-        if (bgValue > 0.0) {
+        if (bgValue > UNINITIALIZED_DOUBLE) {
             csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, bgValue)
                     .replaceAll(",", ""));
         } else {
