@@ -38,7 +38,7 @@ public class SonySWR12ImporterTest {
     @Test
     public void pluginStart() throws PluginException {
         OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
-        FileImporter sonySWR12Importer = manager.getPluginFromString(FileImporter.class, "SonySWR12Importer");
+        manager.getPluginFromString(FileImporter.class, "SonySWR12Importer");
     }
 
     /**

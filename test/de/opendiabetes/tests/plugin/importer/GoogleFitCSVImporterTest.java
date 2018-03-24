@@ -38,7 +38,7 @@ public class GoogleFitCSVImporterTest {
     @Test
     public void pluginStart() throws PluginException {
         OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
-        FileImporter googleFitCSVImporter = manager.getPluginFromString(FileImporter.class, "GoogleFitCSVImporter");
+        manager.getPluginFromString(FileImporter.class, "GoogleFitCSVImporter");
     }
 
     /**

@@ -16,9 +16,11 @@
  */
 package de.opendiabetes.vault.data;
 
+import com.j256.ormlite.dao.CloseableIterator;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.db.HsqldbDatabaseType;
+import com.j256.ormlite.db.MysqlDatabaseType;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.logger.LocalLog;
 import com.j256.ormlite.logger.Log;
@@ -141,73 +143,73 @@ public final class VaultDAO {
 //        TableUtils.createTableIfNotExists(connectionSource, SliceEntry.class);
     }
 
-//        /**
-//     * Puts {@link VaultEntry}s into the database.
-//     *
-//     * @param entry The {@link VaultEntry} to be put into the database.
-//     * @return The ID of respective entry or {@link #RESULT_ERROR}.
-//     */
-//    public long putEntry(final VaultEntry entry) {
-//        try {
-//            return vaultDao.createIfNotExists(entry).getId();
-//        } catch (SQLException exception) {
-//           LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
-//            return RESULT_ERROR;
-//        }
-//    }
+        /**
+     * Puts {@link VaultEntry}s into the database.
+     *
+     * @param entry The {@link VaultEntry} to be put into the database.
+     * @return The ID of respective entry or {@link #RESULT_ERROR}.
+     */
+    public long putEntry(final VaultEntry entry) {
+        try {
+            return vaultDao.createIfNotExists(entry).getId();
+        } catch (SQLException exception) {
+           LOG.log(Level.SEVERE, "Error saving entry:\n" + entry.toString(), exception);
+            return RESULT_ERROR;
+        }
+    }
 
-//    /**
-//     * Searches the database for duplicate entries and removes them accordingly.
-//     *
-//     * @return True if no duplicate entries were found or all duplicate entries were successfully removed from the database.
-//     *          False if a duplicate entry could not be removed.
-//     */
-//    public boolean removeDuplicates() {
-//        // DELETE FROM MyTable WHERE RowId NOT IN (SELECT MIN(RowId) FROM MyTable GROUP BY Col1, Col2, Col3);
-//        // but we need a workaround for the or mapper
-//        try {
-//            PreparedQuery<VaultEntry> query
-//                    = vaultDao.queryBuilder().orderBy("timestamp", true)
-//                    .prepare();
-//            CloseableIterator<VaultEntry> iterator = vaultDao.iterator(query);
-//
-//            Date startGenerationTimestamp = null;
-//            List<VaultEntry> tmpList = new ArrayList<>();
-//            List<Long> duplicateId = new ArrayList<>();
-//            while (iterator.hasNext()) {
-//                VaultEntry entry = iterator.next();
-//                if (startGenerationTimestamp == null) {
-//                    // start up
-//                    startGenerationTimestamp = entry.getTimestamp();
-//                    tmpList.add(entry);
-//                } else if (!startGenerationTimestamp
-//                        .equals(entry.getTimestamp())) {
-//                    // not same timestamp --> new line generation
-//                    startGenerationTimestamp = entry.getTimestamp();
-//                    tmpList.clear();
-//                    tmpList.add(entry);
-//                } else {
-//                    // same timestamp --> check if it is a duplicate
-//                    for (VaultEntry item : tmpList) {
-//                        if (item.equals(entry)) {
-//                            // duplicate --> delete and move on
-//                            duplicateId.add(entry.getId());
-//                            break;
-//                        }
-//                    }
-//                }
-//            }
-//
-//            // delete duplicates
-//            int lines = vaultDao.deleteIds(duplicateId);
-//            LOG.log(Level.INFO, "Removed {0} duplicates", lines);
-//        } catch (SQLException exception) {
-//            LOG.log(Level.SEVERE, "Error while db query", exception);
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    /**
+     * Searches the database for duplicate entries and removes them accordingly.
+     *
+     * @return True if no duplicate entries were found or all duplicate entries were successfully removed from the database.
+     *          False if a duplicate entry could not be removed.
+     */
+    public boolean removeDuplicates() {
+        // DELETE FROM MyTable WHERE RowId NOT IN (SELECT MIN(RowId) FROM MyTable GROUP BY Col1, Col2, Col3);
+        // but we need a workaround for the or mapper
+        try {
+            PreparedQuery<VaultEntry> query
+                    = vaultDao.queryBuilder().orderBy("timestamp", true)
+                    .prepare();
+            CloseableIterator<VaultEntry> iterator = vaultDao.iterator(query);
+
+            Date startGenerationTimestamp = null;
+            List<VaultEntry> tmpList = new ArrayList<>();
+            List<Long> duplicateId = new ArrayList<>();
+            while (iterator.hasNext()) {
+                VaultEntry entry = iterator.next();
+                if (startGenerationTimestamp == null) {
+                    // start up
+                    startGenerationTimestamp = entry.getTimestamp();
+                    tmpList.add(entry);
+                } else if (!startGenerationTimestamp
+                        .equals(entry.getTimestamp())) {
+                    // not same timestamp --> new line generation
+                    startGenerationTimestamp = entry.getTimestamp();
+                    tmpList.clear();
+                    tmpList.add(entry);
+                } else {
+                    // same timestamp --> check if it is a duplicate
+                    for (VaultEntry item : tmpList) {
+                        if (item.equals(entry)) {
+                            // duplicate --> delete and move on
+                            duplicateId.add(entry.getId());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // delete duplicates
+            int lines = vaultDao.deleteIds(duplicateId);
+            LOG.log(Level.INFO, "Removed {0} duplicates", lines);
+        } catch (SQLException exception) {
+            LOG.log(Level.SEVERE, "Error while db query", exception);
+            return false;
+        }
+
+        return true;
+    }
 
 //    /**
 //     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.

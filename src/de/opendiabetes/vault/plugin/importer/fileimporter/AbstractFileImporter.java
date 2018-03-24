@@ -56,13 +56,15 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements Fil
         preprocessingIfNeeded(filePath);
         this.notifyStatus(0, "Preprocessing done.");
 
-        FileInputStream inputStream = new FileInputStream(filePath);
-        List<VaultEntry> result = processImport(inputStream, filePath);
-
+        FileInputStream inputStream = null;
+        List<VaultEntry> result = null;
         try {
-            inputStream.close();
-        } catch (Exception ex) {
-            LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + filePath, ex);
+            inputStream = new FileInputStream(filePath);
+            result = processImport(inputStream, filePath);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
 
         return result;

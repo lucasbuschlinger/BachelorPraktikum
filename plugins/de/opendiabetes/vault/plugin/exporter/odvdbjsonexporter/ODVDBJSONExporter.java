@@ -24,7 +24,6 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class ODVDBJSONExporter extends Plugin {
          * @return The data in exportable containers.
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data){
+        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
             List<ExportEntry> container = new ArrayList<>();
             List<VaultEntry> tempData;
             if (getIsPeriodRestricted()) {

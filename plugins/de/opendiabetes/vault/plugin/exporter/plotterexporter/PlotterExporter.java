@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
@@ -38,7 +37,7 @@ public class PlotterExporter extends Plugin {
     public PlotterExporter(final PluginWrapper wrapper) {
         super(wrapper);
         //pluginPath = this.wrapper.getPluginPath().toAbsolutePath();
-        PlotterExporterImplementation.scriptPath = this.wrapper.getPluginPath().toAbsolutePath().resolve("assets/plot.py").toString();
+        PlotterExporterImplementation.setScriptPath(this.wrapper.getPluginPath().toAbsolutePath().resolve("assets/plot.py").toString());
     }
 
     /**
@@ -76,12 +75,20 @@ public class PlotterExporter extends Plugin {
         /**
          * Selected plot format read from the configuration.
          */
-        protected PlotFormats plotFormat;
+        private PlotFormats plotFormat;
+
+        /**
+         * Sets the script path for the plugin used only in {@link PlotterExporter#PlotterExporter(PluginWrapper)}.
+         * @param scriptPath the script path
+         */
+        public static void setScriptPath(final String scriptPath) {
+            PlotterExporterImplementation.scriptPath = scriptPath;
+        }
 
         /**
          * Path to the plotting script.
          */
-        static String scriptPath;
+        private static String scriptPath;
 
         /**
          * Runs the plot script.
