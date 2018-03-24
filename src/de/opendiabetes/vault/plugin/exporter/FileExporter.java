@@ -20,7 +20,6 @@ import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 
 
-import javax.activation.UnsupportedDataTypeException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
