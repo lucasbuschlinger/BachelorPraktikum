@@ -24,9 +24,9 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
+import javax.activation.UnsupportedDataTypeException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Wrapper class for the ODVDBJSONExporter plugin.
@@ -48,7 +48,7 @@ public class ODVDBJSONExporter extends Plugin {
      * Actual implementation of the ODVDBJSONExporter.
      */
     @Extension
-    public static final class OdvDbJsonExporterImplementation extends FileExporter {
+    public static final class OdvDbJsonExporterImplementation extends FileExporter<ExportEntry, VaultEntry> {
 
         /**
          * Prepares data for the export by putting it into exportable containers.
@@ -57,27 +57,16 @@ public class ODVDBJSONExporter extends Plugin {
          * @return The data in exportable containers.
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected List<ExportEntry> prepareData(final List<VaultEntry> data){
             List<ExportEntry> container = new ArrayList<>();
             List<VaultEntry> tempData;
             if (getIsPeriodRestricted()) {
-               tempData = filterPeriodRestriction(data);
+               tempData = filterPeriodRestriction((List<VaultEntry>) data);
             } else {
-                tempData = data;
+                tempData = (List<VaultEntry>) data;
             }
             container.add(ODVDBJSONPseudoEntry.fromVaultEntryList(tempData));
             return container;
-        }
-
-        /**
-         * Unused, thus unimplemented.
-         *
-         * @param entries Nothing here.
-         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-         */
-        @Override
-        public void setEntries(final List<?> entries) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
     }

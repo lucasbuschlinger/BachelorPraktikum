@@ -1,9 +1,8 @@
 package de.opendiabetes.tests.plugin.management;
 
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
-import de.opendiabetes.vault.plugin.crawlerimporter.CrawlerImporter;
+import de.opendiabetes.vault.plugin.importer.crawlerimporter.CrawlerImporter;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
-import de.opendiabetes.vault.plugin.importer.Importer;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import de.opendiabetes.vault.plugin.util.HelpLanguage;
 import org.junit.Test;

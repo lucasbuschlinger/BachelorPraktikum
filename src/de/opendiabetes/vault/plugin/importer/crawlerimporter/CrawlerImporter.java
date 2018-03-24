@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.crawlerimporter;
+package de.opendiabetes.vault.plugin.importer.crawlerimporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.Importer;
@@ -11,6 +11,7 @@ import java.util.List;
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
  * Therefore all file importer plugins must implement this interface to get recognized as crawler importer.
  */
+
 public interface CrawlerImporter extends Importer {
 
     /**

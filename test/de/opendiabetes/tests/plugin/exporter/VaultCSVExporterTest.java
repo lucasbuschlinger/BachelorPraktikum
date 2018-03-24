@@ -1,7 +1,9 @@
 package de.opendiabetes.tests.plugin.exporter;
 
 import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
+import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.junit.Assert;
 import org.junit.Test;
 import org.pf4j.DefaultPluginManager;
@@ -19,11 +21,8 @@ public class VaultCSVExporterTest {
 
     @Test
     public void pluginStart() throws PluginException {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.enablePlugin("VaultCSVExporter");
-        manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("VaultCSVExporter"));
+        OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+        manager.getPluginFromString(OpenDiabetesPlugin.class, "VaultCSVExporter");
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.logging.Level;
 /**
  * This class implements functionality shared by the exporters exporting from the Vault database.
  */
-public abstract class VaultExporter extends CSVFileExporter {
+public abstract class VaultExporter extends CSVFileExporter<ExportEntry, VaultEntry> {
     /**
      * Buffer for the entries before they get exported.
      */
@@ -35,7 +35,7 @@ public abstract class VaultExporter extends CSVFileExporter {
 
         if (data == null || data.isEmpty()) {
             LOG.log(Level.SEVERE, "Data cannot be empty");
-            throw new IllegalArgumentException("Data cannot be empty");
+            throw new IllegalArgumentException("Data cannot be empty"); //TODO better return null and remove IllegalArgumentException from parent class aswell
         }
 
         List<ExportEntry> returnValues = new ArrayList<>();
@@ -318,14 +318,4 @@ public abstract class VaultExporter extends CSVFileExporter {
         return csvEntry;
     }
 
-    /**
-     * Unused, thus unimplemented.
-     *
-     * @param entries Nothing here.
-     * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-     */
-    @Override
-    public void setEntries(final List<?> entries) throws IllegalArgumentException {
-        LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
-    }
 }

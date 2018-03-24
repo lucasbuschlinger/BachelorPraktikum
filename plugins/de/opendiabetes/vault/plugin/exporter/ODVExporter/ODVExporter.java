@@ -19,10 +19,9 @@ package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
-import org.pf4j.DefaultPluginManager;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
-import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
@@ -62,7 +61,7 @@ public class ODVExporter extends Plugin {
      * Actual implementation of the ODVExporter plugin.
      */
     @Extension
-    public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter {
+    public static final class ODVExporterImplementation extends AbstractPlugin implements Exporter<VaultEntry> {
 
         /**
          * The properties which will get passed on to the exporters.
@@ -101,17 +100,6 @@ public class ODVExporter extends Plugin {
         }
 
         /**
-         * Unused, thus unimplemented.
-         *
-         * @param entries Nothing here.
-         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-         */
-        @Override
-        public void setEntries(final List<?> entries) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
-        }
-
-        /**
          * {@inheritDoc}
          */
         @Override
@@ -130,11 +118,10 @@ public class ODVExporter extends Plugin {
                     throw new IOException("Could not create temporary folder");
                 }
             }
-            PluginManager manager = new DefaultPluginManager();
-            manager.loadPlugins();
-            manager.startPlugins();
-            List<Exporter> exporters = manager.getExtensions(Exporter.class);
+            OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+            List<Exporter> exporters = manager.getPluginsOfType(Exporter.class);
             for (Exporter exporter : exporters) {
+
                 String name = exporter.getClass().getName().replaceAll(".*\\$", "")
                         .replace("Implementation", "");
                 if (name.contains("ODVExporter") || metaData.containsKey(name)) {
@@ -146,7 +133,7 @@ public class ODVExporter extends Plugin {
                 exporter.registerStatusCallback((progress, status)
                         -> notifyStatus(progress, name + ": " + status));
                 try {
-                    exporter.exportDataToFile(exportFile, data);
+                    exporter.exportDataToFile(exportFile,  data);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;

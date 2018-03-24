@@ -17,7 +17,6 @@
 package de.opendiabetes.vault.plugin.exporter.slicelayoutcsv;
 
 import de.opendiabetes.vault.container.SliceEntry;
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.container.csv.SliceCSVEntry;
 import de.opendiabetes.vault.plugin.exporter.CSVFileExporter;
@@ -27,7 +26,6 @@ import org.pf4j.PluginWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 /**
  * Wrapper class for the SliceLayoutCSVExporter plugin.
@@ -49,44 +47,17 @@ public class SliceLayoutCSVExporter extends Plugin {
      * Actual implementation of the SliceLayoutCSVExporter.
      */
     @Extension
-    public static final class SliceLayoutCSVExporterImplementation extends CSVFileExporter {
-
-        /**
-         * The entries to be exported by the SliceLayoutCSVExporter plugins.
-         */
-        private List<SliceEntry> entries;
-
-
+    public static final class SliceLayoutCSVExporterImplementation extends CSVFileExporter<ExportEntry, SliceEntry> {
         /**
          * {@inheritDoc}
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected  List<ExportEntry> prepareData(final List<SliceEntry> data) {
             List<ExportEntry> retVal = new ArrayList<>();
-            for (SliceEntry item : entries) {
-                retVal.add(new SliceCSVEntry(item));
+            for (SliceEntry item : data) {
+                retVal.add(new SliceCsVEntry(item));
             }
             return retVal;
-        }
-
-        /**
-         * This sets the List of {@link SliceEntry} which will be exported by this exporter.
-         *
-         * @param entries The entries which will be exported by the SliceLayoutCSVExporter.
-         * @throws IllegalArgumentException Thrown if the entries of the supplied list are not of type {@link SliceEntry}
-         */
-        @Override
-        public void setEntries(final List<?> entries) throws IllegalArgumentException {
-            if (entries != null && !entries.isEmpty()) {
-                if (entries.get(0) instanceof SliceEntry) {
-                    this.entries = (List<SliceEntry>) entries;
-                } else {
-                    LOG.log(Level.SEVERE, "Entries are not of type SliceEntry");
-                    throw new IllegalArgumentException("Entries are not of type SliceEntry");
-                }
-            } else {
-                LOG.log(Level.SEVERE, "No data supplied to be set");
-            }
         }
 
     }
