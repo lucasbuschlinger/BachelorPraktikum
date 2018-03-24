@@ -18,7 +18,6 @@ package de.opendiabetes.vault.plugin.management;
 
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import de.opendiabetes.vault.plugin.util.HelpLanguage;
-import org.pf4j.DefaultPluginManager;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -54,7 +53,7 @@ public final class OpenDiabetesPluginManager {
     /**
      * Internal plugin manager provided by pf4j.
      */
-    private DefaultPluginManager pf4jManager;
+    private InternalPluginManager pf4jManager;
 
     /**
      * A map containing all compatible plugins for each plugin individually.
@@ -79,7 +78,7 @@ public final class OpenDiabetesPluginManager {
      */
     private OpenDiabetesPluginManager(final Path pluginPath, final Path configurationPath) {
         this.configurationPath = configurationPath;
-        pf4jManager = new DefaultPluginManager(pluginPath);
+        pf4jManager = new InternalPluginManager(pluginPath);
         pf4jManager.loadPlugins();
         pf4jManager.startPlugins();
         pf4jManager.getExtensions(OpenDiabetesPlugin.class).forEach(plugin -> plugins.put(pluginToString(plugin), plugin));

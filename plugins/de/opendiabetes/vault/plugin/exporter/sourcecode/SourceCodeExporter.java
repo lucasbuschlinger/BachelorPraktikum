@@ -18,7 +18,7 @@ package de.opendiabetes.vault.plugin.exporter.sourcecode;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
-import de.opendiabetes.vault.container.csv.CsvEntry;
+import de.opendiabetes.vault.container.csv.CSVEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
 import de.opendiabetes.vault.plugin.exporter.VaultExporter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
@@ -170,7 +170,7 @@ public class SourceCodeExporter extends Plugin {
 
             // Dirty hack again to overcome safety features
             ArrayList<ExportEntry> dummy = new ArrayList<>();
-            dummy.add(new CsvEntry() {
+            dummy.add(new CSVEntry() {
                 @Override
                 public String[] toCsvRecord() {
                     return new String[] {};

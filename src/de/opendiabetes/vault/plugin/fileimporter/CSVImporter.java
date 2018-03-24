@@ -18,7 +18,7 @@ package de.opendiabetes.vault.plugin.fileimporter;
 
 import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
+import de.opendiabetes.vault.plugin.fileimporter.validator.CSVValidator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -119,7 +119,6 @@ public abstract class CSVImporter extends AbstractFileImporter {
         while (creader.readRecord()) {
             /*here the method template is used to process all records */
             List<VaultEntry> entryList = parseEntry(creader);
-
             if (entryList != null && !entryList.isEmpty()) {
                 importedData.addAll(entryList);
             }

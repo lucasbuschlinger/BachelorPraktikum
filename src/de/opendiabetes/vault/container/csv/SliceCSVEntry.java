@@ -26,7 +26,7 @@ import java.util.Locale;
 /**
  * The class implements a slicer for CSV based entries.
  */
-public class SliceCsVEntry extends CsvEntry {
+public class SliceCSVEntry extends CSVEntry {
 
     /**
      * The version.
@@ -46,7 +46,7 @@ public class SliceCsVEntry extends CsvEntry {
      * Constructor for a sliced CSV entry.
      * @param data The chunk of data to be sliced from.
      */
-    public SliceCsVEntry(final SliceEntry data) {
+    public SliceCSVEntry(final SliceEntry data) {
         this.data = data;
     }
 

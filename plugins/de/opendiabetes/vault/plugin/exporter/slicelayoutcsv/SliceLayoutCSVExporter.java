@@ -19,7 +19,7 @@ package de.opendiabetes.vault.plugin.exporter.slicelayoutcsv;
 import de.opendiabetes.vault.container.SliceEntry;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
-import de.opendiabetes.vault.container.csv.SliceCsVEntry;
+import de.opendiabetes.vault.container.csv.SliceCSVEntry;
 import de.opendiabetes.vault.plugin.exporter.CSVFileExporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -64,7 +64,7 @@ public class SliceLayoutCSVExporter extends Plugin {
         protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
             List<ExportEntry> retVal = new ArrayList<>();
             for (SliceEntry item : entries) {
-                retVal.add(new SliceCsVEntry(item));
+                retVal.add(new SliceCSVEntry(item));
             }
             return retVal;
         }

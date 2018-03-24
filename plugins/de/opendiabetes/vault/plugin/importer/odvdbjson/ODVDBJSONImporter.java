@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.container.VaultEntryGsonAdapter;
+import de.opendiabetes.vault.container.VaultEntryGSONAdapter;
 import de.opendiabetes.vault.plugin.fileimporter.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -36,18 +36,18 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 /**
- * Wrapper class for the ODVDBJsonImporter plugin.
+ * Wrapper class for the ODVDBJSONImporter plugin.
  *
  * @author Lucas Buschlinger
  */
-public class ODVDBJsonImporter extends Plugin {
+public class ODVDBJSONImporter extends Plugin {
 
     /**
      * Constructor for the PluginManager.
      *
      * @param wrapper The PluginWrapper.
      */
-    public ODVDBJsonImporter(final PluginWrapper wrapper) {
+    public ODVDBJSONImporter(final PluginWrapper wrapper) {
         super(wrapper);
     }
 
@@ -74,7 +74,7 @@ public class ODVDBJsonImporter extends Plugin {
                 throws Exception {
             // prepare libs
             GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(VaultEntry.class, new VaultEntryGsonAdapter());
+            builder.registerTypeAdapter(VaultEntry.class, new VaultEntryGSONAdapter());
             Gson gson = builder.create();
 
             // open stream
