@@ -64,7 +64,7 @@ public class DiaryInterpreter extends Plugin {
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return true;
         }
     }
 }

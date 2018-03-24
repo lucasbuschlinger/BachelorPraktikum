@@ -45,7 +45,7 @@ import java.util.logging.Logger;
  * @author Jens Heuschkel
  * @author Lucas Buschlinger
  */
-public final class VaultDao {
+public final class VaultDAO {
 
     /**
      * Error code indicating that an error occurred.
@@ -59,11 +59,11 @@ public final class VaultDao {
     /**
      * The {@link Logger} used by this Vault Database Access Object.
      */
-    private static final Logger LOG = Logger.getLogger(VaultDao.class.getName());
+    private static final Logger LOG = Logger.getLogger(VaultDAO.class.getName());
     /**
      * The instance of the Database Access Object used herein.
      */
-    private static VaultDao instance = null;
+    private static VaultDAO instance = null;
 
     /**
      * The {@link ConnectionSource} used herein.
@@ -78,7 +78,7 @@ public final class VaultDao {
      * Default constructor for the Vault Database Access Object.
      * It is declared private as {@link #initializeDb()} has to be used to set up the database access.
      */
-    private VaultDao() {
+    private VaultDAO() {
     }
 
     /**
@@ -87,9 +87,9 @@ public final class VaultDao {
      *
      * @return The instance of the Vault Database Access Object, provided it has been initialized by {@link #initializeDb()}.
      */
-    public static VaultDao getInstance() {
+    public static VaultDAO getInstance() {
         if (instance == null) {
-            LOG.severe("Database is not initialized. Call VaultDao.initializeDb first!");
+            LOG.severe("Database is not initialized. Call VaultDAO.initializeDb first!");
             System.exit(-1);
         }
         return instance;
@@ -118,7 +118,7 @@ public final class VaultDao {
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY,
                 Log.Level.INFO.toString());
 
-        instance = new VaultDao();
+        instance = new VaultDAO();
         instance.initDb();
     }
 

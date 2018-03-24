@@ -18,7 +18,7 @@ package de.opendiabetes.vault.plugin.fileimporter;
 
 import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
+import de.opendiabetes.vault.plugin.fileimporter.validator.CSVValidator;
 
 import java.io.IOException;
 import java.io.InputStream;

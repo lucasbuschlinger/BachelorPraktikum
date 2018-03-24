@@ -8,7 +8,6 @@ import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 public class LibreTextImporterTest {
@@ -49,7 +48,7 @@ public class LibreTextImporterTest {
         FileImporter LibreTextImporter = (FileImporter)manager.getExtensions(Importer.class).get(0);
         try {
             LibreTextImporter.importData("path/to/data");
-        } catch (FileNotFoundException exception) {
+        } catch (IllegalArgumentException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");

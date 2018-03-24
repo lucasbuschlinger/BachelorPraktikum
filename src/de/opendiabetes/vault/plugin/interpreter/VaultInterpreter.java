@@ -16,7 +16,7 @@
  */
 package de.opendiabetes.vault.plugin.interpreter;
 
-import de.opendiabetes.vault.data.VaultDao;
+import de.opendiabetes.vault.data.VaultDAO;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 /**
@@ -28,16 +28,16 @@ import de.opendiabetes.vault.plugin.common.AbstractPlugin;
  */
 public abstract class VaultInterpreter extends AbstractPlugin implements Interpreter {
     /**
-     * The data access object {@link VaultDao} used by the interpreter.
+     * The data access object {@link VaultDAO} used by the interpreter.
      */
-    private VaultDao database;
+    private VaultDAO database;
 
     /**
      * Initializes the database by setting its field to the given argument.
      * @param database the database to be set
      */
     @Override
-    public void init(final VaultDao database) {
+    public void init(final VaultDAO database) {
         this.database = database;
     }
 
@@ -45,7 +45,7 @@ public abstract class VaultInterpreter extends AbstractPlugin implements Interpr
      * Getter for the database.
      * @return the database
      */
-    protected VaultDao getDatabase() {
+    protected VaultDAO getDatabase() {
         return database;
     }
 }

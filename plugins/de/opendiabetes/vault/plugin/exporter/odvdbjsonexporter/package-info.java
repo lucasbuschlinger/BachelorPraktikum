@@ -1,4 +1,4 @@
 /**
- * This package contains the OdvDbJsonExporter plugin.
+ * This package contains the ODVDBJSONExporter plugin.
  */
 package de.opendiabetes.vault.plugin.exporter.odvdbjsonexporter;

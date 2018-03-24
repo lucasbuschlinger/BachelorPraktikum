@@ -6,7 +6,6 @@
 
     <property name="plugin.path" value="export"/>
 
-
     <!-- Uncomment the following property if no tests compilation is needed -->
     <!--
     <property name="skip.tests" value="true"/>
@@ -92,74 +91,14 @@
 
     <!-- Project Libraries -->
 
-    <path id="library.log4j2">
-        <pathelement location="${basedir}/lib/log4j-api-2.10.0.jar"/>
-        <pathelement location="${basedir}/lib/log4j-core-2.10.0.jar"/>
-        <pathelement location="${basedir}/lib/log4j-slf4j-impl-2.10.0.jar"/>
+    <path id="libraries.base">
+        <fileset dir="lib" includes="*.jar"/>
     </path>
-
-    <path id="library.slf4j">
-        <pathelement location="${basedir}/lib/slf4j-api-1.7.5.jar"/>
+    <path id="libraries.plugins">
+        <fileset dir="plugins" includes="**/lib/*.jar"/>
     </path>
-
-    <path id="jackson">
-        <path location="${basedir}/lib/jackson-core-2.9.4.jar"/>
-        <path location="${basedir}/lib/jackson-databind-2.9.4.jar"/>
-        <path location="${basedir}/lib/jackson-annotations-2.9.0.jar"/>
-    </path>
-
-
-    <path id="library.ormlite-jdbc-5.0.classpath">
-        <pathelement location="${basedir}/lib/gson-2.8.0.jar"/>
-        <pathelement location="${basedir}/lib/hsqldb.jar"/>
-        <pathelement location="${basedir}/lib/javacsv.jar"/>
-        <pathelement location="${basedir}/lib/ormlite-core-5.0.jar"/>
-        <pathelement location="${basedir}/lib/ormlite-jdbc-5.0.jar"/>
-        <pathelement location="${basedir}/lib/servlet-2_3-fcs-classfiles.zip"/>
-        <pathelement location="${basedir}/lib/sqltool.jar"/>
-    </path>
-
-    <path id="library.jsoup.classpath">
-        <pathelement location="${basedir}/lib/jsoup-1.10.2.jar"/>
-    </path>
-
-    <path id="library.openqa-selenium.classpath">
-        <pathelement location="${basedir}/lib/client-combined-3.4.0-nodeps.jar"/>
-    </path>
-
-    <path id="library.commons-cli.classpath">
-        <pathelement location="${basedir}/lib/commons-cli-1.4.jar"/>
-    </path>
-
-    <path id="library.google.classpath">
-        <pathelement location="${basedir}/lib/google-api-client-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-api-client-jackson2-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-api-services-fitness-v1-rev30-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-api-services-people-v1-rev213-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-http-client-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-http-client-jackson2-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-maps-services-0.2.6.jar"/>
-        <pathelement location="${basedir}/lib/google-oauth-client-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-oauth-client-java6-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/google-oauth-client-jetty-1.23.0.jar"/>
-        <pathelement location="${basedir}/lib/jsr305-1.3.9.jar"/>
-    </path>
-
-    <path id="library.jfree-chart.classpath">
-        <pathelement location="${basedir}/lib/jcommon-1.0.23.jar"/>
-        <pathelement location="${basedir}/lib/jfreechart-1.0.19.jar"/>
-    </path>
-
-    <path id="library.junit.classpath">
-        <pathelement location="${basedir}/testlib/junit-4.12.jar"/>
-    </path>
-
-    <path id="library.ant-junit.classpath">
-        <pathelement location="${basedir}/testlib/ant-junit.jar"/>
-    </path>
-
-    <path id="library.pf4j-2.0.0.classpath">
-        <pathelement location="${basedir}/lib/pf4j-2.0.0.jar"/>
+    <path id="libraries.test">
+        <fileset dir="testlib" includes="*.jar"/>
     </path>
 
     <!-- Global Libraries -->
@@ -171,13 +110,6 @@
         <pathelement location="${javac2.home}/asm-all.jar"/>
         <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
     </path>
-    <!--
-    <target name="register.custom.compilers">
-        <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-        <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions"
-                 classpathref="javac2.classpath"/>
-    </target>
-    -->
     <!-- Modules -->
 
     <!-- Module OpenDiabetes -->
@@ -196,74 +128,27 @@
     <path id="opendiabetes.module.bootclasspath">
         <!-- Paths to be included in compilation bootclasspath -->
     </path>
-    <path id="opendiabetes.module.production.classpath">
+    <!-- Classpath holding all classes for the Base and it's libraries -->
+    <path id="opendiabetes.classpath.base">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jfree-chart.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.openqa-selenium.classpath"/>
-        <path refid="library.commons-cli.classpath"/>
-        <path refid="jackson"/>
+        <path refid="libraries.base"/>
     </path>
-    <path id="opendiabetes.runtime.production.module.classpath">
-        <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jfree-chart.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.openqa-selenium.classpath"/>
-        <path refid="library.commons-cli.classpath"/>
-        <path refid="jackson"/>
-    </path>
-    <path id="opendiabetes.module.classpath">
+    <!-- Full classpath containing all compiled classes and libraries-->
+    <path id="opendiabetes.classpath.full">
         <path refid="${module.jdk.classpath.opendiabetes}"/>
         <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jfree-chart.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.openqa-selenium.classpath"/>
-        <path refid="library.commons-cli.classpath"/>
-        <path refid="jackson"/>
+        <path refid="libraries.base"/>
+        <path refid="libraries.plugins"/>
+        <path refid="libraries.test"/>
     </path>
-    <path id="opendiabetes.runtime.module.classpath">
-        <pathelement location="${opendiabetes.testoutput.dir}"/>
-        <pathelement location="${opendiabetes.output.dir}"/>
-        <path refid="library.pf4j-2.0.0.classpath"/>
-        <path refid="library.ormlite-jdbc-5.0.classpath"/>
-        <path refid="library.log4j2"/>
-        <path refid="library.slf4j"/>
-        <path refid="library.junit.classpath"/>
-        <path refid="library.ant-junit.classpath"/>
-        <path refid="library.google.classpath"/>
-        <path refid="library.jfree-chart.classpath"/>
-        <path refid="library.jsoup.classpath"/>
-        <path refid="library.openqa-selenium.classpath"/>
-        <path refid="library.commons-cli.classpath"/>
-        <path refid="jackson"/>
-    </path>
+
     <patternset id="excluded.from.module.opendiabetes">
         <patternset refid="ignored.files"/>
     </patternset>
     <patternset id="excluded.from.compilation.opendiabetes">
         <patternset refid="excluded.from.module.opendiabetes"/>
     </patternset>
+    <!-- Full source path containing all source files and libraries -->
     <path id="opendiabetes.module.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="src"/>
@@ -271,46 +156,72 @@
             <include name="plugins"/>
         </dirset>
     </path>
+    <!-- Source path for the tests -->
     <path id="opendiabetes.module.test.sourcepath">
         <dirset dir="${module.opendiabetes.basedir}">
             <include name="test"/>
         </dirset>
     </path>
-    <target name="compile.module.opendiabetes"
-            depends="compile.module.opendiabetes.production"
-            description="Compile module OpenDiabetes"/>
-    <target name="compile.module.opendiabetes.production"
-            description="Compile module OpenDiabetes; production classes">
+    <!-- Source path for the OpenDiabetes base -->
+    <path id="opendiabetes.module.base.sourcepath">
+        <dirset dir="${module.opendiabetes.basedir}">
+            <include name="src"/>
+            <include name="lib"/>
+        </dirset>
+    </path>
+
+    <!-- Compiles all available source files, needed for plugin creation -->
+    <target name="compile.opendiabetes.all"
+                     description="Compile OpenDiabetes; all classes (plugins + base)">
+    <mkdir dir="${opendiabetes.output.dir}"/>
+    <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}"
+           nowarn="${compiler.generate.no.warnings}"
+           memorymaximumsize="${compiler.max.memory}" fork="true">
+        <compilerarg line="${compiler.args.opendiabetes}"/>
+        <bootclasspath refid="opendiabetes.module.bootclasspath"/>
+        <classpath refid="opendiabetes.classpath.full"/>
+        <src refid="opendiabetes.module.sourcepath"/>
+        <patternset refid="excluded.from.compilation.opendiabetes"/>
+    </javac>
+
+    <copy todir="${opendiabetes.output.dir}">
+        <fileset dir="${module.opendiabetes.basedir}/src">
+            <patternset refid="compiler.resources"/>
+            <type type="file"/>
+        </fileset>
+        <fileset dir="${module.opendiabetes.basedir}/lib">
+            <patternset refid="compiler.resources"/>
+            <type type="file"/>
+        </fileset>
+    </copy>
+    </target>
+
+    <!-- Compiles the source of the OpenDiabetes base -->
+    <target name="compile.opendiabetes.base"
+            description="Compile base classes of OpenDiabetes">
+        <delete dir="${opendiabetes.output.dir}" quiet="true"/>
         <mkdir dir="${opendiabetes.output.dir}"/>
         <javac destdir="${opendiabetes.output.dir}" debug="${compiler.debug}"
                nowarn="${compiler.generate.no.warnings}"
                memorymaximumsize="${compiler.max.memory}" fork="true">
-            <!--executable="${java.home}/lib">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
-            <classpath refid="opendiabetes.module.production.classpath"/>
-            <src refid="opendiabetes.module.sourcepath"/>
+            <classpath refid="opendiabetes.classpath.base"/>
+            <src refid="opendiabetes.module.base.sourcepath"/>
+            <exclude name="**/package-info.java"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
         </javac>
-
         <copy todir="${opendiabetes.output.dir}">
             <fileset dir="${module.opendiabetes.basedir}/src">
                 <patternset refid="compiler.resources"/>
                 <type type="file"/>
             </fileset>
-            <fileset dir="${module.opendiabetes.basedir}/lib">
-                <patternset refid="compiler.resources"/>
-                <type type="file"/>
-            </fileset>
-            <!--fileset dir="${module.opendiabetes.basedir}/plugins">
-                <patternset refid="compiler.resources"/>
-                <type type="file"/>
-            </fileset -->
         </copy>
     </target>
 
-    <target name="compile.module.opendiabetes.tests"
-            depends="compile.module.opendiabetes.production"
+    <!-- Compiles the test source files -->
+    <target name="compile.opendiabetes.tests"
+            depends="compile.opendiabetes.all"
             description="compile module OpenDiabetes; test classes"
             unless="skip.tests">
         <mkdir dir="${opendiabetes.testoutput.dir}"/>
@@ -321,7 +232,7 @@
             <!--executable="${module.jdk.bin.opendiabetes}/javac">-->
             <compilerarg line="${compiler.args.opendiabetes}"/>
             <bootclasspath refid="opendiabetes.module.bootclasspath"/>
-            <classpath refid="opendiabetes.module.classpath"/>
+            <classpath refid="opendiabetes.classpath.full"/>
             <src refid="opendiabetes.module.test.sourcepath"/>
             <patternset refid="excluded.from.compilation.opendiabetes"/>
         </javac>
@@ -333,24 +244,13 @@
             </fileset>
         </copy>
     </target>
-    <target name="clean.module.opendiabetes" description="cleanup module">
+
+    <!-- Cleans the working directory of all compilation and build artifacts. -->
+    <target name="clean" description="Cleanup">
         <delete dir="plugins_out"/>
         <delete dir="export"/>
         <delete dir="out"/>
     </target>
-
-    <target name="init" description="Build initialization">
-        <!-- Perform any build initialization in this target -->
-    </target>
-
-    <target name="clean" depends="clean.module.opendiabetes"
-            description="cleanup all"/>
-
-    <path id="libs-classpath">
-        <fileset dir="lib">
-            <include name="*.jar"/>
-        </fileset>
-    </path>
 
     <taskdef resource="net/sf/antcontrib/antcontrib.properties">
         <classpath>
@@ -358,7 +258,8 @@
         </classpath>
     </taskdef>
 
-    <target name="plugin" depends="compile.module.opendiabetes">
+    <!-- Task to compile and build all available plugins -->
+    <target name="plugin" depends="compile.opendiabetes.all">
         <foreach target="plugin.compile" param="att1">
             <fileset dir="plugins" casesensitive="yes">
                 <include name="**/plugin.properties"/>
@@ -369,6 +270,7 @@
                   value="plugins/de/opendiabetes/vault/plugin"/>
     </target>
 
+    <!-- Compilation and packing of a single plugin -->
     <target name="plugin.compile">
         <dirname file="${att1}" property="plugin.src.path"/>
 
@@ -381,15 +283,24 @@
         <copy todir="plugins_out/assets" quiet="true" failonerror="false">
             <fileset dir="${plugin.src.path}/assets"/>
         </copy>
-        <!--<copydir src="lib" dest="plugins_out/lib"/>-->
+        <copy todir="plugins_out/lib" quiet="true" failonerror="false">
+            <fileset dir="${plugin.src.path}/lib"/>
+        </copy>
         <copy todir="plugins_out" quiet="true" failonerror="false">
             <fileset dir="${plugin.src.path}">
                 <include name="*.properties"/>
-                <include name="help.md"/>
+                <include name="help*.md"/>
             </fileset>
         </copy>
+        <path id="plugin.classpath">
+            <pathelement location="${opendiabetes.output.dir}"/>
+            <path refid="libraries.base"/>
+            <path>
+                <fileset dir="${plugin.src.path}/lib" includes="*.jar" erroronmissingdir="false"/>
+            </path>
+        </path>
         <javac srcdir="${plugin.src.path}" destdir="plugins_out/classes"
-               classpathref="opendiabetes.module.classpath"/>
+               classpathref="plugin.classpath"/>
         <zip destfile="${plugin.path}/${plugin.id}-${plugin.version}.zip"
              basedir="plugins_out"/>
     </target>
@@ -399,7 +310,7 @@
                 locale="de,GERMANY"/>
     </tstamp>
 
-    <!-- Working checkstyle task! -->
+    <!-- Task to run Checkstyle analysis and generating a HTML report therefor-->
     <taskdef
             resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
             classpath="${basedir}/testlib/checkstyle-8.5-all.jar"/>
@@ -417,7 +328,7 @@
               style="reports/resources/checkstyle/checkstyle.xsl"/>
     </target>
 
-    <!-- Working findbugs task!-->
+    <!-- Task to run FindBugs analysis and generating a HTML report therefor-->
     <taskdef name="findbugs"
              classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
              classpath="${basedir}/testlib/findbugs-ant.jar"/>
@@ -427,7 +338,6 @@
                   output="html"
                   outputFile="reports/findbugs_report.html">
             <auxClasspath path="${basedir}/lib/"/>
-            <!--<sourcePath path="${basedir}/src/" />-->
             <class location="${basedir}/out/production/OpenDiabetes/de"/>
         </findbugs>
     </target>
@@ -442,6 +352,7 @@
 
     <property name="plugins_out" value="out/production/OpenDiabetes/de/opendiabetes/vault/plugin"/>
 
+    <!-- Deletes the plugin's class files from the out-directory to avoid ClassLoader collisions.-->
     <target name="prepare_for_tests">
         <delete includeemptydirs="true">
             <fileset dir="${plugins_out}/importer">
@@ -452,16 +363,14 @@
                 <exclude name="*.class"/>
             </fileset>
         </delete>
-        <!--move file="out/production/OpenDiabetes/de/opendiabetes/vault/log4j2.properties"
-              tofile="out/production/OpenDiabetes/log4j2.properties"/-->
     </target>
 
 
-    <!-- Working JUnit task!-->
+    <!-- Task for running all available JUnit tests and generating a HTML reports afterwards-->
     <taskdef name="junit"
              classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"
              classpath="${basedir}/testlib/ant-junit.jar"/>
-    <target name="test" depends="plugin, compile.module.opendiabetes.tests, prepare_for_tests">
+    <target name="test" depends="plugin, compile.opendiabetes.tests, prepare_for_tests">
         <mkdir dir="reports/resources/junit"/>
         <property name="junit.path" refid="junit.class.path"/>
         <junit>
@@ -487,9 +396,11 @@
         <delete dir="reports/resources/junit"/>
     </target>
 
-    <target name="reports" depends="test, checkstyle,findbugs"/>
+    <!-- Target to generate all available reports with one click. Includes JUnit tests, FindBugs and Checkstyle-->
+    <target name="reports" depends="test, checkstyle, findbugs"/>
 
-    <target name="doc" depends="init" description="generate documentation">
+    <!-- Target to generate the JavaDoc documentation-->
+    <target name="doc" description="generate documentation">
         <delete dir="docs" />
         <mkdir dir="docs" />
         <javadoc destdir="docs">
@@ -498,5 +409,11 @@
         </javadoc>
     </target>
 
-    <!-- target name="all" depends="build.modules" description="build all"/ -->
+    <!-- Target to build the base of OpenDiabetes as a jar file-->
+    <target name="build-base" depends="compile.opendiabetes.base"
+            description="Build the jar containing the base for OpenDiabetes">
+        <delete file="export/opendiabetes-base.jar" quiet="true"/>
+        <jar destfile="export/opendiabetes-base.jar" basedir="${opendiabetes.output.dir}"/>
+    </target>
+
 </project>

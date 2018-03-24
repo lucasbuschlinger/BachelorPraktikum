@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2017 OpenDiabetes
  * <p>
  * This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,6 @@ import org.pf4j.PluginException;
 import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -71,7 +70,7 @@ public class MedtronicImporterTest {
         FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
         try {
             medtronicImporter.importData("path/to/data");
-        } catch (FileNotFoundException exception) {
+        } catch (IllegalArgumentException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");
