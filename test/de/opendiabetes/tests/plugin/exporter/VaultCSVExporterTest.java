@@ -1,18 +1,14 @@
 package de.opendiabetes.tests.plugin.exporter;
 
-import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.junit.Assert;
 import org.junit.Test;
-import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
-import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -30,7 +26,7 @@ public class VaultCSVExporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Exporter vaultCSVExporter = TestImporterUtil.getExporter("VaultCSVExporter");
+        Exporter vaultCSVExporter = OpenDiabetesPluginManager.getInstance().getPluginFromString(Exporter.class, "VaultCSVExporter");
         Handler handler = new Handler() {
             String logOut = "";
             @Override

@@ -115,8 +115,7 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             return plugin.importData(path);
         }
-
-        //TODO Dates introduce state to the plugin, is this really necessary?
+        
         /**
          * Template method to load plugin specific configurations from the config file.
          *

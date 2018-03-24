@@ -1,6 +1,5 @@
 package de.opendiabetes.tests.plugin.exporter;
 
-import de.opendiabetes.tests.plugin.importer.TestImporterUtil;
 import de.opendiabetes.vault.container.SliceEntry;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
@@ -27,21 +26,13 @@ public class SliceLayoutCSVExporterTest {
 
     }
 
-    /**
-     * Test to see whether the needed database can be set.
-     */
-    /*@Test
-    public void setEntries() {
-        Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
-        sliceLayoutCSVExporter.setEntries(new ArrayList<SliceEntry>());
-    }*/
 
     /**
      * Test to see whether there is a SEVERE Warning when passing wrong input to setAdditional
      */
     /*@Test
     public void setAdditionalException() {
-        Exporter sliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        Exporter sliceLayoutCSVExporter = OpenDiabetesPluginManager.getInstance().getPluginFromString(Exporter.class, "SliceLayoutCSVExporter");
         Handler handler = new Handler() {
             String logOut = "";
             int msgsReceived = 0;
@@ -76,7 +67,7 @@ public class SliceLayoutCSVExporterTest {
      */
     @Test
     public void printLogOnLoadConfiguration() {
-        Exporter SliceLayoutCSVExporter = TestImporterUtil.getExporter("SliceLayoutCSVExporter");
+        Exporter SliceLayoutCSVExporter = OpenDiabetesPluginManager.getInstance().getPluginFromString(Exporter.class, "SliceLayoutCSVExporter");
 
         Handler handler = new Handler() {
             String logOut = "";

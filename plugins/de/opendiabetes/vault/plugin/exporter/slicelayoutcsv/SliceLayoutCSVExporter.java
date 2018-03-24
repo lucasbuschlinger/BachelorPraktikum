@@ -52,7 +52,7 @@ public class SliceLayoutCSVExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected  List<ExportEntry> prepareData(final List<SliceEntry> data) {
+        protected List<ExportEntry> prepareData(final List<SliceEntry> data) {
             List<ExportEntry> retVal = new ArrayList<>();
             for (SliceEntry item : data) {
                 retVal.add(new SliceCSVEntry(item));

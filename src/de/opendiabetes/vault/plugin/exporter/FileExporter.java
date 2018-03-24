@@ -18,6 +18,7 @@ package de.opendiabetes.vault.plugin.exporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 
 import java.io.File;
@@ -40,10 +41,10 @@ import static java.lang.Boolean.parseBoolean;
  * This class defines the default structure how data gets exported to a file.
  *
  * @author Lucas Buschlinger, Magnus Gärtner
- * @param <T> Type of the list entries passed from {@link #prepareData(List)} to {@link #writeToFile(String, List, Class)}
+ * @param <T> Type of the list entries passed from {@link #prepareData(List)} to {@link #writeToFile(String, List)}
  * @param <U> Type of data accepted by {{@link #prepareData(List)}}
  */
-public abstract class FileExporter<T, U> extends AbstractExporter<U> {
+public abstract class FileExporter<T, U> extends AbstractPlugin implements Exporter<U> {
 
     /**
      * The fileOutputStream used to write to the file.

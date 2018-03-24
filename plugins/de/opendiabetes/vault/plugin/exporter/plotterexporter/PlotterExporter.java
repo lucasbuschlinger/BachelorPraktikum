@@ -25,18 +25,12 @@ import java.util.logging.Level;
 public class PlotterExporter extends Plugin {
 
     /**
-     * Path of the plugin directory.
-     */
-    //private static Path pluginPath = null;
-
-    /**
      * Constructor for the {@link org.pf4j.PluginManager}.
      *
      * @param wrapper The {@link org.pf4j.PluginWrapper}.
      */
     public PlotterExporter(final PluginWrapper wrapper) {
         super(wrapper);
-        //pluginPath = this.wrapper.getPluginPath().toAbsolutePath();
         PlotterExporterImplementation.setScriptPath(this.wrapper.getPluginPath().toAbsolutePath().resolve("assets/plot.py").toString());
     }
 
@@ -222,7 +216,7 @@ public class PlotterExporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        protected  void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
+        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
             boolean python = isPythonInstalled();
             if (!python) {
                 LOG.log(Level.SEVERE, "Cannot plot data because python was not found");

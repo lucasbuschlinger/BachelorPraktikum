@@ -66,7 +66,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfigurationCSVImporters() {
-        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
+        Importer medtronicImporter = OpenDiabetesPluginManager.getInstance().getPluginFromString(Importer.class,"MedtronicImporter");
 
         //load properties from file
         Properties config = new Properties();
@@ -116,13 +116,13 @@ public class MedtronicImporterTest {
      * You have to delete the lib folder from
      * the plugin in order to get this test working.
      */
-   /*
+/*
     @Test
-    public void smartDelimiterDetectionTest() {
-        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-        String dataPath = "/home/magnus/Downloads/CareLink-Export-1486459734778.csv";
-        medtronicImporter.setImportFilePath(dataPath);
-        medtronicImporter.importData();
+    public void smartDelimiterDetectionTest() throws Exception {
+        FileImporter medtronicImporter = OpenDiabetesPluginManager.getInstance().getPluginFromString(FileImporter.class, "MedtronicImporter");
+        String dataPath = "/home/magnus/testdata/CareLink-Export-1486459734778.csv";
+
+        medtronicImporter.importData(dataPath);
         return;
     }*/
 

@@ -1,6 +1,6 @@
 package de.opendiabetes.tests.plugin.local;
 
-import de.opendiabetes.tests.plugin.management.ImportAndInterpretDataflowHelper;
+import de.opendiabetes.vault.plugin.management.ImportAndInterpretDataflowHelper;
 import de.opendiabetes.vault.data.VaultDAO;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;

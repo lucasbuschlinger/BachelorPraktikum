@@ -19,6 +19,7 @@ package de.opendiabetes.vault.plugin.exporter.ODVExporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 import de.opendiabetes.vault.plugin.exporter.Exporter;
+import de.opendiabetes.vault.plugin.exporter.FileExporter;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -119,8 +120,8 @@ public class ODVExporter extends Plugin {
                 }
             }
             OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
-            List<Exporter> exporters = manager.getPluginsOfType(Exporter.class);
-            for (Exporter exporter : exporters) {
+            List<FileExporter> exporters = manager.getPluginsOfType(FileExporter.class);
+            for (FileExporter exporter : exporters) {
 
                 String name = exporter.getClass().getName().replaceAll(".*\\$", "")
                         .replace("Implementation", "");
@@ -133,7 +134,7 @@ public class ODVExporter extends Plugin {
                 exporter.registerStatusCallback((progress, status)
                         -> notifyStatus(progress, name + ": " + status));
                 try {
-                    exporter.exportDataToFile(exportFile,  data);
+                    exporter.exportDataToFile(exportFile, data);
                 } catch (Exception ex) {
                     LOG.log(Level.WARNING, "Could not export with exporter: " + name);
                     continue;
