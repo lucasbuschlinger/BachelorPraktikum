@@ -26,6 +26,7 @@ import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Properties;
@@ -97,7 +98,7 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             Crawler crawler = new Crawler();
 
-            String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler"; //TODO separator? better use Paths.something
+            String exportPath = Paths.get(System.getProperty("java.io.tmpdir"), "MedtronicCrawler").toString();
             crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
 
 
