@@ -11,6 +11,7 @@ de.opendiabetes.vault.plugin.exporter.slicelayoutcsv
 de.opendiabetes.vault.plugin.exporter.sourcecode
 de.opendiabetes.vault.plugin.exporter.vaultcsv
 de.opendiabetes.vault.plugin.fileimporter
+de.opendiabetes.vault.plugin.fileimporter.validator
 de.opendiabetes.vault.plugin.importer
 de.opendiabetes.vault.plugin.importer.ODV
 de.opendiabetes.vault.plugin.importer.googlecrawler
@@ -30,7 +31,6 @@ de.opendiabetes.vault.plugin.importer.miband
 de.opendiabetes.vault.plugin.importer.mysugr
 de.opendiabetes.vault.plugin.importer.odvdbjson
 de.opendiabetes.vault.plugin.importer.sony
-de.opendiabetes.vault.plugin.importer.validator
 de.opendiabetes.vault.plugin.interpreter
 de.opendiabetes.vault.plugin.interpreter.dateInterpreter
 de.opendiabetes.vault.plugin.interpreter.diaryInterpreter
