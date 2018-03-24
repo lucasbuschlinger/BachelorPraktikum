@@ -147,11 +147,30 @@ public class VaultCSVEntry extends CSVEntry {
      * Other annotations.
      */
     private List<String> otherAnnotation = new ArrayList<>();
-
+    /**
+     * Tag annotations.
+     */
+    private List<String> tagAnnotation = new ArrayList<>();
+    /**
+     * Blood pressure annotations.
+     */
+    private List<String> bloodPressureAnnotation = new ArrayList<>();
+    /**
+     * Meal information annotations.
+     */
+    private List<String> mealInfoAnnotation = new ArrayList<>();
     /**
      * The weight.
      */
     private double weight = UNINITIALIZED_DOUBLE;
+    /**
+     * The blood pressure.
+     */
+    private double bloodPressure = UNINITIALIZED_DOUBLE;
+    /**
+     * The ketones.
+     */
+    private double ketones = UNINITIALIZED_DOUBLE;
 
 
     /**
@@ -722,6 +741,87 @@ public class VaultCSVEntry extends CSVEntry {
     }
 
     /**
+     * Getter for entry's {@link #tagAnnotation}.
+     *
+     * @return The entry's {@link #tagAnnotation}.
+     */
+    public List<String> getTagAnnotation() {
+        return tagAnnotation;
+    }
+
+    /**
+     * Setter for the entry's {@link #tagAnnotation}.
+     *
+     * @param tagAnnotation The {@link #tagAnnotation} to be set.
+     */
+    public void setTagAnnotation(final List<String> tagAnnotation) {
+        this.tagAnnotation = tagAnnotation;
+    }
+
+    /**
+     * Adds an annotation to the entry's {@link #tagAnnotation}.
+     *
+     * @param tagAnnotation The annotation to be added.
+     */
+    public void addTagAnnotation(final String tagAnnotation) {
+        this.tagAnnotation.add(tagAnnotation);
+    }
+
+    /**
+     * Getter for entry's {@link #bloodPressureAnnotation}.
+     *
+     * @return The entry's {@link #bloodPressureAnnotation}.
+     */
+    public List<String> getBloodPressureAnnotation() {
+        return bloodPressureAnnotation;
+    }
+
+    /**
+     * Setter for the entry's {@link #bloodPressureAnnotation}.
+     *
+     * @param bloodPressureAnnotation The {@link #bloodPressureAnnotation} to be set.
+     */
+    public void setBloodPressureAnnotation(final List<String> bloodPressureAnnotation) {
+        this.bloodPressureAnnotation = bloodPressureAnnotation;
+    }
+
+    /**
+     * Adds an annotation to the entry's {@link #bloodPressureAnnotation}.
+     *
+     * @param bloodPressureAnnotation The annotation to be added.
+     */
+    public void addBloodPressureAnnotation(final String bloodPressureAnnotation) {
+        this.bloodPressureAnnotation.add(bloodPressureAnnotation);
+    }
+
+    /**
+     * Getter for entry's {@link #mealInfoAnnotation}.
+     *
+     * @return The entry's {@link #mealInfoAnnotation}.
+     */
+    public List<String> getMealInfoAnnotation() {
+        return mealInfoAnnotation;
+    }
+
+    /**
+     * Setter for the entry's {@link #mealInfoAnnotation}.
+     *
+     * @param mealInfoAnnotation The {@link #mealInfoAnnotation} to be set.
+     */
+    public void setMealInfoAnnotation(final List<String> mealInfoAnnotation) {
+        this.mealInfoAnnotation = mealInfoAnnotation;
+    }
+
+    /**
+     * Adds an annotation to the entry's {@link #mealInfoAnnotation}.
+     *
+     * @param mealInfoAnnotation The annotation to be added.
+     */
+    public void addMealInfoAnnotation(final String mealInfoAnnotation) {
+        this.mealInfoAnnotation.add(mealInfoAnnotation);
+    }
+
+    /**
      * Getter for the {@link #weight}.
      *
      * @return The weight recorded in the entry.
@@ -733,12 +833,47 @@ public class VaultCSVEntry extends CSVEntry {
     /**
      * Setter for the {@link #weight}.
      *
-     * @param weight The weight recoreded in the entry.
+     * @param weight The weight recorded in the entry.
      */
     public void setWeight(final double weight) {
         this.weight = weight;
     }
 
+    /**
+     * Getter for the {@link #bloodPressure}.
+     *
+     * @return The blood pressure recorded in the entry.
+     */
+    public double getBloodPressure() {
+        return bloodPressure;
+    }
+
+    /**
+     * Setter for the {@link #bloodPressure}.
+     *
+     * @param bloodPressure The blood pressure recorded in the entry.
+     */
+    public void setBloodPressure(final double bloodPressure) {
+        this.bloodPressure = bloodPressure;
+    }
+
+    /**
+     * Getter for the {@link #ketones}.
+     *
+     * @return The ketones recorded in the entry.
+     */
+    public double getKetones() {
+        return ketones;
+    }
+
+    /**
+     * Setter for the {@link #ketones}.
+     *
+     * @param ketones The ketones pressure recorded in the entry.
+     */
+    public void setKetones(final double ketones) {
+        this.ketones = ketones;
+    }
     /**
      * Checks whether the entry is empty.
      *
@@ -771,7 +906,12 @@ public class VaultCSVEntry extends CSVEntry {
                 && mlAnnotation.isEmpty()
                 && insulinSensitivityFactor == UNINITIALIZED_DOUBLE
                 && otherAnnotation.isEmpty()
-                && weight == UNINITIALIZED_DOUBLE;
+                && tagAnnotation.isEmpty()
+                && bloodPressureAnnotation.isEmpty()
+                && mealInfoAnnotation.isEmpty()
+                && weight == UNINITIALIZED_DOUBLE
+                && bloodPressure == UNINITIALIZED_DOUBLE
+                && ketones == UNINITIALIZED_DOUBLE;
     }
 
     /**
@@ -812,7 +952,7 @@ public class VaultCSVEntry extends CSVEntry {
 
         csvRecord.add(new SimpleDateFormat("dd.MM.yy").format(timestamp));
         csvRecord.add(new SimpleDateFormat("HH:mm").format(timestamp));
-        if (bgValue > 0.0) {
+        if (bgValue > UNINITIALIZED_DOUBLE) {
             csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, bgValue)
                     .replaceAll(",", ""));
         } else {
@@ -1004,8 +1144,48 @@ public class VaultCSVEntry extends CSVEntry {
         } else {
             csvRecord.add("");
         }
+        if (!tagAnnotation.isEmpty()) {
+            StringBuilder annotations = new StringBuilder();
+            for (String item : tagAnnotation) {
+                annotations.insert(0, CSV_LIST_DELIMITER).insert(0, item);
+            }
+            annotations.deleteCharAt(annotations.length() - 1);
+            csvRecord.add(annotations.toString());
+        } else {
+            csvRecord.add("");
+        }
+        if (!bloodPressureAnnotation.isEmpty()) {
+            StringBuilder annotations = new StringBuilder();
+            for (String item : bloodPressureAnnotation) {
+                annotations.insert(0, CSV_LIST_DELIMITER).insert(0, item);
+            }
+            annotations.deleteCharAt(annotations.length() - 1);
+            csvRecord.add(annotations.toString());
+        } else {
+            csvRecord.add("");
+        }
+        if (!mealInfoAnnotation.isEmpty()) {
+            StringBuilder annotations = new StringBuilder();
+            for (String item : mealInfoAnnotation) {
+                annotations.insert(0, CSV_LIST_DELIMITER).insert(0, item);
+            }
+            annotations.deleteCharAt(annotations.length() - 1);
+            csvRecord.add(annotations.toString());
+        } else {
+            csvRecord.add("");
+        }
         if (weight > UNINITIALIZED_DOUBLE) {
             csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, weight).replaceAll(",", ""));
+        } else {
+            csvRecord.add("");
+        }
+        if (bloodPressure > UNINITIALIZED_DOUBLE) {
+            csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, bloodPressure).replaceAll(",", ""));
+        } else {
+            csvRecord.add("");
+        }
+        if (ketones > UNINITIALIZED_DOUBLE) {
+            csvRecord.add(String.format(Locale.ENGLISH, decimalFormat, ketones).replaceAll(",", ""));
         } else {
             csvRecord.add("");
         }
@@ -1066,7 +1246,12 @@ public class VaultCSVEntry extends CSVEntry {
                 "mlAnnotation",
                 "insulinSensitivityFactor",
                 "otherAnnotation",
-                "weight"
+                "tagAnnotation",
+                "bloodPressureAnnotation",
+                "mealInfoAnnotation",
+                "weight",
+                "bloodPressure",
+                "ketones"
         };
     }
 
@@ -1086,7 +1271,9 @@ public class VaultCSVEntry extends CSVEntry {
                 + stressBalanceValue + ", heartRateVariabilityValue=" + heartRateVariabilityValue + ", stressValue=" + stressValue
                 + ", sleepValue=" + sleepValue + ", sleepAnnotation=" + sleepAnnotation + ", locationAnnotation=" + locationAnnotation
                 + ", mlCgmValue=" + mlCgmValue + ", mlAnnotation=" + mlAnnotation + ", insulinSensitivityFactor=" + insulinSensitivityFactor
-                + ", otherAnnotation=" + otherAnnotation + ", weight=" + weight + '}';
+                + ", otherAnnotation=" + otherAnnotation + ", tagAnnotation=" + tagAnnotation + ", bloodPressureAnnotation="
+                + bloodPressureAnnotation + ", mealInfoAnnotation=" + mealInfoAnnotation + ", weight=" + weight + ", bloodPressure="
+                + bloodPressure + ", ketones=" + ketones + '}';
     }
 
 }

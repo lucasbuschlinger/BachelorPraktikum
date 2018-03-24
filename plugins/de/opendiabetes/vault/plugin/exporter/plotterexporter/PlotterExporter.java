@@ -258,7 +258,7 @@ public class PlotterExporter extends Plugin {
 
             String format = configuration.getProperty("plotFormat");
 
-            if (format.equals("pdf")) {
+            if (format != null && format.equals("pdf")) {
                 plotFormat = PlotFormats.PDF;
             } else {
                 // Default is always "image"
