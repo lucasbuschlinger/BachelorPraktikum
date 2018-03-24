@@ -26,6 +26,7 @@ import org.pf4j.PluginWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Wrapper class for the SliceLayoutCSVExporter plugin.
@@ -52,7 +53,11 @@ public class SliceLayoutCSVExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<SliceEntry> data) {
+        protected List<ExportEntry> prepareData(final List<SliceEntry> data) throws IllegalArgumentException {
+            if (data == null || data.isEmpty()) {
+                LOG.log(Level.SEVERE, "Data cannot be empty");
+                throw new IllegalArgumentException("Data cannot be empty");
+            }
             List<ExportEntry> retVal = new ArrayList<>();
             for (SliceEntry item : data) {
                 retVal.add(new SliceCSVEntry(item));

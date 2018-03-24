@@ -22,10 +22,7 @@ public abstract class VaultExporter extends CSVFileExporter<ExportEntry, VaultEn
     private List<VaultEntry> delayBuffer = new ArrayList<>();
 
     /**
-     * Prepares data queried from the database for export.
-     *
-     * @param data The data to be prepared.
-     * @return The entries ready for export.
+     * {@inheritDoc}
      */
     @Override
     protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
