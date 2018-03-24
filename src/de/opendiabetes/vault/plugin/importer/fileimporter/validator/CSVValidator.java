@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.fileimporter.validator;
+package de.opendiabetes.vault.plugin.importer.fileimporter.validator;
 
 import java.util.Arrays;
 import java.util.Set;
