@@ -11,7 +11,6 @@ import java.util.List;
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
  * Therefore all file importer plugins must implement this interface to get recognized as crawler importer.
  */
-
 public interface CrawlerImporter extends Importer {
 
     /**

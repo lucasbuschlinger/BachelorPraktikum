@@ -352,20 +352,6 @@
 
     <property name="plugins_out" value="out/production/OpenDiabetes/de/opendiabetes/vault/plugin"/>
 
-    <!-- Deletes the plugin's class files from the out-directory to avoid ClassLoader collisions.-->
-    <!--target name="prepare_for_tests">
-        <delete includeemptydirs="true">
-            <fileset dir="${plugins_out}/importer">
-                <exclude name="*.class"/>
-                <exclude name="validator/**"/>
-            </fileset>
-            <fileset dir="${plugins_out}/exporter">
-                <exclude name="*.class"/>
-            </fileset>
-        </delete>
-    </target-->
-
-
     <!-- Task for running all available JUnit tests and generating a HTML reports afterwards-->
     <taskdef name="junit"
              classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"

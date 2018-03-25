@@ -123,7 +123,7 @@ public class SourceCodeExporter extends Plugin {
          * Then it puts both of this into a ZIP archive file.
          *
          * @param filePath File path where the data should be exported to.
-         * @param data The to be exported.
+         * @param data to be exported.
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
         @Override
