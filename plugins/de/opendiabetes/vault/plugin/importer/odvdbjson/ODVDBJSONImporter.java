@@ -55,7 +55,7 @@ public class ODVDBJSONImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static final class ODVDBJsonImporterImplementation extends AbstractFileImporter {
+    public static final class ODVDBJSONImporterImplementation extends AbstractFileImporter {
 
         /**
          * {@inheritDoc}

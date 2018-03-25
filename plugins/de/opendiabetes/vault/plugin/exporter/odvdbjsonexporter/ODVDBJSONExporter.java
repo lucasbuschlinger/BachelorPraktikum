@@ -48,7 +48,7 @@ public class ODVDBJSONExporter extends Plugin {
      * Actual implementation of the ODVDBJSONExporter.
      */
     @Extension
-    public static final class OdvDbJsonExporterImplementation extends FileExporter<ExportEntry, VaultEntry> {
+    public static final class ODVDBJSONExporterImplementation extends FileExporter<ExportEntry, VaultEntry> {
 
 
         /**

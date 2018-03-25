@@ -50,7 +50,7 @@ public class MySugrCSVImporter extends Plugin {
      * Actual implementation of the MySugrCSVImporter plugin.
      */
     @Extension
-    public static final class MySugrCsvImporterImplementation extends CSVImporter {
+    public static final class MySugrCSVImporterImplementation extends CSVImporter {
 
         /**
          * The maximum number of lines to scan for a header.
@@ -60,7 +60,7 @@ public class MySugrCSVImporter extends Plugin {
         /**
          * Constructor.
          */
-        public MySugrCsvImporterImplementation() {
+        public MySugrCSVImporterImplementation() {
             super(new MySugrCSVValidator());
         }
 
