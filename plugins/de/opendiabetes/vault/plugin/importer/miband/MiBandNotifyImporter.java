@@ -129,12 +129,6 @@ public class MiBandNotifyImporter extends Plugin {
         }
 
         /**
-         * Preprocessing not needed.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
-
-        /**
          * {@inheritDoc}
          */
         @Override

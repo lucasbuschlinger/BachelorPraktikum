@@ -323,14 +323,6 @@ public class ODVImporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-            /* Not implemented */
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
         protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) {
             return null;
         }

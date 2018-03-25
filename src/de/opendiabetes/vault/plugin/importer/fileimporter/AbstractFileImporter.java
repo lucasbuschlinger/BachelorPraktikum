@@ -74,7 +74,10 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements Fil
      * Method for preprocessing the data if needed.
      *
      * @param filePath Path to the import file.
+     * @deprecated only used as as workaround in the {@link de.opendiabetes.vault.plugin.importer.googlefit.GoogleFitCSVImporter}
+     *             and as that is deprecated as well this may be removed upon removal of said importer.
      */
+    @Deprecated
     protected void preprocessingIfNeeded(final String filePath) { }
 
     /**

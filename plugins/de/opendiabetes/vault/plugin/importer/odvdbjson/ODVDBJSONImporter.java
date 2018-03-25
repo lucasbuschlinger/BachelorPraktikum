@@ -55,16 +55,7 @@ public class ODVDBJSONImporter extends Plugin {
      * Actual implementation of the ODVDBJson importer plugin.
      */
     @Extension
-    public static final class ODVDBJsonImporterImplementation extends AbstractFileImporter {
-
-        /**
-         * Empty preprocessing for ODVDB Json data, as it is not necessary for this type of data.
-         *
-         * @param filePath Path to the import file.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-        }
+    public static final class ODVDBJSONImporterImplementation extends AbstractFileImporter {
 
         /**
          * {@inheritDoc}
