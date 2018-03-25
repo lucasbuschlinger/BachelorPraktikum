@@ -1,4 +1,4 @@
-package de.opendiabetes.vault.plugin.crawlerimporter;
+package de.opendiabetes.vault.plugin.importer.crawlerimporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.importer.Importer;

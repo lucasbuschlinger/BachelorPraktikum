@@ -6,10 +6,10 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="org.pf4j" level="ERROR"/>
-        <Logger name="org.pf4j.AbstractExtensionFinder" level="ERROR"/>
-        <Logger name="org.pf4j.PluginClassLoader" level="ERROR"/>
-        <Root level="ERROR">
+        <Logger name="org.pf4j" level="DEBUG"/>
+        <Logger name="org.pf4j.AbstractExtensionFinder" level="DEBUG"/>
+        <Logger name="org.pf4j.PluginClassLoader" level="DEBUG"/>
+        <Root level="DEBUG">
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>

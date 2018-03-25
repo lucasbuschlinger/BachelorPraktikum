@@ -17,13 +17,11 @@
 package de.opendiabetes.vault.plugin.importer.ODV;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
-import de.opendiabetes.vault.plugin.fileimporter.AbstractFileImporter;
-import de.opendiabetes.vault.plugin.importer.Importer;
-import org.pf4j.DefaultPluginManager;
+import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.AbstractFileImporter;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
-import org.pf4j.PluginManager;
 import org.pf4j.PluginWrapper;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
@@ -135,17 +133,16 @@ public class ODVImporter extends Plugin {
             notifyStatus(PROGRESS_UNZIPPED, "Unzipped the archive");
             metaInfo = readMetaFile(tempDir + File.separator + metaFile);
             Iterator iterator = metaInfo.entrySet().iterator();
-            PluginManager manager = new DefaultPluginManager();
-            manager.loadPlugins();
-            manager.startPlugins();
+            OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
             while (iterator.hasNext()) {
                 Map.Entry metaEntry = (Map.Entry) iterator.next();
                 String plugin = (String) metaEntry.getKey();
                 MetaValues metaValues = (MetaValues) metaEntry.getValue();
                 String importFile = tempDir + File.separator + metaValues.file;
-                Importer importer;
+                FileImporter importer;
+
                 try {
-                    importer = (Importer) manager.getExtensions(plugin).get(0);
+                    importer = manager.getPluginFromString(FileImporter.class, plugin);
                 } catch (Exception exception) {
                     LOG.log(Level.WARNING, "No Plugin named {0} available ", plugin);
                     unimportedFiles.put(importFile, reasonNoPlugin);
@@ -156,11 +153,9 @@ public class ODVImporter extends Plugin {
                     continue;
                 }
                 List<VaultEntry> subImportedData;
-                if (importer instanceof FileImporter) {
-                    subImportedData = ((FileImporter) importer).importData(importFile);
-                } else {
-                    subImportedData = importer.importData();
-                }
+
+                subImportedData = importer.importData(importFile);
+
                 importedData.addAll(subImportedData);
             }
             notifyStatus(PROGRESS_AVAILABLE_IMPORTED, "Imported all available data");

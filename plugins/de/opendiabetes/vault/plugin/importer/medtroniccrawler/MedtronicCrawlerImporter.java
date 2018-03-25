@@ -17,14 +17,16 @@
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
-import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+import de.opendiabetes.vault.plugin.importer.crawlerimporter.CrawlerImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Properties;
@@ -48,7 +50,7 @@ public class MedtronicCrawlerImporter extends Plugin {
      * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class MedtronicCrawlerImporterImplementation extends AbstractCrawlerImporter {
+    public static class MedtronicCrawlerImporterImplementation extends AbstractPlugin implements CrawlerImporter {
 
         /**
          * Progress percentage for showing that the configuration has been loaded.
@@ -96,7 +98,7 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             Crawler crawler = new Crawler();
 
-            String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler";
+            String exportPath = Paths.get(System.getProperty("java.io.tmpdir"), "MedtronicCrawler").toString();
             crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
 
 
@@ -113,7 +115,6 @@ public class MedtronicCrawlerImporter extends Plugin {
 
             return plugin.importData(path);
         }
-
         /**
          * Template method to load plugin specific configurations from the config file.
          *

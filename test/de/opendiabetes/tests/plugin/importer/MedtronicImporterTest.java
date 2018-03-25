@@ -16,17 +16,16 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.importer.Importer;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.junit.Assert;
 import org.junit.Test;
-import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
-import org.pf4j.PluginManager;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
@@ -35,27 +34,14 @@ import java.util.Properties;
 public class MedtronicImporterTest {
 
     /**
-     * Test to see whether the plugin can be loaded.
-     */
-    @Test
-    public void pluginLoad() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        Assert.assertTrue(0 != manager.getPlugins().size());
-    }
-
-    /**
      * Test to see whether the plugin can be started.
      *
      * @throws PluginException If the plugin can not be started.
      */
     @Test
     public void pluginStart() throws PluginException {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.enablePlugin("MedtronicImporter");
-        manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("MedtronicImporter"));
+        OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+        manager.getPluginFromString(FileImporter.class, "MedtronicImporter");
     }
 
     /**
@@ -63,14 +49,12 @@ public class MedtronicImporterTest {
      */
     @Test
     public void callPlugin() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.enablePlugin("MedtronicImporter");
-        manager.startPlugin("MedtronicImporter");
-        FileImporter medtronicImporter = (FileImporter) manager.getExtensions(Importer.class).get(0);
+        OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+        FileImporter medtronicImporter = manager.getPluginFromString(FileImporter.class, "MedtronicImporter");
+
         try {
             medtronicImporter.importData("path/to/data");
-        } catch (IllegalArgumentException exception) {
+        } catch (FileNotFoundException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");
@@ -82,7 +66,7 @@ public class MedtronicImporterTest {
      */
     @Test
     public void printLogOnLoadConfigurationCSVImporters() {
-        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
+        Importer medtronicImporter = OpenDiabetesPluginManager.getInstance().getPluginFromString(Importer.class,"MedtronicImporter");
 
         //load properties from file
         Properties config = new Properties();
@@ -132,13 +116,13 @@ public class MedtronicImporterTest {
      * You have to delete the lib folder from
      * the plugin in order to get this test working.
      */
-   /*
+/*
     @Test
-    public void smartDelimiterDetectionTest() {
-        Importer medtronicImporter = TestImporterUtil.getImporter("MedtronicImporter");
-        String dataPath = "/home/magnus/Downloads/CareLink-Export-1486459734778.csv";
-        medtronicImporter.setImportFilePath(dataPath);
-        medtronicImporter.importData();
+    public void smartDelimiterDetectionTest() throws Exception {
+        FileImporter medtronicImporter = OpenDiabetesPluginManager.getInstance().getPluginFromString(FileImporter.class, "MedtronicImporter");
+        String dataPath = "/home/magnus/testdata/CareLink-Export-1486459734778.csv";
+
+        medtronicImporter.importData(dataPath);
         return;
     }*/
 

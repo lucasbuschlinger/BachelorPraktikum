@@ -16,13 +16,13 @@
  */
 package de.opendiabetes.tests.plugin.importer;
 
-import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.junit.Assert;
 import org.junit.Test;
-import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginException;
-import org.pf4j.PluginManager;
 
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 /**
@@ -31,27 +31,15 @@ import java.nio.file.Paths;
 public class ODVDBJsonImporterTest {
 
     /**
-     * Test to see whether the plugin can be loaded.
-     */
-    @Test
-    public void pluginLoad() {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        Assert.assertTrue(0 != manager.getPlugins().size());
-    }
-
-    /**
      * Test to see whether the plugin can be started.
      *
      * @throws PluginException If the plugin can not be started.
      */
     @Test
     public void pluginStart() throws PluginException {
-        PluginManager manager = new DefaultPluginManager(Paths.get("export"));
-        manager.loadPlugins();
-        manager.enablePlugin("ODVDBJSONImporter");
-        manager.startPlugins();
-        Assert.assertTrue(manager.enablePlugin("ODVDBJSONImporter"));
+        OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+        manager.getPluginFromString(FileImporter.class, "ODVDBJSONImporter");
+
     }
 
     /**
@@ -59,11 +47,13 @@ public class ODVDBJsonImporterTest {
      */
     @Test
     public void callPlugin() {
-        FileImporter odvImporter = (FileImporter) TestImporterUtil.getImporter("ODVDBJSONImporter");
+        OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
+        FileImporter odvImporter = manager.getPluginFromString(FileImporter.class, "ODVDBJSONImporter");//TODO JSON?
+
         System.out.println("TEST" + odvImporter.getClass());
         try {
             odvImporter.importData("path/to/data");
-        } catch (IllegalArgumentException exception) {
+        } catch (FileNotFoundException exception) {
             Assert.assertNotNull(exception);
         } catch (Exception exception) {
             Assert.fail("Should have thrown FileNotFoundException");

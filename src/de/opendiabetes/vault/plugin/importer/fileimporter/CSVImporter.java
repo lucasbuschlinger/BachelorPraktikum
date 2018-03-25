@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.fileimporter;
+package de.opendiabetes.vault.plugin.importer.fileimporter;
 
 import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.fileimporter.validator.CSVValidator;
+import de.opendiabetes.vault.plugin.importer.fileimporter.validator.CSVValidator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -136,12 +136,6 @@ public abstract class CSVImporter extends AbstractFileImporter {
      * @throws Exception If an entry could not be parsed.
      */
     protected abstract List<VaultEntry> parseEntry(CsvReader csvReader) throws Exception;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected abstract void preprocessingIfNeeded(String filePath);
 
     /**
      * Getter for the validator.

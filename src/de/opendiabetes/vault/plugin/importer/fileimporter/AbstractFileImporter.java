@@ -14,13 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package de.opendiabetes.vault.plugin.fileimporter;
+package de.opendiabetes.vault.plugin.importer.fileimporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.AbstractPlugin;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,16 +33,7 @@ import java.util.logging.Level;
  * {@link AbstractFileImporter#preprocessingIfNeeded(String)}.
  * {@link AbstractFileImporter#processImport(InputStream, String)}.
  */
-public abstract class AbstractFileImporter extends AbstractPlugin implements de.opendiabetes.vault.plugin.fileimporter.FileImporter {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<VaultEntry> importData() {
-        throw new UnsupportedOperationException("The importData() method of a FileImporter cannot be used."
-                + " Use importData(filePath) instead.");
-    }
+public abstract class AbstractFileImporter extends AbstractPlugin implements FileImporter {
 
     /**
      * Imports the data from a specified file path.
@@ -59,18 +51,20 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
         File file = new File(filePath);
         if (!file.exists()) {
             LOG.log(Level.SEVERE, "File at given path does not exist.");
-            throw new IllegalArgumentException("File at given path does not exist.");
+            throw new FileNotFoundException("File at given path does not exist.");
         }
         preprocessingIfNeeded(filePath);
         this.notifyStatus(0, "Preprocessing done.");
 
-        FileInputStream inputStream = new FileInputStream(filePath);
-        List<VaultEntry> result = processImport(inputStream, filePath);
-
+        FileInputStream inputStream = null;
+        List<VaultEntry> result = null;
         try {
-            inputStream.close();
-        } catch (Exception ex) {
-            LOG.log(Level.WARNING, "Error closing the FileInputStream for File" + filePath, ex);
+            inputStream = new FileInputStream(filePath);
+            result = processImport(inputStream, filePath);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
 
         return result;
@@ -81,7 +75,7 @@ public abstract class AbstractFileImporter extends AbstractPlugin implements de.
      *
      * @param filePath Path to the import file.
      */
-    protected abstract void preprocessingIfNeeded(String filePath);
+    protected void preprocessingIfNeeded(final String filePath) { }
 
     /**
      * Method for processing the data.

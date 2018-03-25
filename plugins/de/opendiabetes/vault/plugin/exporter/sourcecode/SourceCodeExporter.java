@@ -18,9 +18,7 @@ package de.opendiabetes.vault.plugin.exporter.sourcecode;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
-import de.opendiabetes.vault.container.csv.CSVEntry;
-import de.opendiabetes.vault.container.csv.ExportEntry;
-import de.opendiabetes.vault.plugin.exporter.VaultExporter;
+import de.opendiabetes.vault.plugin.exporter.FileExporter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -55,13 +53,8 @@ public class SourceCodeExporter extends Plugin {
      * Actual implementation of the SourceCode exporter plugin.
      */
     @Extension
-    public static final class SourceCodeExporterImplementation extends VaultExporter {
+    public static final class SourceCodeExporterImplementation extends FileExporter<String, VaultEntry> {
 
-        /**
-         * List to hold all the entries queried from the database in {@link #prepareData(List)}
-         * and written on {@link #writeToFile(String, List)}.
-         */
-        private final List<String> entries = new ArrayList<>();
 
         /**
          * Method to get the ListInitCode.
@@ -130,18 +123,19 @@ public class SourceCodeExporter extends Plugin {
          * Then it puts both of this into a ZIP archive file.
          *
          * @param filePath File path where the data should be exported to.
-         * @param csvEntries The {@link ExportEntry} to be exported.
+         * @param data to be exported.
          * @throws IOException Thrown if the SHA-512 hash algorithm is missing.
          */
-        protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
+        @Override
+        protected void writeToFile(final String filePath, final List<String> data) throws IOException {
             FileOutputStream fileOutputStream = getFileOutputStream();
 
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(filePath), Charset.forName("UTF-8"));
 
             writer.write("  public static List<VaultEntry> getStaticDataset() throws ParseException {\n");
             writer.write(getListInitCode());
-            for (String entry : entries) {
-                writer.write(entry);
+            for (Object entry : data) {
+                writer.write((String) entry);
             }
             writer.write(getReturnStatementCode());
             writer.write("}");
@@ -154,35 +148,23 @@ public class SourceCodeExporter extends Plugin {
          * {@inheritDoc}
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected List<String> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
             if (data == null || data.isEmpty()) {
                 return null;
             }
+
+            List<String> result = new ArrayList<>();
             List<VaultEntry> tmpValues;
             if (getIsPeriodRestricted()) {
-                tmpValues = filterPeriodRestriction(data);
+                tmpValues = filterPeriodRestriction((List<VaultEntry>) data);
             } else {
-                tmpValues = data;
+                tmpValues = (List<VaultEntry>) data;
             }
             for (VaultEntry value : tmpValues) {
-                entries.add(toListCode(value));
+                result.add(toListCode(value));
             }
+            return  result;
 
-            // Dirty hack again to overcome safety features
-            ArrayList<ExportEntry> dummy = new ArrayList<>();
-            dummy.add(new CSVEntry() {
-                @Override
-                public String[] toCsvRecord() {
-                    return new String[] {};
-                }
-
-                @Override
-                public String[] getCsvHeaderRecord() {
-                    return new String[] {};
-                }
-            });
-
-            return dummy;
         }
 
     }

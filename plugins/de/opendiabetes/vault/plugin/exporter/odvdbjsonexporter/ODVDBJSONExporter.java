@@ -48,36 +48,27 @@ public class ODVDBJSONExporter extends Plugin {
      * Actual implementation of the ODVDBJSONExporter.
      */
     @Extension
-    public static final class OdvDbJsonExporterImplementation extends FileExporter {
+    public static final class OdvDbJsonExporterImplementation extends FileExporter<ExportEntry, VaultEntry> {
+
 
         /**
-         * Prepares data for the export by putting it into exportable containers.
-         *
-         * @param data The data to be prepared.
-         * @return The data in exportable containers.
+         * {@inheritDoc}
          */
         @Override
-        protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+        protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
+            if (data == null || data.isEmpty()) {
+                LOG.log(Level.SEVERE, "Data cannot be empty");
+                throw new IllegalArgumentException("Data cannot be empty");
+            }
             List<ExportEntry> container = new ArrayList<>();
             List<VaultEntry> tempData;
             if (getIsPeriodRestricted()) {
-               tempData = filterPeriodRestriction(data);
+               tempData = filterPeriodRestriction((List<VaultEntry>) data);
             } else {
-                tempData = data;
+                tempData = (List<VaultEntry>) data;
             }
             container.add(ODVDBJSONPseudoEntry.fromVaultEntryList(tempData));
             return container;
-        }
-
-        /**
-         * Unused, thus unimplemented.
-         *
-         * @param entries Nothing here.
-         * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-         */
-        @Override
-        public void setEntries(final List<?> entries) throws IllegalArgumentException {
-            LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
         }
 
     }
