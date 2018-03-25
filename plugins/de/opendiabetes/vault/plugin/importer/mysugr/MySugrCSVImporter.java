@@ -281,14 +281,5 @@ public class MySugrCSVImporter extends Plugin {
             return retVal;
         }
 
-        /**
-         * Unimplemented preprocessing method as no preprocessing is necessary for MySugr CSV data.
-         *
-         * @param filePath The file path of the file to pre process.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-        }
-
     }
 }

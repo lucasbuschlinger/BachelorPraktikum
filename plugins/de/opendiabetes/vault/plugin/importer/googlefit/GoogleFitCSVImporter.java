@@ -35,7 +35,10 @@ import java.util.List;
  * Wrapper class for the GoogleFitCSVImporter plugin.
  *
  * @author Magnus Gärtner
+ * @deprecated In future the {@link de.opendiabetes.vault.plugin.importer.googlecrawler.GoogleFitCrawlerImporter} should be used to extract
+ *             and import data for Google Fit automatically.
  */
+@Deprecated
 public class GoogleFitCSVImporter extends Plugin {
 
     /**
@@ -54,6 +57,11 @@ public class GoogleFitCSVImporter extends Plugin {
     public static final class GoogleFitCSVImporterImplementation extends CSVImporter {
 
         /**
+         * File path used to get the date.
+         */
+        private String filePath;
+
+        /**
          * Constructor.
          */
         public GoogleFitCSVImporterImplementation() {
@@ -66,7 +74,9 @@ public class GoogleFitCSVImporter extends Plugin {
          * @param filePath Path to the file that would be preprocessed.
          */
         @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
+        protected void preprocessingIfNeeded(final String filePath) {
+            this.filePath = filePath;
+        }
 
         /**
          * {@inheritDoc}
@@ -90,8 +100,7 @@ public class GoogleFitCSVImporter extends Plugin {
             }
 
             VaultEntry newVaultEntry;
-            Date timestamp = new Date(); // TODO fix to use something else then file path to determine start time
-            // Date timestamp = new Date(parseValidator.getStartTime(creader, getImportFilePath()));
+            Date timestamp = new Date(parseValidator.getStartTime(creader, filePath));
             double durationInMinutes = Math.round((runTime + bikeTime + walkTime) / msPerMin);
             double maxSpeed = parseValidator.getMaxSpeedValue(creader);
             // TODO Correct exercise type

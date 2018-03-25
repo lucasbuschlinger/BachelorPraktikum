@@ -30,7 +30,9 @@ import java.util.logging.Logger;
  * Validator for Google Fit CSV data.
  *
  * @author Jens Heuschkel
+ * @deprecated As the belonging importer {@link GoogleFitCSVImporter} is deprecated.
  */
+@Deprecated
 public class GoogleFitCSVValidator extends CSVValidator {
 
 

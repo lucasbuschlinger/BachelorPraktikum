@@ -183,14 +183,5 @@ public class SonySWR12Importer extends Plugin {
             return retVal;
         }
 
-        /**
-         * Empty preprocessing for Sony data, as it is not necessary for this type of data.
-         *
-         * @param filePath Path to the import file.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) {
-        }
-
     }
 }

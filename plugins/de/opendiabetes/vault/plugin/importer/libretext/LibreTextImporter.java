@@ -121,13 +121,5 @@ public class LibreTextImporter extends Plugin {
 
         }
 
-        /**
-         * Unimplemented preprocessing method as no preprocessing is necessary for LibreText CSV data.
-         *
-         * @param filePath Path to the file that would be preprocessed.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
-
     }
 }

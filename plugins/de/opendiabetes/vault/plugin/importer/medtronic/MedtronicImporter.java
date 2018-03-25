@@ -215,14 +215,6 @@ public class MedtronicImporter extends Plugin {
 
 
         /**
-         * Unimplemented preprocessing method as no preprocessing is necessary for Medtronic data.
-         *
-         * @param filePath Path to the file that would be preprocessed.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
-
-        /**
          * Parser for medtronic CSV Data.
          *
          * @param creader The CSV reader.
