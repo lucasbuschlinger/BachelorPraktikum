@@ -2,7 +2,6 @@ de.opendiabetes.vault.container
 de.opendiabetes.vault.container.csv
 de.opendiabetes.vault.data
 de.opendiabetes.vault.plugin.common
-de.opendiabetes.vault.plugin.crawlerimporter
 de.opendiabetes.vault.plugin.exporter
 de.opendiabetes.vault.plugin.exporter.ODVExporter
 de.opendiabetes.vault.plugin.exporter.odvdbjsonexporter
@@ -10,10 +9,11 @@ de.opendiabetes.vault.plugin.exporter.plotterexporter
 de.opendiabetes.vault.plugin.exporter.slicelayoutcsv
 de.opendiabetes.vault.plugin.exporter.sourcecode
 de.opendiabetes.vault.plugin.exporter.vaultcsv
-de.opendiabetes.vault.plugin.fileimporter
-de.opendiabetes.vault.plugin.fileimporter.validator
 de.opendiabetes.vault.plugin.importer
 de.opendiabetes.vault.plugin.importer.ODV
+de.opendiabetes.vault.plugin.importer.crawlerimporter
+de.opendiabetes.vault.plugin.importer.fileimporter
+de.opendiabetes.vault.plugin.importer.fileimporter.validator
 de.opendiabetes.vault.plugin.importer.googlecrawler
 de.opendiabetes.vault.plugin.importer.googlecrawler.fitness
 de.opendiabetes.vault.plugin.importer.googlecrawler.helper
@@ -33,7 +33,6 @@ de.opendiabetes.vault.plugin.importer.odvdbjson
 de.opendiabetes.vault.plugin.importer.sony
 de.opendiabetes.vault.plugin.interpreter
 de.opendiabetes.vault.plugin.interpreter.dateInterpreter
-de.opendiabetes.vault.plugin.interpreter.diaryInterpreter
 de.opendiabetes.vault.plugin.interpreter.exerciseInterpreter
 de.opendiabetes.vault.plugin.interpreter.pumpInterpreter
 de.opendiabetes.vault.plugin.management
