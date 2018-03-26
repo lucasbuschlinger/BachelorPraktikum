@@ -16,6 +16,10 @@ The SourceCodeExporter plugin offers the following configuration options:
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
 | compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the SourcecodeExporter plugin, separated by commas. | x
+| periodRestriction | true | Whether there should be a period description from when to when the exported data should be. (Default: false) | 
+| periodRestrictionFrom | 24/04/2015 | Beginning date of the export period restriction. Required if periodRestriction is true. | 
+| periodRestrictionTo | 24/05/2015 | End date of the export period restriction. Required if periodRestriction is true. | 
+
 
 Required Plugins
 -----

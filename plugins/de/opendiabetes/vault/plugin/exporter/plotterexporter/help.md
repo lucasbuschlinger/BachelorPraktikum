@@ -27,6 +27,10 @@ The PlotterExporter plugin offers the following configuration options:
 | ------------- | ------------- |  ------------- | ------------- |
 | compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the PlotterExporter plugin, separated by commas. | x |
 | plotFormat | pdf, img | Specifies in which format the plotter exporter should export the data. |  |
+| periodRestriction | true | Whether there is a period description in which the exported data range should be. (Default: false) | 
+| periodRestrictionFrom | 24/04/2015 | Beginning date of the export period restriction. Required if periodRestriction is true. | 
+| periodRestrictionTo | 24/05/2015 | End date of the export period restriction. Required if periodRestriction is true. | 
+
 
 Required Plugins
 -----

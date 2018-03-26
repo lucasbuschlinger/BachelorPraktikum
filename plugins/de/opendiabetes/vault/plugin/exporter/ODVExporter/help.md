@@ -16,6 +16,7 @@ The ODVExporter plugin offers the following configuration options:
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
 | compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the ODVExporter plugin, separated by commas. | x
+| temporaryDirectory | /tmp/ODVExporter | Temporary directory to use while exporting. | 
 
 Required Plugins
 -----
