@@ -17,6 +17,7 @@ The LibreTextImporter plugin offers the following configuration options:
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
 | compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the LibreTextImporter plugin, separated by commas. | x
+| delimiter | ; | Delimiter to be used when reading the CSV file. | 
 
 Required Plugins
 -----
