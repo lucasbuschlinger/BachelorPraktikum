@@ -4,23 +4,23 @@ Classification: Exporter
 
 Overview
 -----
-The OdvDbJsonExporter is an exporter plugin which exports data from the database.
+The ODVDBJSONExporter is an exporter plugin which exports data from the database.
 
 Data example
 -----
 
 Configuration
 -----
-The OdvDbJsonExporter plugin offers the following configuration options:
+The ODVDBJSONExporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the OdvDbJsonExporter plugin, separated by commas. | x
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the ODVDBJSONExporter plugin, separated by commas. | x
 
 
 Required Plugins
 -----
-The OdvDbJsonExporter does not require any other plugins.
+The ODVDBJSONExporter does not require any other plugins.
 
 
  
