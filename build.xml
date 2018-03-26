@@ -390,6 +390,10 @@
         <delete dir="docs" />
         <mkdir dir="docs" />
         <javadoc destdir="docs">
+            <classpath>
+                <path refid="libraries.base"/>
+                <path refid="libraries.plugins"/>
+            </classpath>
             <fileset dir="${basedir}/plugins" />
             <fileset dir="${basedir}/src" />
         </javadoc>
