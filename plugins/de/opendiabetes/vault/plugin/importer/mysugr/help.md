@@ -6,7 +6,7 @@ Overview
 -----
 The MySugrCSVImporter plugin is an importer plugin which imports MySugr data in the .csv format.
 
-Data example
+Data 
 -----
 To get MySugr data to import, simply open its app and select reports, then choose the .csv format. You can find more information on this at https://mysugr.com/how-to-use-mysugr-logbook-reports/ 
 

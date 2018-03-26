@@ -6,9 +6,9 @@ Overview
 -----
 The LibreTextImporter plugin is an importer plugin which imports LibreText data in CSV format from a .txt file.
 
-Data example
+Data
 -----
-Data for the import can be found at http://www.freestylelibre.de/
+Data for the importer can be found at http://www.freestylelibre.de/
 
 Configuration
 -----

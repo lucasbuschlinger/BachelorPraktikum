@@ -18,6 +18,7 @@ If you want to export the plot in a PDF file, the environment needs [pdflatex](h
 
 Data example
 -----
+![Plotter example](https://i.imgur.com/TijPvyA.png)
 
 Configuration
 -----

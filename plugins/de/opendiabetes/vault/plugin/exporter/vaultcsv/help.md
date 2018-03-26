@@ -8,8 +8,11 @@ The VaultCSVExporter is an exporter plugin which exports data from the database 
 
 Data example
 -----
-
 [Standard CSV format](https://en.wikipedia.org/wiki/Comma-separated_values)
+```
+date,time,bgValue,cgmValue,
+01.03.10,01:00,,
+```
 
 Configuration
 -----

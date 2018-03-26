@@ -7,6 +7,10 @@ Overview
 The MedtronicCrawlerImporter is an importer plugin which crawls the Metronic CareLink Page. 
 You will need to have an CareLink account in order to access the data.
 
+Data
+-----
+You can find more information on Medtronic data at https://carelink.minimed.com/patient/entry.jsp?bhcp=1
+
 Configuration
 -----
 The MedtronicCrawlerImporter plugin offers the following configuration options:

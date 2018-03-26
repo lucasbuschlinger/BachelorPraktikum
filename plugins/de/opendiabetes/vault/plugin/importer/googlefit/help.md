@@ -6,7 +6,7 @@ Overview
 -----
 The GoogleFitCSVImporter plugin is an importer plugin which imports Google Fit data in the .csv format.
 
-Data example
+Data
 -----
 Data can be exported from https://takeout.google.com/ by selecting 'Fit' data. The data to import can then be found under Takeout/Fit/Daily Aggregations (in the downloaded archive file) and is either one of the files labeled with a date, such as "2018-03-17.csv".
 

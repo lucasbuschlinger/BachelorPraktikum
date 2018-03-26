@@ -8,6 +8,15 @@ The SourceCodeExporter is an exporter plugin which exports data from the databas
 
 Data example
 -----
+```
+public static List<VaultEntry> getStaticDataset() throws ParseException {
+    List<VaultEntry> vaultEntries = new ArrayList<>();
+    List<VaultEntryAnnotation> tmpAnnotations;
+    tmpAnnotations = new ArrayList<>();
+    tmpAnnotations.add(new VaultEntryAnnotation(VaultEntryAnnotation.TYPE.CGM_VENDOR_MEDTRONIC"));
+    vaultEntries.add(new VaultEntry(VaultEntryType.GLUCOSE_CGM_CALIBRATION,TimestampUtils.createCleanTimestamp("2010.03.01-01:00","yyyy.MM.dd-HH:mm"),243.0,tmpAnnotations));
+}
+```
 
 Configuration
 -----

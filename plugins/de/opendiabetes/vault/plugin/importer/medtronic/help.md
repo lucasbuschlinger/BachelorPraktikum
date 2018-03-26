@@ -6,7 +6,7 @@ Overview
 -----
 The MedtronicImporter plugin is an importer plugin which imports Medtronic data in the .csv format.
 
-Data example
+Data
 -----
 You can find more information on Medtronic data at https://carelink.minimed.com/patient/entry.jsp?bhcp=1
 
