@@ -4,7 +4,7 @@ Classification: Interpreter
 
 Overview
 -----
-The DateInterpreter is a plugin which interprets VaultEntry Dates.
+The DateInterpreter is a plugin which interprets VaultEntry dates containing only the entries that are specified in the given import period.
 
 Configuration
 -----
