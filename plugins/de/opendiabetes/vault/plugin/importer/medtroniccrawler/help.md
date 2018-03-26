@@ -19,4 +19,4 @@ The MedtronicCrawlerImporter plugin offers the following configuration options:
 
 Required Plugins
 -----
- - The MedtronicCrawlerImporter does not require any other plugins.
+ - MedtronicImporter
