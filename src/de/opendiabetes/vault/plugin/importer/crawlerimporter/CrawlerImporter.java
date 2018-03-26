@@ -7,9 +7,9 @@ import java.util.List;
 
 /**
  * @author ocastx
- * This interface specifies the methods shared by all file importers.
+ * This interface specifies the methods shared by all crawler importers.
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
- * Therefore all file importer plugins must implement this interface to get recognized as crawler importer.
+ * Therefore all crawler importer plugins must implement this interface to get recognized as crawler importer.
  */
 public interface CrawlerImporter extends Importer {
 
