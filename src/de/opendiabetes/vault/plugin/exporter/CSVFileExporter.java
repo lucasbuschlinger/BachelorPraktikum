@@ -17,9 +17,9 @@
 package de.opendiabetes.vault.plugin.exporter;
 
 import com.csvreader.CsvWriter;
-import de.opendiabetes.vault.container.csv.CsvEntry;
-import de.opendiabetes.vault.container.csv.ExportEntry;
-import de.opendiabetes.vault.container.csv.VaultCsvEntry;
+
+import de.opendiabetes.vault.container.csv.CSVEntry;
+import de.opendiabetes.vault.container.csv.VaultCSVEntry;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -30,20 +30,22 @@ import java.util.List;
  * This defines a standard implementation for writing CSV data.
  *
  * @author Lucas Buschlinger
+ * @param <T> Type of the list entries passed from {@link #prepareData(List)} to {@link #writeToFile(String, List)}
+ * @param <U> Type of data accepted to export
  */
-public abstract class CSVFileExporter extends FileExporter {
+public abstract class CSVFileExporter<T, U> extends FileExporter<T, U> {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
+    protected void writeToFile(final String filePath, final List<T> csvEntries) throws IOException {
         FileOutputStream fileOutputStream = getFileOutputStream();
-        CsvWriter cwriter = new CsvWriter(fileOutputStream, VaultCsvEntry.CSV_DELIMITER, Charset.forName("UTF-8"));
+        CsvWriter cwriter = new CsvWriter(fileOutputStream, VaultCSVEntry.CSV_DELIMITER, Charset.forName("UTF-8"));
 
-        cwriter.writeRecord(((CsvEntry) csvEntries.get(0)).getCsvHeaderRecord());
-        for (ExportEntry item : csvEntries) {
-            cwriter.writeRecord(((CsvEntry) item).toCsvRecord());
+        cwriter.writeRecord(((CSVEntry) csvEntries.get(0)).getCsvHeaderRecord());
+        for (T item : csvEntries) {
+            cwriter.writeRecord(((CSVEntry) item).toCsvRecord());
         }
         cwriter.flush();
         cwriter.close();

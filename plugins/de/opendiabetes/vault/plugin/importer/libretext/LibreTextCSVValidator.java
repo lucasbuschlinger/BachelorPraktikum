@@ -17,7 +17,7 @@
 package de.opendiabetes.vault.plugin.importer.libretext;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
+import de.opendiabetes.vault.plugin.importer.fileimporter.validator.CSVValidator;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.IOException;
@@ -55,6 +55,18 @@ public class LibreTextCSVValidator extends CSVValidator {
      */
     private static final String LIBRE_HEADER_DE_TYPE     = "Art des Eintrags";
     /**
+     * The header field of German LibreTextCSV data which contains the updated time after a time synchronization.
+     */
+    private static final String LIBRE_HEADER_DE_TIMESYNC = "Neue Uhrzeit";
+    /**
+     * The header field of German LibreTextCSV data which contains the bolus normal.
+     */
+    private static final String LIBRE_HEADER_DE_BOLUS_NORMAL = "Schnell wirkendes Insulin (Einheiten)";
+    /**
+     * The header field of German LibreTextCSV data which contains the amount of consumed carbohydrates.
+     */
+    private static final String LIBRE_HEADER_DE_CARBS = "Kohlenhydrate (Gramm)";
+    /**
      * The time format used in German LibreText CSV data.
      */
     private static final String TIME_FORMAT_LIBRE_DE    = "yyyy.MM.dd HH:mm";
@@ -69,49 +81,61 @@ public class LibreTextCSVValidator extends CSVValidator {
             LIBRE_HEADER_DE_TIME,
             LIBRE_HEADER_DE_TYPE
     };
-/*
+
     /**
      * The header field of English LibreText CSV data which contains the scanned glucose values.
      */
-/*    private static final String LIBRE_HEADER_DE_SCAN     = "";
+    private static final String LIBRE_HEADER_EN_SCAN     = "Scan Glucose (mg/dL)";
     /**
      * The header field of English LibreText CSV data which contains the historic glucose values.
      */
-/*    private static final String LIBRE_HEADER_DE_HISTORIC =  "";
+    private static final String LIBRE_HEADER_EN_HISTORIC =  "Historic Glucose (mg/dL)";
     /**
      * The header field of English LibreText CSV data which contains the blood glucose values.
      */
-/*    private static final String LIBRE_HEADER_DE_BLOOD    = "";
+    private static final String LIBRE_HEADER_EN_BLOOD    = "Strip Glucose (mg/dL)";
     /**
      * The header field of English LibreText CSV data which contains the timestamp.
      */
-/*    private static final String LIBRE_HEADER_DE_TIME     = "";
+    private static final String LIBRE_HEADER_EN_TIME     = "Time";
     /**
      * The header field of English LibreTextCSV data which contains the type of the entry.
      */
-/*    private static final String LIBRE_HEADER_DE_TYPE     = "";
+    private static final String LIBRE_HEADER_EN_TYPE     = "Record Type";
+    /**
+     * The header field of English LibreTextCSV data which contains the updated time after a time synchronization.
+     */
+    private static final String LIBRE_HEADER_EN_TIMESYNC = "Updated Time";
+    /**
+     * The header field of English LibreTextCSV data which contains the bolus normal.
+     */
+    private static final String LIBRE_HEADER_EN_BOLUS_NORMAL = "Rapid-Acting Insulin (units)";
+    /**
+     * The header field of English LibreTextCSV data which contains the amount of consumed carbohydrates.
+     */
+    private static final String LIBRE_HEADER_EN_CARBS = "Carbohydrates (grams)";
     /**
      * The time format used in English LibreText CSV data.
      */
-/*    private static final String TIME_FORMAT_LIBRE_DE    = "";
+    private static final String TIME_FORMAT_LIBRE_EN    = "yyyy/MM/dd HH:mm";
 
     /**
      * The composed English header used in LibreText CSV data.
      */
-/*    private static final String[] LIBRE_HEADER_EN = {
-            LIBRE_HEADER_EN_SCAN,
-            LIBRE_HEADER_EN_HISTORIC,
-            LIBRE_HEADER_EN_BLOOD,
+    private static final String[] LIBRE_HEADER_EN = {
             LIBRE_HEADER_EN_TIME,
-            TIME_FORMAT_LIBRE_EN
+            LIBRE_HEADER_EN_TYPE,
+            LIBRE_HEADER_EN_HISTORIC,
+            LIBRE_HEADER_EN_SCAN,
+            LIBRE_HEADER_EN_BLOOD
     };
-*/
+
 
     /**
      * Constructor for a LibreTextCSV validator.
      */
     public LibreTextCSVValidator() {
-        super(LIBRE_HEADER_DE, LIBRE_HEADER_DE);
+        super(LIBRE_HEADER_DE, LIBRE_HEADER_EN);
     }
 
     /**
@@ -122,16 +146,14 @@ public class LibreTextCSVValidator extends CSVValidator {
      * @throws IOException Thrown if the CSV file can not be read successfully.
      * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
      * is neither German nor English.
-     * @throws UnsupportedOperationException Thrown if the English header is called, as this has not yet been
-     * implemented.
      */
-    public TYPE getType(final CsvReader reader) throws IOException, AssertionError, UnsupportedOperationException {
+    public TYPE getType(final CsvReader reader) throws IOException, AssertionError {
         Language language = getLanguageSelection();
         switch (language) {
             case DE:
                 return TYPE.fromInt(Integer.parseInt(reader.get(LIBRE_HEADER_DE_TYPE)));
             case EN:
-                throw new UnsupportedOperationException("Not implemented yet!");
+                return TYPE.fromInt(Integer.parseInt(reader.get(LIBRE_HEADER_EN_TYPE)));
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -149,11 +171,8 @@ public class LibreTextCSVValidator extends CSVValidator {
      * in {@link TimestampUtils#createCleanTimestamp(String, String)}.
      * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
      * is neither German nor English.
-     * @throws UnsupportedOperationException Thrown if the English header is called, as this has not yet been
-     * implemented.
      */
-    public Date getTimestamp(final CsvReader reader) throws  IOException, ParseException, AssertionError,
-            UnsupportedOperationException {
+    public Date getTimestamp(final CsvReader reader) throws  IOException, ParseException, AssertionError {
         String timeString;
         Language language = getLanguageSelection();
         switch (language) {
@@ -161,12 +180,12 @@ public class LibreTextCSVValidator extends CSVValidator {
                 timeString = reader.get(LIBRE_HEADER_DE_TIME);
                 return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_LIBRE_DE);
             case EN:
-                throw new UnsupportedOperationException("Not implemented yet!");
+                timeString = reader.get(LIBRE_HEADER_EN_TIME);
+                return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_LIBRE_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
         }
-
     }
 
     /**
@@ -178,18 +197,15 @@ public class LibreTextCSVValidator extends CSVValidator {
      * @throws IOException Thrown if the CSV file can not be read successfully.
      * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
      * is neither German nor English.
-     * @throws UnsupportedOperationException Thrown if the English header is called, as this has not yet been
-     * implemented.
      *
      */
-    public double getHistoricGlucose(final CsvReader reader) throws IOException, AssertionError,
-            UnsupportedOperationException {
+    public double getHistoricGlucose(final CsvReader reader) throws IOException, AssertionError {
         Language language = getLanguageSelection();
         switch (language) {
             case DE:
                 return Double.parseDouble(reader.get(LIBRE_HEADER_DE_HISTORIC));
             case EN:
-                throw new UnsupportedOperationException("Not implemented yet!");
+                return Double.parseDouble(reader.get(LIBRE_HEADER_EN_HISTORIC));
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -205,17 +221,14 @@ public class LibreTextCSVValidator extends CSVValidator {
      * @throws IOException Thrown if the CSV file can not be read successfully.
      * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
      * is neither German nor English.
-     * @throws UnsupportedOperationException Thrown if the English header is called, as this has not yet been
-     * implemented.
      */
-    public double getScanGlucose(final CsvReader reader) throws IOException, AssertionError,
-            UnsupportedOperationException {
+    public double getScanGlucose(final CsvReader reader) throws IOException, AssertionError {
         Language language = getLanguageSelection();
         switch (language) {
             case DE:
                 return Double.parseDouble(reader.get(LIBRE_HEADER_DE_SCAN));
             case EN:
-                throw new UnsupportedOperationException("Not implemented yet!");
+                return Double.parseDouble(reader.get(LIBRE_HEADER_EN_SCAN));
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -231,17 +244,89 @@ public class LibreTextCSVValidator extends CSVValidator {
      * @throws IOException Thrown if the CSV file can not be read successfully.
      * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
      * is neither German nor English.
-     * @throws UnsupportedOperationException Thrown if the English header is called, as this has not yet been
-     * implemented.
      */
-    public double getBloodGlucose(final CsvReader reader) throws IOException, AssertionError,
-            UnsupportedOperationException {
+    public double getBloodGlucose(final CsvReader reader) throws IOException, AssertionError {
         Language language = getLanguageSelection();
         switch (language) {
             case DE:
                 return Double.parseDouble(reader.get(LIBRE_HEADER_DE_BLOOD));
             case EN:
-                throw new UnsupportedOperationException("Not yet implemented!");
+                return Double.parseDouble(reader.get(LIBRE_HEADER_EN_BLOOD));
+            default:
+                Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
+                throw new AssertionError();
+        }
+    }
+
+    /**
+     * Gets the value of the consumed carbohydrates of the entry currently getting parsed
+     * by reading the appropriate field in the Libre Text CSV data.
+     *
+     * @param reader The {@link CsvReader} used to read the file.
+     * @return The value of the consumed carbohydrates.
+     * @throws IOException Thrown if the CSV file can not be read successfully.
+     * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
+     * is neither German nor English.
+     */
+    public double getCarbohydrates(final CsvReader reader) throws IOException, AssertionError {
+        Language language = getLanguageSelection();
+        final double factor = 12.0;
+        switch (language) {
+            case DE:
+                return Double.parseDouble(reader.get(LIBRE_HEADER_DE_CARBS)) / factor;
+            case EN:
+                return Double.parseDouble(reader.get(LIBRE_HEADER_EN_CARBS)) / factor;
+            default:
+                Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
+                throw new AssertionError();
+        }
+    }
+
+    /**
+     * Gets the value of the bolus normal of the entry currently getting parsed
+     * by reading the appropriate field in the Libre Text CSV data.
+     *
+     * @param reader The {@link CsvReader} used to read the file.
+     * @return The value of the bolus normal.
+     * @throws IOException Thrown if the CSV file can not be read successfully.
+     * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
+     * is neither German nor English.
+     */
+    public double getBolusNormal(final CsvReader reader) throws IOException, AssertionError {
+        Language language = getLanguageSelection();
+        switch (language) {
+            case DE:
+                return Double.parseDouble(reader.get(LIBRE_HEADER_DE_BOLUS_NORMAL));
+            case EN:
+                return Double.parseDouble(reader.get(LIBRE_HEADER_EN_BOLUS_NORMAL));
+            default:
+                Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
+                throw new AssertionError();
+        }
+    }
+
+    /**
+     * Gets the timestamp time synchronization of the entry currently getting parsed by
+     * reading the appropriate field in the Libre Text CSV data.
+     *
+     * @param reader The {@link CsvReader} used to read the file.
+     * @return The new time of the entry after the synchronization.
+     * @throws IOException Thrown if the CSV file can not be read successfully.
+     * @throws ParseException Thrown if the String containing the data can not be parsed
+     * in {@link TimestampUtils#createCleanTimestamp(String, String)}.
+     * @throws AssertionError Thrown if the language received by {@link CSVValidator#getLanguageSelection()}
+     * is neither German nor English.
+     */
+    public Date getTimeSync(final CsvReader reader) throws  IOException, ParseException, AssertionError {
+        String timeString;
+        Language language = getLanguageSelection();
+        switch (language) {
+            case DE:
+                timeString = reader.get(LIBRE_HEADER_DE_TIMESYNC);
+                return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_LIBRE_DE);
+            case EN:
+                timeString = reader.get(LIBRE_HEADER_EN_TIMESYNC);
+                return TimestampUtils.createCleanTimestamp(timeString, TIME_FORMAT_LIBRE_EN);
             default:
                 Logger.getLogger(this.getClass().getName()).severe("ASSERTION ERROR!");
                 throw new AssertionError();
@@ -265,9 +350,17 @@ public class LibreTextCSVValidator extends CSVValidator {
          */
         BLOOD_GLUCOSE(2),
         /**
+         * Indicates that the value is that of carbohydrate intake.
+         */
+        CARBOHYDRATES(5),
+        /**
          * Indicates that the value is the timestamp.
          */
         TIME_CHANGED(6);
+//        /**
+//        * Indicates that the value is that of a bolus normal.
+//        */
+//        BOLUS_NORMAL; TODO with file that contains data about this
 
         /**
          * The numeric representation of the types of data.
@@ -289,7 +382,8 @@ public class LibreTextCSVValidator extends CSVValidator {
          * @return The type bound to the index.
          */
         static TYPE fromInt(final int type) {
-            final int timestamp = 6;
+            final int timeSync = 6;
+            final int carbs = 5;
             switch (type) {
                 case 1:
                     return SCAN_GLUCOSE;
@@ -297,7 +391,9 @@ public class LibreTextCSVValidator extends CSVValidator {
                     return HISTORIC_GLUCOSE;
                 case 2:
                     return BLOOD_GLUCOSE;
-                case timestamp:
+                case carbs:
+                    return CARBOHYDRATES;
+                case timeSync:
                     return TIME_CHANGED;
                 default:
                     LOG.log(Level.SEVERE, "Error while type checking!");

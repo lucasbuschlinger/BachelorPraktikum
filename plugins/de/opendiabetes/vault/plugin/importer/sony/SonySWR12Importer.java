@@ -20,7 +20,7 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.fileimporter.CSVImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.CSVImporter;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
@@ -181,15 +181,6 @@ public class SonySWR12Importer extends Plugin {
                 retVal.add(tmpEntry);
             }
             return retVal;
-        }
-
-        /**
-         * Empty preprocessing for Sony data, as it is not necessary for this type of data.
-         *
-         * @param filePath Path to the import file.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) {
         }
 
     }

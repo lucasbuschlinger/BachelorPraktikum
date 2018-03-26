@@ -16,28 +16,18 @@
  */
 package de.opendiabetes.vault.plugin.importer;
 
-import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.plugin.common.OpenDiabetesPlugin;
 import org.pf4j.ExtensionPoint;
-
-import java.util.List;
-
 
 /**
  * @author Magnus Gärtner
  * @author Lucas Buschlinger
- * This interface specifies the methods shared by all importers.
+ * This interface bundles {@link de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter}
+ * and {@link de.opendiabetes.vault.plugin.importer.crawlerimporter.CrawlerImporter}
+ * and marks all importer plugins.
  * It also serves as the {@link org.pf4j.ExtensionPoint} where the plugins hook up.
  * Therefore all importer plugins must implement this interface to get recognized as importer.
  */
 public interface Importer extends ExtensionPoint, OpenDiabetesPlugin {
 
-    /**
-     * Imports the data.
-     *
-     * @return List of VaultEntry consisting of the imported data.
-     * @throws Exception Thrown if any kind of error occurs while importing
-     * @see de.opendiabetes.vault.container.VaultEntry
-     */
-    List<VaultEntry> importData() throws Exception;
 }

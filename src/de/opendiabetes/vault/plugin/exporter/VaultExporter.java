@@ -3,7 +3,7 @@ package de.opendiabetes.vault.plugin.exporter;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.csv.ExportEntry;
-import de.opendiabetes.vault.container.csv.VaultCsvEntry;
+import de.opendiabetes.vault.container.csv.VaultCSVEntry;
 import de.opendiabetes.vault.plugin.util.EasyFormatter;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
@@ -15,26 +15,24 @@ import java.util.logging.Level;
 /**
  * This class implements functionality shared by the exporters exporting from the Vault database.
  */
-public abstract class VaultExporter extends CSVFileExporter {
+public abstract class VaultExporter extends CSVFileExporter<ExportEntry, VaultEntry> {
     /**
      * Buffer for the entries before they get exported.
      */
     private List<VaultEntry> delayBuffer = new ArrayList<>();
 
     /**
-     * Prepares data queried from the database for export.
-     *
-     * @param data The data to be prepared.
-     * @return The entries ready for export.
+     * {@inheritDoc}
      */
     @Override
-    protected List<ExportEntry> prepareData(final List<VaultEntry> data) {
+    protected List<ExportEntry> prepareData(final List<VaultEntry> data) throws IllegalArgumentException {
         // Status update constants
         final int startPrepareProgress = 33;
         final int prepareDoneProgress = 66;
 
         if (data == null || data.isEmpty()) {
-            return null;
+            LOG.log(Level.SEVERE, "Data cannot be empty");
+            throw new IllegalArgumentException("Data cannot be empty");
         }
 
         List<ExportEntry> returnValues = new ArrayList<>();
@@ -57,7 +55,7 @@ public abstract class VaultExporter extends CSVFileExporter {
             delayBuffer = new ArrayList<>();
             while (!fromTimestamp.after(toTimestamp)) {
                 // start new time slot (1m slots)
-                VaultCsvEntry tmpCsvEntry = new VaultCsvEntry();
+                VaultCSVEntry tmpCsvEntry = new VaultCSVEntry();
                 tmpCsvEntry.setTimestamp(fromTimestamp);
 
                 // add delayed items
@@ -103,12 +101,12 @@ public abstract class VaultExporter extends CSVFileExporter {
     /**
      * Processes the VaultEntries.
      *
-     * @param csvEntry The {@link VaultCsvEntry} to process the data to.
+     * @param csvEntry The {@link VaultCSVEntry} to process the data to.
      * @param entry The {@link VaultEntry} to process.
-     * @return The processed {@link VaultCsvEntry}.
+     * @return The processed {@link VaultCSVEntry}.
      */
-    private VaultCsvEntry processVaultEntry(final VaultCsvEntry csvEntry, final VaultEntry entry) {
-//            VaultCsvEntry tmpCsvEntry = vaultCsvEntry;
+    private VaultCSVEntry processVaultEntry(final VaultCSVEntry csvEntry, final VaultEntry entry) {
+//            VaultCSVEntry tmpCsvEntry = vaultCsvEntry;
         switch (entry.getType()) {
             case GLUCOSE_CGM_ALERT:
                 csvEntry.setCgmAlertValue(entry.getValue());
@@ -118,7 +116,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                 // --> when more than one cgm value per minute is available
                 // but cgm ticks are every 15 minutes ...
                 if (csvEntry.getCgmValue()
-                        == VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                        == VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     csvEntry.setCgmValue(entry.getValue());
                 } else {
                     LOG.log(Level.WARNING,
@@ -141,7 +139,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                 // TODO why does this happen ?
                 // it often happens with identical values, but db has been cleaned before ...
                 if (csvEntry.getBgValue()
-                        == VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                        == VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     csvEntry.setBgValue(entry.getValue());
                     csvEntry.addGlucoseAnnotation(entry.getType().toString());
                 } else {
@@ -174,7 +172,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                 csvEntry.addBasalAnnotation(entry.getType().toString());
                 break;
             case BOLUS_SQUARE:
-                if (csvEntry.getBolusValue() != VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                if (csvEntry.getBolusValue() != VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     // delay entry if bolus is already set for this time slot
                     delayBuffer.add(entry);
                     LOG.log(Level.INFO, "Delayed bolus entry: {0}", entry.toString());
@@ -187,7 +185,7 @@ public abstract class VaultExporter extends CSVFileExporter {
                                 + EasyFormatter.formatDouble(entry.getValue2()));
                 break;
             case BOLUS_NORMAL:
-                if (csvEntry.getBolusValue() != VaultCsvEntry.UNINITIALIZED_DOUBLE) {
+                if (csvEntry.getBolusValue() != VaultCSVEntry.UNINITIALIZED_DOUBLE) {
                     // delay entry if bolus is already set for this time slot
                     delayBuffer.add(entry);
                     LOG.log(Level.INFO, "Delayed bolus entry: {0}", entry.toString());
@@ -262,11 +260,21 @@ public abstract class VaultExporter extends CSVFileExporter {
             case DM_INSULIN_SENSITIVITY:
                 csvEntry.setInsulinSensitivityFactor(entry.getValue());
                 break;
+            case Tag:
+            case MEAL_DESCRIPTION:
             case OTHER_ANNOTATION:
                 // will be handled by annotations
                 break;
             case WEIGHT:
                 csvEntry.setWeight(entry.getValue());
+                break;
+            case BLOOD_PRESSURE:
+                csvEntry.setBloodPressure(entry.getValue());
+                break;
+            case KETONES_MANUAL:
+            case KETONES_BLOOD:
+            case KETONES_URINE:
+                csvEntry.setKetones(entry.getValue());
                 break;
             default:
                 LOG.severe("TYPE ASSERTION ERROR!");
@@ -288,6 +296,9 @@ public abstract class VaultExporter extends CSVFileExporter {
                     case EXERCISE_TrackerRun:
                     case EXERCISE_TrackerWalk:
                     case EXERCISE_AUTOMATIC_OTHER:
+                    case EXERCISE_cosy:
+                    case EXERCISE_ordinary:
+                    case EXERCISE_demanding:
                         csvEntry.addExerciseAnnotation(annotation.toStringWithValue());
                         break;
                     case ML_PREDICTION_TIME_BUCKET_SIZE:
@@ -308,6 +319,40 @@ public abstract class VaultExporter extends CSVFileExporter {
                     case AVERAGE_HEART_RATE:
                         csvEntry.addSleepAnnotation(annotation.toStringWithValue());
                         break;
+                    case TAG_Unknown:
+                    case TAG_Sad:
+                    case TAG_Note:
+                    case TAG_Sick:
+                    case TAG_Lunch:
+                    case TAG_Party:
+                    case TAG_Snack:
+                    case TAG_Dinner:
+                    case TAG_Sports:
+                    case TAG_Stress:
+                    case TAG_Alcohol:
+                    case TAG_Bedtime:
+                    case TAG_Nervous:
+                    case TAG_Bingeing:
+                    case TAG_Breakfast:
+                    case TAG_Correction:
+                    case TAG_OfficeWork:
+                    case TAG_HypoFeeling:
+                    case TAG_AfterTheMeal:
+                    case TAG_HyperFeeling:
+                    case TAG_BeforeTheMeal:
+                        csvEntry.addTagAnnotation(annotation.toStringWithValue());
+                        break;
+                    case BOLUS_MEAL:
+                    case BOLUS_CORRECTION:
+                        csvEntry.addBolusAnnotation(annotation.toStringWithValue());
+                        break;
+                    case BLOOD_PRESSURE_Systolic:
+                    case BLOOD_PRESSURE_Diastolic:
+                        csvEntry.addBloodPressureAnnotation(annotation.toStringWithValue());
+                        break;
+                    case MEAL_Information:
+                        csvEntry.addMealInfoAnnotation(annotation.toStringWithValue());
+                        break;
                     default:
                         LOG.severe("ANNOTATION ASSERTION ERROR!");
                         throw new AssertionError();
@@ -317,14 +362,4 @@ public abstract class VaultExporter extends CSVFileExporter {
         return csvEntry;
     }
 
-    /**
-     * Unused, thus unimplemented.
-     *
-     * @param entries Nothing here.
-     * @throws IllegalArgumentException No thrown as this will not change the state of the exporter.
-     */
-    @Override
-    public void setEntries(final List<?> entries) throws IllegalArgumentException {
-        LOG.log(Level.WARNING, "Tried to set entries but this it not possible with this exporter");
-    }
 }

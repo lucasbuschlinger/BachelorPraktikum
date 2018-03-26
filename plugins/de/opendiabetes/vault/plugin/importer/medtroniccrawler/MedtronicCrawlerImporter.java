@@ -17,21 +17,20 @@
 package de.opendiabetes.vault.plugin.importer.medtroniccrawler;
 
 import de.opendiabetes.vault.container.VaultEntry;
-import de.opendiabetes.vault.plugin.crawlerimporter.AbstractCrawlerImporter;
-import de.opendiabetes.vault.plugin.fileimporter.FileImporter;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+import de.opendiabetes.vault.plugin.importer.crawlerimporter.CrawlerImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.FileImporter;
 import de.opendiabetes.vault.plugin.management.OpenDiabetesPluginManager;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 import org.pf4j.Extension;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Wrapper class for the MedtronicCrawlerImporter plugin.
@@ -51,7 +50,7 @@ public class MedtronicCrawlerImporter extends Plugin {
      * Actual implementation of the MedtronicCrawlerImporter plugin.
      */
     @Extension
-    public static class MedtronicCrawlerImporterImplementation extends AbstractCrawlerImporter {
+    public static class MedtronicCrawlerImporterImplementation extends AbstractPlugin implements CrawlerImporter {
 
         /**
          * Progress percentage for showing that the configuration has been loaded.
@@ -69,18 +68,6 @@ public class MedtronicCrawlerImporter extends Plugin {
         private String toDate;
 
         /**
-         * Constructor.
-         *
-         * @throws Exception Thrown if the log file could not be written.
-         */
-        public MedtronicCrawlerImporterImplementation() throws Exception {
-            Logger logger = Logger.getLogger("MyLog");
-            FileHandler fh;
-            SimpleDateFormat formats = new SimpleDateFormat("dd-mm-HHMMSS");
-
-        }
-
-        /**
          * {@inheritDoc}
          */
         @Override
@@ -89,7 +76,7 @@ public class MedtronicCrawlerImporter extends Plugin {
             Authentication auth = new Authentication();
             if (!auth.checkConnection(username, password)) {
                 LOG.log(Level.SEVERE, "Entered username/password are incorrect");
-                return null;
+                throw new Exception("Entered username/password are incorrect");
             }
             String lang = auth.getLanguage();
 
@@ -97,35 +84,37 @@ public class MedtronicCrawlerImporter extends Plugin {
                 DateHelper dateHelper = new DateHelper(lang);
                 if (!dateHelper.getStartDate(fromDate)) {
                     LOG.log(Level.SEVERE, "fromDate is incorrect");
-                    return null;
+                    throw new IllegalArgumentException("fromDate is incorrect");
                 }
 
                 if (!dateHelper.getEndDate(fromDate, toDate)) {
                     LOG.log(Level.SEVERE, "toDate is incorrect");
-                    return null;
+                    throw new IllegalArgumentException("toDate is incorrect");
                 }
-            } catch (ParseException e) {
+            } catch (ParseException exception) {
                 LOG.log(Level.SEVERE, "Date parsing failed");
-                return null;
+                throw exception;
             }
 
             Crawler crawler = new Crawler();
 
-            String exportPath = System.getProperty("java.io.tmpdir") + "MedtronicCrawler";
-            try {
-                crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
-            } catch (Exception exception) {
-                LOG.log(Level.SEVERE, "Error while crawling data.");
-                return null;
-            }
+            String exportPath = Paths.get(System.getProperty("java.io.tmpdir"), "MedtronicCrawler").toString();
+            crawler.generateDocument(auth.getCookies(), fromDate, toDate, exportPath);
 
 
             String path = exportPath + File.separator + "careLink-Export";
 
             OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
-            return manager.getPluginFromString(FileImporter.class, "MedtronicImporter").importData(path);
-        }
 
+            FileImporter plugin = manager.getPluginFromString(FileImporter.class, "MedtronicImporter");
+
+            if (plugin == null) {
+                LOG.log(Level.SEVERE, "Plugin MedtronicImporter not found");
+                throw new Exception("Plugin MedtronicImporter not found");
+            }
+
+            return plugin.importData(path);
+        }
         /**
          * Template method to load plugin specific configurations from the config file.
          *

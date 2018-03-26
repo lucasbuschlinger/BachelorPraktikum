@@ -17,7 +17,7 @@
 package de.opendiabetes.vault.plugin.importer.googlefit;
 
 import com.csvreader.CsvReader;
-import de.opendiabetes.vault.plugin.importer.validator.CSVValidator;
+import de.opendiabetes.vault.plugin.importer.fileimporter.validator.CSVValidator;
 import de.opendiabetes.vault.plugin.util.TimestampUtils;
 
 import java.io.File;
@@ -30,7 +30,9 @@ import java.util.logging.Logger;
  * Validator for Google Fit CSV data.
  *
  * @author Jens Heuschkel
+ * @deprecated As the belonging importer {@link GoogleFitCSVImporter} is deprecated.
  */
+@Deprecated
 public class GoogleFitCSVValidator extends CSVValidator {
 
 

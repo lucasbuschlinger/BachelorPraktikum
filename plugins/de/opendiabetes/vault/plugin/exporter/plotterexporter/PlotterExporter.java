@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -25,18 +25,13 @@ import java.util.logging.Level;
 public class PlotterExporter extends Plugin {
 
     /**
-     * Path of the plugin directory.
-     */
-    private static Path pluginPath = null;
-
-    /**
      * Constructor for the {@link org.pf4j.PluginManager}.
      *
      * @param wrapper The {@link org.pf4j.PluginWrapper}.
      */
     public PlotterExporter(final PluginWrapper wrapper) {
         super(wrapper);
-        pluginPath = this.wrapper.getPluginPath().toAbsolutePath();
+        PlotterExporterImplementation.setScriptPath(this.wrapper.getPluginPath().toAbsolutePath().resolve("assets/plot.py").toString());
     }
 
     /**
@@ -48,7 +43,7 @@ public class PlotterExporter extends Plugin {
         /**
          * The default temporary directory to use.
          */
-        private static final String DEFAULT_TEMP_DIR = System.getProperty("java.io.tmpdir") + "PlotterExporter";
+        private static final String DEFAULT_TEMP_DIR = Paths.get(System.getProperty("java.io.tmpdir"), "PlotterExporter").toString();
 
         /**
          * The default temporary filename to use.
@@ -77,9 +72,17 @@ public class PlotterExporter extends Plugin {
         private PlotFormats plotFormat;
 
         /**
+         * Sets the script path for the plugin used only in {@link PlotterExporter#PlotterExporter(PluginWrapper)}.
+         * @param scriptPath the script path
+         */
+        public static void setScriptPath(final String scriptPath) {
+            PlotterExporterImplementation.scriptPath = scriptPath;
+        }
+
+        /**
          * Path to the plotting script.
          */
-        private String scriptPath = PlotterExporter.pluginPath.resolve("assets/plot.py").toString();
+        private static String scriptPath;
 
         /**
          * Runs the plot script.
@@ -213,11 +216,10 @@ public class PlotterExporter extends Plugin {
         /**
          * {@inheritDoc}
          */
-        @Override
         protected void writeToFile(final String filePath, final List<ExportEntry> csvEntries) throws IOException {
-
             boolean python = isPythonInstalled();
             if (!python) {
+                LOG.log(Level.SEVERE, "Cannot plot data because python was not found");
                 throw new IOException("Cannot plot data because python was not found");
             }
 
@@ -225,6 +227,7 @@ public class PlotterExporter extends Plugin {
                 boolean latex = isLaTeXInstalled();
 
                 if (!latex) {
+                    LOG.log(Level.SEVERE, "Cannot plot data to pdf file because pdflatex was not found");
                     throw new IOException("Cannot plot data to pdf file because pdflatex was not found");
                 }
             }
@@ -256,7 +259,7 @@ public class PlotterExporter extends Plugin {
 
             String format = configuration.getProperty("plotFormat");
 
-            if (format.equals("pdf")) {
+            if (format != null && format.equals("pdf")) {
                 plotFormat = PlotFormats.PDF;
             } else {
                 // Default is always "image"

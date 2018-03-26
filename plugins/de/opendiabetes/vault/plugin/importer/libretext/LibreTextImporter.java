@@ -20,12 +20,11 @@ import com.csvreader.CsvReader;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.fileimporter.CSVImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.CSVImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,11 +53,6 @@ public class LibreTextImporter extends Plugin {
     public static final class LibreTextImporterImplementation extends CSVImporter {
 
         /**
-         * Time format used in LibreText data.
-         */
-        private static final String TIME_FORMAT_LIBRE_DE = "yyyy.MM.dd HH:mm";
-
-        /**
          * Constructor for a CSV validator.
          */
         public LibreTextImporterImplementation() {
@@ -71,10 +65,10 @@ public class LibreTextImporter extends Plugin {
          *
          * @param reader The CSV Reader.
          * @return Parsed entry.
-         * @throws IOException Thrown by the CSV Reader.
+         * @throws Exception Thrown by the CSV Reader.
          */
         @Override
-        public List<VaultEntry> parseEntry(final CsvReader reader) throws IOException {
+        public List<VaultEntry> parseEntry(final CsvReader reader) throws Exception {
             List<VaultEntry> retVal = new ArrayList<>();
             LibreTextCSVValidator parseValidator = (LibreTextCSVValidator) getValidator();
 
@@ -107,6 +101,18 @@ public class LibreTextImporter extends Plugin {
                     value = parseValidator.getBloodGlucose(reader);
                     tempEntry = new VaultEntry(VaultEntryType.GLUCOSE_BG, timestamp, value);
                     break;
+                case TIME_CHANGED:
+                    timestamp = parseValidator.getTimeSync(reader);
+                    tempEntry = new VaultEntry(VaultEntryType.CGM_TIME_SYNC, timestamp, VaultEntry.VALUE_UNUSED);
+                    break;
+                case CARBOHYDRATES:
+                    value = parseValidator.getCarbohydrates(reader);
+                    tempEntry = new VaultEntry(VaultEntryType.MEAL_MANUAL, timestamp, value);
+                    break;
+                //case BOLUS_NORMAL: TODO with file that contains data about this
+                //   value = parseValidator.getBolusNormal(reader);
+                //    tempEntry = new VaultEntry(VaultEntryType.BOLUS_NORMAL, timestamp, value);
+                //    break;
                  default:
                     return null;
             }
@@ -114,14 +120,6 @@ public class LibreTextImporter extends Plugin {
             return retVal;
 
         }
-
-        /**
-         * Unimplemented preprocessing method as no preprocessing is necessary for LibreText CSV data.
-         *
-         * @param filePath Path to the file that would be preprocessed.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
 
     }
 }

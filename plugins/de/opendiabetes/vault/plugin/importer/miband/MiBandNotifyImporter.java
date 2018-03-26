@@ -21,13 +21,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.VaultEntryAnnotation;
 import de.opendiabetes.vault.container.VaultEntryType;
-import de.opendiabetes.vault.plugin.fileimporter.AbstractFileImporter;
+import de.opendiabetes.vault.plugin.importer.fileimporter.AbstractFileImporter;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -130,16 +129,10 @@ public class MiBandNotifyImporter extends Plugin {
         }
 
         /**
-         * Preprocessing not needed.
-         */
-        @Override
-        protected void preprocessingIfNeeded(final String filePath) { }
-
-        /**
          * {@inheritDoc}
          */
         @Override
-        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) throws IOException {
+        protected List<VaultEntry> processImport(final InputStream fileInputStream, final String filenameForLogging) throws Exception {
             BufferedReader reader = new BufferedReader(new InputStreamReader(fileInputStream, "UTF-8"));
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -169,8 +162,7 @@ public class MiBandNotifyImporter extends Plugin {
                 this.notifyStatus(STATUS_INTERPRETED_ENTRIES, "Interpreted MiBand data");
             } else {
                 LOG.log(Level.SEVERE, "Got no data from JSON import!");
-                this.notifyStatus(-1, "Got no data from JSON import!");
-                return null;
+                throw new Exception("Got no data from JSON import!");
             }
             return importedData;
         }

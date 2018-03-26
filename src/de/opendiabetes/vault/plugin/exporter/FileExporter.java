@@ -18,6 +18,8 @@ package de.opendiabetes.vault.plugin.exporter;
 
 import de.opendiabetes.vault.container.VaultEntry;
 import de.opendiabetes.vault.container.csv.ExportEntry;
+import de.opendiabetes.vault.plugin.common.AbstractPlugin;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,9 +40,11 @@ import static java.lang.Boolean.parseBoolean;
 /**
  * This class defines the default structure how data gets exported to a file.
  *
- * @author Lucas Buschlinger
+ * @author Lucas Buschlinger, Magnus Gärtner
+ * @param <T> Type of the list entries passed from {@link #prepareData(List)} to {@link #writeToFile(String, List)}
+ * @param <U> Type of data accepted by {{@link #prepareData(List)}}
  */
-public abstract class FileExporter extends AbstractExporter {
+public abstract class FileExporter<T, U> extends AbstractPlugin implements Exporter<U> {
 
     /**
      * The fileOutputStream used to write to the file.
@@ -62,9 +66,11 @@ public abstract class FileExporter extends AbstractExporter {
 
     /**
      * {@inheritDoc}
+     * {@link #prepareData(List)}
+     * {@link #writeToFile(String, List)}
      */
     @Override
-    public int exportDataToFile(final String filePath, final List<VaultEntry> data) throws IOException {
+    public int exportDataToFile(final String filePath, final List<U> data) throws IOException {
         // Status update constants.
         final int startWriteProgress = 80;
         final int writeDoneProgress = 100;
@@ -72,15 +78,15 @@ public abstract class FileExporter extends AbstractExporter {
         File checkFile = new File(filePath);
         if (checkFile.exists()
                 && (!checkFile.isFile() || !checkFile.canWrite())) {
-            this.notifyStatus(-1, "An error occurred while accessing file " + filePath + ".");
-            return ReturnCode.RESULT_FILE_ACCESS_ERROR.getCode();
+            LOG.log(Level.SEVERE, "An error occurred while accessing file " + filePath + ".");
+            throw new IOException("An error occurred while accessing file " + filePath + ".");
         }
         fileOutputStream = new FileOutputStream(checkFile);
         // create csv data
-        List<ExportEntry> exportData = prepareData(data);
+        List<T> exportData = prepareData(data);
         if (exportData == null || exportData.isEmpty()) {
-            this.notifyStatus(-1, "Could not find data to export.");
-            return ReturnCode.RESULT_NO_DATA.getCode();
+            LOG.log(Level.SEVERE, "Could not find data to export.");
+            throw new IOException("Could not find data to export.");
         }
         this.notifyStatus(startWriteProgress, "Starting writing to file");
         // write to file
@@ -103,12 +109,13 @@ public abstract class FileExporter extends AbstractExporter {
      * @param data The data to be written.
      * @throws IOException Thrown if something goes wrong when writing the file.
      */
-    protected void writeToFile(final String filePath, final List<ExportEntry> data) throws IOException {
+    protected void writeToFile(final String filePath, final List<T> data) throws IOException {
         FileChannel channel = fileOutputStream.getChannel();
         byte[] lineFeed = "\n".getBytes(Charset.forName("UTF-8"));
 
-        for (ExportEntry entry : data) {
-            byte[] messageBytes = entry.toByteEntryLine();
+        for (Object entry : data) {
+
+            byte[] messageBytes = ((ExportEntry) entry).toByteEntryLine();
             channel.write(ByteBuffer.wrap(messageBytes));
             channel.write(ByteBuffer.wrap(lineFeed));
         }
@@ -121,8 +128,9 @@ public abstract class FileExporter extends AbstractExporter {
      *
      * @param data The data to be prepared.
      * @return The data in exportable containers.
+     * @throws IllegalArgumentException Thrown if the given parameter is invalid
      */
-    protected abstract List<ExportEntry> prepareData(List<VaultEntry> data);
+    protected abstract List<T> prepareData(List<U> data) throws IllegalArgumentException;
 
     /**
      * Most generic loading of configurations of exporter plugins.
