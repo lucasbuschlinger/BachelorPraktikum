@@ -19,7 +19,4 @@ The ODVExporter plugin offers the following configuration options:
 
 Required Plugins
 -----
-The ODVExporter does not require any other plugins.
-
-
- 
+The exporter uses all other available exporter plugins to export the data. Therefore all plugins are required which export the files you want in the exported ZIP-Archive.
