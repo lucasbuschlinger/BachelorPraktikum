@@ -421,7 +421,6 @@ public class PumpInterpreter extends Plugin {
 
                         if (tmpItem != null) {
                             affectedHistoricElements.add(tmpItem);
-                            //TODO is this interpreter only for medtronic data. Comment: Seems like it, but not a todo?
                         } else if ((basalItem.getRawType() == MedtronicCSVValidator.TYPE.BASAL_TMP_PERCENT
                                 && basalItem.getValue() > 0)) {
                             LOG.log(Level.WARNING, "Could not calculate tmp basal, "
