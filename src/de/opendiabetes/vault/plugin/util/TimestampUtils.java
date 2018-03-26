@@ -93,7 +93,7 @@ public final class TimestampUtils {
     }
 
     /**
-     * Method to add minuted to a Long timestamp.
+     * Method to add minutes to a Long timestamp.
      *
      * @param timestamp The timestamp to add the minutes to.
      * @param minutes   The minutes to be added.

@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
- * This class implements a JsonSerializer for Gson based VaultEntries.
+ * This class implements a JSON serializer for GSON based VaultEntries.
  */
 public class VaultEntryGSONAdapter implements JsonSerializer<VaultEntry>, JsonDeserializer<VaultEntry> {
 
@@ -38,7 +38,7 @@ public class VaultEntryGSONAdapter implements JsonSerializer<VaultEntry>, JsonDe
      * @param entry VaultEntry to be serialized.
      * @param type Type of the entry.
      * @param jsc Context for the serializer.
-     * @return Serialized VaultEntry as Json element.
+     * @return Serialized VaultEntry as JSON element.
      */
     @Override
     public JsonElement serialize(final VaultEntry entry, final Type type, final JsonSerializationContext jsc) {
@@ -47,18 +47,18 @@ public class VaultEntryGSONAdapter implements JsonSerializer<VaultEntry>, JsonDe
         obj.addProperty("ts", entry.getTimestamp().getTime());
         obj.addProperty("v1", entry.getValue());
         obj.addProperty("v2", entry.getValue2());
-        obj.addProperty("at", entry.getAnnotationsAsJson());
+        obj.addProperty("at", entry.getAnnotationsAsJSON());
         return obj;
 
     }
 
     /**
-     * Deserializer for Json data.
-     * @param element The Json element to deserialize.
+     * Deserializer for JSON data.
+     * @param element The JSON element to deserialize.
      * @param type The type of the element.
      * @param jdc Context for the deserializer.
-     * @return Deserialized Json element.
-     * @throws JsonParseException Thrown if Json element is faulty.
+     * @return De-serialized JSON element.
+     * @throws JsonParseException Thrown if JSON element is faulty.
      */
     @Override
     public VaultEntry deserialize(final JsonElement element, final Type type, final JsonDeserializationContext jdc)

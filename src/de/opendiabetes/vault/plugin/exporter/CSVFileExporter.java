@@ -43,9 +43,9 @@ public abstract class CSVFileExporter<T, U> extends FileExporter<T, U> {
         FileOutputStream fileOutputStream = getFileOutputStream();
         CsvWriter cwriter = new CsvWriter(fileOutputStream, VaultCSVEntry.CSV_DELIMITER, Charset.forName("UTF-8"));
 
-        cwriter.writeRecord(((CSVEntry) csvEntries.get(0)).getCsvHeaderRecord());
+        cwriter.writeRecord(((CSVEntry) csvEntries.get(0)).getCSVHeaderRecord());
         for (T item : csvEntries) {
-            cwriter.writeRecord(((CSVEntry) item).toCsvRecord());
+            cwriter.writeRecord(((CSVEntry) item).toCSVRecord());
         }
         cwriter.flush();
         cwriter.close();

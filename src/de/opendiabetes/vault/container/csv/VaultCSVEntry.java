@@ -919,10 +919,10 @@ public class VaultCSVEntry extends CSVEntry {
      *
      * @return The converted VaultCSVEntry.
      */
-    public String toCsvString() {
+    public String toCSVString() {
         StringBuilder sb = new StringBuilder();
 
-        String[] record = this.toCsvRecord();
+        String[] record = this.toCSVRecord();
         for (String item : record) {
             sb.append(item).append(CSV_DELIMITER);
         }
@@ -937,8 +937,8 @@ public class VaultCSVEntry extends CSVEntry {
      * @return The converted VaultCSVEntry.
      */
     @Override
-    public String[] toCsvRecord() {
-        return toCsvRecord(DECIMAL_FORMAT);
+    public String[] toCSVRecord() {
+        return toCSVRecord(DECIMAL_FORMAT);
     }
 
     /**
@@ -947,7 +947,7 @@ public class VaultCSVEntry extends CSVEntry {
      * @param decimalFormat Format of decimals to be used in the CSV record.
      * @return The converted VaultCSVEntry.
      */
-    public String[] toCsvRecord(final String decimalFormat) {
+    public String[] toCSVRecord(final String decimalFormat) {
         ArrayList<String> csvRecord = new ArrayList<>();
 
         csvRecord.add(new SimpleDateFormat("dd.MM.yy").format(timestamp));
@@ -1198,10 +1198,10 @@ public class VaultCSVEntry extends CSVEntry {
      *
      * @return The VaultCSVEntry as CSV header.
      */
-    public String getCsvHeaderString() {
+    public String getCSVHeaderString() {
         StringBuilder sb = new StringBuilder();
 
-        String[] header = getCsvHeaderRecord();
+        String[] header = getCSVHeaderRecord();
         for (String item : header) {
             sb.append(item).append(CSV_DELIMITER);
         }
@@ -1216,7 +1216,7 @@ public class VaultCSVEntry extends CSVEntry {
      * @return The VaultCSVEntry as CSV header.
      */
     @Override
-    public String[] getCsvHeaderRecord() {
+    public String[] getCSVHeaderRecord() {
         return new String[] {
                 "date",
                 "time",

@@ -44,13 +44,13 @@ public abstract class CSVEntry implements ExportEntry {
      * Method to convert entries to CSV records.
      * @return The CSV records.
      */
-    public abstract String[] toCsvRecord();
+    public abstract String[] toCSVRecord();
 
     /**
      * Method to get the CSV header.
      * @return The CSV header.
      */
-    public abstract String[] getCsvHeaderRecord();
+    public abstract String[] getCSVHeaderRecord();
 
     /**
      * {@inheritDoc}
@@ -59,7 +59,7 @@ public abstract class CSVEntry implements ExportEntry {
     public byte[] toByteEntryLine() throws IOException {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 
-        os = writeStringArray(os, toCsvRecord());
+        os = writeStringArray(os, toCSVRecord());
 
         return os.toByteArray();
     }
