@@ -98,7 +98,7 @@ public abstract class CSVImporter extends AbstractFileImporter {
 
         this.notifyStatus(0, "Reading Header");
         CsvReader creader = null;
-        if (getDelimiter() == 0) { //try to detect the delimiter by trial and error
+        if (getDelimiter() == AUTO_DELIMITER) { //try to detect the delimiter by trial and error
             LOG.log(Level.INFO, "using automatic delimiter detection");
             char[] delimiterList = {',', ';', '\t'};
             for (char delimiter : delimiterList) {
