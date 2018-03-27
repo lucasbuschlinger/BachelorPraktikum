@@ -16,6 +16,7 @@ The MiBandNotifyImporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the MiBandNotifyImporter plugin, separated by commas. | x
 | heartRateLowerBound | 45 | The value for the lower bound of the heart rate. (Default: 40) | 
 | heartRateUpperBound | 260 | The value for the upper bound of the heart rate. (Default: 250) | 
 | exerciseHeartThresholdMid | 100 | The value for the threshold from where an exercise will be classed as medium demanding. (Default: 90) | 

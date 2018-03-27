@@ -12,6 +12,7 @@ The ODVImporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the ODVImporter plugin, separated by commas. | x
 | temporaryDirectory | "/tmp/odv/" | The temporary directory to use. | 
 | metaFile | "meta-2.info" | The name of the meta file to use. (Default: meta.info) | 
 

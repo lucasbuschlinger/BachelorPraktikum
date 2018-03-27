@@ -17,6 +17,7 @@ The MedtronicCrawlerImporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the MedtronicCrawlerImporter plugin, separated by commas. | x
 | fromDate | 15.06.2017 | Date from when the data should start to be imported | x
 | toDate | 15.07.2017 | Date till when the data should be imported | x
 

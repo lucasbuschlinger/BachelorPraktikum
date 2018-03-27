@@ -28,6 +28,7 @@ The GoogleFitCrawlerImporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the GoogleFitCrawlerImporter plugin, separated by commas. | x
 | apiKey | foo_bar | The Google API acquired above | x
 | clientSecretPath | ~/.credentials/client_secret.json | Path to the client credentials downloaded from Google | x
 | age | 25 | Age of the user | x
