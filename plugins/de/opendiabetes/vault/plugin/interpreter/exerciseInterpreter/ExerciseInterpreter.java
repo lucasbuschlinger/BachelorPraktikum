@@ -470,7 +470,7 @@ public class ExerciseInterpreter extends Plugin {
          * Template method to load plugin specific configurations from the config file.
          *
          * @param configuration The configuration object.
-         * @return wheter a valid configuration could be read from the config file
+         * @return whether a valid configuration could be read from the config file
          */
         @Override
         protected boolean loadPluginSpecificConfiguration(final Properties configuration) {

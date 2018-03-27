@@ -1,24 +1,24 @@
-# Sample Plugin
-ver 1.0.1
+# MedtronicImporter
+Version: 1.0.0  
 Classification: Importer
 
 Overview
 -----
-Sample plugin is an importer plugin which imports data in the sample.smpl format.
+The MedtronicImporter plugin is an importer plugin which imports Medtronic data in the .csv format.
 
-Data example
+Data
 -----
-The sample.smpl format ist a format used by the Sample Corp. and example can be found here: http://example.com/sample.smpl
+You can find more information on Medtronic data at https://carelink.minimed.com/patient/entry.jsp?bhcp=1
 
 Configuration
 -----
-The Sample plugin offers the following configuration options:
+The MedtronicImporter plugin offers the following configuration options:
 
 | key  | value | description | required |
 | ------------- | ------------- |  ------------- | ------------- |
-| fromDate | DD.MM.YYYY | The date from when the data in the provided smple file should be imported | x
-| toDate | DD.MM.YYYY | The date until when the data in the provided smpl file should be imported |
+| compatiblePlugins | PluginA, PluginB, PluginC | A list of plugins that are compatible with the MedtronicImporter plugin, separated by commas. | x
+| delimiter | ; | Delimiter to be used when reading the CSV file. | 
 
 Required Plugins
 -----
- - CSVImporterPlugin (http://example.com/CSVImporter)
+ - The MedtronicImporter does not require any other plugins.
