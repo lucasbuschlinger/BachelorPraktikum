@@ -19,6 +19,7 @@ package de.opendiabetes.vault.plugin.importer.miband;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,26 +31,32 @@ import java.util.List;
 public class MiBandObjects {
 
     /**
+     * Indicates uninitialized fields.
+     */
+    private static final String UNINITZIALIZED = "UNINITIALIZED";
+
+    /**
      * This object will hold the data if there was some of the {@link HeartMonitorData} type.
      */
-    private List<HeartMonitorData> heartMonitorData;
+    private List<HeartMonitorData> heartMonitorData = new ArrayList<>();
     /**
      * This object will hold the data if there was some of the {@link SleepIntervalData} type.
      */
-    private List<SleepIntervalData> sleepIntervalData;
+    private List<SleepIntervalData> sleepIntervalData = new ArrayList<>();
     /**
      * This object will hold the data if there was some of the {@link Workout} type.
      */
-    private List<Workout> workout;
+    private List<Workout> workout = new ArrayList<>();
 //    Currently unused.
 //     /**
 //     * This object will hold the data if there was some of the {@link StepsData} type.
 //     */
 //    private List<StepsData> stepsData;
+
     /**
      * This object will hold the data if there was some of the {@link Weight} type.
      */
-    private List<Weight> weight;
+    private List<Weight> weight = new ArrayList<>();
 
     /**
      * Getter for the heart monitor data.
@@ -105,15 +112,15 @@ public class MiBandObjects {
         /**
          * Boolean to indicate whether the entry is hidden.
          */
-        private String hidden;
+        private String hidden = UNINITZIALIZED;
         /**
          * The heart rate.
          */
-        private String intensity;
+        private String intensity = UNINITZIALIZED;
         /**
          * The timestamp of the recorded heart rate.
          */
-        private String timestamp;
+        private String timestamp = UNINITZIALIZED;
 
         /**
          * This shows whether the entry is hidden.
@@ -153,15 +160,15 @@ public class MiBandObjects {
         /**
          * The ending time of the sleep interval.
          */
-        private String endDateTime;
+        private String endDateTime = UNINITZIALIZED;
         /**
          * The starting time of the sleep interval.
          */
-        private String startDateTime;
+        private String startDateTime = UNINITZIALIZED;
         /**
          * The type of the sleep interval.
          */
-        private String type;
+        private String type = UNINITZIALIZED;
 
         /**
          * Getter for the starting time of the entry.
@@ -214,15 +221,15 @@ public class MiBandObjects {
         /**
          * The ending time of the workout.
          */
-        private String endDateTime;
+        private String endDateTime = UNINITZIALIZED;
         /**
          * The average heart rate during the workout.
          */
-        private String heartAvg;
+        private String heartAvg = UNINITZIALIZED;
         /**
          * The starting time of the workout.
          */
-        private String startDateTime;
+        private String startDateTime = UNINITZIALIZED;
 
         /**
          * Getter for the ending time of the activity.
@@ -288,19 +295,19 @@ public class MiBandObjects {
         /**
          * The timestamp of the data.
          */
-        private String dateTime;
+        private String dateTime = UNINITZIALIZED;
         /**
          * Indicates whether the entry is supposed to be hidden.
          */
-        private String hidden;
+        private String hidden = UNINITZIALIZED;
         /**
          * Indicates whether the entry is the last for the day.
          */
-        private String last;
+        private String last = UNINITZIALIZED;
         /**
          * Number of steps recorded in this entry.
          */
-        private String steps;
+        private String steps = UNINITZIALIZED;
 
         /**
          * Getter for the timestamp.
@@ -351,11 +358,11 @@ public class MiBandObjects {
         /**
          * The timestamp of the entry.
          */
-        private String timestamp;
+        private String timestamp = UNINITZIALIZED;
         /**
          * The value of the entry.
          */
-        private String value;
+        private String value = UNINITZIALIZED;
 
         /**
          * Getter for the timestamp.

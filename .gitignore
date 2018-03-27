@@ -10,3 +10,4 @@ reports/resources/checkstyle/checkstyle_errors.xml
 *.html
 export \(copy\)/
 saved_out/
+properties/
