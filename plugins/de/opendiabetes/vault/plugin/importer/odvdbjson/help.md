@@ -8,7 +8,7 @@ The ODVDBJSONImporter plugin is an importer plugin which imports ODVDB data in t
 
 Data
 -----
-The data needed by the ODVDBJSONImporter can be fetched from the Vault, i.e. by using the ODVDBJSONExporter and using its results.
+The data needed by the ODVDBJSONImporter can be fetched from the Vault, i.e. by using the ODVDBJSONExporter and its results.
 
 Configuration
 -----

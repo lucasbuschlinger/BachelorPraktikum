@@ -5,7 +5,7 @@ Classification: Importer
 Overview
 -----
 The MedtronicCrawlerImporter is an importer plugin which crawls the Metronic CareLink Page. 
-You will need to have an CareLink account in order to access the data.
+You will need to have a CareLink account in order to access the data.
 
 Data
 -----
