@@ -392,11 +392,6 @@ public class MedtronicImporter extends Plugin {
                             case SUSPEND_BEFORE_LOW:
                                 VaultEntry extraTmpEntry = new VaultEntry(VaultEntryType.PUMP_AUTONOMOUS_SUSPEND, timestamp);
                                 retVal.add(extraTmpEntry);
-                                tmpEntry.setType(VaultEntryType.GLUCOSE_CGM_ALERT);
-                                tmpEntry.setValue(VaultEntry.VALUE_UNUSED); // mark as unused to inform interpreter to add a BG value
-                                tmpEntry.addAnnotation(new VaultEntryAnnotation(codeString,
-                                        VaultEntryAnnotation.TYPE.PUMP_INFORMATION_CODE));
-                                break;
                             case LOW_WHEN_SUSPENDED:
                             case LOW:
                             case RISE_ALERT:
