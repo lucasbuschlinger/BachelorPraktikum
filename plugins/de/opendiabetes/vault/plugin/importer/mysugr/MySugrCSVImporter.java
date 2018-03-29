@@ -107,10 +107,6 @@ public class MySugrCSVImporter extends Plugin {
                 //should not happen
                 return null;
             }
-            if (timestamp == null) {
-                return null;
-            }
-
             String rawValue;
             VaultEntry tmpEntry;
 
