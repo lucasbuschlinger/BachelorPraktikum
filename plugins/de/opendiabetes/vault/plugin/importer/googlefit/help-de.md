@@ -8,7 +8,7 @@ Der GoogleFitCSVImporter ist ein Importer-Plugin, das Fitness-Daten von Google F
 
 Daten
 -----
-Daten können von https://takeout.google.com/ exportiert werden, indem Sie Fit auswählen und auf Archiv erstellen klicken. Die Daten für den GoogleFitCSVImporter sind in all denjenigen Dateien, die in dem Archiv unter Takeout/Fit/Daily Aggregations dem Format "2018-03-17.csv" entsprechen.
+Daten können von https://takeout.google.com/ exportiert werden, indem Sie Fit auswählen und auf Archiv erstellen klicken. Die Daten für den GoogleFitCSVImporter sind in all denjenigen Dateien, die in dem Archiv unter Takeout/Fit/Daily Aggregations zu finden sind und dem Format "2018-03-17.csv" entsprechen.
 
 Konfiguration
 -----
