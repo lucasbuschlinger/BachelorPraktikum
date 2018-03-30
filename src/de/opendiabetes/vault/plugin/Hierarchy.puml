@@ -1,0 +1,135 @@
+@startuml
+' classes and interfaces
+package common{
+interface OpenDiabetesPlugin{
++getListOfCompatiblePlugins(): List<String>
++loadConfiguration(Properties): boolean
++registerStatusCallback(StatusListener)
+}
+abstract class AbstractPlugin{
+<U>Implementation of inherited methods:</U>
++getListOfCompatiblePlugins(): List<String>
++loadConfiguration(Properties): boolean
++registerStatusCallback(StatusListener)
+--
+#notifyStatus(progress, status)
+--
+<U>to be overridden:</U>
+#abstract loadPluginSpecificConfiguration(Properties)
+}
+}
+
+package exporter{
+note top of Exporter: "U: Type of data accepted to export"
+note top of FileExporter: "T: Type of the list entries passed\n from prepareData to writeToFile"
+
+interface Exporter<U>{
++exportDataToFile(filePath, List U data)
+}
+abstract class FileExporter<T, U>{
+<U>Implementation of inherited methods:</U>
++exportDataToFile(filePath, List U data)
+--
+#filterPeriodRestriction(List<VaultEntry>): List<VaultEntry>
+--
+<U>to be overridden:</U>
+#writeToFile(filePath, List<T>)
+#abstract prepareData(List U data): List<T>
+}
+abstract class CSVFileExporter<T, U>{
+<U>Implementation of inherited methods:</U>
+#writeToFile(filePath, List<T>)
+--
+}
+
+abstract class VaultExporter{
+<U>Implementation of inherited methods:</U>
+#prepareData(List<VaultEntry>):List<ExportEntry>
+--
+}
+}
+package importer{
+hide members
+interface Importer
+package fileimporter{
+interface FileImporter{
++importData(filePath):List<VaultEntry>
+}
+
+abstract class AbstractFileImporter{
+<U>Implementation of inherited methods:</U>
++importData(filePath):List<VaultEntry>
+--
+<U>to be overridden:</U>
+#preprocessingIfNeeded(filePath)
+#abstract processImport(InputStream data, fileName):List<VaultEntry>
+}
+abstract class CSVImporter{
+<U>Implementation of inherited methods:</U>
+#processImport(InputStream data, fileName):List<VaultEntry>
+--
+<U>to be overridden:</U>
+#abstract parseEntry(CsvReader):List<VaultEntry>
+}
+}
+package crawlerimporter{
+
+interface CrawlerImporter{
++importData(username, password):List<VaultEntry>
+}
+}
+
+
+}
+
+package interpreter{
+interface Interpreter{
++init(VaultDAO)
++interpret(List<VaultEntry>):List<VaultEntry>
+}
+abstract class VaultInterpreter{
+<U>Implementation of inherited methods:</U>
++init(VaultDAO)
+}
+}
+
+' hierarchy
+
+OpenDiabetesPlugin <|-- Exporter
+OpenDiabetesPlugin <|-- Importer
+OpenDiabetesPlugin <|-.- AbstractPlugin
+
+
+OpenDiabetesPlugin <|-- Interpreter
+
+AbstractPlugin <|-- FileExporter
+AbstractPlugin <|-- VaultInterpreter
+AbstractPlugin <|-- AbstractFileImporter
+
+
+Exporter <|-.- FileExporter
+
+FileExporter <|-- CSVFileExporter
+
+CSVFileExporter <|-- VaultExporter: "U: ExportEntry\nT: VaultEntry"
+
+Importer <|-- FileImporter
+Importer <|-- CrawlerImporter
+
+FileImporter <|-.- AbstractFileImporter
+AbstractFileImporter <|-- CSVImporter
+
+
+Interpreter <|-.- VaultInterpreter
+
+
+'class ArrayList {
+'Object[] elementData
+'size()
+'}
+
+'hide exporter
+'hide importer
+'hide interpreter
+
+@enduml
