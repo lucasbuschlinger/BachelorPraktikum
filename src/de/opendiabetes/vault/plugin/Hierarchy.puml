@@ -1,0 +1,104 @@
+@startuml
+' classes and interfaces
+package common{
+interface OpenDiabetesPlugin{
+getListOfCompatiblePlugins()
+loadConfiguration(Properties)
+registerStatusCallback(StatusListener)
+}
+abstract class AbstractPlugin{
+abstract loadPluginSpecificConfiguration(Properties)
+notifyStatus(progress, status)
+}
+}
+
+package exporter{
+interface Exporter<U>{
+exportDataToFile(filePath, List U data)
+}
+abstract class FileExporter<T, U>{
+filterPeriodRestriction(List<VaultEntry>): List<VaultEntry>
+abstract prepareData(List<U> data): List<T>
+writeToFile(filePath, List<T>) //to be overidden
+}
+abstract class CSVFileExporter<T, U>{
+writeToFile(filePath, List<T>)
+}
+
+abstract class VaultExporter{
+prepareData(List<VaultEntry>):List<ExportEntry>
+processVaultEntry(VaultCSVEntry, VaultEntry):VaultCSVEntry
+}
+}
+package importer{
+interface Importer
+package fileimporter{
+interface FileImporter{
+importData(filePath):List<VaultEntry>
+}
+
+abstract class AbstractFileImporter{
+importData(filePath):List<VaultEntry>
+preprocessingIfNeeded(filePath)
+processImport(InputStream data, fileName):List<VaultEntry>
+}
+abstract class CSVImporter{
+abstract parseEntry(CsvReader):List<VaultEntry>
+processImport(InputStream data, fileName):List<VaultEntry>
+}
+}
+package crawlerimporter{
+
+interface CrawlerImporter{
+importData(username, password):List<VaultEntry>
+}
+}
+
+
+}
+
+package interpreter{
+interface Interpreter{
+init(VaultDAO)
+interpret(List<VaultEntry>):List<VaultEntry>
+}
+abstract class VaultInterpreter{
+init(VaultDAO)
+}
+}
+
+' hierarchy
+
+OpenDiabetesPlugin <|-- Exporter
+OpenDiabetesPlugin <|-- Importer
+OpenDiabetesPlugin <|-- AbstractPlugin
+OpenDiabetesPlugin <|-- Interpreter
+
+AbstractPlugin <|-- FileExporter
+AbstractPlugin <|-- VaultInterpreter
+AbstractPlugin <|-- AbstractFileImporter
+
+
+Exporter <|-- FileExporter
+
+FileExporter <|-- CSVFileExporter
+
+CSVFileExporter <|-- VaultExporter
+
+Importer <|-- FileImporter
+Importer <|-- CrawlerImporter
+
+FileImporter <|-- AbstractFileImporter
+AbstractFileImporter <|-- CSVImporter
+
+
+Interpreter <|-- VaultInterpreter
+
+
+'class ArrayList {
+'Object[] elementData
+'size()
+'}
+
+
+@enduml
