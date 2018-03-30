@@ -31,7 +31,7 @@ The guide covers how to setup the project using [IntelliJ IDEA](https://www.jetb
 
 4. Select JDK 1.8.
 
-5. Add the jars from BaseLibs and libs (from the plugin's root packages) to the classpath.
+5. Add the jars from the 'lib' folder in the root source path and from the plugin's root packages to the classpath.
 
 6. Finally create the out folder as target destination for the output and finish the setup. You can then build the plugin by simply clicking the Build Project item in the menu bar at the top.
 
