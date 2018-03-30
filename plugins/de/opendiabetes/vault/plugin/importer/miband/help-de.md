@@ -8,7 +8,7 @@ Der MiBandNotifyImporter ist ein Importer-Plugin, das Daten vom MiBand 2 importi
 
 Daten
 -----
-Daten für den MiBandNotifyImporter können unter https://play.google.com/store/apps/details?id=com.mc.miband1&hl=en gefunden werden.
+Um Daten für den MiBandNotifyImporter zu bekommen, kann man unter https://play.google.com/store/apps/details?id=com.mc.miband1&hl=en die App herunterladen. Mithilfe dieser erhält man Daten für den MiBandNotifyImporter.
 
 Konfiguration
 -----

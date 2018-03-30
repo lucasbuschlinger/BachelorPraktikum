@@ -8,7 +8,7 @@ Der LibreTextImporter ist ein Importer-Plugin, das Libretext-Daten im CSV-Format
 
 Daten
 -----
-Daten für den LibreTextImporter können unter http://www.freestylelibre.de gefunden werden.
+Um LibreText-Daten zu bekommen, kann man unter http://www.freestylelibre.de die App von FreeStyle LibreLink herunterladen. Mithilfe dieser erhält man Daten für den LibreTextImporter.
 
 Konfiguration
 -----

@@ -8,7 +8,7 @@ The MiBandNotifyImporter is an importer plugin, which imports data from the MiBa
 
 Data
 -----
-To get MiBand 2 data for the import, visit https://play.google.com/store/apps/details?id=com.mc.miband1&hl=en
+To get MiBand 2 data for the import, visit https://play.google.com/store/apps/details?id=com.mc.miband1&hl=en and download the app. You can then use the app to export data for the MiBandNotifyImporter.
 
 Configuration
 -----
