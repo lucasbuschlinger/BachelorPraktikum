@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der GoogleFitCrawlerImporter ist ein Importer Plugin, das zum Importieren von Daten auf die Google API zugreift.
+Der GoogleFitCrawlerImporter ist ein Importer-Plugin, das zum Importieren von Daten auf die Google API zugreift.
 Um diesen Importer zu nutzen, muss ein API-Schlüssel erstellt werden.
 
 Wie man einen API-Schlüssel bekommt:

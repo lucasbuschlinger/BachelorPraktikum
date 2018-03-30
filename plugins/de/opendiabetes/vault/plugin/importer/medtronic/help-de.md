@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der MedtronicImporter ist ein Importer Plugin, das Medtronic-Daten im CSV-Format importiert.
+Der MedtronicImporter ist ein Importer-Plugin, das Medtronic-Daten im CSV-Format importiert.
 
 Daten
 -----

@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der MySugrCSVImporter ist ein Importer Plugin, das MySugr-Daten im CSV-Format importiert.
+Der MySugrCSVImporter ist ein Importer-Plugin, das MySugr-Daten im CSV-Format importiert.
 
 Daten
 -----

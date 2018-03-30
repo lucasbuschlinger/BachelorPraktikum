@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der MiBandNotifyImporter ist ein Importer Plugin, das Daten vom MiBand 2 importiert. Die zu importierenden Daten sind im JSON-Format.
+Der MiBandNotifyImporter ist ein Importer-Plugin, das Daten vom MiBand 2 importiert. Die zu importierenden Daten sind im JSON-Format.
 
 Daten
 -----

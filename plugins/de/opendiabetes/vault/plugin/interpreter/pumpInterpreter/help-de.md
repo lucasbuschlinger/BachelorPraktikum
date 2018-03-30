@@ -4,7 +4,7 @@ Klassifikation: Interpreter
 
 Übersicht
 -----
-Der PumpInterpreter ist ein Interpreter Plugin, das gesammelte Pumpendaten interpretiert, indem es beispielsweise relevante Ereignisse filtert, während die Kanüle voll war.
+Der PumpInterpreter ist ein Interpreter-Plugin, das gesammelte Pumpendaten interpretiert, indem es beispielsweise relevante Ereignisse filtert, während die Kanüle voll war.
 
 Konfiguration
 -----

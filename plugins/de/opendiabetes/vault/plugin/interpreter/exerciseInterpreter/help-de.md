@@ -4,7 +4,7 @@ Klassifikation: Interpreter
 
 Übersicht
 -----
-Der ExerciseInterpreter ist ein Interpreter Plugin, das Aktivitätsdaten interpretiert, indem es Aktivitäten in verschiedene Typen filtert.
+Der ExerciseInterpreter ist ein Interpreter-Plugin, das Aktivitätsdaten interpretiert, indem es Aktivitäten in verschiedene Typen filtert.
 
 Konfiguration
 -----

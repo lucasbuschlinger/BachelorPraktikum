@@ -4,7 +4,7 @@ Klassifikation: Exporter
 
 Übersicht
 -----
-Der PlotterExporter ist ein Exporter Plugin, das Daten aus der Datenbank mithilfe des VaultCSVExporter Plugins exportiert und aus der erstellten Datei eine grafische Darstellung erzeugt. Anschließend wird die Datei wieder gelöscht.
+Der PlotterExporter ist ein Exporter-Plugin, das Daten aus der Datenbank mithilfe des VaultCSVExporter Plugins exportiert und aus der erstellten Datei eine grafische Darstellung erzeugt. Anschließend wird die Datei wieder gelöscht.
 
 Die Daten können sowohl als PNG-Datei als auch als PDF-Datei exportiert werden.  
 Damit der Exporter funktioniert, muss [Python 2.3](https://www.python.org/download/releases/2.3/) installiert sein. 

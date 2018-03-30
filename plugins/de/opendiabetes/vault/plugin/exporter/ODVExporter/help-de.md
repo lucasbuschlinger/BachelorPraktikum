@@ -4,7 +4,7 @@ Klassifikation: Exporter
 
 Übersicht
 -----
-Der ODVExporter ist ein Exporter Plugin, das Daten aus der Datenbank exportiert, indem die Daten mithilfe aller anderen verfügbaren Exporter Plugins exportiert und deren Exportdateien in ein ZIP-Archiv gepackt werden.
+Der ODVExporter ist ein Exporter-Plugin, das Daten aus der Datenbank exportiert, indem die Daten mithilfe aller anderen verfügbaren Exporter Plugins exportiert und deren Exportdateien in ein ZIP-Archiv gepackt werden.
 
 Beispieldatensatz
 -----

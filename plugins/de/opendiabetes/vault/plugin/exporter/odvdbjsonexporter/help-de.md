@@ -4,7 +4,7 @@ Klassifikation: Exporter
 
 Übersicht
 -----
-Der ODVDBJSONExporter ist ein Exporter Plugin, das Daten aus der Datenbank als JSON Datei exportiert.
+Der ODVDBJSONExporter ist ein Exporter-Plugin, das Daten aus der Datenbank als JSON Datei exportiert.
 
 Beispieldatensatz
 -----

@@ -4,7 +4,7 @@ Klassifikation: Interpreter
 
 Übersicht
 -----
-Der DateInterpreter ist ein Interpreter Plugin, das VaultEntry-Daten interpretiert, sodass nur Einträge aus dem festgelegten Zeitraum übrig bleiben.
+Der DateInterpreter ist ein Interpreter-Plugin, das VaultEntry-Daten interpretiert, sodass nur Einträge aus dem festgelegten Zeitraum übrig bleiben.
 
 Konfiguration
 -----

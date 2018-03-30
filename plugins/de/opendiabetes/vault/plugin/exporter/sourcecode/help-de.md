@@ -4,7 +4,7 @@ Klassifikation: Exporter
 
 Übersicht
 -----
-Der SourceCodeExporter ist ein Exporter Plugin, das Daten aus der Datenbank als Java-Quellcode exportiert.
+Der SourceCodeExporter ist ein Exporter-Plugin, das Daten aus der Datenbank als Java-Quellcode exportiert.
 
 Beispieldatensatz
 -----

@@ -4,7 +4,7 @@ Klassifikation: Exporter
 
 Übersicht
 -----
-Der SliceLayoutCSVExporter ist ein Exporter Plugin, das Daten aus der Datenbank als sogenannte Slice-CSV-Dateien exportiert.
+Der SliceLayoutCSVExporter ist ein Exporter-Plugin, das Daten aus der Datenbank als sogenannte Slice-CSV-Dateien exportiert.
 Diese Slices können später von Interpreter-Plugins verwendet werden, um Teile von Daten einzeln zu interpretieren.
 
 Beispieldatensatz

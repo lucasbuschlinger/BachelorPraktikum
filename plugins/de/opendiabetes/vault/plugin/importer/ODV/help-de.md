@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der ODVImporter ist ein Importerplugin, das Daten aus ODV-ZIP-Archiven importiert. Diese Archive sind Ergebnisse des ODVExporters.
+Der ODVImporter ist ein Importer-Plugin, das Daten aus ODV-ZIP-Archiven importiert. Diese Archive sind Ergebnisse des ODVExporters.
 
 Konfiguration
 -----
