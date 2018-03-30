@@ -14,7 +14,7 @@ Das PumpInterpreter-Plugin bietet folgende Konfigurationsmöglichkeiten:
 | ------------- | ------------- |  ------------- | ------------- |
 | compatiblePlugins | PluginA, PluginB, PluginC | Eine Liste von Plugins, die mit dem PumpInterpreter kompatibel sind. | x
 | outputFilterSize | 10 | Die Größe des slidingWindow Output-Filters. (Standardwert: 5) | 
-| fillCanulaAsNewKatheder | true | Gibt an, ob die Kanüle als neuer Katheter gefüllt werden muss. |
+| fillCanulaAsNewCatheter | true | Gibt an, ob die Kanüle als neuer Katheter gefüllt werden muss. |
 | fillCanulaCooldown | 10 | Die Wartezeit der Kanüle bis sie wieder verfügbar ist in Minuten. |
 
 Benötigte Plugins

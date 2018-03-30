@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der GoogleFitCSVImporter ist ein Importer Plugin, das Fitness-Daten von Google Fit im CSV-Format importiert.
+Der GoogleFitCSVImporter ist ein Importer-Plugin, das Fitness-Daten von Google Fit im CSV-Format importiert.
 
 Daten
 -----
