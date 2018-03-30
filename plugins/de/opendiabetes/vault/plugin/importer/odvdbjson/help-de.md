@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der ODVDBJSONImporter ist ein Importerplugin, das ODVDB-Daten im JSON-Format importiert. 
+Der ODVDBJSONImporter ist ein Importer Plugin, das ODVDB-Daten im JSON-Format importiert.
 
 Daten
 -----

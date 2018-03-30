@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der SonySWR12Importer ist ein Importerplugin, das SonySWR12-Daten im CSV-Format importiert. 
+Der SonySWR12Importer ist ein Importer Plugin, das SonySWR12-Daten im CSV-Format importiert.
 
 Daten
 -----

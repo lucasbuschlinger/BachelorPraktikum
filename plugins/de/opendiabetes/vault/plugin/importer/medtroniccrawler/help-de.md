@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der MedtronicCrawlerImporter ist ein Importerplugin, das Medtronic-Daten von der Webseite von Medtronic Carelink importiert. 
+Der MedtronicCrawlerImporter ist ein Importer Plugin, das Medtronic-Daten von der Webseite von Medtronic Carelink importiert.
 
 Daten
 -----

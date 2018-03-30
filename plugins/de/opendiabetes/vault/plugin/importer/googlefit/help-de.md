@@ -4,11 +4,11 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der GoogleFitCSVImporter ist ein Importerplugin, das Fitness-Daten von Google Fit im CSV-Format importiert. 
+Der GoogleFitCSVImporter ist ein Importer Plugin, das Fitness-Daten von Google Fit im CSV-Format importiert.
 
 Daten
 -----
-Daten können von https://takeout.google.com/ exportiert werden, indem Sie Fit auswählen und auf Archiv erstellen klicken. Die Daten für den GoogleFitCSVImporter sind dann in dem Archiv unter Takeout/Fit/Daily Aggregations und all diejenigen Dateien, die dem Format "2018-03-17.csv" entsprechen.
+Daten können von https://takeout.google.com/ exportiert werden, indem Sie Fit auswählen und auf Archiv erstellen klicken. Die Daten für den GoogleFitCSVImporter sind alle die Dateien die in dem Archiv unter Takeout/Fit/Daily Aggregations dem Format "2018-03-17.csv" entsprechen.
 
 Konfiguration
 -----

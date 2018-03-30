@@ -4,23 +4,23 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der GoogleFitCrawlerImporter ist ein Importerplugin, das zum Importieren von Daten auf die Google API zugreift. 
+Der GoogleFitCrawlerImporter ist ein Importer Plugin, das zum Importieren von Daten auf die Google API zugreift.
 Um diesen Importer zu nutzen, muss ein API-Schlüssel erstellt werden.
 
 Wie man einen API-Schlüssel bekommt:
 
 1. Gehen Sie auf [developers.google.com/console](https://developers.google.com/console) und melden Sie sich mit einem Google-Konto an.
-1. Wählen Sie eins Ihrer existierenden Projekte aus oder erstellen Sie ein neues Projekt.
-1. Aktivieren Sie die folgenden APIs, um den Java Client benutzen zu können:
+2. Wählen Sie eins Ihrer existierenden Projekte aus oder erstellen Sie ein neues Projekt.
+3. Aktivieren Sie die folgenden APIs, um den Java Client benutzen zu können:
     - Fitness API
     - People API
     - Geocoding API
     - Places API
     - Google Maps JavaScript API
     - Google Static Maps API
-1. Erstellen Sie einen API-Schlüssel, der von der People API verwendet wird.
-1. Erstellen Sie des Weiteren eine OAuth 2.0 client ID für die anderen APIs.
-1. Falls nötig, schränken Sie Anfragen auf eine IP-Adresse ein.
+4. Erstellen Sie einen API-Schlüssel, der von der People API verwendet wird.
+5. Erstellen Sie des Weiteren eine OAuth 2.0 Client ID für die anderen APIs.
+6. Falls nötig, schränken Sie Anfragen auf eine IP-Adresse ein.
 
 Konfiguration
 -----

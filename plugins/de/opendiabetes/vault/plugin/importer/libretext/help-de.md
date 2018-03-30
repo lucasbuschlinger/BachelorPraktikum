@@ -4,7 +4,7 @@ Klassifikation: Importer
 
 Übersicht
 -----
-Der LibreTextImporter ist ein Importerplugin, das Libretext-Daten im CSV-Format aus .txt-Dateien importiert. 
+Der LibreTextImporter ist ein Importer Plugin, das Libretext-Daten im CSV-Format aus .txt-Dateien importiert.
 
 Daten
 -----
