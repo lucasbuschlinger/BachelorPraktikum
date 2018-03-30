@@ -356,7 +356,7 @@ public class VaultEntryAnnotation implements Serializable {
          */
         TAG_Nervous,
         /**
-         * Strss tag.
+         * Stress tag.
          */
         TAG_Stress,
         /**

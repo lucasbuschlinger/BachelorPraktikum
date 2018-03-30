@@ -246,7 +246,7 @@ public final class VaultDAO {
 //    }
 
     /**
-     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
+     * This method is used to query {@link VaultEntry}s which are of an exercise and lie in a specified period.
      * The types to be queried for are exercise types:
      * <ul>
      *     <li>{@link VaultEntryType#EXERCISE_LOW}</li>
@@ -259,7 +259,6 @@ public final class VaultDAO {
      * @param to The end of the period to query entries from.
      * @return All {@link VaultEntry} which are of the required type and lie in the specified period.
      */
-    //TO DO OTHER TYPES? Let's ask Jens @next meeting
     public List<VaultEntry> queryExerciseBetween(final Date from, final Date to) {
         List<VaultEntry> returnValues = null;
         try {
@@ -381,7 +380,7 @@ public final class VaultDAO {
     }
 
     /**
-     * This method is used to query {@link VaultEntry}s which are of a given type and lie in a specified period.
+     * This method is used to query {@link VaultEntry}s which are of basal events and lie in a specified period.
      * The types to be queried for are basal types:
      * <ul>
      *     <li>{@link VaultEntryType#BASAL_MANUAL}</li>

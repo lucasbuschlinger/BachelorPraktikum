@@ -43,7 +43,7 @@ public class SliceEntry {
      */
     public static final String START_TIMESTAMP_FIELD_NAME = "start_timestamp";
     /**
-     * Name of the filed holding the duration.
+     * Name of the field holding the duration.
      */
     public static final String DURATION_FIELD_NAME = "duration";
     /**
@@ -51,7 +51,7 @@ public class SliceEntry {
      */
     public static final String TYPE_FIELD_NAME = "type";
     /**
-     * Name of the filed holding the type of the used slice filter.
+     * Name of the field holding the type of the used slice filter.
      */
     public static final String SLICE_FILTER_FIELD_NAME = "sliceFilterType";
 

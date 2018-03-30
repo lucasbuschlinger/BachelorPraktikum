@@ -126,18 +126,18 @@ public class VaultEntry implements Serializable {
     private List<VaultEntryAnnotation> annotations = new ArrayList<>();
 
     /**
-     * The VaultEntry's annotations as json.
+     * The VaultEntry's annotations as JSON.
      */
     @DatabaseField(dataType = DataType.LONG_STRING, columnName = ANNOTATION_FIELD_NAME)
-    private String annotationsAsJson = "";
+    private String annotationsAsJSON = "";
 
     /**
-     * The no-argument constructor of VaultEntry.
+     * The default constructor of VaultEntry.
      */
     public VaultEntry() {
         // all persisted classes must define a no-arg constructor with at least package visibility
         GsonBuilder gb = new GsonBuilder();
-        gb.registerTypeAdapter(VaultEntryAnnotation.class, new VaultEntryAnnotationGsonAdapter());
+        gb.registerTypeAdapter(VaultEntryAnnotation.class, new VaultEntryAnnotationGSONAdapter());
         gson = gb.create();
     }
 
@@ -332,7 +332,7 @@ public class VaultEntry implements Serializable {
      */
     public void addAnnotation(final VaultEntryAnnotation annotation) {
         this.annotations.add(annotation);
-        annotationsToJson();
+        annotationsToJSON();
     }
 
     /**
@@ -342,16 +342,16 @@ public class VaultEntry implements Serializable {
      */
     public void setAnnotation(final ArrayList<VaultEntryAnnotation> annotations) {
         this.annotations = annotations;
-        annotationsToJson();
+        annotationsToJSON();
     }
 
     /**
-     * Getter for annotationsAsJson.
+     * Getter for annotationsAsJSON.
      *
-     * @return The VaultEntry's annotationsAsJson.
+     * @return The VaultEntry's annotationsAsJSON.
      */
-    public String getAnnotationsAsJson() {
-        return annotationsAsJson;
+    public String getAnnotationsAsJSON() {
+        return annotationsAsJSON;
     }
 
 
@@ -420,32 +420,32 @@ public class VaultEntry implements Serializable {
     }
 
     /**
-     * Converts the List of VaultEntryAnnotation to json and saves it in annotationsAsJson.
+     * Converts the List of VaultEntryAnnotation to JSON and saves it in annotationsAsJSON.
      */
-    private void annotationsToJson() {
-        annotationsAsJson = gson.toJson(annotations);
+    private void annotationsToJSON() {
+        annotationsAsJSON = gson.toJson(annotations);
     }
 
     /**
-     * Converts the annotations from json to List of VaultEntryAnnotation.
+     * Converts the annotations from JSON to List of VaultEntryAnnotation.
      */
     private void annotationsFromJason() {
-        if (!annotationsAsJson.isEmpty()) {
-            annotations = gson.fromJson(annotationsAsJson,
+        if (!annotationsAsJSON.isEmpty()) {
+            annotations = gson.fromJson(annotationsAsJSON,
                     new TypeToken<List<VaultEntryAnnotation>>() {
                     }.getType());
         }
-        annotationsAsJson = "";
+        annotationsAsJSON = "";
     }
 
     /**
-     * Sets annotationsAsJson and converts the annotations from json to List of VaultEntryAnnotation.
+     * Sets annotationsAsJSON and converts the annotations from JSON to List of VaultEntryAnnotation.
      *
      * @param asString The annotation to be set.
      */
     public void setAnnotationFromJson(final String asString) {
         if (asString != null && !asString.isEmpty()) {
-            this.annotationsAsJson = asString;
+            this.annotationsAsJSON = asString;
             annotationsFromJason();
         }
     }

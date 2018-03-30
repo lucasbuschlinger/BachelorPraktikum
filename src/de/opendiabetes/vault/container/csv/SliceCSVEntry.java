@@ -55,7 +55,7 @@ public class SliceCSVEntry extends CSVEntry {
      * @return The transformed data as CSV records.
      */
     @Override
-    public String[] toCsvRecord() {
+    public String[] toCSVRecord() {
         ArrayList<String> csvRecord = new ArrayList<>();
         csvRecord.add(new SimpleDateFormat("dd.MM.yy").format(data.getTimestamp()));
         csvRecord.add(new SimpleDateFormat("HH:mm").format(data.getTimestamp()));
@@ -89,7 +89,7 @@ public class SliceCSVEntry extends CSVEntry {
      * @return The CSV records header.
      */
     @Override
-    public String[] getCsvHeaderRecord() {
+    public String[] getCSVHeaderRecord() {
         return new String[] {
                 "date",
                 "time",

@@ -52,7 +52,7 @@ public abstract class AbstractPlugin implements  OpenDiabetesPlugin {
     /**
      * Uses the properties file specified in {@link OpenDiabetesPlugin#loadConfiguration(Properties)}
      * and returns the list mapped by the key "compatiblePlugins".
-     * @see {@link this#loadConfiguration(Properties)}
+     * @see AbstractPlugin#loadConfiguration(Properties)
      * {@inheritDoc}
      */
     @Override

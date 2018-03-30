@@ -85,7 +85,7 @@ public abstract class VaultExporter extends CSVFileExporter<ExportEntry, VaultEn
                 // save entry if not empty
                 if (!tmpCsvEntry.isEmpty()) {
                     returnValues.add(tmpCsvEntry);
-                    LOG.log(Level.FINE, "Export entry: {0}", tmpCsvEntry.toCsvString());
+                    LOG.log(Level.FINE, "Export entry: {0}", tmpCsvEntry.toCSVString());
                 }
 
                 // add 1 minute to timestamp for next time slot

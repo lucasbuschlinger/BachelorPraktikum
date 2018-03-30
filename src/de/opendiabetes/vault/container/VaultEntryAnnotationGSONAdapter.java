@@ -27,16 +27,16 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 /**
- * Implements a Json serializer for Gson based annotated VaultEntries.
+ * Implements a JSON serializer for GSON based annotated VaultEntries.
  */
-public class VaultEntryAnnotationGsonAdapter implements JsonSerializer<VaultEntryAnnotation>, JsonDeserializer<VaultEntryAnnotation> {
+public class VaultEntryAnnotationGSONAdapter implements JsonSerializer<VaultEntryAnnotation>, JsonDeserializer<VaultEntryAnnotation> {
 
     /**
      * Serializer for VaultEntries.
      * @param entry VaultEntry to be serialized.
      * @param type Type of the entry.
      * @param jsc Context for the serializer.
-     * @return Serialized VaultEntry as Json element.
+     * @return Serialized VaultEntry as JSON element.
      */
     @Override
     public JsonElement serialize(final VaultEntryAnnotation entry, final Type type, final JsonSerializationContext jsc) {
@@ -47,12 +47,12 @@ public class VaultEntryAnnotationGsonAdapter implements JsonSerializer<VaultEntr
     }
 
     /**
-     * Deserializer for Json data.
-     * @param element The Json element to deserialize.
+     * Deserializer for JSON data.
+     * @param element The JSON element to deserialize.
      * @param type The type of the element.
      * @param jdc Context for the deserializer.
-     * @return Deserialized Json element.
-     * @throws JsonParseException Thrown if Json element is faulty.
+     * @return De-serialized JSON element.
+     * @throws JsonParseException Thrown if JSON element is faulty.
      */
     @Override
     public VaultEntryAnnotation deserialize(final JsonElement element, final Type type, final JsonDeserializationContext jdc)

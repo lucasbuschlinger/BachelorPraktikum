@@ -220,7 +220,7 @@ public final class OpenDiabetesPluginManager {
      *
      * @param type the type of plugins you want the ids from
      * @return a list of all pluginIDs that correspond to a available plugin of the specified type
-     * @see {@link this#getPluginsOfType(Class)}
+     * @see OpenDiabetesPluginManager#getPluginsOfType(Class)
      */
     public List<String> getPluginIDsOfType(final Class type) {
         List<String> result = new ArrayList<>();
@@ -278,7 +278,7 @@ public final class OpenDiabetesPluginManager {
      * @param type     the class of the plugin
      * @param pluginID the name of the plugin
      * @param <T>      the type of the plugin specified in type
-     * @return the plugin <<pluginID>> with type <<type>> returns null if the plugin was not found
+     * @return the plugin named in <b>pluginID</b> with type <b>type</b>
      * @throws PluginNotFoundException if there is no plugin found for the given pluginID
      */
     public <T extends OpenDiabetesPlugin> T getPluginFromString(final Class<T> type, final String pluginID) throws PluginNotFoundException {
