@@ -195,7 +195,7 @@ public class PumpInterpreter extends Plugin {
                     canulaFillAsPumpFillCandidate = null;
                 }
 
-                // reverse cooldown for canula as ne catheter interpretation
+                // reverse cooldown for canula as new catheter interpretation
                 if (fillCanulaAsNewCatheter
                         && canulaFillAsPumpFillCandidate != null
                         && ((item.getTimestamp().getTime()
