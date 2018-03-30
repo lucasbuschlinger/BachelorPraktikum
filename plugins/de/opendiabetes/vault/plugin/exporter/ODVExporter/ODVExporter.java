@@ -38,6 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -121,11 +122,12 @@ public class ODVExporter extends Plugin {
             }
             OpenDiabetesPluginManager manager = OpenDiabetesPluginManager.getInstance();
             List<FileExporter> exporters = manager.getPluginsOfType(FileExporter.class);
+            Set<String> compatiblePlugins =  manager.getCompatiblePluginIDs(this);
             for (FileExporter exporter : exporters) {
 
                 String name = exporter.getClass().getName().replaceAll(".*\\$", "")
                         .replace("Implementation", "");
-                if (name.contains("ODVExporter") || metaData.containsKey(name)) {
+                if (!compatiblePlugins.contains(name) || metaData.containsKey(name)) {
                     continue;
                 }
                 MetaValues thisEntryMetaData = new MetaValues();
