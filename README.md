@@ -12,6 +12,7 @@ The project was setup using [IntelliJ IDEA](https://www.jetbrains.com/idea/) whi
 The guide covers how to setup the project using [IntelliJ IDEA](https://www.jetbrains.com/idea/), for a detailed description in other IDE's refer to the [Sample Plugin Project](https://github.com/Magnusgaertner/OpenDiabetesPluginTutorial/blob/master/README.md#importing-and-building-with-ides)
 
 ### IntelliJ
+
 1. Use File > Open... to import the sources. 
 
 2. Mark the BaseLibs and libs folders as Resources Root and add the jars inside as libraries to the project. Also mark src as Sources Root. 
@@ -24,13 +25,13 @@ The guide covers how to setup the project using [IntelliJ IDEA](https://www.jetb
 
 1. Use File > New Project to open the import dialogue.
 
-2. Select Java Free-Form Project and advance. Select the folder where you clone the repository to, the build script should be detected automatically.
+2. Select Java Free-Form Project and advance. Select the folder where you cloned the repository to, the build script should be detected automatically.
 
 3. Select the package target in the Build Project menu and advance.
 
 4. Select JDK 1.8.
 
-5. Add the jars from BaseLibs and libs to the classpath.
+5. Add the jars from BaseLibs and libs (from the plugin's root packages) to the classpath.
 
 6. Finally create the out folder as target destination for the output and finish the setup. You can then build the plugin by simply clicking the Build Project item in the menu bar at the top.
 
