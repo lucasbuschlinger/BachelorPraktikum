@@ -20,6 +20,20 @@ The guide covers how to setup the project using [IntelliJ IDEA](https://www.jetb
 
 4. Finally, you have to set the project's SDK under File > Project Structure... > Project. The targets can be executed by simply double clicking them.
 
+### NetBeans
+
+1. Use File > New Project to open the import dialogue.
+
+2. Select Java Free-Form Project and advance. Select the folder where you clone the repository to, the build script should be detected automatically.
+
+3. Select the package target in the Build Project menu and advance.
+
+4. Select JDK 1.8.
+
+5. Add the jars from BaseLibs and libs to the classpath.
+
+6. Finally create the out folder as target destination for the output and finish the setup. You can then build the plugin by simply clicking the Build Project item in the menu bar at the top.
+
 ## Further steps
 
 You now have a working OpenDiabetes project setup on your machine. The following topics guide to documents that will help you on different tasks in the project: 
