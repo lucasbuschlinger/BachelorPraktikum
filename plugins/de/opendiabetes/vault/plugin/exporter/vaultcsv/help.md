@@ -4,7 +4,7 @@ Classification: Exporter
 
 Overview
 -----
-The VaultCSVExporter is an exporter plugin which exports data from the database into a CSV format.
+The VaultCSVExporter is an exporter plugin, which exports data from the database into a CSV format.
 
 Data example
 -----
