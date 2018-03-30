@@ -87,11 +87,11 @@ public class GoogleFitCrawlerImporter extends Plugin {
          */
         private String timeframe;
 
-        /**
-         * Further search parameters for sports location,
-         * already included params are: verein, club, sport and bad.
-         */
-        private String[] keywordSearchParams;
+        ///**
+        // * Further search parameters for sports location,
+        // * already included params are: verein, club, sport and bad.
+        // */
+        //private String[] keywordSearchParams;
 
         /**
          * Export whole history as json to the current working directory.

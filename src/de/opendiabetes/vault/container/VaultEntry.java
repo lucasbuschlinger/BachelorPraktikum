@@ -40,6 +40,10 @@ import static de.opendiabetes.vault.plugin.util.TimestampUtils.copyTimestamp;
 public class VaultEntry implements Serializable {
 
     /**
+     * Serial version UID for serialization.
+     */
+    private static final long serialVersionUID = 2649708852883727518L;
+    /**
      * Indicates unused value field.
      */
     public static final double VALUE_UNUSED = -5.0;
@@ -77,9 +81,9 @@ public class VaultEntry implements Serializable {
      */
     public static final String ANNOTATION_FIELD_NAME = "annotation";
     /**
-     * A gson used in the entry.
+     * A GSON used in the entry.
      */
-    private final Gson gson;
+    private final transient Gson gson;
     /**
      * The ID of the VaultEntry.
      */

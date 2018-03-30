@@ -171,6 +171,9 @@ public final class OpenDiabetesPluginManager {
         Properties config = new Properties();
         FileInputStream input = null;
         try {
+            if (!Files.exists(configurationPath)) {
+                Files.createDirectory(configurationPath);
+            }
             String filename = pluginToString(plugin) + ".properties";
             Path defaultConfigFilePath = Paths.get(getPluginBasePath(plugin), filename);
             Path configFilePath = Paths.get(this.configurationPath.toString(), filename);
@@ -181,8 +184,8 @@ public final class OpenDiabetesPluginManager {
             input = new FileInputStream(Paths.get(configurationPath.toString(), filename).toFile());
             config.load(input);
             plugin.loadConfiguration(config);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         } finally {
             try {
                 if (input != null) {

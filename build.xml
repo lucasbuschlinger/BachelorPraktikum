@@ -337,7 +337,10 @@
         <findbugs home="${findbugs.home}"
                   output="html"
                   outputFile="reports/findbugs_report.html">
-            <auxClasspath path="${basedir}/lib/"/>
+            <auxClasspath>
+                <path refid="libraries.base"/>
+                <path refid="libraries.plugins"/>
+            </auxClasspath>
             <class location="${basedir}/out/production/OpenDiabetes/de"/>
         </findbugs>
     </target>

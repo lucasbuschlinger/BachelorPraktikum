@@ -113,7 +113,7 @@ public final class Credentials {
      * @param path - path to the credentials file
      * @throws IOException - thrown if the credentials file could not be read/written
      */
-    public void authorize(final String path) throws IOException {
+    public static void authorize(final String path) throws IOException {
         File file = new File(Paths.get(path).toAbsolutePath().toString());
         // Load client secrets.
         FileInputStream fileInput = new FileInputStream(file);
@@ -138,7 +138,7 @@ public final class Credentials {
      * Getter for http transport.
      * @return the http transport
      */
-    public HttpTransport getHttpTransport() {
+    public static HttpTransport getHttpTransport() {
         return httpTransport;
     }
 
@@ -146,7 +146,7 @@ public final class Credentials {
      * Getter for JsonFactory.
      * @return the json factory.
      */
-    public JsonFactory getJsonFactory() {
+    public static JsonFactory getJsonFactory() {
         return JSON_FACTORY;
     }
 
@@ -154,7 +154,7 @@ public final class Credentials {
      * Getter for the application name.
      * @return the application name string
      */
-    public String getApplicationName() {
+    public static String getApplicationName() {
         return APPLICATION_NAME;
     }
 
@@ -162,7 +162,7 @@ public final class Credentials {
      * Getter for the singleton instance.
      * @return the singleton instance
      */
-    public Credential getCredential() {
+    public static Credential getCredential() {
         return credential;
     }
 
@@ -170,7 +170,7 @@ public final class Credentials {
      * Getter for the API key.
      * @return the api key for the google services
      */
-    public String getAPIKey() {
+    public static String getAPIKey() {
         return apiKey;
     }
 
