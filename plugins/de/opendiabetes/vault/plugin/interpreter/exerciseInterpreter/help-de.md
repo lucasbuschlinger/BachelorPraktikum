@@ -14,7 +14,7 @@ Das ExerciseInterpreter-Plugin bietet folgende Konfigurationsmöglichkeiten:
 | ------------- | ------------- |  ------------- | ------------- |
 | compatiblePlugins | PluginA, PluginB, PluginC | Eine Liste von Plugins, die mit dem ExerciseInterpreter kompatibel sind. | x
 | activityThreshold | 10 | Der Aktivitätsgrenzwert, der überschritten sein muss, damit ein Eintrag während der Interpretation nicht verworfen wird. | 
-| activitySliceThreshold | 10 | Die maximale Länge einer Slice, in Minuten. |
+| activitySliceThreshold | 10 | Die maximale Länge eines Slices, in Minuten. |
 
 Benötigte Plugins
 -----
