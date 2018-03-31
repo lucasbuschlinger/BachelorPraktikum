@@ -8,7 +8,7 @@ The ODVDBJSONExporter is an exporter plugin, which exports data from the databas
 
 Data example
 -----
-The exported data will be put into a .export file which contains valid JSON content.
+The exported data will be put into a file which contains valid JSON content.
 ```
 [
     {
