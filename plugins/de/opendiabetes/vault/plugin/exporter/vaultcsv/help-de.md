@@ -10,7 +10,7 @@ Beispieldatensatz
 -----
 [Standard-CSV-Format](https://de.wikipedia.org/wiki/CSV_(Dateiformat))
 ```
-Datum,Zeit,bgWert,cgmWert,
+date,time,bgValue,cgmValue,
 01.03.10,01:00,,
 ```
 
@@ -23,7 +23,7 @@ Das VaultCSVExporter-Plugin bietet folgende Konfigurationsmöglichkeiten:
 | compatiblePlugins | PluginA, PluginB, PluginC | Eine Liste von Plugins, die mit dem VaultCSVExporter kompatibel sind. | x
 | periodRestriction | true | Gibt an, ob nur Daten aus einem beschränkten Zeitraum exportiert werden sollen. (Standardwert: false) | 
 | periodRestrictionFrom | 24/04/2015 | Start des Export Zeitraums. Notwendig, wenn periodRestriction true ist. |
-| periodRestrictionTo | 24/05/2015 | Ende des Export Zeitraum. Notwendig, wenn periodRestriction true ist. |
+| periodRestrictionTo | 24/05/2015 | Ende des Export Zeitraums. Notwendig, wenn periodRestriction true ist. |
 
 Benötigte Plugins
 -----

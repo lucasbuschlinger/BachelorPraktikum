@@ -19,7 +19,7 @@ Das ODVExporter-Plugin bietet folgende Konfigurationsmöglichkeiten:
 | temporaryDirectory | /tmp/ODVExporter | Das temporäre Verzeichnis, das beim Exportieren verwendet wird. | 
 | periodRestriction | true | Gibt an, ob nur Daten aus einem beschränkten Zeitraum exportiert werden sollen. (Standardwert: false) | 
 | periodRestrictionFrom | 24/04/2015 | Start des Export Zeitraums. Notwendig, wenn periodRestriction true ist. |
-| periodRestrictionTo | 24/05/2015 | Ende des Export Zeitraum. Notwendig, wenn periodRestriction true ist. |
+| periodRestrictionTo | 24/05/2015 | Ende des Export Zeitraums. Notwendig, wenn periodRestriction true ist. |
 
 Benötigte Plugins
 -----
