@@ -4,7 +4,7 @@ Classification: Importer
 
 Overview
 -----
-The ODVDBJSONImporter plugin is an importer plugin which imports ODVDB data in the .json format.
+The ODVDBJSONImporter plugin is an importer plugin, which imports ODVDB data in the .json format.
 
 Data
 -----
@@ -20,4 +20,4 @@ The ODVDBJSONImporter plugin offers the following configuration options:
 
 Required Plugins
 -----
- - The ODVDBJSONImporter does not require any other plugins.
+The ODVDBJSONImporter does not require any other plugins.

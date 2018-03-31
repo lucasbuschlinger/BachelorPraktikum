@@ -4,7 +4,7 @@ Classification: Importer
 
 Overview
 -----
-The GoogleFitCSVImporter plugin is an importer plugin which imports Google Fit data in the .csv format.
+The GoogleFitCSVImporter plugin is an importer plugin, which imports Google Fit data in the .csv format.
 
 Data
 -----
@@ -21,4 +21,4 @@ The GoogleFitCSVImporter plugin offers the following configuration options:
 
 Required Plugins
 -----
- - The GoogleFitCSVImporter does not require any other plugins.
+The GoogleFitCSVImporter does not require any other plugins.

@@ -84,9 +84,9 @@ public class PumpInterpreter extends Plugin {
         private double outputFilterSize = DEFAULT_OUTPUTFILTER_SIZE;
 
         /**
-         * Boolean to say whether the canula has to be filled as a new Katheder.
+         * Boolean to say whether the canula has to be filled as a new catheter.
          */
-        private boolean fillCanulaAsNewKatheder;
+        private boolean fillCanulaAsNewCatheter;
 
         /**
          * The time the Canula needs to cool down in minutes.
@@ -142,7 +142,7 @@ public class PumpInterpreter extends Plugin {
             List<VaultEntry> fillEvents = new ArrayList<>();
 
             // configure options
-            if (fillCanulaAsNewKatheder) {
+            if (fillCanulaAsNewCatheter) {
                 // ignore cooldown if option is disabled
                 cooldown = fillCanulaCooldown * MS_PER_MINUTE;
             }
@@ -195,8 +195,8 @@ public class PumpInterpreter extends Plugin {
                     canulaFillAsPumpFillCandidate = null;
                 }
 
-                // reverse cooldown for canula as ne katheder interpretation
-                if (fillCanulaAsNewKatheder
+                // reverse cooldown for canula as new catheter interpretation
+                if (fillCanulaAsNewCatheter
                         && canulaFillAsPumpFillCandidate != null
                         && ((item.getTimestamp().getTime()
                         - canulaFillAsPumpFillCandidate.getTimestamp().getTime())
@@ -220,8 +220,8 @@ public class PumpInterpreter extends Plugin {
                             // yes --> must be fill canula
                             latestFillCanulaHandle = item;
                         }
-                    } else if (fillCanulaAsNewKatheder) {
-                        // no prime event? --> new katheder (if enabled)
+                    } else if (fillCanulaAsNewCatheter) {
+                        // no prime event? --> new catheter (if enabled)
                         canulaFillAsPumpFillCandidate = new VaultEntry(VaultEntryType.PUMP_FILL_INTERPRETER,
                                 item.getTimestamp(),
                                 VaultEntry.VALUE_UNUSED);
@@ -588,11 +588,11 @@ public class PumpInterpreter extends Plugin {
                 outputFilterSize = Double.parseDouble(configuration.getProperty("outputFilterSize", "5"));
             } catch (NumberFormatException e) {
             }
-            if (!configuration.containsKey("fillCanulaAsNewKatheder") || !configuration.containsKey("fillCanulaCooldown")) {
+            if (!configuration.containsKey("fillCanulaAsNewCatheter") || !configuration.containsKey("fillCanulaCooldown")) {
                 return false;
             }
             try {
-                fillCanulaAsNewKatheder = Boolean.parseBoolean(configuration.getProperty("fillCanulaAsNewKatheder"));
+                fillCanulaAsNewCatheter = Boolean.parseBoolean(configuration.getProperty("fillCanulaAsNewCatheter"));
                 fillCanulaCooldown = Integer.parseInt(configuration.getProperty("fillCanulaCooldown"));
             } catch (NumberFormatException e) {
                 return  false;

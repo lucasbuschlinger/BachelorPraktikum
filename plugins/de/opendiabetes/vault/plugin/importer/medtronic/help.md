@@ -4,7 +4,7 @@ Classification: Importer
 
 Overview
 -----
-The MedtronicImporter plugin is an importer plugin which imports Medtronic data in the .csv format.
+The MedtronicImporter plugin is an importer plugin, which imports Medtronic data in the .csv format.
 
 Data
 -----
@@ -21,4 +21,4 @@ The MedtronicImporter plugin offers the following configuration options:
 
 Required Plugins
 -----
- - The MedtronicImporter does not require any other plugins.
+The MedtronicImporter does not require any other plugins.
