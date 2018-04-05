@@ -93,8 +93,10 @@ public final class OpenDiabetesPluginManager {
       */
     public static OpenDiabetesPluginManager getInstance() {
         if (singletonInstance == null) {
-            String basedir = OpenDiabetesPluginManager.class.getResource("").getFile().toString().split("/out/")[0];
-            singletonInstance = new OpenDiabetesPluginManager(Paths.get(basedir, "export"), Paths.get(basedir, "properties"));
+            Path basedir = Paths.get(OpenDiabetesPluginManager.class.getResource("").getPath());
+            basedir = basedir.getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+
+            singletonInstance = new OpenDiabetesPluginManager(basedir.resolve("export"), basedir.resolve("properties"));
         }
         return  singletonInstance;
     }
@@ -271,7 +273,23 @@ public final class OpenDiabetesPluginManager {
     /**
      * Exception, thrown if there is no such plugin found.
      */
-    static class PluginNotFoundException extends RuntimeException { }
+    static class PluginNotFoundException extends RuntimeException {
+        /**
+         * Constructor with message.
+         * @param what the message
+         */
+        public PluginNotFoundException(final String what){
+            super(what);
+        }
+
+        /**
+         * Default constructor.
+         */
+        public PluginNotFoundException(){
+            super();
+        }
+
+    }
 
     /**
      * Takes a pluginID and the class of the corresponding plugin and returns the corresponding plugin.
@@ -287,7 +305,7 @@ public final class OpenDiabetesPluginManager {
         if (type.isInstance(plugin)) {
             return (T) plugin;
         }
-        throw new PluginNotFoundException();
+        throw new PluginNotFoundException(pluginID);
     }
 
     /**
