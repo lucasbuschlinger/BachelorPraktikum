@@ -93,7 +93,8 @@ public final class OpenDiabetesPluginManager {
       */
     public static OpenDiabetesPluginManager getInstance() {
         if (singletonInstance == null) {
-            singletonInstance = new OpenDiabetesPluginManager(Paths.get("export"), Paths.get("properties"));
+            String basedir = OpenDiabetesPluginManager.class.getResource("").getFile().toString().split("/out/")[0];
+            singletonInstance = new OpenDiabetesPluginManager(Paths.get(basedir, "export"), Paths.get(basedir, "properties"));
         }
         return  singletonInstance;
     }
