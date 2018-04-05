@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -93,9 +94,15 @@ public final class OpenDiabetesPluginManager {
       */
     public static OpenDiabetesPluginManager getInstance() {
         if (singletonInstance == null) {
-            Path basedir = Paths.get(OpenDiabetesPluginManager.class.getResource("").getPath());
+            // Resolving base directory is needed, as Netbeans does not use project root as working directory...
+            Path basedir;
+            try {
+                basedir = Paths.get(OpenDiabetesPluginManager.class.getResource("").getPath().replace("%20", " "));
+            } catch (InvalidPathException exception) {
+                basedir = Paths.get(OpenDiabetesPluginManager.class.getResource("").getPath().replace("%20", " ").substring(1));
+            }
             basedir = basedir.getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
-
+            
             singletonInstance = new OpenDiabetesPluginManager(basedir.resolve("export"), basedir.resolve("properties"));
         }
         return  singletonInstance;
