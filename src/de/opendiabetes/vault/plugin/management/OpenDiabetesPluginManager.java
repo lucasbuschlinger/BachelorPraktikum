@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -93,7 +94,16 @@ public final class OpenDiabetesPluginManager {
       */
     public static OpenDiabetesPluginManager getInstance() {
         if (singletonInstance == null) {
-            singletonInstance = new OpenDiabetesPluginManager(Paths.get("export"), Paths.get("properties"));
+            // Resolving base directory is needed, as Netbeans does not use project root as working directory...
+            Path basedir;
+            try {
+                basedir = Paths.get(OpenDiabetesPluginManager.class.getResource("").getPath().replace("%20", " "));
+            } catch (InvalidPathException exception) {
+                basedir = Paths.get(OpenDiabetesPluginManager.class.getResource("").getPath().replace("%20", " ").substring(1));
+            }
+            basedir = basedir.getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+            
+            singletonInstance = new OpenDiabetesPluginManager(basedir.resolve("export"), basedir.resolve("properties"));
         }
         return  singletonInstance;
     }
@@ -270,7 +280,23 @@ public final class OpenDiabetesPluginManager {
     /**
      * Exception, thrown if there is no such plugin found.
      */
-    static class PluginNotFoundException extends RuntimeException { }
+    static class PluginNotFoundException extends RuntimeException {
+        /**
+         * Constructor with message.
+         * @param what the message
+         */
+        public PluginNotFoundException(final String what){
+            super(what);
+        }
+
+        /**
+         * Default constructor.
+         */
+        public PluginNotFoundException(){
+            super();
+        }
+
+    }
 
     /**
      * Takes a pluginID and the class of the corresponding plugin and returns the corresponding plugin.
@@ -286,7 +312,7 @@ public final class OpenDiabetesPluginManager {
         if (type.isInstance(plugin)) {
             return (T) plugin;
         }
-        throw new PluginNotFoundException();
+        throw new PluginNotFoundException(pluginID);
     }
 
     /**

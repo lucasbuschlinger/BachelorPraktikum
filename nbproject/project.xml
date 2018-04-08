@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.ant.freeform</type>
+    <configuration>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
+            <name>Bachelor Praktikum</name>
+        </general-data>
+        <general-data xmlns="http://www.netbeans.org/ns/freeform-project/2">
+            <!-- Do not use Project Properties customizer when editing this file manually. 
+ To prevent the customizer from showing, create nbproject/project.properties file and enter 
+auxiliary.show.customizer=false 
+property there. Adding 
+auxiliary.show.customizer.message=<message>
+ will show your customized message when someone attempts to open the customizer.  -->
+            <name>Bachelor Praktikum</name>
+            <properties/>
+            <folders>
+                <source-folder>
+                    <label>src</label>
+                    <type>java</type>
+                    <location>src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>plugins</label>
+                    <type>java</type>
+                    <location>plugins</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>test</label>
+                    <type>java</type>
+                    <location>test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>Bachelor Praktikum</label>
+                    <location>.</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+            </folders>
+            <ide-actions>
+                <action name="build">
+                    <target>plugin</target>
+                </action>
+                <action name="clean">
+                    <target>clean</target>
+                </action>
+                <action name="javadoc">
+                    <target>doc</target>
+                </action>
+                <action name="run">
+                    <target>build-base</target>
+                </action>
+                <action name="test">
+                    <target>test</target>
+                </action>
+                <action name="rebuild">
+                    <target>clean</target>
+                    <target>plugin</target>
+                </action>
+                <action name="run.single">
+                    <script>nbproject/ide-file-targets.xml</script>
+                    <target>run-selected-file-in-test</target>
+                    <context>
+                        <property>run.class</property>
+                        <folder>test</folder>
+                        <pattern>\.java$</pattern>
+                        <format>java-name</format>
+                        <arity>
+                            <one-file-only/>
+                        </arity>
+                    </context>
+                </action>
+            </ide-actions>
+            <export>
+                <type>folder</type>
+                <location>out</location>
+                <build-target>plugin</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>out</location>
+                <build-target>plugin</build-target>
+            </export>
+            <export>
+                <type>folder</type>
+                <location>out</location>
+                <build-target>plugin</build-target>
+            </export>
+            <view>
+                <items>
+                    <source-folder style="packages">
+                        <label>src</label>
+                        <location>src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>plugins</label>
+                        <location>plugins</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>test</label>
+                        <location>test</location>
+                    </source-folder>
+                    <source-file>
+                        <location>build.xml</location>
+                    </source-file>
+                </items>
+                <context-menu>
+                    <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
+                    <ide-action name="javadoc"/>
+                    <ide-action name="run"/>
+                    <ide-action name="test"/>
+                </context-menu>
+            </view>
+        </general-data>
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/4">
+            <compilation-unit>
+                <package-root>plugins</package-root>
+                <classpath mode="compile">lib/ant-contrib-1.0b3.jar;lib/gson-2.8.0.jar;lib/hsqldb.jar;lib/javacsv.jar;lib/log4j-api-2.10.0.jar;lib/log4j-core-2.10.0.jar;lib/log4j-slf4j-impl-2.10.0.jar;lib/ormlite-core-5.0.jar;lib/ormlite-jdbc-5.0.jar;lib/pf4j-2.0.0.jar;lib/servlet-2_3-fcs-classfiles.zip;lib/slf4j-api-1.7.5.jar;lib/sqltool.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-client-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-client-jackson2-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-services-fitness-v1-rev30-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-services-people-v1-rev213-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-http-client-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-http-client-jackson2-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-maps-services-0.2.6.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-oauth-client-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-oauth-client-java6-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-oauth-client-jetty-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jackson-core-2.9.4.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jcommon-1.0.23.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jfreechart-1.0.19.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jsr305-1.3.9.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/okhttp-3.10.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/okio-1.14.0.jar;plugins/de/opendiabetes/vault/plugin/importer/medtroniccrawler/lib/jsoup-1.10.2.jar;plugins/de/opendiabetes/vault/plugin/importer/miband/lib/jackson-annotations-2.9.0.jar;plugins/de/opendiabetes/vault/plugin/importer/miband/lib/jackson-core-2.9.4.jar;plugins/de/opendiabetes/vault/plugin/importer/miband/lib/jackson-databind-2.9.4.jar;src</classpath>
+                <built-to>out</built-to>
+                <source-level>1.8</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>src</package-root>
+                <classpath mode="compile">lib/ant-contrib-1.0b3.jar;lib/gson-2.8.0.jar;lib/hsqldb.jar;lib/javacsv.jar;lib/log4j-api-2.10.0.jar;lib/log4j-core-2.10.0.jar;lib/log4j-slf4j-impl-2.10.0.jar;lib/ormlite-core-5.0.jar;lib/ormlite-jdbc-5.0.jar;lib/pf4j-2.0.0.jar;lib/servlet-2_3-fcs-classfiles.zip;lib/slf4j-api-1.7.5.jar;lib/sqltool.jar</classpath>
+                <built-to>out</built-to>
+                <source-level>1.8</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>test</package-root>
+                <unit-tests/>
+                <classpath mode="compile">src;lib/ant-contrib-1.0b3.jar;lib/gson-2.8.0.jar;lib/hsqldb.jar;lib/javacsv.jar;lib/log4j-api-2.10.0.jar;lib/log4j-core-2.10.0.jar;lib/log4j-slf4j-impl-2.10.0.jar;lib/ormlite-core-5.0.jar;lib/ormlite-jdbc-5.0.jar;lib/pf4j-2.0.0.jar;lib/servlet-2_3-fcs-classfiles.zip;lib/slf4j-api-1.7.5.jar;lib/sqltool.jar;testlib/ant-junit.jar;testlib/checkstyle-8.5-all.jar;testlib/findbugs-ant.jar;testlib/hamcrest-core-1.3.jar;testlib/junit-4.12.jar;testlib/junit.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-client-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-client-jackson2-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-services-fitness-v1-rev30-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-api-services-people-v1-rev213-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-http-client-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-http-client-jackson2-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-maps-services-0.2.6.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-oauth-client-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-oauth-client-java6-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/google-oauth-client-jetty-1.23.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jackson-core-2.9.4.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jcommon-1.0.23.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jfreechart-1.0.19.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/jsr305-1.3.9.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/okhttp-3.10.0.jar;plugins/de/opendiabetes/vault/plugin/importer/googlecrawler/lib/okio-1.14.0.jar;plugins/de/opendiabetes/vault/plugin/importer/medtroniccrawler/lib/jsoup-1.10.2.jar;plugins/de/opendiabetes/vault/plugin/importer/miband/lib/jackson-annotations-2.9.0.jar;plugins/de/opendiabetes/vault/plugin/importer/miband/lib/jackson-core-2.9.4.jar;plugins/de/opendiabetes/vault/plugin/importer/miband/lib/jackson-databind-2.9.4.jar;plugins</classpath>
+                <built-to>out</built-to>
+                <javadoc-built-to>docs</javadoc-built-to>
+                <source-level>1.8</source-level>
+            </compilation-unit>
+        </java-data>
+    </configuration>
+</project>
